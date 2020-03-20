@@ -4,11 +4,13 @@ import { AppModule } from './app.module'
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule)
+  if (process.env.NODE_ENV !== 'production') {
+    app.enableCors()
+  }
   const options = new DocumentBuilder()
     .setTitle('API')
     .setDescription('The blog API description')
     .setVersion('1.0')
-    .addTag('focus')
     .build()
   const document = SwaggerModule.createDocument(app, options)
   SwaggerModule.setup('api-docs', app, document)

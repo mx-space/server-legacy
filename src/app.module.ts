@@ -3,9 +3,24 @@ import { AppService } from './app.service'
 import { DbModule } from '@libs/db'
 import { MasterController } from './master/master.controller'
 import { MasterModule } from './master/master.module'
-
+import { ConfigModule } from '@nestjs/config'
+import { PostsModule } from './posts/posts.module';
 @Module({
-  imports: [DbModule, MasterModule],
+  imports: [
+    DbModule,
+    MasterModule,
+
+    ConfigModule.forRoot({
+      envFilePath: [
+        '.env.development.local',
+        '.env.development',
+        '.env',
+        '.env.production',
+      ],
+    }),
+
+    PostsModule,
+  ],
   controllers: [MasterController],
   providers: [AppService],
 })

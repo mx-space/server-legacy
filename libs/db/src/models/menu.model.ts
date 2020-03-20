@@ -1,6 +1,14 @@
-import { prop } from '@typegoose/typegoose'
+import { prop, modelOptions } from '@typegoose/typegoose'
 import { Schema } from 'mongoose'
 
+@modelOptions({
+  schemaOptions: {
+    timestamps: {
+      createdAt: 'created',
+      updatedAt: 'modified',
+    },
+  },
+})
 export default class Menu {
   @prop({ unique: true })
   type!: string
