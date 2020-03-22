@@ -1,7 +1,9 @@
-import { prop, index, modelOptions } from '@typegoose/typegoose'
+import { prop, index, modelOptions, plugin } from '@typegoose/typegoose'
 import { Schema } from 'mongoose'
 import { ApiProperty } from '@nestjs/swagger'
+import * as uniqueValidator from 'mongoose-unique-validator'
 
+@plugin(uniqueValidator)
 @index({ created: -1 })
 @index({ slug: 1 })
 @index({ modified: -1 })
