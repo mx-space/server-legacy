@@ -10,10 +10,10 @@ import { Schema } from 'mongoose'
   },
 })
 export default class Menu {
-  @prop({ unique: true })
+  @prop({ unique: true, required: true })
   type!: string
 
-  @prop({ trim: true })
+  @prop({ trim: true, required: true })
   title!: string
 
   @prop({ default: 0 })

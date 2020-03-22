@@ -11,24 +11,24 @@ import { Schema } from 'mongoose'
   },
 })
 export default class Page {
-  @ApiProperty({ description: 'Slug' })
-  @prop({ trim: 1, index: true })
+  @ApiProperty({ description: 'Slug', required: true })
+  @prop({ trim: 1, index: true, required: true })
   slug!: string
 
-  @ApiProperty({ description: 'Title' })
-  @prop({ trim: true })
+  @ApiProperty({ description: 'Title', required: true })
+  @prop({ trim: true, required: true })
   title!: string
 
   @ApiProperty({ description: 'SubTitle' })
   @prop({ trim: true })
-  subtitle!: string
+  subtitle?: string
 
   @ApiProperty({ description: 'Order' })
   @prop({ default: 1 })
   order!: number
 
-  @ApiProperty({ description: 'Text' })
-  @prop()
+  @ApiProperty({ description: 'Text', required: true })
+  @prop({ required: true })
   text!: string
 
   @ApiProperty({ description: 'Type (MD | html | frame)' })

@@ -24,6 +24,7 @@ export class LocalStrategy extends PassportStrategy(Strategy, 'local') {
     if (!compareSync(password, user.password)) {
       throw new BadRequestException('密码不正确')
     }
+    // console.log(user)
     return user
   }
 }

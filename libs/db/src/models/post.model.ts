@@ -15,12 +15,12 @@ import { ApiProperty } from '@nestjs/swagger'
   },
 })
 export default class Post {
-  @ApiProperty({ description: 'Title' })
-  @prop({ trim: true, index: true })
+  @ApiProperty({ description: 'Title', required: true })
+  @prop({ trim: true, index: true, required: true })
   title!: string
 
-  @ApiProperty({ description: 'Slug' })
-  @prop({ trim: true, unique: true })
+  @ApiProperty({ description: 'Slug', required: true })
+  @prop({ trim: true, unique: true, required: true })
   slug!: string
 
   @ApiProperty({ description: 'Text Body' })

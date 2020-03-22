@@ -17,10 +17,10 @@ function autoPopulateSubs(next) {
   },
 })
 export default class Comment {
-  @prop({ ref: 'Post' })
+  @prop({ ref: 'Post', required: true })
   pid!: Ref<Post>
 
-  @prop({ trim: true })
+  @prop({ trim: true, required: true })
   author!: string
 
   @prop({ trim: true })
@@ -29,7 +29,7 @@ export default class Comment {
   @prop({ trim: true })
   url?: string
 
-  @prop()
+  @prop({ required: true })
   text!: string
 
   @prop({ default: 0 })
@@ -42,7 +42,7 @@ export default class Comment {
   children?: Ref<this>[]
 
   @prop({ default: 0 })
-  commetnsIndex?: number
+  commentsIndex?: number
   @prop()
   key?: string
   @prop()

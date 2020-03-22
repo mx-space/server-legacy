@@ -1,13 +1,26 @@
 import { Module } from '@nestjs/common'
-import MasterService from './master.service'
-import { MasterController } from './master.controller'
-import { LocalStrategy } from 'src/auth/local.strategy'
-import { AuthModule } from 'src/auth/auth.module'
+import { JwtModule } from '@nestjs/jwt'
 import { PassportModule } from '@nestjs/passport'
+import { JwtStrategy } from './jwt.strategy'
+import { LocalStrategy } from './local.strategy'
+import { MasterController } from './master.controller'
+import MasterService from './master.service'
 
 @Module({
-  providers: [MasterService, LocalStrategy],
-  imports: [AuthModule, PassportModule],
+  providers: [MasterService, LocalStrategy, JwtStrategy],
+  imports: [
+    PassportModule,
+    JwtModule.registerAsync({
+      useFactory() {
+        return {
+          secret: process.env.SECRET,
+          signOptions: {
+            expiresIn: '7d',
+          },
+        }
+      },
+    }),
+  ],
   controllers: [MasterController],
   exports: [MasterService],
 })
