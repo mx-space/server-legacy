@@ -48,7 +48,7 @@
   "devDependencies": {
     "@nestjs/cli": "^7.0.0",
     "@nestjs/schematics": "^7.0.0",
-    "@nestjs/testing": "^7.0.1",
+    "@nestjs/testing": "^7.0.4",
     "@types/express": "^4.17.3",
     "@types/jest": "^25.1.4",
     "@types/nanoid": "^2.1.0",
@@ -69,12 +69,12 @@
     "typescript": "^3.8.3"
   },
   "jest": {
+    "rootDir": "./",
     "moduleFileExtensions": [
       "js",
       "json",
       "ts"
     ],
-    "rootDir": ".",
     "testRegex": ".spec.ts$",
     "transform": {
       "^.+\\.(t|j)s$": "ts-jest"
@@ -85,7 +85,6 @@
     "coverageDirectory": "./coverage",
     "testEnvironment": "node",
     "roots": [
-      "<rootDir>/src/",
       "<rootDir>/libs/"
     ],
     "moduleNameMapper": {

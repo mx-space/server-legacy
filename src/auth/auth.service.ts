@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common'
 import { InjectModel } from 'nestjs-typegoose'
-import { User } from '@libs/db/models/user.model'
+import { User, UserDocument } from '@libs/db/models/user.model'
 import { ReturnModelType } from '@typegoose/typegoose'
-import { JwtPayload } from 'src/master/interfaces/jwt-payload.interface'
+import { JwtPayload } from './interfaces/jwt-payload.interface'
 import { JwtService } from '@nestjs/jwt'
 
 @Injectable()
@@ -21,9 +21,9 @@ export class AuthService {
     // console.log(process.env.SECRET)
     return this.jwtService.sign(payload)
   }
-  async verifyPayload(payload: JwtPayload): Promise<boolean> {
-    const user = await this.userModel.findById(payload._id).select('authCode')
+  async verifyPayload(payload: JwtPayload): Promise<UserDocument> {
+    const user = await this.userModel.findById(payload._id).select('+authCode')
 
-    return user && user.authCode === payload.authCode
+    return user && user.authCode === payload.authCode ? user : null
   }
 }

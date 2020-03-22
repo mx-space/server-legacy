@@ -1,16 +1,12 @@
-import { User } from '@libs/db/models/user.model'
+import { Injectable, UnauthorizedException } from '@nestjs/common'
 import { PassportStrategy } from '@nestjs/passport'
-import { ReturnModelType } from '@typegoose/typegoose'
-import { InjectModel } from 'nestjs-typegoose'
 import { ExtractJwt, Strategy, StrategyOptions } from 'passport-jwt'
-import { JwtPayload } from 'src/master/interfaces/jwt-payload.interface'
 import { AuthService } from './auth.service'
+import { JwtPayload } from './interfaces/jwt-payload.interface'
 
-export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
-  constructor(
-    @InjectModel(User) private userModel: ReturnModelType<typeof User>,
-    private readonly authService: AuthService,
-  ) {
+@Injectable()
+export class JwtStrategy extends PassportStrategy(Strategy) {
+  constructor(private readonly authService: AuthService) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       secretOrKey: process.env.SECRET,
@@ -18,6 +14,10 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
   }
 
   async validate(payload: JwtPayload) {
-    return await this.authService.verifyPayload(payload)
+    const user = await this.authService.verifyPayload(payload)
+    if (user) {
+      return user
+    }
+    throw new UnauthorizedException('身份已过期')
   }
 }

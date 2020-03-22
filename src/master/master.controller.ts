@@ -5,6 +5,8 @@ import {
   Post,
   SerializeOptions,
   UseGuards,
+  HttpStatus,
+  HttpCode,
 } from '@nestjs/common'
 import { ApiTags, ApiOperation, ApiHeader, ApiSecurity } from '@nestjs/swagger'
 import MasterService from 'src/master/master.service'
@@ -38,6 +40,7 @@ export class MasterController {
   }
 
   @Post('login')
+  @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: '登录' })
   @UseGuards(AuthGuard('local'))
   async login(@Body() dto: LoginDto, @CurrentUser() user: UserDocument) {
