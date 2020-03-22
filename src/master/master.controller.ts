@@ -12,11 +12,15 @@ import { UserDto, LoginDto } from 'src/master/dto/user.dto'
 import { User, UserDocument } from '@libs/db/models/user.model'
 import { AuthGuard } from '@nestjs/passport'
 import { CurrentUser } from 'src/master/current-user.decorator'
+import { AuthService } from 'src/auth/auth.service'
 
 @Controller('master')
 @ApiTags('Master Routes')
 export class MasterController {
-  constructor(private readonly masterService: MasterService) {}
+  constructor(
+    private readonly masterService: MasterService,
+    private readonly authService: AuthService,
+  ) {}
   @Get('/')
   @ApiOperation({ summary: '获取主人信息' })
   async getMasterInfo() {
@@ -37,7 +41,7 @@ export class MasterController {
   @ApiOperation({ summary: '登录' })
   @UseGuards(AuthGuard('local'))
   async login(@Body() dto: LoginDto, @CurrentUser() user: UserDocument) {
-    return { token: await this.masterService.signToken(user._id) }
+    return { token: await this.authService.signToken(user._id) }
   }
 
   @Get('check_logged')
