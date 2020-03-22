@@ -1,9 +1,10 @@
+import { User, UserDocument } from '@libs/db/models/user.model'
 import { Injectable } from '@nestjs/common'
-import { InjectModel } from 'nestjs-typegoose'
-import { User } from '@libs/db/models/user.model'
-import { ReturnModelType } from '@typegoose/typegoose'
 import { JwtService } from '@nestjs/jwt'
+import { ReturnModelType, DocumentType } from '@typegoose/typegoose'
+import { InjectModel } from 'nestjs-typegoose'
 import nanoid = require('nanoid')
+import { JwtPayload } from 'src/master/interfaces/jwt-payload.interface'
 @Injectable()
 export default class MasterService {
   constructor(
@@ -20,12 +21,19 @@ export default class MasterService {
     return await this.userModel.create({ ...model, authCode })
   }
 
-  signToken(_id: string, authCode: string) {
+  async signToken(_id: string) {
+    const { authCode } = await this.userModel.findById(_id).select('authCode')
     const payload = {
       _id,
       authCode,
     }
     // console.log(process.env.SECRET)
     return this.jwtService.sign(payload)
+  }
+
+  async verifyPayload(payload: JwtPayload): Promise<boolean> {
+    const user = await this.userModel.findById(payload._id).select('authCode')
+
+    return user && user.authCode === payload.authCode
   }
 }

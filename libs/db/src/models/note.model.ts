@@ -1,5 +1,6 @@
-import { prop, index, Ref, modelOptions } from '@typegoose/typegoose'
+import { index, modelOptions, plugin, prop, Ref } from '@typegoose/typegoose'
 import { hashSync } from 'bcrypt'
+import * as uniqueValidator from 'mongoose-unique-validator'
 
 class Count {
   @prop({ default: 0 })
@@ -9,6 +10,7 @@ class Count {
   like?: number
 }
 
+@plugin(uniqueValidator)
 @index({ created: -1 })
 @index({ slug: 1 })
 @index({ modified: -1 })

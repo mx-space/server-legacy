@@ -17,7 +17,7 @@ export class UserDto {
   @IsNotEmpty()
   readonly password: string
 
-  @ApiProperty({ required: false })
+  @ApiProperty({ required: false, example: 'example@example.com' })
   @IsEmail()
   @IsOptional()
   readonly mail?: string
@@ -27,7 +27,7 @@ export class UserDto {
   @IsOptional()
   name?: string
 
-  @ApiProperty({ required: false })
+  @ApiProperty({ required: false, example: 'example.com' })
   @IsUrl()
   @IsOptional()
   readonly url?: string

@@ -1,7 +1,9 @@
-import { prop, modelOptions } from '@typegoose/typegoose'
 import { ApiProperty } from '@nestjs/swagger'
+import { modelOptions, prop, plugin } from '@typegoose/typegoose'
 import { Schema } from 'mongoose'
+import * as uniqueValidator from 'mongoose-unique-validator'
 
+@plugin(uniqueValidator)
 @modelOptions({
   schemaOptions: {
     timestamps: {
