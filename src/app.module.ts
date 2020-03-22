@@ -4,13 +4,9 @@ import { DbModule } from '@libs/db'
 import { MasterController } from './master/master.controller'
 import { MasterModule } from './master/master.module'
 import { ConfigModule } from '@nestjs/config'
-import { PostsModule } from './posts/posts.module';
-import { AuthModule } from './auth/auth.module';
+import { PostsModule } from './posts/posts.module'
 @Module({
   imports: [
-    DbModule,
-    MasterModule,
-
     ConfigModule.forRoot({
       envFilePath: [
         '.env.development.local',
@@ -18,11 +14,11 @@ import { AuthModule } from './auth/auth.module';
         '.env',
         '.env.production',
       ],
+      isGlobal: true,
     }),
-
+    DbModule,
+    MasterModule,
     PostsModule,
-
-    AuthModule,
   ],
   controllers: [MasterController],
   providers: [AppService],

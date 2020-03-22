@@ -1,24 +1,42 @@
-import { Controller, Get, Body, Post } from '@nestjs/common'
-import { ApiTags, ApiBody } from '@nestjs/swagger'
+import {
+  Controller,
+  Get,
+  Body,
+  Post,
+  SerializeOptions,
+  UseGuards,
+} from '@nestjs/common'
+import { ApiTags, ApiOperation } from '@nestjs/swagger'
 import MasterService from 'src/master/master.service'
-import { UserDto } from 'src/master/dto/user.dto'
-import { validate } from 'class-validator'
+import { UserDto, LoginDto } from 'src/master/dto/user.dto'
+import { User, UserDocument } from '@libs/db/models/user.model'
+import { AuthGuard } from '@nestjs/passport'
+import { CurrentUser } from 'src/master/current-user.decorator'
+import nanoid = require('nanoid')
 @Controller('master')
 @ApiTags('Master Routes')
 export class MasterController {
   constructor(private readonly masterService: MasterService) {}
   @Get('/')
+  @ApiOperation({ summary: '获取主人信息' })
   async getMasterInfo() {
     return await this.masterService.getMasterInfo()
   }
 
   @Post('/sign_up')
+  @SerializeOptions({
+    excludePrefixes: ['password'],
+  })
+  @ApiOperation({ summary: '注册' })
   async register(@Body() userDto: UserDto) {
-    return await this.masterService.createMaster()
+    userDto.name = userDto.name ?? userDto.username
+    return await this.masterService.createMaster(userDto as User)
   }
 
   @Post('login')
-  async login(@Body() userDto: UserDto) {
-    return userDto
+  @ApiOperation({ summary: '登录' })
+  @UseGuards(AuthGuard('local'))
+  async login(@Body() dto: LoginDto, @CurrentUser() user: UserDocument) {
+    return { token: this.masterService.signToken(user._id, nanoid(10)) }
   }
 }

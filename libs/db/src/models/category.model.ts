@@ -12,13 +12,13 @@ import { prop, index, modelOptions } from '@typegoose/typegoose'
   },
 })
 export default class Category {
-  @prop({ unique: true, trim: true })
+  @prop({ unique: true, trim: true, required: true })
   name!: string
 
   @prop({ default: 'Category' })
   type?: string
 
-  @prop({ unique: true })
+  @prop({ unique: true, required: true })
   slug!: string
 
   @prop({ default: true })

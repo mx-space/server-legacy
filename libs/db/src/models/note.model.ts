@@ -22,10 +22,10 @@ class Count {
   },
 })
 export default class Note {
-  @prop({ index: true })
+  @prop({ index: true, required: true })
   nid!: number
 
-  @prop({ index: true, trim: true })
+  @prop({ index: true, trim: true, required: true })
   title!: string
 
   // @prop({ default: new Date() })
@@ -34,7 +34,7 @@ export default class Note {
   // @prop({ default: new Date() })
   // modified?: Date
 
-  @prop({ trim: true, unique: true })
+  @prop({ trim: true, unique: true, required: true })
   slug!: string
 
   @prop({ trim: true })

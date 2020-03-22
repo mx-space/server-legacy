@@ -25,7 +25,7 @@ export class UserDto {
   @ApiProperty({ required: false })
   @IsString()
   @IsOptional()
-  readonly name?: string
+  name?: string
 
   @ApiProperty({ required: false })
   @IsUrl()
@@ -34,4 +34,14 @@ export class UserDto {
 
   // @ApiProperty()
   // readonly
+}
+
+export class LoginDto {
+  @ApiProperty({ required: true })
+  @IsString()
+  username: string
+
+  @ApiProperty({ required: true })
+  @IsString()
+  password: string
 }

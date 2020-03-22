@@ -1,6 +1,16 @@
-import { prop, arrayProp, modelOptions } from '@typegoose/typegoose'
+import {
+  prop,
+  arrayProp,
+  modelOptions,
+  plugin,
+  DocumentType,
+} from '@typegoose/typegoose'
 import { hashSync } from 'bcrypt'
 import { ApiProperty } from '@nestjs/swagger'
+import * as uniqueValidator from 'mongoose-unique-validator'
+
+export type UserDocument = DocumentType<User>
+@plugin(uniqueValidator)
 @modelOptions({
   schemaOptions: {
     timestamps: {
@@ -32,6 +42,7 @@ export class User {
     set(val) {
       return hashSync(val, 6)
     },
+    required: true,
   })
   @ApiProperty({
     description: 'Password',
@@ -56,7 +67,7 @@ export class User {
   @prop()
   lastLoginIp?: string
 
-  @prop({ select: true })
+  @prop({ select: true, required: true })
   authCode!: string
 
   @arrayProp({ items: String, select: false })
