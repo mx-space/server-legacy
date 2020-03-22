@@ -2,12 +2,13 @@ import { User } from '@libs/db/models/user.model'
 import { Injectable } from '@nestjs/common'
 import { ReturnModelType } from '@typegoose/typegoose'
 import { InjectModel } from 'nestjs-typegoose'
-import { JwtPayload } from 'src/master/interfaces/jwt-payload.interface'
 import nanoid = require('nanoid')
+import { AuthService } from 'src/auth/auth.service'
 @Injectable()
 export default class MasterService {
   constructor(
     @InjectModel(User) private readonly userModel: ReturnModelType<typeof User>,
+    private readonly authService: AuthService,
   ) {}
 
   async getMasterInfo() {
@@ -16,6 +17,8 @@ export default class MasterService {
 
   async createMaster(model: User) {
     const authCode = nanoid(10)
-    return await this.userModel.create({ ...model, authCode })
+    const res = await this.userModel.create({ ...model, authCode })
+    const token = await this.authService.signToken(res._id)
+    return { token, username: res.username, authCode: res.authCode }
   }
 }
