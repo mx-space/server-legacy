@@ -1,15 +1,15 @@
-import { Strategy, StrategyOptions, ExtractJwt } from 'passport-jwt'
-import { PassportStrategy } from '@nestjs/passport'
-import { InjectModel } from 'nestjs-typegoose'
 import { User } from '@libs/db/models/user.model'
+import { PassportStrategy } from '@nestjs/passport'
 import { ReturnModelType } from '@typegoose/typegoose'
-import MasterService from 'src/master/master.service'
+import { InjectModel } from 'nestjs-typegoose'
+import { ExtractJwt, Strategy, StrategyOptions } from 'passport-jwt'
 import { JwtPayload } from 'src/master/interfaces/jwt-payload.interface'
+import { AuthService } from './auth.service'
 
 export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
   constructor(
     @InjectModel(User) private userModel: ReturnModelType<typeof User>,
-    private readonly masterService: MasterService,
+    private readonly authService: AuthService,
   ) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -18,6 +18,6 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
   }
 
   async validate(payload: JwtPayload) {
-    return await this.masterService.verifyPayload(payload)
+    return await this.authService.verifyPayload(payload)
   }
 }

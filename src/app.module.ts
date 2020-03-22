@@ -1,9 +1,10 @@
-import { Module } from '@nestjs/common'
-import { AppService } from './app.service'
 import { DbModule } from '@libs/db'
+import { Module } from '@nestjs/common'
+import { ConfigModule } from '@nestjs/config'
+import { AppService } from './app.service'
+import { AuthModule } from './auth/auth.module'
 import { MasterController } from './master/master.controller'
 import { MasterModule } from './master/master.module'
-import { ConfigModule } from '@nestjs/config'
 import { PostsModule } from './posts/posts.module'
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { PostsModule } from './posts/posts.module'
       isGlobal: true,
     }),
     DbModule,
+    AuthModule,
     MasterModule,
     PostsModule,
   ],
