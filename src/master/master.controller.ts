@@ -1,20 +1,23 @@
+import { User, UserDocument } from '@libs/db/models/user.model'
 import {
+  Body,
   Controller,
   Get,
-  Body,
+  HttpCode,
+  HttpStatus,
   Post,
   SerializeOptions,
   UseGuards,
-  HttpStatus,
-  HttpCode,
+  Req,
 } from '@nestjs/common'
-import { ApiTags, ApiOperation, ApiHeader, ApiSecurity } from '@nestjs/swagger'
-import MasterService from 'src/master/master.service'
-import { UserDto, LoginDto } from 'src/master/dto/user.dto'
-import { User, UserDocument } from '@libs/db/models/user.model'
 import { AuthGuard } from '@nestjs/passport'
-import { CurrentUser } from 'src/master/current-user.decorator'
+import { ApiOperation, ApiSecurity, ApiTags } from '@nestjs/swagger'
 import { AuthService } from 'src/auth/auth.service'
+import { LoginDto, UserDto } from 'src/master/dto/user.dto'
+import MasterService from 'src/master/master.service'
+import { RolesGuard } from 'src/auth/roles.guard'
+import { Master } from 'src/core/decorators/guest.decorator'
+import { CurrentUser } from 'src/core/decorators/current-user.decorator'
 
 @Controller('master')
 @ApiTags('Master Routes')
@@ -50,8 +53,9 @@ export class MasterController {
   @Get('check_logged')
   @ApiOperation({ summary: '判断当前 Token 是否有效 ' })
   @ApiSecurity('bearer')
-  @UseGuards(AuthGuard('jwt'))
-  async checkLogged() {
-    return { ok: 1 }
+  // @UseGuards(AuthGuard('jwt'))
+  @UseGuards(RolesGuard)
+  async checkLogged(@Master() isMaster: boolean) {
+    return { ok: Number(isMaster), isGuest: !isMaster }
   }
 }
