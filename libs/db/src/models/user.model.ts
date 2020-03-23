@@ -8,18 +8,10 @@ import {
 import { hashSync } from 'bcrypt'
 import { ApiProperty } from '@nestjs/swagger'
 import * as uniqueValidator from 'mongoose-unique-validator'
+import { BaseModel } from './base.model'
 
 export type UserDocument = DocumentType<User>
-@plugin(uniqueValidator)
-@modelOptions({
-  schemaOptions: {
-    timestamps: {
-      createdAt: 'created',
-      updatedAt: 'modified',
-    },
-  },
-})
-export class User {
+export class User extends BaseModel {
   @prop({ required: true, unique: true, trim: true })
   @ApiProperty({
     description: 'Username',

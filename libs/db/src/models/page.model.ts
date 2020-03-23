@@ -1,18 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { modelOptions, prop, plugin } from '@typegoose/typegoose'
+import { prop } from '@typegoose/typegoose'
 import { Schema } from 'mongoose'
-import * as uniqueValidator from 'mongoose-unique-validator'
+import { BaseModel } from './base.model'
 
-@plugin(uniqueValidator)
-@modelOptions({
-  schemaOptions: {
-    timestamps: {
-      updatedAt: 'modified',
-      createdAt: 'created',
-    },
-  },
-})
-export default class Page {
+export default class Page extends BaseModel {
   @ApiProperty({ description: 'Slug', required: true })
   @prop({ trim: 1, index: true, required: true })
   slug!: string

@@ -18,7 +18,9 @@ export class ResponseInterceptor<T> implements NestInterceptor<T, Response<T>> {
     next: CallHandler,
   ): Observable<Response<T>> {
     const reorganize = data => {
-      return data.__proto__.constructor === Object ? { ...data } : { data }
+      return typeof data !== 'object' || data.__proto__.constructor === Object
+        ? { ...data }
+        : { data }
     }
     return next
       .handle()
