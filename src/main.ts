@@ -3,6 +3,7 @@ import { NestFactory } from '@nestjs/core'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 import { AppModule } from './app.module'
 import { AllExceptionsFilter } from 'src/core/filters/any-exception.filter'
+import { ResponseInterceptor } from 'src/core/interceptors/response.interceptors'
 async function bootstrap() {
   const app = await NestFactory.create(AppModule)
   // const { httpAdapter } = app.get(HttpAdapterHost)
@@ -13,6 +14,7 @@ async function bootstrap() {
     }),
   )
   app.useGlobalFilters(new AllExceptionsFilter())
+  app.useGlobalInterceptors(new ResponseInterceptor())
   if (process.env.NODE_ENV !== 'production') {
     app.enableCors()
   } else {
