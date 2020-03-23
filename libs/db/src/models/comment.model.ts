@@ -1,5 +1,6 @@
 import { prop, Ref, arrayProp, pre, modelOptions } from '@typegoose/typegoose'
 import Post from './post.model'
+import { BaseModel } from './base.model'
 
 function autoPopulateSubs(next) {
   this.populate('children')
@@ -8,15 +9,7 @@ function autoPopulateSubs(next) {
 
 @pre<Comment>('findOne', autoPopulateSubs)
 @pre<Comment>('find', autoPopulateSubs)
-@modelOptions({
-  schemaOptions: {
-    timestamps: {
-      updatedAt: 'modified',
-      createdAt: 'created',
-    },
-  },
-})
-export default class Comment {
+export default class Comment extends BaseModel {
   @prop({ ref: 'Post', required: true })
   pid!: Ref<Post>
 

@@ -1,6 +1,7 @@
 import { index, modelOptions, plugin, prop, Ref } from '@typegoose/typegoose'
 import { hashSync } from 'bcrypt'
 import * as uniqueValidator from 'mongoose-unique-validator'
+import { BaseModel } from './base.model'
 
 class Count {
   @prop({ default: 0 })
@@ -15,15 +16,7 @@ class Count {
 @index({ slug: 1 })
 @index({ modified: -1 })
 @index({ created: -1, modified: -1 })
-@modelOptions({
-  schemaOptions: {
-    timestamps: {
-      updatedAt: 'modified',
-      createdAt: 'created',
-    },
-  },
-})
-export default class Note {
+export default class Note extends BaseModel {
   @prop({ index: true, required: true })
   nid!: number
 

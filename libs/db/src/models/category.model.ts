@@ -1,17 +1,11 @@
-import { prop, index, modelOptions } from '@typegoose/typegoose'
+import { DocumentType, index, prop } from '@typegoose/typegoose'
+import { BaseModel } from './base.model'
+export type CategoryDocument = DocumentType<Category>
 
 @index({ created: -1 })
 @index({ count: -1 })
 @index({ slug: -1 })
-@modelOptions({
-  schemaOptions: {
-    timestamps: {
-      updatedAt: 'modified',
-      createdAt: 'created',
-    },
-  },
-})
-export default class Category {
+export default class Category extends BaseModel {
   @prop({ unique: true, trim: true, required: true })
   name!: string
 

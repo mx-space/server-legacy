@@ -1,22 +1,13 @@
-import { prop, index, modelOptions, plugin } from '@typegoose/typegoose'
-import { Schema } from 'mongoose'
 import { ApiProperty } from '@nestjs/swagger'
-import * as uniqueValidator from 'mongoose-unique-validator'
+import { index, prop } from '@typegoose/typegoose'
+import { Schema } from 'mongoose'
+import { BaseModel } from './base.model'
 
-@plugin(uniqueValidator)
 @index({ created: -1 })
 @index({ slug: 1 })
 @index({ modified: -1 })
 @index({ created: -1, modified: -1 })
-@modelOptions({
-  schemaOptions: {
-    timestamps: {
-      updatedAt: 'modified',
-      createdAt: 'created',
-    },
-  },
-})
-export default class Post {
+export default class Post extends BaseModel {
   @ApiProperty({ description: 'Title', required: true })
   @prop({ trim: true, index: true, required: true })
   title!: string

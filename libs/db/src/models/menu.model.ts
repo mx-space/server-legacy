@@ -1,15 +1,8 @@
 import { prop, modelOptions } from '@typegoose/typegoose'
 import { Schema } from 'mongoose'
+import { BaseModel } from './base.model'
 
-@modelOptions({
-  schemaOptions: {
-    timestamps: {
-      createdAt: 'created',
-      updatedAt: 'modified',
-    },
-  },
-})
-export default class Menu {
+export default class Menu extends BaseModel {
   @prop({ unique: true, required: true })
   type!: string
 

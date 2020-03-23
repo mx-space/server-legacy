@@ -9,6 +9,7 @@ import {
   SerializeOptions,
   UseGuards,
   Req,
+  Redirect,
 } from '@nestjs/common'
 import { AuthGuard } from '@nestjs/passport'
 import { ApiOperation, ApiSecurity, ApiTags } from '@nestjs/swagger'
@@ -26,13 +27,13 @@ export class MasterController {
     private readonly masterService: MasterService,
     private readonly authService: AuthService,
   ) {}
-  @Get('/')
+  @Get()
   @ApiOperation({ summary: '获取主人信息' })
   async getMasterInfo() {
     return await this.masterService.getMasterInfo()
   }
 
-  @Post('/sign_up')
+  @Post('register')
   @SerializeOptions({
     excludePrefixes: ['password'],
   })
@@ -41,6 +42,13 @@ export class MasterController {
     userDto.name = userDto.name ?? userDto.username
     return await this.masterService.createMaster(userDto as User)
   }
+  //
+  // @Post('sign_up')
+  // @Redirect('/master/register')
+  // @ApiOperation({ summary: '注册重定向' })
+  // signUp(@Body() userDto: UserDto) {
+  //   return
+  // }
 
   @Post('login')
   @HttpCode(HttpStatus.OK)
