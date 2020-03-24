@@ -28,6 +28,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
           (exception as myErrorDto)?.statusCode ||
           HttpStatus.INTERNAL_SERVER_ERROR
 
+    console.error(exception)
     response.status(status).json({
       ok: 0,
       statusCode: status,

@@ -1,0 +1,142 @@
+import { Injectable } from '@nestjs/common'
+import { ReturnModelType } from '@typegoose/typegoose'
+import { AnyParamConstructor } from '@typegoose/typegoose/lib/types'
+import { Model, Types, ModelPopulateOptions } from 'mongoose'
+import { WriteOpResult } from 'mongodb'
+/**
+ * 分页器返回结果
+ * @export
+ * @interface Paginator
+ * @template T
+ */
+export interface Paginator<T> {
+  data: T[] | any[]
+  // 有多少条数据
+  total: number
+  // 每次请求多少数据
+  size: number
+  // 当前第几页
+  currentPage: number
+  // 一共多少页
+  totalPage: number
+  // 是否有上下页
+  hasNextPage: boolean
+  hasPrevPage: boolean
+}
+
+@Injectable()
+export class BaseService<T extends AnyParamConstructor<any>> {
+  constructor(private readonly model: ReturnModelType<T>) {}
+
+  /**
+   * 返回模型
+   */
+  get getMode(): ReturnModelType<T> {
+    return this.model
+  }
+  /**
+   * 填充其他模型
+   * @private
+   * @param {*} docsQuery
+   * @param {*} populates
+   * @returns {(Promise<T | T[] | null>)}
+   * @memberof BaseService
+   */
+  private populates<R>(docsQuery: any, populates: any): Promise<R | null> {
+    if (populates) {
+      ;[].concat(populates).forEach(item => {
+        docsQuery.populate(item)
+      })
+    }
+    return docsQuery.exec()
+  }
+
+  /**
+   * 获取指定条件全部数据
+   * @param {*} conditions
+   * @param {(any | null)} [projection]
+   * @param {({
+   *         sort?: any;
+   *         limit?: number;
+   *         skip?: number;
+   *         populates?: ModelPopulateOptions[] | ModelPopulateOptions;
+   *         [key: string]: any;
+   *     })} [options]
+   * @returns {Promise<T[]>}
+   * @memberof BaseService
+   */
+  findAll(
+    conditions: any,
+    projection?: any | null,
+    options?: {
+      sort?: any
+      limit?: number
+      skip?: number
+      populates?: ModelPopulateOptions[] | ModelPopulateOptions
+      [key: string]: any
+    },
+  ): Promise<T[]> {
+    const { option, populates } = options
+    const docsQuery = this.model.find(conditions, projection, option)
+    return this.populates<T[]>(docsQuery, populates)
+  }
+
+  /**
+   * 获取指定查询条件的数量
+   * @param {*} conditions
+   * @returns {Promise<number>}
+   * @memberof UserService
+   */
+  count(conditions: any): Promise<number> {
+    return this.model.countDocuments(conditions).exec()
+  }
+
+  /**
+   * 创建一条数据
+   * @param {T} docs
+   * @returns {Promise<T>}
+   * @memberof BaseService
+   */
+  async create(docs: Partial<T>): Promise<T> {
+    return this.model.create(docs)
+  }
+
+  /**
+   * 删除指定id数据
+   * @param {string} id
+   * @returns {Promise<T>}
+   * @memberof BaseService
+   */
+  async delete(
+    id: string,
+    options: {
+      /** if multiple docs are found by the conditions, sets the sort order to choose which doc to update */
+      sort?: any
+      /** sets the document fields to return */
+      select?: any
+    },
+  ): Promise<T | null> {
+    return this.model.findByIdAndRemove(this.toObjectId(id), options).exec()
+  }
+
+  /**
+   * 删除所有匹配条件的文档集合
+   * @param {*} [conditions={}]
+   * @returns {Promise<WriteOpResult['result']>}
+   * @memberof BaseService
+   */
+  async clearCollection(conditions = {}): Promise<WriteOpResult['result']> {
+    return this.model.deleteMany(conditions).exec()
+  }
+
+  /**
+   * 转换ObjectId
+   * @private
+   * @param {string} id
+   * @returns {Types.ObjectId}
+   * @memberof BaseService
+   */
+  private toObjectId(id: string): Types.ObjectId {
+    return Types.ObjectId(id)
+  }
+}

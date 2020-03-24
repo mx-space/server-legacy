@@ -1,4 +1,4 @@
-import { modelOptions, plugin } from '@typegoose/typegoose'
+import { modelOptions, plugin, prop } from '@typegoose/typegoose'
 import * as uniqueValidator from 'mongoose-unique-validator'
 
 @plugin(uniqueValidator)
@@ -13,4 +13,9 @@ import * as uniqueValidator from 'mongoose-unique-validator'
     },
   },
 })
-export abstract class BaseModel {}
+export abstract class BaseModel {
+  @prop()
+  created: Date
+  @prop()
+  modified: Date
+}
