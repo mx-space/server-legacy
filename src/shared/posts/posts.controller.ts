@@ -1,16 +1,10 @@
-import {
-  Controller,
-  Inject,
-  Get,
-  Param,
-  Query,
-  UseGuards,
-} from '@nestjs/common'
-import { PostsService } from './posts.service'
-import { ApiTags, ApiProperty, ApiQuery, ApiSecurity } from '@nestjs/swagger'
-import { CategoryAndSlug } from './dto'
+import { Controller, Get, Param, Query, UseGuards } from '@nestjs/common'
+import { ApiSecurity, ApiTags } from '@nestjs/swagger'
 import { RolesGuard } from 'src/auth/roles.guard'
 import { Master } from 'src/core/decorators/guest.decorator'
+import { CategoryAndSlug } from './dto'
+import { PostsService } from './posts.service'
+import { IdDto } from 'src/shared/base/dto/id.dto'
 
 @Controller('posts')
 @ApiTags('Post Routes')
@@ -45,5 +39,10 @@ export class PostsController {
     const post = await this.postService.getByCateAndSlug({ slug })
 
     return post
+  }
+
+  @Get(':id')
+  async getById(@Query() query: IdDto) {
+    return this.postService.findById(query.id)
   }
 }

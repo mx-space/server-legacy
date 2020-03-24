@@ -12,7 +12,11 @@ import {
   FindAndModifyWriteOpResultObject,
   MongoError,
 } from 'mongodb'
-import { Injectable, InternalServerErrorException } from '@nestjs/common'
+import {
+  Injectable,
+  InternalServerErrorException,
+  BadRequestException,
+} from '@nestjs/common'
 import { InjectModel } from 'nestjs-typegoose'
 import { BaseModel } from '@libs/db/models/base.model'
 import { ReturnModelType, DocumentType } from '@typegoose/typegoose'
@@ -138,6 +142,9 @@ export abstract class BaseService<T extends BaseModel> {
   ): AsyncQueryListWithPaginator<T> {
     filter.limit = filter.limit ?? 10
     const queryList = await this.find(condition, options, filter)
+    if (queryList.length === 0) {
+      throw new BadRequestException('没有下页啦!')
+    }
     const total = await this.countDocument(condition)
     const { skip = 0, limit = 10 } = filter
     const page = skip / limit + 1
@@ -158,4 +165,16 @@ export abstract class BaseService<T extends BaseModel> {
   async countDocument(condition: AnyType): Promise<number> {
     return this.model.countDocuments(condition)
   }
+
+  async findById(id: string, hide = false): Promise<DocumentType<T> | null> {
+    const query = await this.model.findOne({
+      _id: id,
+      $or: [{ hide: false }, { hide }],
+    } as any)
+    if (!query) {
+      throw new BadRequestException('此记录不存在')
+    }
+    return query
+  }
+  // async createNew()
 }
