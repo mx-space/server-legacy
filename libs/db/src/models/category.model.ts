@@ -18,4 +18,3 @@ export default class Category extends BaseModel {
   @prop({ default: true })
   count?: number
 }
-

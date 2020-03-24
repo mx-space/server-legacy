@@ -1,26 +1,13 @@
+import { BaseModel } from '@libs/db/models/base.model'
 import {
-  ModelPopulateOptions,
-  QueryFindOneAndUpdateOptions,
-  Types,
-  DocumentQuery,
-  QueryFindOneAndRemoveOptions,
-  Query,
-  MongooseFilterQuery,
-} from 'mongoose'
-import {
-  WriteOpResult,
-  FindAndModifyWriteOpResultObject,
-  MongoError,
-} from 'mongodb'
-import {
+  BadRequestException,
   Injectable,
   InternalServerErrorException,
-  BadRequestException,
 } from '@nestjs/common'
-import { InjectModel } from 'nestjs-typegoose'
-import { BaseModel } from '@libs/db/models/base.model'
-import { ReturnModelType, DocumentType } from '@typegoose/typegoose'
+import { DocumentType, ReturnModelType } from '@typegoose/typegoose'
 import { AnyParamConstructor } from '@typegoose/typegoose/lib/types'
+import { MongoError } from 'mongodb'
+import { ModelPopulateOptions, Types } from 'mongoose'
 import { AnyType } from 'src/shared/base/interfaces'
 
 export type enumOrderType = 'asc' | 'desc' | 'ascending' | 'descending' | 1 | -1
