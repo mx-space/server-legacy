@@ -17,7 +17,5 @@ export default class Category extends BaseModel {
 
   @prop({ default: true })
   count?: number
-
-  // @prop({ default: new Date() })
-  // created?: Date
 }
+

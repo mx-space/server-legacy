@@ -5,8 +5,8 @@ import { AppService } from './app.service'
 import { AuthModule } from './auth/auth.module'
 import { MasterController } from './master/master.controller'
 import { MasterModule } from './master/master.module'
-import { PostsModule } from './posts/posts.module'
-import { SharedModule } from './shared/shared.module';
+import { PostsModule } from './shared/posts/posts.module'
+import { SharedModule } from './shared/shared.module'
 @Module({
   imports: [
     ConfigModule.forRoot({
