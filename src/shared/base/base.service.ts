@@ -163,5 +163,8 @@ export abstract class BaseService<T extends BaseModel> {
     }
     return query
   }
-  // async createNew()
+  async createNew(data: Partial<T>): Promise<DocumentType<T>> {
+    const document = { ...data }
+    return await this.model.create(document)
+  }
 }
