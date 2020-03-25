@@ -6,8 +6,15 @@ import {
 } from '@nestjs/common'
 import { DocumentType, ReturnModelType } from '@typegoose/typegoose'
 import { AnyParamConstructor } from '@typegoose/typegoose/lib/types'
-import { MongoError } from 'mongodb'
-import { ModelPopulateOptions, Types } from 'mongoose'
+import { FindAndModifyWriteOpResultObject, MongoError } from 'mongodb'
+import {
+  DocumentQuery,
+  ModelPopulateOptions,
+  Query,
+  QueryFindOneAndRemoveOptions,
+  Types,
+  QueryFindOneAndUpdateOptions,
+} from 'mongoose'
 import { AnyType } from 'src/shared/base/interfaces'
 
 export type enumOrderType = 'asc' | 'desc' | 'ascending' | 'descending' | 1 | -1
@@ -24,6 +31,11 @@ export type AsyncQueryListWithPaginator<T extends BaseModel> = Promise<{
   data: Array<DocumentType<T>>
   page: Paginator
 }>
+
+export type QueryItem<T extends BaseModel> = DocumentQuery<
+  DocumentType<T>,
+  DocumentType<T>
+>
 /**
  * 分页器返回结果
  * @export
@@ -61,10 +73,13 @@ export abstract class BaseService<T extends BaseModel> {
    * @param {MongoError} err
    * @memberof BaseRepository
    */
-  protected throwMongoError(err: MongoError): void {
+  protected static throwMongoError(err: MongoError): never {
     throw new InternalServerErrorException(err, err.errmsg)
   }
 
+  protected throwMongoError(err: MongoError): never {
+    BaseService.throwMongoError(err)
+  }
   /**
    * @description 将字符串转换成ObjectId
    * @protected
@@ -73,12 +88,16 @@ export abstract class BaseService<T extends BaseModel> {
    * @returns {Types.ObjectId}
    * @memberof BaseRepository
    */
-  protected toObjectId(id: string): Types.ObjectId {
+  protected static toObjectId(id: string): Types.ObjectId {
     try {
       return Types.ObjectId(id)
     } catch (e) {
       this.throwMongoError(e)
     }
+  }
+
+  protected toObjectId(id: string): Types.ObjectId {
+    return BaseService.toObjectId(id)
   }
 
   async findAll(): AsyncQueryList<T> {
@@ -153,7 +172,11 @@ export abstract class BaseService<T extends BaseModel> {
     return this.model.countDocuments(condition)
   }
 
-  async findById(id: string, hide = false): Promise<DocumentType<T> | null> {
+  // FIXME:  <25-03-20 some bugs> //
+  async findById(
+    id: string | Types.ObjectId,
+    hide = false,
+  ): Promise<DocumentType<T> | null> {
     const query = await this.model.findOne({
       _id: id,
       $or: [{ hide: false }, { hide }],
@@ -163,8 +186,73 @@ export abstract class BaseService<T extends BaseModel> {
     }
     return query
   }
+  /**
+   * @description 创建一条数据
+   * @param {Partial<T>} docs
+   * @returns {Promise<DocumentType<T>>}
+   */
   async createNew(data: Partial<T>): Promise<DocumentType<T>> {
-    const document = { ...data }
-    return await this.model.create(document)
+    return await this.model.create(data)
+  }
+  /**
+   * @description 删除指定数据
+   * @param {(any)} id
+   * @param {QueryFindOneAndRemoveOptions} options
+   * @returns {QueryItem<T>}
+   */
+  public delete(
+    conditions: AnyType,
+    options?: QueryFindOneAndRemoveOptions,
+  ): QueryItem<T> {
+    return this.model.findOneAndDelete(conditions, options)
+  }
+  public async deleteAsync(
+    conditions: AnyType,
+    options?: QueryFindOneAndRemoveOptions,
+  ): Promise<DocumentType<T>> {
+    return await this.delete(conditions, options).exec()
+  }
+
+  /**
+   * @description 删除指定id数据
+   * @param {(any)} id
+   * @param {QueryFindOneAndRemoveOptions} options
+   * @returns {Query<FindAndModifyWriteOpResultObject<DocumentType<T>>>}
+   */
+  public deleteById(
+    id: string | Types.ObjectId,
+    options?: QueryFindOneAndRemoveOptions,
+  ): Query<FindAndModifyWriteOpResultObject<DocumentType<T>>> {
+    return this.model.findByIdAndDelete(this.toObjectId(id as string), options)
+  }
+
+  public async deleteByIdAsync(
+    id: string | Types.ObjectId,
+    options?: QueryFindOneAndRemoveOptions,
+  ): Promise<FindAndModifyWriteOpResultObject<DocumentType<T>>> {
+    return await this.deleteById(id, options).exec()
+  }
+
+  /**
+   * @description 更新指定id数据
+   * @param {string} id
+   * @param {Partial<T>} update
+   * @param {QueryFindOneAndUpdateOptions} [options={ new: true }]
+   * @returns {QueryItem<T>}
+   */
+  public update(
+    id: string,
+    update: Partial<T>,
+    options: QueryFindOneAndUpdateOptions = { omitUndefined: true },
+  ): QueryItem<T> {
+    return this.model.findByIdAndUpdate(this.toObjectId(id), update, options)
+  }
+
+  async updateAsync(
+    id: string,
+    update: Partial<T>,
+    options: QueryFindOneAndUpdateOptions = {},
+  ): Promise<DocumentType<T>> {
+    return await this.update(id, update, options).exec()
   }
 }
