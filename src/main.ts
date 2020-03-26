@@ -4,6 +4,9 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 import { AppModule } from './app.module'
 import { AllExceptionsFilter } from 'src/core/filters/any-exception.filter'
 import { ResponseInterceptor } from 'src/core/interceptors/response.interceptors'
+
+declare const module: any
+
 async function bootstrap() {
   const app = await NestFactory.create(AppModule)
   // const { httpAdapter } = app.get(HttpAdapterHost)
@@ -34,6 +37,11 @@ async function bootstrap() {
   SwaggerModule.setup('api-docs', app, document)
 
   await app.listen(3003)
+
+  if (module.hot) {
+    module.hot.accept()
+    module.hot.dispose(() => app.close())
+  }
   console.log('http://localhost:3003/api-docs')
 }
 bootstrap()
