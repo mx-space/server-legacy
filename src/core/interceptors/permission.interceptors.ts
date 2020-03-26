@@ -9,6 +9,9 @@ import { Observable } from 'rxjs'
 import { map } from 'rxjs/operators'
 import { AnyType } from 'src/shared/base/interfaces'
 
+/**
+ * Only check object field has `hide` but array
+ */
 @Injectable()
 export class PermissionInterceptor<T> implements NestInterceptor<T, AnyType> {
   intercept(context: ExecutionContext, next: CallHandler): Observable<AnyType> {

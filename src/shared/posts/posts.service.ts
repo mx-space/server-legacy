@@ -18,4 +18,8 @@ export class PostsService extends BaseService<Post> {
   async getCategoryBySlug(slug: string): Promise<DocumentType<Category>> {
     return await this.categoryModel.findOne({ slug })
   }
+
+  async findPostById(id: string) {
+    return await super.findById(id).populate('categoryId')
+  }
 }

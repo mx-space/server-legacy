@@ -3,7 +3,9 @@ import { IsMongoId } from 'class-validator'
 
 export class IdDto {
   @IsMongoId()
-  // @ApiQuery({ name: 'id', type: string, example: '5e6f67e75b303781d2807279' })
-  @ApiProperty({ name: 'id', example: '5e6f67e75b303781d2807279' })
+  @ApiProperty({
+    name: 'id',
+    enum: ['5e6f67e75b303781d2807279', '5e6f67e75b303781d280727f'],
+  })
   id: string
 }
