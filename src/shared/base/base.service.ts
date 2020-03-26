@@ -173,7 +173,9 @@ export abstract class BaseService<T extends BaseModel> {
   }
 
   // FIXME:  <25-03-20 some bugs> //
-  async findById(id: string | Types.ObjectId): Promise<DocumentType<T> | null> {
+  async findByIdAsync(
+    id: string | Types.ObjectId,
+  ): Promise<DocumentType<T> | null> {
     const query = await this.model.findById(id)
     if (!query) {
       throw new BadRequestException('此记录不存在')
@@ -181,6 +183,17 @@ export abstract class BaseService<T extends BaseModel> {
     return query
   }
 
+  public findById(
+    id: string,
+    projection?: object | string,
+    options: {
+      lean?: boolean
+      populates?: ModelPopulateOptions[] | ModelPopulateOptions
+      [key: string]: AnyType
+    } = {},
+  ): QueryItem<T> {
+    return this.model.findById(this.toObjectId(id), projection, options)
+  }
   /**
    * @description 获取单条数据
    * @param {*} conditions

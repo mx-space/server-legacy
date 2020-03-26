@@ -24,7 +24,6 @@ export class PostsController {
   constructor(private readonly postService: PostsService) {}
 
   @Get()
-  // @UseGuards(RolesGuard)
   @ApiSecurity('bearer')
   @ApiQuery({ name: 'page', example: 1, required: false })
   @ApiQuery({ name: 'size', example: 10, required: false })
@@ -45,12 +44,8 @@ export class PostsController {
 
   @Get('/:category/:slug')
   @ApiSecurity('bearer')
-  async getByCateAndSlug(
-    @Param() params: CategoryAndSlug,
-    @Master() isMaster: boolean,
-  ) {
+  async getByCateAndSlug(@Param() params: CategoryAndSlug) {
     const { category, slug } = params
-    // const condition = addCondition(isMaster)
     // search category
 
     const categoryDocument = await this.postService.getCategoryBySlug(category)
@@ -74,6 +69,6 @@ export class PostsController {
 
   @Get(':id')
   async getById(@Query() query: IdDto) {
-    return this.postService.findById(query.id)
+    return await this.postService.findPostById(query.id)
   }
 }
