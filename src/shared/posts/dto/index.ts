@@ -1,9 +1,14 @@
 import { ApiProperty } from '@nestjs/swagger'
+import { IsString } from 'class-validator'
 
 export class CategoryAndSlug {
-  @ApiProperty()
+  @ApiProperty({
+    enum: ['programming', 'Z-Turn'],
+  })
+  @IsString()
   readonly category: string
 
-  @ApiProperty()
+  @IsString()
+  @ApiProperty({ enum: ['why-winserver', 'learning-from-AS'] })
   readonly slug: string
 }

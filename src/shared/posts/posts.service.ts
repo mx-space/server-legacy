@@ -1,29 +1,21 @@
-import { Injectable } from '@nestjs/common'
-import { InjectModel } from 'nestjs-typegoose'
+import Category from '@libs/db/models/category.model'
 import Post from '@libs/db/models/post.model'
-import { ReturnModelType } from '@typegoose/typegoose'
+import { Injectable } from '@nestjs/common'
+import { DocumentType, ReturnModelType } from '@typegoose/typegoose'
+import { InjectModel } from 'nestjs-typegoose'
 import { BaseService } from 'src/shared/base/base.service'
 
 @Injectable()
 export class PostsService extends BaseService<Post> {
   constructor(
     @InjectModel(Post) private readonly postModel: ReturnModelType<typeof Post>,
+    @InjectModel(Category)
+    private readonly categoryModel: ReturnModelType<typeof Category>,
   ) {
     super(postModel)
   }
 
-  async getByCateAndSlug({
-    showHide = false,
-    slug,
-  }: {
-    showHide?: boolean
-    slug: string
-  }) {
-    return await this.postModel
-      .findOne({
-        slug,
-        ...(showHide ? {} : { hide: false }),
-      })
-      .populate('categoryId')
+  async getCategoryBySlug(slug: string): Promise<DocumentType<Category>> {
+    return await this.categoryModel.findOne({ slug })
   }
 }

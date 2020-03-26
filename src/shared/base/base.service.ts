@@ -173,19 +173,51 @@ export abstract class BaseService<T extends BaseModel> {
   }
 
   // FIXME:  <25-03-20 some bugs> //
-  async findById(
-    id: string | Types.ObjectId,
-    hide = false,
-  ): Promise<DocumentType<T> | null> {
-    const query = await this.model.findOne({
-      _id: id,
-      $or: [{ hide: false }, { hide }],
-    } as any)
+  async findById(id: string | Types.ObjectId): Promise<DocumentType<T> | null> {
+    const query = await this.model.findById(id)
     if (!query) {
       throw new BadRequestException('此记录不存在')
     }
     return query
   }
+
+  /**
+   * @description 获取单条数据
+   * @param {*} conditions
+   * @param {(Object | string)} [projection]
+   * @param {({
+   *     lean?: boolean;
+   *     populates?: ModelPopulateOptions[] | ModelPopulateOptions;
+   *     [key: string]: any;
+   *   })} [options]
+   * @returns {QueryItem<T>}
+   */
+  public findOne(
+    conditions: AnyType,
+    projection?: object | string,
+    options: {
+      lean?: boolean
+      populates?: ModelPopulateOptions[] | ModelPopulateOptions
+      [key: string]: AnyType
+    } = {},
+  ): QueryItem<T> {
+    return this.model.findOne(conditions, projection || {}, options)
+  }
+
+  public async findOneAsync(
+    conditions: AnyType,
+    projection?: object | string,
+    options: {
+      lean?: boolean
+      populates?: ModelPopulateOptions[] | ModelPopulateOptions
+      [key: string]: AnyType
+    } = {},
+  ): Promise<DocumentType<T>> {
+    const { ...option } = options
+    const docsQuery = await this.findOne(conditions, projection || {}, option)
+    return docsQuery
+  }
+
   /**
    * @description 创建一条数据
    * @param {Partial<T>} docs
