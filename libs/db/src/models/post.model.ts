@@ -28,12 +28,6 @@ export default class Post extends BaseModel {
   @prop({ ref: 'Category' })
   categoryId?: Ref<Category>
 
-  // @prop({ default: new Date() })
-  // created?: Date
-  //
-  // @prop({ default: new Date() })
-  // modified?: Date
-
   @ApiProperty({ description: 'Hide?' })
   @prop({ default: false })
   hide?: boolean
@@ -44,5 +38,5 @@ export default class Post extends BaseModel {
 
   @ApiProperty({ description: 'Other Options' })
   @prop({ type: Schema.Types.Mixed })
-  options?: any
+  options?: Record<any, any>
 }

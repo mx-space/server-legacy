@@ -15,6 +15,6 @@ export default class Category extends BaseModel {
   @prop({ unique: true, required: true })
   slug!: string
 
-  @prop({ default: true })
+  @prop({ default: 0 })
   count?: number
 }
