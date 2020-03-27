@@ -5,7 +5,6 @@ import {
   HttpException,
   HttpStatus,
 } from '@nestjs/common'
-
 type myErrorDto = {
   readonly status: number
   readonly statusCode?: number
@@ -29,6 +28,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
           HttpStatus.INTERNAL_SERVER_ERROR
 
     console.error(exception)
+
     response.status(status).json({
       ok: 0,
       statusCode: status,
