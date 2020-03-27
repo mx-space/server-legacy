@@ -71,7 +71,6 @@ export abstract class BaseService<T extends BaseModel> {
    * @protected
    * @static
    * @param {MongoError} err
-   * @memberof BaseRepository
    */
   protected static throwMongoError(err: MongoError): never {
     throw new InternalServerErrorException(err, err.errmsg)
@@ -86,7 +85,6 @@ export abstract class BaseService<T extends BaseModel> {
    * @static
    * @param {string} id
    * @returns {Types.ObjectId}
-   * @memberof BaseRepository
    */
   protected static toObjectId(id: string): Types.ObjectId {
     try {
@@ -104,7 +102,10 @@ export abstract class BaseService<T extends BaseModel> {
     return await this.model.find()
   }
 
-  async find(
+  /**
+   * 根据条件查找
+   */
+  public async find(
     condition: AnyType,
     options: {
       lean?: boolean
@@ -128,7 +129,7 @@ export abstract class BaseService<T extends BaseModel> {
       .select(filter.select)
   }
 
-  async findWithPaginator(
+  public async findWithPaginator(
     condition: AnyType = {},
     options: {
       lean?: boolean
@@ -168,12 +169,12 @@ export abstract class BaseService<T extends BaseModel> {
     }
   }
 
-  async countDocument(condition: AnyType): Promise<number> {
+  public async countDocument(condition: AnyType): Promise<number> {
     return this.model.countDocuments(condition)
   }
 
   // FIXME:  <25-03-20 some bugs> //
-  async findByIdAsync(
+  public async findByIdAsync(
     id: string | Types.ObjectId,
   ): Promise<DocumentType<T> | null> {
     const query = await this.model.findById(id)

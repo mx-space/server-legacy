@@ -22,4 +22,8 @@ export class PostsService extends BaseService<Post> {
   async findPostById(id: string) {
     return await super.findById(id).populate('categoryId')
   }
+
+  async findCategoryById(id: string) {
+    return await this.categoryModel.findById(id)
+  }
 }
