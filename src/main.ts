@@ -10,13 +10,13 @@ declare const module: any
 async function bootstrap() {
   const app = await NestFactory.create(AppModule)
   // const { httpAdapter } = app.get(HttpAdapterHost)
-  app.useGlobalPipes(
-    new ValidationPipe({
-      whitelist: true,
-      transform: true,
-      exceptionFactory: errors => new BadRequestException(errors),
-    }),
-  )
+  // app.useGlobalPipes(
+  //   new ValidationPipe({
+  //     whitelist: true,
+  //     transform: true,
+  //     exceptionFactory: errors => new BadRequestException(errors),
+  //   }),
+  // )
   app.useGlobalFilters(new AllExceptionsFilter())
   app.useGlobalInterceptors(new ResponseInterceptor())
   if (process.env.NODE_ENV !== 'production') {

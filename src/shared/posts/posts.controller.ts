@@ -110,9 +110,10 @@ export class PostsController {
   }
 
   @Put(':id')
-  @ApiParam({ name: 'id', example: '5e6f67e85b303781d28072a3' })
   @UseGuards(AuthGuard('jwt'))
-  async modifyPost(@Body() postDto: PostDto, @Param('id') postId: IdDto['id']) {
+  async modifyPost(@Body() postDto: PostDto, @Param() params: IdDto) {
+    const { id } = params
+    const postId = id
     const validPost = await this.postService.findPostById(postId)
     if (!validPost) {
       throw new BadRequestException('文章丢失了 (　ﾟдﾟ)')
@@ -149,8 +150,8 @@ export class PostsController {
 
   @Delete(':id')
   @UseGuards(AuthGuard('jwt'))
-  @ApiParam({ type: 'string', name: 'id' })
-  async deletePost(@Param('id') id: IdDto['id']) {
+  async deletePost(@Param() params: IdDto) {
+    const { id } = params
     const r = await this.postService.deletePost(id)
     return { ...r, msg: r.deletedCount ? '删除成功' : '删除失败' }
   }
