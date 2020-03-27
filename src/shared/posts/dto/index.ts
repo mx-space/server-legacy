@@ -1,12 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger'
 import {
+  IsBoolean,
   IsMongoId,
+  IsNotEmpty,
+  IsNotEmptyObject,
   IsOptional,
   IsString,
-  IsBoolean,
-  IsObject,
-  IsNotEmptyObject,
-  IsNotEmpty,
 } from 'class-validator'
 
 export class CategoryAndSlug {
@@ -65,4 +64,3 @@ export class PostDto {
   @ApiProperty({ required: false, type: Object })
   options?: Record<any, any>
 }
-

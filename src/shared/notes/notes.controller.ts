@@ -1,7 +1,15 @@
-import { Controller, Get, Headers, UseGuards } from '@nestjs/common'
-import { ApiOperation, ApiTags } from '@nestjs/swagger'
+import {
+  Controller,
+  Get,
+  Headers,
+  Query,
+  UseGuards,
+  Body,
+} from '@nestjs/common'
+import { ApiOperation, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger'
 import { RolesGuard } from 'src/auth/roles.guard'
 import { Master } from 'src/core/decorators/guest.decorator'
+import { ListQueryDto } from 'src/shared/notes/dto/note.dto'
 import { NotesService } from './notes.service'
 
 @ApiTags('Note Routes')
@@ -26,5 +34,13 @@ export class NotesController {
     await latest.save()
 
     return { data: latest.toObject(), next: next.toObject() }
+  }
+
+  @Get('/list/:id')
+  @ApiParam({ name: 'id', example: '5e6f71c5c052ca214fba877a', type: 'string' })
+  @ApiOperation({ summary: '以一篇随记为基准的中间 10 篇随记' })
+  async getNoteList(@Query() query: ListQueryDto) {
+    const { size } = query
+    // TODO
   }
 }

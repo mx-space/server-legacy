@@ -1,5 +1,13 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { IsString, IsOptional, IsEnum, IsBoolean } from 'class-validator'
+import {
+  IsString,
+  IsOptional,
+  IsEnum,
+  IsBoolean,
+  IsNumber,
+  Max,
+  Min,
+} from 'class-validator'
 
 export enum Mood {
   'happy' = '开心',
@@ -30,4 +38,12 @@ export class NoteDto {
   @IsString()
   @IsOptional()
   password?: string
+}
+export class ListQueryDto {
+  @IsNumber()
+  @Max(20)
+  @Min(1)
+  @IsOptional()
+  @ApiProperty()
+  size: number
 }
