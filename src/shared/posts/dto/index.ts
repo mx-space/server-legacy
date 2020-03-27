@@ -6,6 +6,7 @@ import {
   IsBoolean,
   IsObject,
   IsNotEmptyObject,
+  IsNotEmpty,
 } from 'class-validator'
 
 export class CategoryAndSlug {
@@ -23,14 +24,17 @@ export class CategoryAndSlug {
 export class PostDto {
   @ApiProperty({ example: 'title' })
   @IsString()
+  @IsNotEmpty()
   title: string
 
   @ApiProperty({ example: 'this is text.' })
   @IsString()
+  @IsNotEmpty()
   text: string
 
   @ApiProperty()
   @IsString()
+  @IsNotEmpty()
   slug: string
 
   @IsMongoId()
@@ -47,6 +51,7 @@ export class PostDto {
   @ApiProperty({ required: false })
   @IsString()
   @IsOptional()
+  @IsNotEmpty()
   summary: string
 
   @IsBoolean()
@@ -60,3 +65,4 @@ export class PostDto {
   @ApiProperty({ required: false, type: Object })
   options?: Record<any, any>
 }
+
