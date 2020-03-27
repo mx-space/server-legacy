@@ -18,7 +18,7 @@ export class PermissionInterceptor<T> implements NestInterceptor<T, AnyType> {
     const http = context.switchToHttp()
     const req = http.getRequest()
     return next.handle().pipe(
-      map(data => {
+      map((data) => {
         if (data.hide === true && !req.isMaster) {
           throw new BadRequestException('你.是我的主人吗 ಠ_ಠ')
         }

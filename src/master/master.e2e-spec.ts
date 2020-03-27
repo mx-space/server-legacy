@@ -5,9 +5,7 @@ import * as passport from 'passport'
 import { AppModule } from 'src/app.module'
 import * as supertest from 'supertest'
 
-const username = `test-${Math.random()
-  .toString(16)
-  .slice(3, 5)}`
+const username = `test-${Math.random().toString(16).slice(3, 5)}`
 
 function generateUser() {
   return {
@@ -68,7 +66,7 @@ describe('AuthController (e2e)', () => {
     await app.close()
   })
 
-  it('should allow to sign up a new user', done => {
+  it('should allow to sign up a new user', (done) => {
     request
       .post('/master/sign_up')
       .send(generateUser())
@@ -76,7 +74,7 @@ describe('AuthController (e2e)', () => {
       .end(getResgisterResponseCallback(done))
   })
 
-  it('should not allow to sign up with some username', done => {
+  it('should not allow to sign up with some username', (done) => {
     request
       .post('/master/sign_up')
       .send(generateUser())
@@ -84,7 +82,7 @@ describe('AuthController (e2e)', () => {
       .end(() => done())
   })
 
-  it('should allow to sign in an user', done => {
+  it('should allow to sign in an user', (done) => {
     request
       .post('/master/login')
       .send(generateUser())
