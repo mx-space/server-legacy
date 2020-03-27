@@ -8,9 +8,11 @@ import {
   Query,
   UseGuards,
   UseInterceptors,
+  Put,
+  Delete,
 } from '@nestjs/common'
 import { AuthGuard } from '@nestjs/passport'
-import { ApiQuery, ApiSecurity, ApiTags } from '@nestjs/swagger'
+import { ApiQuery, ApiSecurity, ApiTags, ApiParam } from '@nestjs/swagger'
 import { Types } from 'mongoose'
 import { RolesGuard } from 'src/auth/roles.guard'
 import { Master } from 'src/core/decorators/guest.decorator'
@@ -105,5 +107,51 @@ export class PostsController {
     validCategory.count += 1
     await validCategory.save()
     return newPostDocument
+  }
+
+  @Put(':id')
+  @ApiParam({ name: 'id', example: '5e6f67e85b303781d28072a3' })
+  @UseGuards(AuthGuard('jwt'))
+  async modifyPost(@Body() postDto: PostDto, @Param('id') postId: IdDto['id']) {
+    const validPost = await this.postService.findPostById(postId)
+    if (!validPost) {
+      throw new BadRequestException('文章丢失了 (　ﾟдﾟ)')
+    }
+    // update category information
+    const { categoryId } = postDto
+    if (categoryId !== (validPost.categoryId as any)) {
+      const originCategory = await this.postService.findCategoryById(
+        (validPost.categoryId as any) as string,
+      )
+      const newCategory = await this.postService.findCategoryById(categoryId)
+      // if (originCategory) {
+      originCategory.count--
+      await originCategory.save()
+      // }
+      if (!newCategory) {
+        throw new BadRequestException('你还没有这个分类啦 (>﹏<)')
+      }
+      // if (newCategory) {
+      newCategory.count++
+      await newCategory.save()
+      // }
+    }
+    const updateDocument = await this.postService.update(
+      { _id: postId },
+      postDto as any,
+      { omitUndefined: true },
+    )
+    return {
+      ...updateDocument,
+      msg: updateDocument.nModified ? '修改成功' : '没有文章被修改',
+    }
+  }
+
+  @Delete(':id')
+  @UseGuards(AuthGuard('jwt'))
+  @ApiParam({ type: 'string', name: 'id' })
+  async deletePost(@Param('id') id: IdDto['id']) {
+    const r = await this.postService.deletePost(id)
+    return { ...r, msg: r.deletedCount ? '删除成功' : '删除失败' }
   }
 }
