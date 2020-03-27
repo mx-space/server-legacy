@@ -1,4 +1,4 @@
-import { ValidationPipe } from '@nestjs/common'
+import { ValidationPipe, BadRequestException } from '@nestjs/common'
 import { NestFactory } from '@nestjs/core'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 import { AppModule } from './app.module'
@@ -14,6 +14,7 @@ async function bootstrap() {
     new ValidationPipe({
       whitelist: true,
       transform: true,
+      exceptionFactory: errors => new BadRequestException(errors),
     }),
   )
   app.useGlobalFilters(new AllExceptionsFilter())
