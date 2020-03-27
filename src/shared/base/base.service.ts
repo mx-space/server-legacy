@@ -14,6 +14,9 @@ import {
   QueryFindOneAndRemoveOptions,
   Types,
   QueryFindOneAndUpdateOptions,
+  QueryUpdateOptions,
+  MongooseFilterQuery,
+  FilterQuery,
 } from 'mongoose'
 import { AnyType } from 'src/shared/base/interfaces'
 
@@ -98,13 +101,14 @@ export abstract class BaseService<T extends BaseModel> {
     return BaseService.toObjectId(id)
   }
 
-  async findAll(): AsyncQueryList<T> {
-    return await this.model.find()
+  public findAll() {
+    return this.model.find()
   }
 
   /**
    * 根据条件查找
    */
+  // FIXME async maybe cause some bugs
   public async find(
     condition: AnyType,
     options: {
@@ -265,28 +269,36 @@ export abstract class BaseService<T extends BaseModel> {
    * @param {QueryFindOneAndRemoveOptions} options
    * @returns {Query<FindAndModifyWriteOpResultObject<DocumentType<T>>>}
    */
-  public deleteById(
+  public findAndDeleteById(
     id: string | Types.ObjectId,
     options?: QueryFindOneAndRemoveOptions,
   ): Query<FindAndModifyWriteOpResultObject<DocumentType<T>>> {
     return this.model.findByIdAndDelete(this.toObjectId(id as string), options)
   }
 
-  public async deleteByIdAsync(
+  public async findAndDeleteByIdAsync(
     id: string | Types.ObjectId,
     options?: QueryFindOneAndRemoveOptions,
   ): Promise<FindAndModifyWriteOpResultObject<DocumentType<T>>> {
-    return await this.deleteById(id, options).exec()
+    return await this.findAndDeleteById(id, options).exec()
+  }
+
+  public deleteOne(conditions: AnyType) {
+    return this.model.deleteOne(conditions)
+  }
+
+  public async deleteOneAsync(conditions: AnyType) {
+    return await this.deleteOne(conditions)
   }
 
   /**
    * @description 更新指定id数据
    * @param {string} id
    * @param {Partial<T>} update
-   * @param {QueryFindOneAndUpdateOptions} [options={ new: true }]
+   * @param {QueryFindOneAndUpdateOptions}
    * @returns {QueryItem<T>}
    */
-  public update(
+  public updateById(
     id: string,
     update: Partial<T>,
     options: QueryFindOneAndUpdateOptions = { omitUndefined: true },
@@ -294,11 +306,34 @@ export abstract class BaseService<T extends BaseModel> {
     return this.model.findByIdAndUpdate(this.toObjectId(id), update, options)
   }
 
-  async updateAsync(
+  async updateByIdAsync(
     id: string,
     update: Partial<T>,
     options: QueryFindOneAndUpdateOptions = {},
   ): Promise<DocumentType<T>> {
-    return await this.update(id, update, options).exec()
+    return await this.updateById(id, update, options).exec()
+  }
+
+  /**
+   * @description 更新指定数据
+   * @param {any} conditions
+   * @param {Partial<T>} update
+   * @param {QueryFindOneAndUpdateOptions}
+   * @returns {Query<any>}
+   */
+  public update(
+    conditions: AnyType,
+    doc: Partial<T>,
+    options: QueryUpdateOptions = {},
+  ): Query<any> {
+    return this.model.updateOne(conditions, doc, options)
+  }
+
+  public async updateAsync(
+    conditions: AnyType,
+    doc: Partial<T>,
+    options: QueryUpdateOptions = {},
+  ) {
+    return await this.update(conditions, doc, options)
   }
 }
