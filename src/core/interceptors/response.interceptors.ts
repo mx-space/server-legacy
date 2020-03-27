@@ -18,7 +18,7 @@ export class ResponseInterceptor<T> implements NestInterceptor<T, Response<T>> {
     context: ExecutionContext,
     next: CallHandler,
   ): Observable<Response<T>> {
-    const reorganize = data => {
+    const reorganize = (data) => {
       if (!data) {
         throw new BadRequestException('数据丢失了(｡ ́︿ ̀｡)')
       }
@@ -29,7 +29,7 @@ export class ResponseInterceptor<T> implements NestInterceptor<T, Response<T>> {
     return next
       .handle()
       .pipe(
-        map(data => ({ ok: 1, timestamp: new Date(), ...reorganize(data) })),
+        map((data) => ({ ok: 1, timestamp: new Date(), ...reorganize(data) })),
       )
   }
 }
