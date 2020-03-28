@@ -5,6 +5,7 @@ import {
   Param,
   Query,
   UseGuards,
+  UnprocessableEntityException,
 } from '@nestjs/common'
 import { ApiOperation, ApiParam, ApiTags, ApiHeader } from '@nestjs/swagger'
 import { RolesGuard } from 'src/auth/roles.guard'
@@ -47,35 +48,49 @@ export class NotesController {
     @Param() params: IdDto,
     @Master() isMaster: boolean,
   ) {
-    const { size } = query
+    const { size = 10 } = query
+    const half = Math.floor(size / 2)
     const { id } = params
+    const select = 'nid _id title created'
     const condition = addCondition(isMaster)
-    const currentDocument = await this.noteService.findOne({
-      _id: id,
-      ...condition,
-    })
+    const currentDocument = await this.noteService
+      .findOne({
+        _id: id,
+        ...condition,
+      })
+      .select(select)
     if (!currentDocument) {
       throw new CannotFindException()
     }
-    const prev = await this.noteService.findAsync(
-      {
-        created: {
-          $gt: currentDocument.created,
-        },
-        ...condition,
-      },
-      { limit: 5, sort: { created: -1 } },
+    const prevList =
+      half - 1 === 0
+        ? []
+        : await this.noteService.findAsync(
+            {
+              created: {
+                $gt: currentDocument.created,
+              },
+              ...condition,
+            },
+            { limit: half - 1 ?? 4, sort: { created: -1 }, select },
+          )
+    const nextList = !half
+      ? []
+      : await this.noteService.findAsync(
+          {
+            created: {
+              $lt: currentDocument.created,
+            },
+            ...condition,
+          },
+          { limit: half ?? 5, sort: { created: -1 }, select },
+        )
+    const data = [...prevList, ...nextList, currentDocument].sort(
+      (a: any, b: any) => b.created - a.created,
     )
-    const next = await this.noteService.findAsync(
-      {
-        created: {
-          $lt: currentDocument.created,
-        },
-        ...condition,
-      },
-      { limit: 4, sort: { created: -1 } },
-    )
-
-    return { prev, next, currentDocument }
+    if (!data.length) {
+      throw new CannotFindException()
+    }
+    return { data, size: data.length }
   }
 }
