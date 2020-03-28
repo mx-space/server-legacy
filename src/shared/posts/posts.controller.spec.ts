@@ -20,5 +20,5 @@ describe('Posts Controller', () => {
     controller = module.get<PostsController>(PostsController)
   })
 
-  describe('it should be pass', async () => {})
+  // describe('it should be pass', async () => {})
 })
