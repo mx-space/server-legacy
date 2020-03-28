@@ -406,10 +406,10 @@
     webpack "4.42.1"
     webpack-node-externals "1.7.2"
 
-"@nestjs/common@^7.0.1":
-  version "7.0.3"
-  resolved "https://registry.yarnpkg.com/@nestjs/common/-/common-7.0.3.tgz#89258b411b2f1a1704ba0289473f2ed8e32423db"
-  integrity sha512-ENfgocjBC8aWAvvjjCq/JFN94CIVX4FrXr12r66UEcw/GtCW/qAc/BVWGX//7MRtk95me82hBEQQx2kovL91bA==
+"@nestjs/common@^7.0.6":
+  version "7.0.6"
+  resolved "https://registry.yarnpkg.com/@nestjs/common/-/common-7.0.6.tgz#881d5922547f98bc041c52039abb7119e85373d6"
+  integrity sha512-El7uZjfGf8EOmIoRMxh8ZXTiWt80EKHC+sa2TBgFPNQXs/qRbVSznXH0htN2s17kawJuhaTCFhRSrDHNoI790A==
   dependencies:
     axios "0.19.2"
     cli-color "2.0.0"
