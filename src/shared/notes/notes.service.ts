@@ -4,6 +4,7 @@ import Note from '@libs/db/models/note.model'
 import { InjectModel } from 'nestjs-typegoose'
 import { ReturnModelType } from '@typegoose/typegoose'
 import { addCondition } from 'src/shared/utils'
+import { CannotFindException } from 'src/core/exceptions/cant-find.exception'
 
 @Injectable()
 export class NotesService extends BaseService<Note> {
@@ -20,7 +21,7 @@ export class NotesService extends BaseService<Note> {
     })
 
     if (!latest) {
-      throw new UnprocessableEntityException('真不巧，日志走丢了')
+      throw new CannotFindException()
     }
 
     // 是否存在上一条记录 (旧记录)
