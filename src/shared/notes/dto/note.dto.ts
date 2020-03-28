@@ -1,12 +1,14 @@
 import { ApiProperty } from '@nestjs/swagger'
+import { Transform } from 'class-transformer'
 import {
-  IsString,
-  IsOptional,
-  IsEnum,
   IsBoolean,
-  IsNumber,
+  IsEnum,
+  IsNumberString,
+  IsOptional,
+  IsString,
   Max,
   Min,
+  IsNumber,
 } from 'class-validator'
 
 export enum Mood {
@@ -43,6 +45,7 @@ export class ListQueryDto {
   @IsNumber()
   @Max(20)
   @Min(1)
+  @Transform((number) => parseInt(number))
   @IsOptional()
   @ApiProperty()
   size: number

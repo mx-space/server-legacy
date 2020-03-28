@@ -9,14 +9,13 @@ import { AnyParamConstructor } from '@typegoose/typegoose/lib/types'
 import { FindAndModifyWriteOpResultObject, MongoError } from 'mongodb'
 import {
   DocumentQuery,
+  FilterQuery,
   ModelPopulateOptions,
   Query,
   QueryFindOneAndRemoveOptions,
-  Types,
   QueryFindOneAndUpdateOptions,
   QueryUpdateOptions,
-  MongooseFilterQuery,
-  FilterQuery,
+  Types,
 } from 'mongoose'
 import { AnyType } from 'src/shared/base/interfaces'
 
@@ -109,8 +108,11 @@ export abstract class BaseService<T extends BaseModel> {
    * 根据条件查找
    */
   // FIXME async maybe cause some bugs
-  public async find(
-    condition: AnyType,
+  public async find(condition: FilterQuery<T>, options = {}) {
+    return this.model.find(condition as any, options)
+  }
+  public async findAsync(
+    condition: FilterQuery<T>,
     options: {
       lean?: boolean
       populates?: ModelPopulateOptions[] | ModelPopulateOptions
@@ -126,7 +128,7 @@ export abstract class BaseService<T extends BaseModel> {
     },
   ): AsyncQueryList<T> {
     return await this.model
-      .find(condition, options)
+      .find(condition as any, options)
       .sort(filter.sort)
       .limit(filter.limit)
       .skip(filter.skip)
@@ -152,7 +154,7 @@ export abstract class BaseService<T extends BaseModel> {
     },
   ): AsyncQueryListWithPaginator<T> {
     filter.limit = filter.limit ?? 10
-    const queryList = await this.find(condition, options, filter)
+    const queryList = await this.findAsync(condition, options, filter)
     if (queryList.length === 0) {
       throw new BadRequestException('没有下页啦!')
     }
