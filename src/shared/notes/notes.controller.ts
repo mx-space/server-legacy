@@ -6,7 +6,7 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common'
-import { ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger'
+import { ApiOperation, ApiParam, ApiTags, ApiHeader } from '@nestjs/swagger'
 import { RolesGuard } from 'src/auth/roles.guard'
 import { Master } from 'src/core/decorators/guest.decorator'
 import { CannotFindException } from 'src/core/exceptions/cant-find.exception'
@@ -21,6 +21,7 @@ export class NotesController {
   constructor(private readonly noteService: NotesService) {}
   @Get('latest')
   @ApiOperation({ summary: '获取最新发布一篇随记' })
+  @ApiHeader({ name: 'Referrer', required: false })
   async getLatestOne(
     @Master() isMaster: boolean,
     @Headers('Referrer') referrer: string,
@@ -63,7 +64,6 @@ export class NotesController {
         },
         ...condition,
       },
-      {},
       { limit: 5, sort: { created: -1 } },
     )
     const next = await this.noteService.findAsync(
@@ -73,7 +73,6 @@ export class NotesController {
         },
         ...condition,
       },
-      {},
       { limit: 4, sort: { created: -1 } },
     )
 
