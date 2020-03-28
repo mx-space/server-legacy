@@ -117,22 +117,13 @@ export abstract class BaseService<T extends BaseModel> {
       lean?: boolean
       populates?: ModelPopulateOptions[] | ModelPopulateOptions
       [key: string]: AnyType
-    } = {},
-    filter: {
       sort?: OrderType<T>
       limit?: number
       skip?: number
       select?: string | Array<string>
-    } = {
-      sort: {},
-    },
+    } = {},
   ): AsyncQueryList<T> {
-    return await this.model
-      .find(condition as any, options)
-      .sort(filter.sort)
-      .limit(filter.limit)
-      .skip(filter.skip)
-      .select(filter.select)
+    return await this.model.find(condition as any).setOptions(options)
   }
 
   public async findWithPaginator(
@@ -141,8 +132,7 @@ export abstract class BaseService<T extends BaseModel> {
       lean?: boolean
       populates?: ModelPopulateOptions[] | ModelPopulateOptions
       [key: string]: AnyType
-    } = {},
-    filter: {
+
       sort?: OrderType<T>
       limit?: number
       skip?: number
@@ -153,13 +143,13 @@ export abstract class BaseService<T extends BaseModel> {
       skip: 0,
     },
   ): AsyncQueryListWithPaginator<T> {
-    filter.limit = filter.limit ?? 10
-    const queryList = await this.findAsync(condition, options, filter)
+    options.limit = options.limit ?? 10
+    const queryList = await this.findAsync(condition, options)
     if (queryList.length === 0) {
       throw new BadRequestException('没有下页啦!')
     }
     const total = await this.countDocument(condition)
-    const { skip = 0, limit = 10 } = filter
+    const { skip = 0, limit = 10 } = options
     const page = skip / limit + 1
     const totalPage = Math.ceil(total / limit)
     return {

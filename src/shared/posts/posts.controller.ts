@@ -41,11 +41,11 @@ export class PostsController {
     @Master() isMaster?: boolean,
   ) {
     const condition = addCondition(isMaster)
-    return await this.postService.findWithPaginator(
-      condition,
-      {},
-      { limit: size, skip: (page - 1) * size, select },
-    )
+    return await this.postService.findWithPaginator(condition, {
+      limit: size,
+      skip: (page - 1) * size,
+      select,
+    })
   }
 
   @Get('/:category/:slug')
