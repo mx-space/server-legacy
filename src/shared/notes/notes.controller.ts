@@ -1,24 +1,24 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Headers,
   Param,
   Post,
+  Put,
   Query,
   UseGuards,
-  Put,
-  Delete,
 } from '@nestjs/common'
+import { AuthGuard } from '@nestjs/passport'
 import { ApiHeader, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger'
 import { RolesGuard } from 'src/auth/roles.guard'
 import { Master } from 'src/core/decorators/guest.decorator'
 import { CannotFindException } from 'src/core/exceptions/cant-find.exception'
 import { IdDto } from 'src/shared/base/dto/id.dto'
-import { ListQueryDto, NoteDto } from 'src/shared/notes/dto/note.dto'
+import { ListQueryDto, NidType, NoteDto } from 'src/shared/notes/dto/note.dto'
 import { addCondition } from 'src/shared/utils'
 import { NotesService } from './notes.service'
-import { AuthGuard } from '@nestjs/passport'
 @ApiTags('Note Routes')
 @Controller('notes')
 @UseGuards(RolesGuard)
@@ -146,5 +146,27 @@ export class NotesController {
   @UseGuards(AuthGuard('jwt'))
   async deleteNote(@Param() params: IdDto) {
     return await this.noteService.deleteByIdAsync(params.id)
+  }
+
+  @ApiOperation({ summary: '根据 nid 查找' })
+  @Get('/nid/:nid')
+  @UseGuards(AuthGuard('jwt'))
+  async getNoteByNid(
+    @Param() params: NidType,
+    @Master() isMaster: boolean,
+    @Headers('Referrer') referrer: string,
+  ) {
+    const _id = await this.noteService.validNid(params.nid)
+    return await this.getOneNote({ id: _id }, isMaster, referrer)
+  }
+
+  @ApiOperation({ summary: '根据 nid 修改' })
+  @Put('/nid/:nid')
+  @UseGuards(AuthGuard('jwt'))
+  async modifyNoteByNid(@Param() params: NidType, @Body() body: NoteDto) {
+    const _id = await this.noteService.validNid(params.nid)
+    return await this.modifyNote(body, {
+      id: _id,
+    })
   }
 }

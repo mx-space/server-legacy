@@ -9,6 +9,8 @@ import {
   IsString,
   Max,
   Min,
+  IsInt,
+  IsDefined,
 } from 'class-validator'
 
 export enum Mood {
@@ -52,4 +54,13 @@ export class ListQueryDto {
   @IsOptional()
   @ApiProperty()
   size: number
+}
+
+export class NidType {
+  @IsInt()
+  @Min(1)
+  @IsDefined()
+  @ApiProperty()
+  @Transform((val) => parseInt(val))
+  nid: number
 }
