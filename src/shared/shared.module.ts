@@ -1,11 +1,13 @@
 import { Module } from '@nestjs/common'
-import { SharedService } from './shared.service'
-import { BaseService } from './base/base.service'
+import { CommentsController } from 'src/shared/comments/comments.controller'
+import { CommentsService } from 'src/shared/comments/comments.service'
+import { PostsController } from 'src/shared/posts/posts.controller'
 import { NotesController } from './notes/notes.controller'
 import { NotesService } from './notes/notes.service'
+import { PostsService } from 'src/shared/posts/posts.service'
 
 @Module({
-  providers: [SharedService, NotesService],
-  controllers: [NotesController],
+  providers: [PostsService, NotesService, CommentsService],
+  controllers: [NotesController, CommentsController, PostsController],
 })
 export class SharedModule {}

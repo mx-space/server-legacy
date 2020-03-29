@@ -1,13 +1,12 @@
 import { DbModule } from '@libs/db'
-import { Module, ValidationPipe, BadRequestException } from '@nestjs/common'
+import { Module, ValidationPipe } from '@nestjs/common'
 import { ConfigModule } from '@nestjs/config'
+import { APP_PIPE } from '@nestjs/core'
 import { AppService } from './app.service'
 import { AuthModule } from './auth/auth.module'
 import { MasterController } from './master/master.controller'
 import { MasterModule } from './master/master.module'
-import { PostsModule } from './shared/posts/posts.module'
 import { SharedModule } from './shared/shared.module'
-import { APP_PIPE } from '@nestjs/core'
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -22,7 +21,6 @@ import { APP_PIPE } from '@nestjs/core'
     DbModule,
     AuthModule,
     MasterModule,
-    PostsModule,
     SharedModule,
   ],
   controllers: [MasterController],
