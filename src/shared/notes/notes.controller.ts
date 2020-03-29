@@ -1,20 +1,24 @@
 import {
+  Body,
   Controller,
   Get,
   Headers,
   Param,
+  Post,
   Query,
   UseGuards,
-  UnprocessableEntityException,
+  Put,
+  Delete,
 } from '@nestjs/common'
-import { ApiOperation, ApiParam, ApiTags, ApiHeader } from '@nestjs/swagger'
+import { ApiHeader, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger'
 import { RolesGuard } from 'src/auth/roles.guard'
 import { Master } from 'src/core/decorators/guest.decorator'
 import { CannotFindException } from 'src/core/exceptions/cant-find.exception'
-import { ListQueryDto } from 'src/shared/notes/dto/note.dto'
+import { IdDto } from 'src/shared/base/dto/id.dto'
+import { ListQueryDto, NoteDto } from 'src/shared/notes/dto/note.dto'
 import { addCondition } from 'src/shared/utils'
 import { NotesService } from './notes.service'
-import { IdDto } from 'src/shared/base/dto/id.dto'
+import { AuthGuard } from '@nestjs/passport'
 @ApiTags('Note Routes')
 @Controller('notes')
 @UseGuards(RolesGuard)
@@ -28,16 +32,45 @@ export class NotesController {
     @Headers('Referrer') referrer: string,
   ) {
     const { latest, next } = await this.noteService.getLatestOne(isMaster)
-    if (referrer) {
-      await latest.updateOne({
-        $inc: {
-          'count.read': 1,
+
+    await this.noteService.shouldAddReadCount(referrer, latest)
+    return { data: latest.toObject(), next: next.toObject() }
+  }
+
+  @Get(':id')
+  @ApiHeader({ name: 'Referrer', required: false })
+  async getOneNote(
+    @Param() params: IdDto,
+    @Master() isMaster: boolean,
+    @Headers('Referrer') referrer: string,
+  ) {
+    const { id } = params
+    const condition = addCondition(isMaster)
+    const current = await this.noteService.findOne({
+      _id: id,
+      ...condition,
+    })
+    if (!current) {
+      throw new CannotFindException()
+    }
+    await this.noteService.shouldAddReadCount(referrer, current)
+    const prev = await this.noteService
+      .findOne({
+        ...condition,
+        created: {
+          $gt: current.created,
         },
       })
-    }
-    await latest.save()
-
-    return { data: latest.toObject(), next: next.toObject() }
+      .select('-text')
+    const next = await this.noteService
+      .findOne({
+        ...condition,
+        created: {
+          $lt: current.created,
+        },
+      })
+      .select('-text')
+    return { data: current, next, prev }
   }
 
   @Get('/list/:id')
@@ -92,5 +125,26 @@ export class NotesController {
       throw new CannotFindException()
     }
     return { data, size: data.length }
+  }
+
+  @Post()
+  @UseGuards(AuthGuard('jwt'))
+  async createNewNote(@Body() body: NoteDto) {
+    const res = await this.noteService.createNew(body)
+    return res
+  }
+
+  @Put(':id')
+  @UseGuards(AuthGuard('jwt'))
+  async modifyNote(@Body() body: NoteDto, @Param() params: IdDto) {
+    const { id } = params
+    const res = await this.noteService.update({ _id: id }, body)
+    return { ...res, msg: res.nModified ? '修改成功' : '没有内容被修改' }
+  }
+
+  @Delete(':id')
+  @UseGuards(AuthGuard('jwt'))
+  async deleteNote(@Param() params: IdDto) {
+    return await this.noteService.deleteByIdAsync(params.id)
   }
 }

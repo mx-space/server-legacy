@@ -1,8 +1,8 @@
 import { Injectable, UnprocessableEntityException } from '@nestjs/common'
-import { BaseService } from '../base/base.service'
+import { BaseService, QueryItem } from '../base/base.service'
 import Note from '@libs/db/models/note.model'
 import { InjectModel } from 'nestjs-typegoose'
-import { ReturnModelType } from '@typegoose/typegoose'
+import { ReturnModelType, DocumentType } from '@typegoose/typegoose'
 import { addCondition } from 'src/shared/utils'
 import { CannotFindException } from 'src/core/exceptions/cant-find.exception'
 
@@ -42,5 +42,19 @@ export class NotesService extends BaseService<Note> {
       latest,
       next,
     }
+  }
+
+  async shouldAddReadCount(
+    condition: boolean | any,
+    document: DocumentType<Note>,
+  ) {
+    if (condition) {
+      return await document.updateOne({
+        $inc: {
+          'count.read': 1,
+        },
+      })
+    }
+    return null
   }
 }

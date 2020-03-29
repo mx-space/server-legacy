@@ -41,8 +41,9 @@ export default class Note extends BaseModel {
       return val
     },
     set(val) {
-      return hashSync(val, 4)
+      return val ? hashSync(val, 4) : undefined
     },
+    select: false,
   })
   password?: string
 

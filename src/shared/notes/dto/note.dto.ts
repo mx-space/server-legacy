@@ -3,12 +3,12 @@ import { Transform } from 'class-transformer'
 import {
   IsBoolean,
   IsEnum,
-  IsNumberString,
+  IsNotEmpty,
+  IsNumber,
   IsOptional,
   IsString,
   Max,
   Min,
-  IsNumber,
 } from 'class-validator'
 
 export enum Mood {
@@ -20,6 +20,7 @@ export enum Mood {
 export class NoteDto {
   @ApiProperty({ example: 'This is title' })
   @IsString()
+  @Transform((title: string) => (title.length === 0 ? '无题' : title))
   title: string
   @ApiProperty({ example: 'This is body' })
   @IsString()
@@ -39,6 +40,8 @@ export class NoteDto {
   @ApiProperty()
   @IsString()
   @IsOptional()
+  @IsNotEmpty()
+  @Transform((password) => (String(password).length === 0 ? null : password))
   password?: string
 }
 export class ListQueryDto {

@@ -203,7 +203,7 @@ export abstract class BaseService<T extends BaseModel> {
    * @returns {QueryItem<T>}
    */
   public findOne(
-    conditions: AnyType,
+    conditions: FilterQuery<T>,
     projection?: object | string,
     options: {
       lean?: boolean
@@ -211,7 +211,7 @@ export abstract class BaseService<T extends BaseModel> {
       [key: string]: AnyType
     } = {},
   ): QueryItem<T> {
-    return this.model.findOne(conditions, projection || {}, options)
+    return this.model.findOne(conditions as any, projection || {}, options)
   }
 
   public async findOneAsync(
@@ -280,9 +280,18 @@ export abstract class BaseService<T extends BaseModel> {
   }
 
   public async deleteOneAsync(conditions: AnyType) {
-    return await this.deleteOne(conditions)
+    const r = await this.deleteOne(conditions)
+    return { ...r, msg: r.deletedCount ? '删除成功' : '删除失败' }
   }
 
+  public async deleteByIdAsync(id: string) {
+    if (Types.ObjectId.isValid(id)) {
+      return await this.deleteOneAsync({
+        _id: id,
+      })
+    }
+    throw new TypeError('_id muse be MongoId')
+  }
   /**
    * @description 更新指定id数据
    * @param {string} id
@@ -314,18 +323,18 @@ export abstract class BaseService<T extends BaseModel> {
    * @returns {Query<any>}
    */
   public update(
-    conditions: AnyType,
+    conditions: FilterQuery<T>,
     doc: Partial<T>,
-    options: QueryUpdateOptions = {},
+    options: QueryUpdateOptions = { omitUndefined: true },
   ): Query<any> {
-    return this.model.updateOne(conditions, doc, options)
+    return this.model.updateOne(conditions as any, doc, options)
   }
 
   public async updateAsync(
-    conditions: AnyType,
+    conditions: FilterQuery<T>,
     doc: Partial<T>,
-    options: QueryUpdateOptions = {},
+    options: QueryUpdateOptions = { omitUndefined: true },
   ) {
-    return await this.update(conditions, doc, options)
+    return await this.update(conditions as any, doc, options)
   }
 }
