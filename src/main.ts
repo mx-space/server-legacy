@@ -37,12 +37,13 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, options)
   SwaggerModule.setup('api-docs', app, document)
 
-  await app.listen(3003)
+  const PORT = process.env.PORT || 3003
+  await app.listen(PORT)
 
   if (module.hot) {
     module.hot.accept()
     module.hot.dispose(() => app.close())
   }
-  console.log('http://localhost:3003/api-docs')
+  console.log(`http://localhost:${PORT}/api-docs`)
 }
 bootstrap()

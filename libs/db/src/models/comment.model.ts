@@ -1,8 +1,8 @@
-import { prop, Ref, arrayProp, pre, modelOptions } from '@typegoose/typegoose'
-import Post from './post.model'
+import { arrayProp, pre, prop, Ref } from '@typegoose/typegoose'
 import { BaseModel } from './base.model'
+import Post from './post.model'
 
-function autoPopulateSubs(next) {
+function autoPopulateSubs(next: Function) {
   this.populate('children')
   next()
 }
@@ -31,10 +31,10 @@ export default class Comment extends BaseModel {
   @prop({ default: false })
   hasParent?: boolean
 
-  @arrayProp({ itemsRef: this })
+  @arrayProp({ itemsRef: 'Comment' })
   children?: Ref<this>[]
 
-  @prop({ default: 0 })
+  @prop({ default: 1 })
   commentsIndex?: number
   @prop()
   key?: string
