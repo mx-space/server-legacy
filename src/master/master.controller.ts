@@ -42,13 +42,12 @@ export class MasterController {
     userDto.name = userDto.name ?? userDto.username
     return await this.masterService.createMaster(userDto as User)
   }
-  //
-  // @Post('sign_up')
-  // @Redirect('/master/register')
-  // @ApiOperation({ summary: '注册重定向' })
-  // signUp(@Body() userDto: UserDto) {
-  //   return
-  // }
+
+  @Post('sign_up')
+  @ApiOperation({ summary: '注册重定向' })
+  async signUp(@Body() userDto: UserDto) {
+    return await this.register(userDto)
+  }
 
   @Post('login')
   @HttpCode(HttpStatus.OK)

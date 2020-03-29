@@ -57,4 +57,20 @@ export class NotesService extends BaseService<Note> {
     }
     return null
   }
+
+  /**
+   * 查找 nid 时候正确，返回 _id 或者抛出异常
+   *
+   * @param {number} nid
+   * @returns {Types.ObjectId}
+   */
+  async validNid(nid: number) {
+    const document = await this.findOne({
+      nid,
+    })
+    if (!document) {
+      throw new CannotFindException()
+    }
+    return document._id
+  }
 }
