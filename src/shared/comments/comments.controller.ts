@@ -7,6 +7,7 @@ import {
   Put,
   Query,
   UseGuards,
+  Ip,
 } from '@nestjs/common'
 import { AuthGuard } from '@nestjs/passport'
 import { ApiOperation, ApiParam, ApiSecurity, ApiTags } from '@nestjs/swagger'
@@ -58,8 +59,13 @@ export class CommentsController {
 
   @Post(':id')
   @ApiOperation({ summary: '根据文章的 _id 评论' })
-  async comment(@Param() params: IdDto, @Body() body: CommentDto) {
+  async comment(
+    @Param() params: IdDto,
+    @Body() body: CommentDto,
+    @Ip() ip: string,
+  ) {
     const pid = params.id
+    console.log(ip)
     const model = { ...body }
     try {
       const comment = await this.commentService.createComment(pid, model)
