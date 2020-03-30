@@ -3,7 +3,7 @@ import {
   ExecutionContext,
   Injectable,
   NestInterceptor,
-  BadRequestException,
+  UnprocessableEntityException,
 } from '@nestjs/common'
 import { Observable } from 'rxjs'
 import { map } from 'rxjs/operators'
@@ -20,7 +20,7 @@ export class ResponseInterceptor<T> implements NestInterceptor<T, Response<T>> {
   ): Observable<Response<T>> {
     const reorganize = (data) => {
       if (!data) {
-        throw new BadRequestException('数据丢失了(｡ ́︿ ̀｡)')
+        throw new UnprocessableEntityException('数据丢失了(｡ ́︿ ̀｡)')
       }
       return typeof data !== 'object' || data.__proto__.constructor === Object
         ? { ...data }

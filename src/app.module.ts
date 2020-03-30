@@ -30,6 +30,7 @@ import { SharedModule } from './shared/shared.module'
         return new ValidationPipe({
           transform: true,
           whitelist: true,
+          // errorHttpStatusCode: 422,
           // exceptionFactory: errors => new BadRequestException(errors),
         })
       },

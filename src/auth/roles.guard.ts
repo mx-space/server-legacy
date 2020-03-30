@@ -1,6 +1,5 @@
+import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common'
 import { AuthGuard } from '@nestjs/passport'
-import { CanActivate, Injectable, ExecutionContext } from '@nestjs/common'
-import { Observable } from 'rxjs'
 
 /**
  * 区分游客和主人的守卫

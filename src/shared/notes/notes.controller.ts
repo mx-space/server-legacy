@@ -21,6 +21,7 @@ import { IdDto } from 'src/shared/base/dto/id.dto'
 import { ListQueryDto, NidType, NoteDto } from 'src/shared/notes/dto/note.dto'
 import { addCondition } from 'src/shared/utils'
 import { NotesService } from './notes.service'
+import { IpLocation, IpRecord } from 'src/core/decorators/ip.decorator'
 @ApiTags('Note Routes')
 @Controller('notes')
 @UseInterceptors(PermissionInterceptor)
@@ -29,23 +30,22 @@ export class NotesController {
   constructor(private readonly noteService: NotesService) {}
   @Get('latest')
   @ApiOperation({ summary: '获取最新发布一篇随记' })
-  @ApiHeader({ name: 'Referrer', required: false })
+  @ApiHeader({ name: 'referer', required: false })
   async getLatestOne(
     @Master() isMaster: boolean,
-    @Headers('Referrer') referrer: string,
+    @Headers('referer') referrer: string,
   ) {
     const { latest, next } = await this.noteService.getLatestOne(isMaster)
-
     await this.noteService.shouldAddReadCount(referrer, latest)
     return { data: latest.toObject(), next: next.toObject() }
   }
 
   @Get(':id')
-  @ApiHeader({ name: 'Referrer', required: false })
+  @ApiHeader({ name: 'referer', required: false })
   async getOneNote(
     @Param() params: IdDto,
     @Master() isMaster: boolean,
-    @Headers('Referrer') referrer: string,
+    @Headers('referer') referrer: string,
   ) {
     const { id } = params
     const condition = addCondition(isMaster)
@@ -157,7 +157,7 @@ export class NotesController {
   async getNoteByNid(
     @Param() params: NidType,
     @Master() isMaster: boolean,
-    @Headers('Referrer') referrer: string,
+    @Headers('referer') referrer: string,
   ) {
     const _id = await this.noteService.validNid(params.nid)
     return await this.getOneNote({ id: _id }, isMaster, referrer)
