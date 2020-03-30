@@ -335,6 +335,9 @@ export abstract class BaseService<T extends BaseModel> {
     doc: Partial<T>,
     options: QueryUpdateOptions = { omitUndefined: true },
   ) {
-    return await this.update(conditions as any, doc, options)
+    const res = await this.update(conditions as any, doc, options)
+    return res.nModified > 0
+      ? { msg: '修改成功啦~' }
+      : { msg: '没有内容被修改' }
   }
 }
