@@ -8,17 +8,15 @@ import {
   Post,
   SerializeOptions,
   UseGuards,
-  Req,
-  Redirect,
 } from '@nestjs/common'
 import { AuthGuard } from '@nestjs/passport'
 import { ApiOperation, ApiSecurity, ApiTags } from '@nestjs/swagger'
 import { AuthService } from 'src/auth/auth.service'
+import { RolesGuard } from 'src/auth/roles.guard'
+import { CurrentUser } from 'src/core/decorators/current-user.decorator'
+import { Master } from 'src/core/decorators/guest.decorator'
 import { LoginDto, UserDto } from 'src/master/dto/user.dto'
 import MasterService from 'src/master/master.service'
-import { RolesGuard } from 'src/auth/roles.guard'
-import { Master } from 'src/core/decorators/guest.decorator'
-import { CurrentUser } from 'src/core/decorators/current-user.decorator'
 
 @Controller('master')
 @ApiTags('Master Routes')
@@ -62,7 +60,7 @@ export class MasterController {
   @ApiSecurity('bearer')
   // @UseGuards(AuthGuard('jwt'))
   @UseGuards(RolesGuard)
-  async checkLogged(@Master() isMaster: boolean) {
+  checkLogged(@Master() isMaster: boolean) {
     return { ok: Number(isMaster), isGuest: !isMaster }
   }
 }

@@ -4,7 +4,6 @@ import { ConfigModule } from '@nestjs/config'
 import { APP_PIPE } from '@nestjs/core'
 import { AppService } from './app.service'
 import { AuthModule } from './auth/auth.module'
-import { MasterController } from './master/master.controller'
 import { MasterModule } from './master/master.module'
 import { SharedModule } from './shared/shared.module'
 @Module({
@@ -23,7 +22,6 @@ import { SharedModule } from './shared/shared.module'
     MasterModule,
     SharedModule,
   ],
-  controllers: [MasterController],
   providers: [
     AppService,
     {

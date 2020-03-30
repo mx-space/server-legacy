@@ -1,4 +1,8 @@
 import { NestFactory } from '@nestjs/core'
+import {
+  FastifyAdapter,
+  NestFastifyApplication,
+} from '@nestjs/platform-fastify'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 import { AllExceptionsFilter } from 'src/core/filters/any-exception.filter'
 import { ResponseInterceptor } from 'src/core/interceptors/response.interceptors'
@@ -6,15 +10,11 @@ import { AppModule } from './app.module'
 declare const module: any
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule)
-  // const { httpAdapter } = app.get(HttpAdapterHost)
-  // app.useGlobalPipes(
-  //   new ValidationPipe({
-  //     whitelist: true,
-  //     transform: true,
-  //     exceptionFactory: errors => new BadRequestException(errors),
-  //   }),
-  // )
+  const app = await NestFactory.create<NestFastifyApplication>(
+    AppModule,
+    new FastifyAdapter({ logger: true }),
+  )
+
   app.useGlobalFilters(new AllExceptionsFilter())
   app.useGlobalInterceptors(new ResponseInterceptor())
   if (process.env.NODE_ENV !== 'production') {
@@ -35,7 +35,7 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, options)
   SwaggerModule.setup('api-docs', app, document)
 
-  const PORT = process.env.PORT || 3003
+  const PORT = parseInt(process.env.PORT) || 3003
   await app.listen(PORT)
 
   if (module.hot) {
