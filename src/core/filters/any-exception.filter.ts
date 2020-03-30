@@ -5,7 +5,7 @@ import {
   HttpException,
   HttpStatus,
 } from '@nestjs/common'
-type myErrorDto = {
+type myError = {
   readonly status: number
   readonly statusCode?: number
   readonly msg: string
@@ -25,8 +25,8 @@ export class AllExceptionsFilter implements ExceptionFilter {
     const status =
       exception instanceof HttpException
         ? exception.getStatus()
-        : (exception as myErrorDto)?.status ||
-          (exception as myErrorDto)?.statusCode ||
+        : (exception as myError)?.status ||
+          (exception as myError)?.statusCode ||
           HttpStatus.INTERNAL_SERVER_ERROR
 
     console.error(exception)
@@ -34,7 +34,10 @@ export class AllExceptionsFilter implements ExceptionFilter {
     response.status(status).send({
       ok: 0,
       statusCode: status,
-      msg: (exception as myErrorDto)?.msg || (exception as myErrorDto).message,
+      msg:
+        (exception as any)?.response?.message ||
+        (exception as myError)?.msg ||
+        (exception as myError).message,
       timestamp: new Date().toISOString(),
       path: request.req.url,
     })

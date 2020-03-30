@@ -7,12 +7,12 @@ import {
   Put,
   Query,
   UseGuards,
-  Ip,
 } from '@nestjs/common'
 import { AuthGuard } from '@nestjs/passport'
 import { ApiOperation, ApiParam, ApiSecurity, ApiTags } from '@nestjs/swagger'
 import { DocumentType } from '@typegoose/typegoose'
 import PostModel from 'libs/db/src/models/post.model'
+import { RolesGuard } from 'src/auth/roles.guard'
 import { CannotFindException } from 'src/core/exceptions/cant-find.exception'
 import { CommentDto } from 'src/shared/comments/dto/comment.dto'
 import { StateQueryDto } from 'src/shared/comments/dto/state.dto'
@@ -20,6 +20,7 @@ import { IdDto } from '../base/dto/id.dto'
 import { CommentsService } from './comments.service'
 @Controller('comments')
 @ApiTags('Comment Routes')
+@UseGuards(RolesGuard)
 export class CommentsController {
   constructor(private readonly commentService: CommentsService) {}
   @Get('/post/:id')
@@ -59,13 +60,8 @@ export class CommentsController {
 
   @Post(':id')
   @ApiOperation({ summary: '根据文章的 _id 评论' })
-  async comment(
-    @Param() params: IdDto,
-    @Body() body: CommentDto,
-    @Ip() ip: string,
-  ) {
+  async comment(@Param() params: IdDto, @Body() body: CommentDto) {
     const pid = params.id
-    console.log(ip)
     const model = { ...body }
     try {
       const comment = await this.commentService.createComment(pid, model)
