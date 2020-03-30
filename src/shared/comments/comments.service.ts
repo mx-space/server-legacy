@@ -50,4 +50,18 @@ export class CommentsService extends BaseService<Comment> {
       )
     }
   }
+
+  async deleteComments(id: string) {
+    const comment = await this.commentModel.findOneAndDelete({ _id: id })
+    if (!comment) {
+      throw new CannotFindException()
+    }
+    const { children } = comment
+    if (children && children.length > 0) {
+      children.map(async (id: string) => {
+        await this.deleteComments(id)
+      })
+    }
+    return comment
+  }
 }
