@@ -21,7 +21,6 @@ import { IdDto } from 'src/shared/base/dto/id.dto'
 import { ListQueryDto, NidType, NoteDto } from 'src/shared/notes/dto/note.dto'
 import { addCondition } from 'src/shared/utils'
 import { NotesService } from './notes.service'
-import { IpLocation, IpRecord } from 'src/core/decorators/ip.decorator'
 @ApiTags('Note Routes')
 @Controller('notes')
 @UseInterceptors(PermissionInterceptor)
