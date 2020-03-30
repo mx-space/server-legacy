@@ -23,11 +23,11 @@ export class CommentsService extends BaseService<Comment> {
 
   async createComment(pid: string, model: Partial<Comment>) {
     const post = await this.postModel.findById(pid)
-    const commentIndex = post.commentsIndex
-    model.key = `#${commentIndex + 1}`
     if (!post) {
       throw new CannotFindException()
     }
+    const commentIndex = post.commentsIndex
+    model.key = `#${commentIndex + 1}`
     const comment = await this.createNew({
       ...model,
       pid: Types.ObjectId(pid),

@@ -1,13 +1,6 @@
-import {
-  prop,
-  arrayProp,
-  modelOptions,
-  plugin,
-  DocumentType,
-} from '@typegoose/typegoose'
-import { hashSync } from 'bcrypt'
 import { ApiProperty } from '@nestjs/swagger'
-import * as uniqueValidator from 'mongoose-unique-validator'
+import { arrayProp, DocumentType, prop } from '@typegoose/typegoose'
+import { hashSync } from 'bcrypt'
 import { BaseModel } from './base.model'
 
 export type UserDocument = DocumentType<User>
