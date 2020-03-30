@@ -8,6 +8,7 @@ import {
   Query,
   Req,
   UseGuards,
+  Delete,
 } from '@nestjs/common'
 import { AuthGuard } from '@nestjs/passport'
 import { ApiOperation, ApiParam, ApiSecurity, ApiTags } from '@nestjs/swagger'
@@ -194,5 +195,12 @@ export class CommentsController {
     } catch {
       throw new CannotFindException()
     }
+  }
+
+  @Delete(':id')
+  @UseGuards(AuthGuard('jwt'))
+  async deleteComment(@Param() params: IdDto) {
+    const { id } = params
+    return await this.commentService.deleteComments(id)
   }
 }
