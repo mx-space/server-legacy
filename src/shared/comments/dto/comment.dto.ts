@@ -1,5 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { IsEmail, IsNotEmpty, IsString, IsUrl } from 'class-validator'
+import {
+  IsEmail,
+  IsNotEmpty,
+  IsString,
+  IsUrl,
+  IsOptional,
+} from 'class-validator'
 
 export class CommentDto {
   @IsString()
@@ -19,6 +25,14 @@ export class CommentDto {
 
   @IsString()
   @IsUrl()
+  @IsOptional()
   @ApiProperty({ example: 'example.com' })
-  url: string
+  url?: string
+}
+
+export class TextOnlyDto {
+  @IsString()
+  @IsNotEmpty()
+  @ApiProperty()
+  text: string
 }

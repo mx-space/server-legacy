@@ -6,6 +6,7 @@ import {
   Post,
   Put,
   Query,
+  Req,
   UseGuards,
 } from '@nestjs/common'
 import { AuthGuard } from '@nestjs/passport'
@@ -13,11 +14,13 @@ import { ApiOperation, ApiParam, ApiSecurity, ApiTags } from '@nestjs/swagger'
 import { DocumentType } from '@typegoose/typegoose'
 import PostModel from 'libs/db/src/models/post.model'
 import { RolesGuard } from 'src/auth/roles.guard'
+import { Master } from 'src/core/decorators/guest.decorator'
 import { CannotFindException } from 'src/core/exceptions/cant-find.exception'
-import { CommentDto } from 'src/shared/comments/dto/comment.dto'
+import { CommentDto, TextOnlyDto } from 'src/shared/comments/dto/comment.dto'
 import { StateQueryDto } from 'src/shared/comments/dto/state.dto'
 import { IdDto } from '../base/dto/id.dto'
 import { CommentsService } from './comments.service'
+import { IpLocation, IpRecord } from 'src/core/decorators/ip.decorator'
 @Controller('comments')
 @ApiTags('Comment Routes')
 @UseGuards(RolesGuard)
@@ -60,9 +63,18 @@ export class CommentsController {
 
   @Post(':id')
   @ApiOperation({ summary: '根据文章的 _id 评论' })
-  async comment(@Param() params: IdDto, @Body() body: CommentDto) {
+  async comment(
+    @Param() params: IdDto,
+    @Body() body: CommentDto,
+    @Body('author') author: string,
+    @Master() isMaster: boolean,
+    @IpLocation() ipLocation: IpRecord,
+  ) {
+    if (!isMaster) {
+      await this.commentService.ValidAuthorName(author)
+    }
     const pid = params.id
-    const model = { ...body }
+    const model = { ...body, ...ipLocation }
     try {
       const comment = await this.commentService.createComment(pid, model)
       return comment
@@ -77,7 +89,17 @@ export class CommentsController {
     description: 'cid',
     example: '5e7370bec56432cbac578e2d',
   })
-  async replyByCid(@Param() params: IdDto, @Body() body: CommentDto) {
+  async replyByCid(
+    @Param() params: IdDto,
+    @Body() body: CommentDto,
+    @Body('author') author: string,
+    @Master() isMaster: boolean,
+    @IpLocation() ipLocation: IpRecord,
+  ) {
+    if (!isMaster) {
+      await this.commentService.ValidAuthorName(author)
+    }
+
     const { id } = params
     const parent = await this.commentService.findById(id).populate('pid')
     if (!parent) {
@@ -91,6 +113,7 @@ export class CommentsController {
       pid: (parent.pid as DocumentType<PostModel>)._id,
       hasParent: true,
       ...body,
+      ...ipLocation,
       key,
     }
 
@@ -106,6 +129,29 @@ export class CommentsController {
     })
 
     return { data: res }
+  }
+
+  @Post('/master/comment/:id')
+  @ApiOperation({ summary: '主人专用评论接口 需要登录' })
+  @UseGuards(AuthGuard('jwt'))
+  @ApiSecurity('bearer')
+  async commentByMaster(
+    @Req() req: any,
+    @Param() params: IdDto,
+    @Body() body: TextOnlyDto,
+
+    @IpLocation() ipLocation: IpRecord,
+  ) {
+    // console.log(req.user)
+    const { name, mail, url } = req.user
+    const model: CommentDto = {
+      author: name,
+      ...body,
+      mail,
+      url,
+    }
+
+    return await this.comment(params, model as any, undefined, true, ipLocation)
   }
 
   @Put(':id')
