@@ -1,11 +1,22 @@
-import { Controller, Get, Param, Body, Post } from '@nestjs/common'
-import { ApiTags, ApiParam } from '@nestjs/swagger'
+import {
+  Controller,
+  Get,
+  Param,
+  Body,
+  Post,
+  UseGuards,
+  Put,
+  Query,
+} from '@nestjs/common'
+import { ApiTags, ApiParam, ApiOperation, ApiSecurity } from '@nestjs/swagger'
 import { DocumentType } from '@typegoose/typegoose'
 import { CannotFindException } from 'src/core/exceptions/cant-find.exception'
 import { IdDto } from '../base/dto/id.dto'
 import { CommentsService } from './comments.service'
 import { CommentDto } from 'src/shared/comments/dto/comment.dto'
 import PostModel from 'libs/db/src/models/post.model'
+import { AuthGuard } from '@nestjs/passport'
+import { StateQueryDto } from 'src/shared/comments/dto/state.dto'
 @Controller('comments')
 @ApiTags('Comment Routes')
 export class CommentsController {
@@ -23,6 +34,35 @@ export class CommentsController {
       pid: id,
     })
     return comments
+  }
+
+  @Get('info')
+  @UseGuards(AuthGuard('jwt'))
+  @ApiSecurity('bearer')
+  @ApiOperation({ summary: '获取评论各类型的数量的接口' })
+  async getCommentsInfo() {
+    const passed = await this.commentService.countDocument({
+      state: 1,
+    })
+    const gomi = await this.commentService.countDocument({ state: 2 })
+    const needChecked = await this.commentService.countDocument({
+      state: 0,
+    })
+
+    return {
+      passed,
+      gomi,
+      needChecked,
+    }
+  }
+
+  @Post(':id')
+  @ApiOperation({ summary: '根据文章的 _id 评论' })
+  async comment(@Param() params: IdDto, @Body() body: CommentDto) {
+    const pid = params.id
+    const model = { ...body }
+    const comment = await this.commentService.createComment(pid, model)
+    return comment
   }
 
   @Post('/reply/:id')
@@ -60,5 +100,28 @@ export class CommentsController {
     })
 
     return { data: res }
+  }
+
+  @Put(':id')
+  @ApiOperation({ summary: '修改评论的状态' })
+  async modifyCommentState(
+    @Param() params: IdDto,
+    @Query() query: StateQueryDto,
+  ) {
+    const { id } = params
+    const { state } = query
+
+    try {
+      const query = await this.commentService.updateAsync(
+        {
+          _id: id,
+        },
+        { state },
+      )
+
+      return query
+    } catch {
+      throw new CannotFindException()
+    }
   }
 }
