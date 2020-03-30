@@ -1,11 +1,40 @@
 import { DbModule } from '@libs/db'
-import { Module, ValidationPipe } from '@nestjs/common'
+import {
+  CacheInterceptor,
+  CacheModule,
+  Module,
+  ValidationPipe,
+  Provider,
+} from '@nestjs/common'
 import { ConfigModule } from '@nestjs/config'
-import { APP_PIPE } from '@nestjs/core'
-import { AppService } from './app.service'
+import { APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core'
 import { AuthModule } from './auth/auth.module'
 import { MasterModule } from './master/master.module'
 import { SharedModule } from './shared/shared.module'
+
+const providers: Provider<any>[] = [
+  {
+    provide: APP_PIPE,
+    useFactory: () => {
+      return new ValidationPipe({
+        transform: true,
+        whitelist: true,
+        // errorHttpStatusCode: 422,
+        // exceptionFactory: errors => new BadRequestException(errors),
+      })
+    },
+  },
+]
+
+const CacheProvider = {
+  provide: APP_INTERCEPTOR,
+  useClass: CacheInterceptor,
+}
+if (process.env.NODE_ENV === 'production') {
+  providers.push(CacheProvider)
+}
+
+console.log(process.env.NODE_ENV)
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -17,24 +46,15 @@ import { SharedModule } from './shared/shared.module'
       ],
       isGlobal: true,
     }),
+    CacheModule.register({
+      ttl: 30, // seconds
+      max: 100, // maximum number of items in cache
+    }),
     DbModule,
     AuthModule,
     MasterModule,
     SharedModule,
   ],
-  providers: [
-    AppService,
-    {
-      provide: APP_PIPE,
-      useFactory: () => {
-        return new ValidationPipe({
-          transform: true,
-          whitelist: true,
-          // errorHttpStatusCode: 422,
-          // exceptionFactory: errors => new BadRequestException(errors),
-        })
-      },
-    },
-  ],
+  providers,
 })
 export class AppModule {}
