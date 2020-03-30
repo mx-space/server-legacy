@@ -1,10 +1,8 @@
-import { ValidationPipe, BadRequestException } from '@nestjs/common'
 import { NestFactory } from '@nestjs/core'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
-import { AppModule } from './app.module'
 import { AllExceptionsFilter } from 'src/core/filters/any-exception.filter'
 import { ResponseInterceptor } from 'src/core/interceptors/response.interceptors'
-
+import { AppModule } from './app.module'
 declare const module: any
 
 async function bootstrap() {
