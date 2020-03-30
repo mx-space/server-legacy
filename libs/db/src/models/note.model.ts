@@ -2,11 +2,11 @@ import {
   AutoIncrementID,
   AutoIncrementIDOptions,
 } from '@typegoose/auto-increment'
-import { index, plugin, prop, Ref } from '@typegoose/typegoose'
+import { index, plugin, prop } from '@typegoose/typegoose'
 import { hashSync } from 'bcrypt'
+import { Schema } from 'mongoose'
 import * as uniqueValidator from 'mongoose-unique-validator'
 import { BaseModel } from './base.model'
-import { Schema } from 'mongoose'
 class Count {
   @prop({ default: 0 })
   read?: number

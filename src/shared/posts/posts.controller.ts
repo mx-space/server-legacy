@@ -2,17 +2,17 @@ import {
   BadRequestException,
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Post,
+  Put,
   Query,
   UseGuards,
   UseInterceptors,
-  Put,
-  Delete,
 } from '@nestjs/common'
 import { AuthGuard } from '@nestjs/passport'
-import { ApiQuery, ApiSecurity, ApiTags, ApiParam } from '@nestjs/swagger'
+import { ApiQuery, ApiSecurity, ApiTags } from '@nestjs/swagger'
 import { Types } from 'mongoose'
 import { RolesGuard } from 'src/auth/roles.guard'
 import { Master } from 'src/core/decorators/guest.decorator'

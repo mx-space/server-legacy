@@ -107,7 +107,7 @@ export class NotesController {
               },
               ...condition,
             },
-            { limit: half - 1 ?? 4, sort: { created: -1 }, select },
+            { limit: half - 1, sort: { created: -1 }, select },
           )
     const nextList = !half
       ? []
@@ -118,7 +118,7 @@ export class NotesController {
             },
             ...condition,
           },
-          { limit: half ?? 5, sort: { created: -1 }, select },
+          { limit: half, sort: { created: -1 }, select },
         )
     const data = [...prevList, ...nextList, currentDocument].sort(
       (a: any, b: any) => b.created - a.created,

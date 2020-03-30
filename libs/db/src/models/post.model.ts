@@ -1,8 +1,8 @@
+import Category from '@libs/db/models/category.model'
 import { ApiProperty } from '@nestjs/swagger'
 import { index, prop, Ref } from '@typegoose/typegoose'
 import { Schema } from 'mongoose'
 import { BaseModel } from './base.model'
-import Category from '@libs/db/models/category.model'
 
 @index({ created: -1 })
 @index({ slug: 1 })

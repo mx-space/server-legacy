@@ -1,10 +1,10 @@
-import { Injectable, UnprocessableEntityException } from '@nestjs/common'
-import { BaseService, QueryItem } from '../base/base.service'
 import Note from '@libs/db/models/note.model'
+import { Injectable } from '@nestjs/common'
+import { DocumentType, ReturnModelType } from '@typegoose/typegoose'
 import { InjectModel } from 'nestjs-typegoose'
-import { ReturnModelType, DocumentType } from '@typegoose/typegoose'
-import { addCondition } from 'src/shared/utils'
 import { CannotFindException } from 'src/core/exceptions/cant-find.exception'
+import { addCondition } from 'src/shared/utils'
+import { BaseService } from '../base/base.service'
 
 @Injectable()
 export class NotesService extends BaseService<Note> {
