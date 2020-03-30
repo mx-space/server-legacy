@@ -15,12 +15,12 @@ import { DocumentType } from '@typegoose/typegoose'
 import PostModel from 'libs/db/src/models/post.model'
 import { RolesGuard } from 'src/auth/roles.guard'
 import { Master } from 'src/core/decorators/guest.decorator'
+import { IpLocation, IpRecord } from 'src/core/decorators/ip.decorator'
 import { CannotFindException } from 'src/core/exceptions/cant-find.exception'
 import { CommentDto, TextOnlyDto } from 'src/shared/comments/dto/comment.dto'
 import { StateQueryDto } from 'src/shared/comments/dto/state.dto'
 import { IdDto } from '../base/dto/id.dto'
 import { CommentsService } from './comments.service'
-import { IpLocation, IpRecord } from 'src/core/decorators/ip.decorator'
 @Controller('comments')
 @ApiTags('Comment Routes')
 @UseGuards(RolesGuard)
@@ -139,7 +139,6 @@ export class CommentsController {
     @Req() req: any,
     @Param() params: IdDto,
     @Body() body: TextOnlyDto,
-
     @IpLocation() ipLocation: IpRecord,
   ) {
     // console.log(req.user)
@@ -150,10 +149,29 @@ export class CommentsController {
       mail,
       url,
     }
-
     return await this.comment(params, model as any, undefined, true, ipLocation)
   }
 
+  @Post('/master/reply/:id')
+  @ApiOperation({ summary: '主人专用评论回复 需要登录' })
+  @ApiParam({ name: 'id', description: 'cid' })
+  @UseGuards(AuthGuard('jwt'))
+  @ApiSecurity('bearer')
+  async replyByMaster(
+    @Req() req: any,
+    @Param() params: IdDto,
+    @Body() body: TextOnlyDto,
+    @IpLocation() ipLocation: IpRecord,
+  ) {
+    const { name, mail, url } = req.user
+    const model: CommentDto = {
+      author: name,
+      ...body,
+      mail,
+      url,
+    }
+    return await this.replyByCid(params, model, undefined, true, ipLocation)
+  }
   @Put(':id')
   @ApiOperation({ summary: '修改评论的状态' })
   @UseGuards(AuthGuard('jwt'))
