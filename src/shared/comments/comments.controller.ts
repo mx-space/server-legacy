@@ -1,22 +1,22 @@
 import {
+  Body,
   Controller,
   Get,
   Param,
-  Body,
   Post,
-  UseGuards,
   Put,
   Query,
+  UseGuards,
 } from '@nestjs/common'
-import { ApiTags, ApiParam, ApiOperation, ApiSecurity } from '@nestjs/swagger'
+import { AuthGuard } from '@nestjs/passport'
+import { ApiOperation, ApiParam, ApiSecurity, ApiTags } from '@nestjs/swagger'
 import { DocumentType } from '@typegoose/typegoose'
+import PostModel from 'libs/db/src/models/post.model'
 import { CannotFindException } from 'src/core/exceptions/cant-find.exception'
+import { CommentDto } from 'src/shared/comments/dto/comment.dto'
+import { StateQueryDto } from 'src/shared/comments/dto/state.dto'
 import { IdDto } from '../base/dto/id.dto'
 import { CommentsService } from './comments.service'
-import { CommentDto } from 'src/shared/comments/dto/comment.dto'
-import PostModel from 'libs/db/src/models/post.model'
-import { AuthGuard } from '@nestjs/passport'
-import { StateQueryDto } from 'src/shared/comments/dto/state.dto'
 @Controller('comments')
 @ApiTags('Comment Routes')
 export class CommentsController {
@@ -61,8 +61,12 @@ export class CommentsController {
   async comment(@Param() params: IdDto, @Body() body: CommentDto) {
     const pid = params.id
     const model = { ...body }
-    const comment = await this.commentService.createComment(pid, model)
-    return comment
+    try {
+      const comment = await this.commentService.createComment(pid, model)
+      return comment
+    } catch {
+      throw new CannotFindException()
+    }
   }
 
   @Post('/reply/:id')
@@ -104,6 +108,7 @@ export class CommentsController {
 
   @Put(':id')
   @ApiOperation({ summary: '修改评论的状态' })
+  @UseGuards(AuthGuard('jwt'))
   async modifyCommentState(
     @Param() params: IdDto,
     @Query() query: StateQueryDto,

@@ -1,18 +1,18 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { CommentsController } from './comments.controller';
+import { Test, TestingModule } from '@nestjs/testing'
+import { CommentsController } from './comments.controller'
 
 describe('Comments Controller', () => {
-  let controller: CommentsController;
+  let controller: CommentsController
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [CommentsController],
-    }).compile();
+    }).compile()
 
-    controller = module.get<CommentsController>(CommentsController);
-  });
+    controller = module.get<CommentsController>(CommentsController)
+  })
 
   it('should be defined', () => {
-    expect(controller).toBeDefined();
-  });
-});
+    expect(controller).toBeDefined()
+  })
+})
