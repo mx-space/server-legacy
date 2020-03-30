@@ -18,7 +18,7 @@ export const IpLocation = createParamDecorator(
       request.req.connection.remoteAddress ||
       request.req.socket.remoteAddress ||
       undefined
-    if (ip.split(',').length > 0) {
+    if (ip && ip.split(',').length > 0) {
       ip = ip.split(',')[0]
     }
     const agent = request.headers['user-agent']
