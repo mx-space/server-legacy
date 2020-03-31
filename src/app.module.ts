@@ -11,6 +11,7 @@ import { APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core'
 import { AuthModule } from './auth/auth.module'
 import { MasterModule } from './master/master.module'
 import { SharedModule } from './shared/shared.module'
+import { GatewayModule } from 'src/gateway/gateway.module'
 
 const providers: Provider<any>[] = [
   {
@@ -34,7 +35,6 @@ if (process.env.NODE_ENV === 'production') {
   providers.push(CacheProvider)
 }
 
-console.log(process.env.NODE_ENV)
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -51,6 +51,7 @@ console.log(process.env.NODE_ENV)
       max: 100, // maximum number of items in cache
     }),
     DbModule,
+    GatewayModule,
     AuthModule,
     MasterModule,
     SharedModule,

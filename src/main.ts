@@ -3,6 +3,7 @@ import {
   FastifyAdapter,
   NestFastifyApplication,
 } from '@nestjs/platform-fastify'
+import { WsAdapter } from '@nestjs/platform-ws'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 import { AllExceptionsFilter } from 'src/core/filters/any-exception.filter'
 import { ResponseInterceptor } from 'src/core/interceptors/response.interceptors'
@@ -15,6 +16,7 @@ async function bootstrap() {
     new FastifyAdapter({ logger: true }),
   )
 
+  app.useWebSocketAdapter(new WsAdapter(app))
   app.useGlobalFilters(new AllExceptionsFilter())
   app.useGlobalInterceptors(new ResponseInterceptor())
   if (process.env.NODE_ENV !== 'production') {
