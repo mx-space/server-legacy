@@ -28,4 +28,10 @@ export class CategoriesService extends BaseService<Category> {
       .select('title created slug')
       .sort({ created: -1 })
   }
+
+  async findPostsInCategory(id: string) {
+    return await this.postModel.find({
+      categoryId: id,
+    })
+  }
 }

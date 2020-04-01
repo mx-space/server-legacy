@@ -22,6 +22,7 @@ import { CommentDto, TextOnlyDto } from 'src/shared/comments/dto/comment.dto'
 import { StateQueryDto } from 'src/shared/comments/dto/state.dto'
 import { IdDto } from '../base/dto/id.dto'
 import { CommentsService } from './comments.service'
+
 @Controller('comments')
 @ApiTags('Comment Routes')
 @UseGuards(RolesGuard)
@@ -30,6 +31,7 @@ export class CommentsController {
 
   // TODO show comment agent and ip for admin 2020-04-01 //
   @Get(':id')
+  @ApiOperation({ summary: '根据 cid 获取评论, 包括子评论 ' })
   async getComments(@Param() params: IdDto) {
     const { id } = params
     return await this.commentService.findWithPaginator({
