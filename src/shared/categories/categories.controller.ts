@@ -8,6 +8,7 @@ import {
   Put,
   UnprocessableEntityException,
   UseGuards,
+  Delete,
 } from '@nestjs/common'
 import { AuthGuard } from '@nestjs/passport'
 import { ApiSecurity, ApiTags } from '@nestjs/swagger'
@@ -28,7 +29,11 @@ import {
 export class CategoriesController {
   constructor(private readonly categoryService: CategoriesService) {}
 
-  // TODO: Get `/` DELETE `/:id` <01-04-20 Innei> //
+  @Get()
+  async getAllCategories() {
+    return await this.categoryService.find({})
+  }
+
   @Get(':query')
   async getCategoryById(
     @Param() params: SlugOrIdDto,
@@ -84,6 +89,27 @@ export class CategoriesController {
       slug,
       type,
       name,
+    })
+    return res
+  }
+
+  @Delete(':id')
+  @UseGuards(AuthGuard('jwt'))
+  @ApiSecurity('bearer')
+  async deleteCategory(@Param() params: IdDto) {
+    const { id } = params
+    const category = await this.categoryService.findById(id)
+    if (!category) {
+      throw new CannotFindException()
+    }
+    const postsInCategory = await this.categoryService.findPostsInCategory(
+      category._id,
+    )
+    if (postsInCategory.length > 0) {
+      throw new UnprocessableEntityException('该分类中有其他文章, 无法被删除')
+    }
+    const res = await this.categoryService.deleteOne({
+      _id: category._id,
     })
     return res
   }
