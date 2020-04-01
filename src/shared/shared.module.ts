@@ -6,10 +6,12 @@ import { NotesController } from './notes/notes.controller'
 import { NotesService } from './notes/notes.service'
 import { PostsService } from 'src/shared/posts/posts.service'
 import { TestModule } from './test/test.module';
+import { CategoriesController } from './categories/categories.controller';
+import { CategoriesService } from './categories/categories.service';
 
 @Module({
-  providers: [PostsService, NotesService, CommentsService],
-  controllers: [NotesController, CommentsController, PostsController],
+  providers: [PostsService, NotesService, CommentsService, CategoriesService],
+  controllers: [NotesController, CommentsController, PostsController, CategoriesController],
   imports: [TestModule],
 })
 export class SharedModule {}

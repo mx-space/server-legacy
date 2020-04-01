@@ -312,7 +312,9 @@ export abstract class BaseService<T extends BaseModel> {
     update: Partial<T>,
     options: QueryFindOneAndUpdateOptions = {},
   ): Promise<DocumentType<T>> {
-    return await this.updateById(id, update, options).exec()
+    const res = await this.updateById(id, update, options)
+    const obj = res.toObject()
+    return { ...obj }
   }
 
   /**
