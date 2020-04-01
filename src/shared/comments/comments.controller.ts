@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Post,
@@ -8,7 +9,6 @@ import {
   Query,
   Req,
   UseGuards,
-  Delete,
 } from '@nestjs/common'
 import { AuthGuard } from '@nestjs/passport'
 import { ApiOperation, ApiParam, ApiSecurity, ApiTags } from '@nestjs/swagger'
@@ -27,6 +27,16 @@ import { CommentsService } from './comments.service'
 @UseGuards(RolesGuard)
 export class CommentsController {
   constructor(private readonly commentService: CommentsService) {}
+
+  // TODO show comment agent and ip for admin 2020-04-01 //
+  @Get(':id')
+  async getComments(@Param() params: IdDto) {
+    const { id } = params
+    return await this.commentService.findWithPaginator({
+      _id: id,
+    })
+  }
+
   @Get('/post/:id')
   @ApiParam({
     name: 'id',
