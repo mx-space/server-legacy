@@ -38,9 +38,9 @@ export default class Comment extends BaseModel {
   commentsIndex?: number
   @prop()
   key?: string
-  @prop()
+  @prop({ select: false })
   ip?: string
 
-  @prop()
+  @prop({ select: false })
   agent?: string
 }

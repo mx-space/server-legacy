@@ -27,6 +27,35 @@ import {
 @UseGuards(RolesGuard)
 export class CategoriesController {
   constructor(private readonly categoryService: CategoriesService) {}
+
+  // TODO: Get `/` DELETE `/:id` <01-04-20 Innei> //
+  @Get(':query')
+  async getCategoryById(
+    @Param() params: SlugOrIdDto,
+    @Master() isMaster: boolean,
+  ) {
+    const { query } = params
+    if (!query) {
+      throw new BadRequestException()
+    }
+
+    const isId = Types.ObjectId.isValid(query)
+    const res = isId
+      ? await this.categoryService.findById(query).sort({ created: -1 })
+      : await this.categoryService
+          .findOne({ slug: query })
+          .sort({ created: -1 })
+
+    if (!res) {
+      throw new CannotFindException()
+    }
+    // FIXME category count if empty will be [] not null
+    // the expect is [] or null
+    const children =
+      (await this.categoryService.findCategoryPost(res._id, isMaster)) || []
+    return { data: { ...res.toObject(), children } }
+  }
+
   @Post()
   @UseGuards(AuthGuard('jwt'))
   @ApiSecurity('bearer')
@@ -57,32 +86,5 @@ export class CategoriesController {
       name,
     })
     return res
-  }
-
-  @Get(':query')
-  async getCategoryById(
-    @Param() params: SlugOrIdDto,
-    @Master() isMaster: boolean,
-  ) {
-    const { query } = params
-    if (!query) {
-      throw new BadRequestException()
-    }
-
-    const isId = Types.ObjectId.isValid(query)
-    const res = isId
-      ? await this.categoryService.findById(query).sort({ created: -1 })
-      : await this.categoryService
-          .findOne({ slug: query })
-          .sort({ created: -1 })
-
-    if (!res) {
-      throw new CannotFindException()
-    }
-    // FIXME category count if empty will be [] not null
-    // the expect is [] or null
-    const children =
-      (await this.categoryService.findCategoryPost(res._id, isMaster)) || []
-    return { data: { ...res.toObject(), children } }
   }
 }
