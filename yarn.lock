@@ -538,10 +538,10 @@
   dependencies:
     type-detect "4.0.8"
 
-"@typegoose/auto-increment@^0.4.0":
-  version "0.4.0"
-  resolved "https://registry.yarnpkg.com/@typegoose/auto-increment/-/auto-increment-0.4.0.tgz#726429919aa3e1b2eba4ae67d866501701614980"
-  integrity sha512-yi1gNAP/MF6HgePg75S2zzWgXb2TiNv7sEJeCrnIR1dRlWkG1a93RtBkzKi9XdWZy07Bj1p7bnsk47VEeHJTDg==
+"@typegoose/auto-increment@^0.4.1":
+  version "0.4.1"
+  resolved "https://registry.yarnpkg.com/@typegoose/auto-increment/-/auto-increment-0.4.1.tgz#6e9c79fecc54af0bdfe2c363819e4e28c66a9049"
+  integrity sha512-ya+TkXUufhyRKFVt/UVVGSO+BnMB0/KQk9dOyKWoGKvSFGEJlGAaug4zABtbh3OyqoPaJ74OSoJTKJ+/r+wdoA==
   dependencies:
     "@types/lodash" "^4.14.149"
     lodash "^4.17.15"

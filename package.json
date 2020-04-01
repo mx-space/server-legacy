@@ -28,7 +28,7 @@
     "@nestjs/platform-ws": "^7.0.7",
     "@nestjs/swagger": "^4.5.1",
     "@nestjs/websockets": "^7.0.7",
-    "@typegoose/auto-increment": "^0.4.0",
+    "@typegoose/auto-increment": "^0.4.1",
     "@typegoose/typegoose": "^6.4.0",
     "bcrypt": "^4.0.1",
     "cache-manager": "^3.2.1",
