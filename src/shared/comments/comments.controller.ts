@@ -22,12 +22,19 @@ import { CommentDto, TextOnlyDto } from 'src/shared/comments/dto/comment.dto'
 import { StateQueryDto } from 'src/shared/comments/dto/state.dto'
 import { IdDto } from '../base/dto/id.dto'
 import { CommentsService } from './comments.service'
+import { Pager } from 'src/shared/comments/dto/pager.dto'
 
 @Controller('comments')
 @ApiTags('Comment Routes')
 @UseGuards(RolesGuard)
 export class CommentsController {
   constructor(private readonly commentService: CommentsService) {}
+
+  @Get()
+  async getRecentlyComments(@Query() query: Pager) {
+    const { size = 10, page = 1, state = 0 } = query
+    return await this.commentService.getRecently({ size, page, state })
+  }
 
   // TODO show comment agent and ip for admin 2020-04-01 //
   @Get(':id')

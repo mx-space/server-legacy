@@ -132,7 +132,6 @@ export abstract class BaseService<T extends BaseModel> {
       lean?: boolean
       populates?: ModelPopulateOptions[] | ModelPopulateOptions
       [key: string]: AnyType
-
       sort?: OrderType<T>
       limit?: number
       skip?: number
@@ -159,8 +158,8 @@ export abstract class BaseService<T extends BaseModel> {
         size: queryList.length,
         currentPage: page,
         totalPage,
-        hasPrevPage: totalPage > page,
-        hasNextPage: page !== 1,
+        hasPrevPage: page !== 1,
+        hasNextPage: totalPage > page,
       },
     }
   }

@@ -1,13 +1,17 @@
 import Comment from '@libs/db/models/comment.model'
 import Post from '@libs/db/models/post.model'
-import { Injectable, UnprocessableEntityException } from '@nestjs/common'
+import {
+  Injectable,
+  UnprocessableEntityException,
+  BadRequestException,
+} from '@nestjs/common'
 import { ReturnModelType } from '@typegoose/typegoose'
-import { Types, FilterQuery } from 'mongoose'
+import { Types, FilterQuery, QueryCursor } from 'mongoose'
 import { InjectModel } from 'nestjs-typegoose'
 import { CannotFindException } from 'src/core/exceptions/cant-find.exception'
 import { BaseService } from '../base/base.service'
 import { User } from '@libs/db/models/user.model'
-
+import { Cursor } from 'mongodb'
 @Injectable()
 export class CommentsService extends BaseService<Comment> {
   constructor(
@@ -63,5 +67,31 @@ export class CommentsService extends BaseService<Comment> {
       })
     }
     return comment
+  }
+
+  async getRecently({ page, size, state } = { page: 1, size: 10, state: 0 }) {
+    const skip = size * (page - 1)
+    const cursor = (this.commentModel.collection
+      .find({ state })
+      .sort({ created: -1 })
+      .skip(skip)
+      .limit(size) as any) as Cursor
+    const queryList = await cursor.toArray()
+    if (queryList.length === 0) {
+      throw new BadRequestException('没有下页啦!')
+    }
+    const count = await this.countDocument({ state })
+    const totalPage = Math.ceil(count / size)
+    return {
+      data: queryList,
+      page: {
+        total: count,
+        size: queryList.length,
+        currentPage: page,
+        totalPage,
+        hasPrevPage: page !== 1,
+        hasNextPage: page < totalPage,
+      },
+    }
   }
 }

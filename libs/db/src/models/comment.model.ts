@@ -25,6 +25,9 @@ export default class Comment extends BaseModel {
   @prop({ required: true })
   text!: string
 
+  // 0 : 未读
+  // 1 : 已读
+  // 2 : 垃圾
   @prop({ default: 0 })
   state?: number
 
