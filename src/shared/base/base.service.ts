@@ -116,6 +116,7 @@ export abstract class BaseService<T extends BaseModel> {
     options: {
       lean?: boolean
       populates?: ModelPopulateOptions[] | ModelPopulateOptions
+      populate?: string | Array<string>
       [key: string]: AnyType
       sort?: OrderType<T>
       limit?: number
@@ -131,6 +132,7 @@ export abstract class BaseService<T extends BaseModel> {
     options: {
       lean?: boolean
       populates?: ModelPopulateOptions[] | ModelPopulateOptions
+      populate?: string | Array<string>
       [key: string]: AnyType
       sort?: OrderType<T>
       limit?: number

@@ -154,7 +154,7 @@ export class PostsController {
   @Get('search')
   async searchPost(@Query() query: SearchDto) {
     const { keyword, page, size } = query
-    const select = '_id title created modified nid'
+    const select = '_id title created modified categoryId'
     const keywordArr = keyword
       .split(/\s+/)
       .map((item) => new RegExp(String(item), 'ig'))
@@ -164,6 +164,7 @@ export class PostsController {
         limit: size,
         skip: (page - 1) * size,
         select,
+        populate: 'categoryId',
       },
     )
   }
