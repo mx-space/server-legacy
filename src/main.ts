@@ -33,6 +33,7 @@ async function bootstrap() {
       type: 'http',
       scheme: 'bearer',
     })
+    .addBearerAuth()
     .build()
   const document = SwaggerModule.createDocument(app, options)
   SwaggerModule.setup('api-docs', app, document)

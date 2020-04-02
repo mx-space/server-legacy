@@ -31,8 +31,11 @@ export default class Comment extends BaseModel {
   @prop({ default: 0 })
   state?: number
 
-  @prop({ default: false })
-  hasParent?: boolean
+  // @prop({ default: false })
+  // hasParent?: boolean
+  //
+  @prop({ ref: 'Comment' })
+  parent?: Ref<this>
 
   @arrayProp({ itemsRef: 'Comment' })
   children?: Ref<this>[]

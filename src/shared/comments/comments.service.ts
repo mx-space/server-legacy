@@ -46,7 +46,7 @@ export class CommentsService extends BaseService<Comment> {
 
   async ValidAuthorName(author: string): Promise<void> {
     const isExist = await this.userModel.findOne({
-      username: author,
+      name: author,
     })
     if (isExist) {
       throw new UnprocessableEntityException(
@@ -60,13 +60,21 @@ export class CommentsService extends BaseService<Comment> {
     if (!comment) {
       throw new CannotFindException()
     }
-    const { children } = comment
+    const { children, parent } = comment
     if (children && children.length > 0) {
       children.map(async (id: string) => {
         await this.deleteComments(id)
       })
     }
-    return comment
+    if (parent) {
+      const parent = await this.commentModel.findById(comment.parent)
+      await parent.updateOne({
+        $pull: {
+          children: comment._id,
+        },
+      })
+    }
+    return { msg: '删除成功' }
   }
 
   async getRecently({ page, size, state } = { page: 1, size: 10, state: 0 }) {
@@ -78,7 +86,9 @@ export class CommentsService extends BaseService<Comment> {
       .limit(size) as any) as Cursor
     const queryList = await cursor.toArray()
     if (queryList.length === 0) {
-      throw new BadRequestException('没有下页啦!')
+      if (page === 1) {
+        throw new UnprocessableEntityException('暂没有评论呢')
+      } else throw new BadRequestException('没有下页啦!')
     }
     const count = await this.countDocument({ state })
     const totalPage = Math.ceil(count / size)

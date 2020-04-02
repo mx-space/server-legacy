@@ -54,10 +54,13 @@ export class CommentsController {
   })
   async getCommentsByPid(@Param() params: IdDto) {
     const { id } = params
-    const comments = await this.commentService.findOne({
-      hasParent: false,
-      pid: id,
-    })
+    const comments = await this.commentService.findWithPaginator(
+      {
+        parent: undefined,
+        pid: id,
+      },
+      { sort: { created: -1 } },
+    )
     return comments
   }
 
@@ -131,7 +134,6 @@ export class CommentsController {
     const model = {
       parent,
       pid: (parent.pid as DocumentType<PostModel>)._id,
-      hasParent: true,
       ...body,
       ...ipLocation,
       key,
@@ -148,7 +150,7 @@ export class CommentsController {
       },
     })
 
-    return { data: res }
+    return { msg: '回复成功!' }
   }
 
   @Post('/master/comment/:id')
@@ -217,7 +219,8 @@ export class CommentsController {
   }
 
   @Delete(':id')
-  @UseGuards(AuthGuard('jwt'))
+  // @UseGuards(AuthGuard('jwt'))
+  @ApiSecurity('bearer')
   async deleteComment(@Param() params: IdDto) {
     const { id } = params
     return await this.commentService.deleteComments(id)
