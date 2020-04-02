@@ -8,6 +8,7 @@ import { BaseModel } from './base.model'
 @index({ slug: 1 })
 @index({ modified: -1 })
 @index({ created: -1, modified: -1 })
+@index({ text: 'text' })
 export default class Post extends BaseModel {
   @ApiProperty({ description: 'Title', required: true })
   @prop({ trim: true, index: true, required: true })
@@ -18,7 +19,7 @@ export default class Post extends BaseModel {
   slug!: string
 
   @ApiProperty({ description: 'Text Body' })
-  @prop({ trim: true })
+  @prop({ trim: true, index: true })
   text?: string
 
   @ApiProperty({ description: '(Optional): Summary' })

@@ -176,12 +176,13 @@ export class NotesController {
   @ApiOperation({ summary: '搜索' })
   @Get('/search')
   async searchNote(@Query() query: SearchDto) {
-    const { keyword, page, size, select } = query
-    const regexp = new RegExp(`${keyword}`, 'igm')
+    const { keyword, page, size } = query
+    const select = '_id title created modified nid'
+    const keywordArr = keyword
+      .split(/\s+/)
+      .map((item) => new RegExp(String(item), 'ig'))
     return await this.noteService.findWithPaginator(
-      {
-        $or: [{ text: regexp }, { title: regexp }],
-      },
+      { $or: [{ title: { $in: keywordArr } }, { text: { $in: keywordArr } }] },
       {
         limit: size,
         skip: (page - 1) * size,

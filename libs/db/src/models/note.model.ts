@@ -21,6 +21,7 @@ class Count {
 })
 @plugin(uniqueValidator)
 @index({ created: -1 })
+@index({ text: 'text' })
 @index({ modified: -1 })
 @index({ created: -1, modified: -1 })
 export default class Note extends BaseModel {
@@ -30,11 +31,11 @@ export default class Note extends BaseModel {
   @prop({ index: true, trim: true, required: true })
   title!: string
 
-  @prop({ trim: true })
-  text?: string
+  @prop({ trim: true, index: true })
+  text: string
 
   @prop({ default: false })
-  hide?: boolean
+  hide: boolean
 
   @prop({
     get(val) {

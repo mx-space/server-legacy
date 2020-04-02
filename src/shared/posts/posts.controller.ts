@@ -22,6 +22,7 @@ import { addCondition } from 'src/shared/utils'
 import { CategoryAndSlug, PostDto } from './dto'
 import { PostsService } from './posts.service'
 import { PagerDto } from 'src/shared/base/dto/pager.dto'
+import { SearchDto } from 'src/shared/base/dto/search.dto'
 
 @Controller('posts')
 @ApiTags('Post Routes')
@@ -148,5 +149,22 @@ export class PostsController {
     const { id } = params
     const r = await this.postService.deletePost(id)
     return { ...r, msg: r.deletedCount ? '删除成功' : '删除失败' }
+  }
+
+  @Get('search')
+  async searchPost(@Query() query: SearchDto) {
+    const { keyword, page, size } = query
+    const select = '_id title created modified nid'
+    const keywordArr = keyword
+      .split(/\s+/)
+      .map((item) => new RegExp(String(item), 'ig'))
+    return await this.postService.findWithPaginator(
+      { $or: [{ title: { $in: keywordArr } }, { text: { $in: keywordArr } }] },
+      {
+        limit: size,
+        skip: (page - 1) * size,
+        select,
+      },
+    )
   }
 }

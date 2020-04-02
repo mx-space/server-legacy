@@ -27,6 +27,7 @@ const models = TypegooseModule.forFeature([
       useFindAndModify: false,
       useNewUrlParser: true,
       useUnifiedTopology: true,
+      autoIndex: true,
     }),
     models,
   ],
