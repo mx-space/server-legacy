@@ -21,6 +21,7 @@ import { IdDto } from 'src/shared/base/dto/id.dto'
 import { ListQueryDto, NidType, NoteDto } from 'src/shared/notes/dto/note.dto'
 import { addCondition } from 'src/shared/utils'
 import { NotesService } from './notes.service'
+import { SearchDto } from 'src/shared/base/dto/search.dto'
 @ApiTags('Note Routes')
 @Controller('notes')
 @UseInterceptors(PermissionInterceptor)
@@ -170,5 +171,22 @@ export class NotesController {
     return await this.modifyNote(body, {
       id: _id,
     })
+  }
+
+  @ApiOperation({ summary: '搜索' })
+  @Get('/search')
+  async searchNote(@Query() query: SearchDto) {
+    const { keyword, page, size, select } = query
+    const regexp = new RegExp(`${keyword}`, 'igm')
+    return await this.noteService.findWithPaginator(
+      {
+        $or: [{ text: regexp }, { title: regexp }],
+      },
+      {
+        limit: size,
+        skip: (page - 1) * size,
+        select,
+      },
+    )
   }
 }

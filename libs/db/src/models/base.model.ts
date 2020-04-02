@@ -1,6 +1,5 @@
 import { modelOptions, plugin, prop } from '@typegoose/typegoose'
 import * as uniqueValidator from 'mongoose-unique-validator'
-
 @plugin(uniqueValidator)
 @modelOptions({
   schemaOptions: {

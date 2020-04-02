@@ -21,6 +21,7 @@ import { IdDto } from 'src/shared/base/dto/id.dto'
 import { addCondition } from 'src/shared/utils'
 import { CategoryAndSlug, PostDto } from './dto'
 import { PostsService } from './posts.service'
+import { PagerDto } from 'src/shared/base/dto/pager.dto'
 
 @Controller('posts')
 @ApiTags('Post Routes')
@@ -31,15 +32,8 @@ export class PostsController {
   constructor(private readonly postService: PostsService) {}
 
   @Get()
-  @ApiQuery({ name: 'page', example: 1, required: false })
-  @ApiQuery({ name: 'size', example: 10, required: false })
-  @ApiQuery({ name: 'select', required: false })
-  async getAll(
-    @Query('page') page?: number,
-    @Query('size') size?: number,
-    @Query('select') select?: string,
-    @Master() isMaster?: boolean,
-  ) {
+  async getAll(@Master() isMaster?: boolean, @Query() query?: PagerDto) {
+    const { size, select, page } = query
     const condition = addCondition(isMaster)
     return await this.postService.findWithPaginator(condition, {
       limit: size,

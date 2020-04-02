@@ -127,7 +127,7 @@ export abstract class BaseService<T extends BaseModel> {
   }
 
   public async findWithPaginator(
-    condition: AnyType = {},
+    condition: FilterQuery<T> = {},
     options: {
       lean?: boolean
       populates?: ModelPopulateOptions[] | ModelPopulateOptions

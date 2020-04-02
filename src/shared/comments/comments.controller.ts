@@ -11,7 +11,13 @@ import {
   UseGuards,
 } from '@nestjs/common'
 import { AuthGuard } from '@nestjs/passport'
-import { ApiOperation, ApiParam, ApiSecurity, ApiTags } from '@nestjs/swagger'
+import {
+  ApiOperation,
+  ApiParam,
+  ApiSecurity,
+  ApiTags,
+  ApiBearerAuth,
+} from '@nestjs/swagger'
 import { DocumentType } from '@typegoose/typegoose'
 import PostModel from 'libs/db/src/models/post.model'
 import { RolesGuard } from 'src/auth/roles.guard'
@@ -23,6 +29,7 @@ import { StateQueryDto } from 'src/shared/comments/dto/state.dto'
 import { IdDto } from '../base/dto/id.dto'
 import { CommentsService } from './comments.service'
 import { Pager } from 'src/shared/comments/dto/pager.dto'
+import { PagerDto } from 'src/shared/base/dto/pager.dto'
 
 @Controller('comments')
 @ApiTags('Comment Routes')
@@ -41,7 +48,7 @@ export class CommentsController {
   @ApiOperation({ summary: '根据 cid 获取评论, 包括子评论 ' })
   async getComments(@Param() params: IdDto) {
     const { id } = params
-    return await this.commentService.findWithPaginator({
+    return await this.commentService.findOne({
       _id: id,
     })
   }
@@ -52,14 +59,20 @@ export class CommentsController {
     description: 'pid',
     example: '5e6f67e85b303781d28072a3',
   })
-  async getCommentsByPid(@Param() params: IdDto) {
+  async getCommentsByPid(@Param() params: IdDto, @Query() query: PagerDto) {
     const { id } = params
+    const { page, size, select } = query
     const comments = await this.commentService.findWithPaginator(
       {
         parent: undefined,
         pid: id,
       },
-      { sort: { created: -1 } },
+      {
+        limit: size,
+        skip: (page - 1) * size,
+        select,
+        sort: { created: -1 },
+      },
     )
     return comments
   }
@@ -196,6 +209,7 @@ export class CommentsController {
   }
   @Put(':id')
   @ApiOperation({ summary: '修改评论的状态' })
+  @ApiBearerAuth()
   @UseGuards(AuthGuard('jwt'))
   async modifyCommentState(
     @Param() params: IdDto,
@@ -219,7 +233,7 @@ export class CommentsController {
   }
 
   @Delete(':id')
-  // @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard('jwt'))
   @ApiSecurity('bearer')
   async deleteComment(@Param() params: IdDto) {
     const { id } = params
