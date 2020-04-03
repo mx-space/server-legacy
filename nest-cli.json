@@ -10,11 +10,21 @@
       "compilerOptions": {
         "tsConfigPath": "libs/db/tsconfig.lib.json"
       }
+    },
+    "common": {
+      "type": "library",
+      "root": "libs/common",
+      "entryFile": "index",
+      "sourceRoot": "libs/common/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/common/tsconfig.lib.json"
+      }
     }
   },
   "compilerOptions": {
     "webpack": true,
-    "plugins": ["@nestjs/swagger/plugin"]
+    "plugins": [
+      "@nestjs/swagger/plugin"
+    ]
   }
 }
-
