@@ -8,15 +8,23 @@ import {
   Post,
   SerializeOptions,
   UseGuards,
+  Patch,
+  Param,
 } from '@nestjs/common'
 import { AuthGuard } from '@nestjs/passport'
-import { ApiOperation, ApiSecurity, ApiTags } from '@nestjs/swagger'
+import {
+  ApiOperation,
+  ApiSecurity,
+  ApiTags,
+  ApiBearerAuth,
+} from '@nestjs/swagger'
 import { AuthService } from 'src/auth/auth.service'
 import { RolesGuard } from 'src/auth/roles.guard'
 import { CurrentUser } from 'src/core/decorators/current-user.decorator'
 import { Master } from 'src/core/decorators/guest.decorator'
-import { LoginDto, UserDto } from 'src/master/dto/user.dto'
+import { LoginDto, UserDto, UserPatchDto } from 'src/master/dto/user.dto'
 import MasterService from 'src/master/master.service'
+import { DocumentType } from '@typegoose/typegoose'
 
 @Controller('master')
 @ApiTags('Master Routes')
@@ -62,5 +70,16 @@ export class MasterController {
   @UseGuards(RolesGuard)
   checkLogged(@Master() isMaster: boolean) {
     return { ok: Number(isMaster), isGuest: !isMaster }
+  }
+
+  @Patch()
+  @ApiOperation({ summary: '修改主人的信息 ' })
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard('jwt'))
+  async patchMasterData(
+    @Body() body: UserPatchDto,
+    @CurrentUser() user: DocumentType<User>,
+  ) {
+    return await this.masterService.patchData(user, body)
   }
 }

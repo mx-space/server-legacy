@@ -153,7 +153,6 @@ export class NotesController {
 
   @ApiOperation({ summary: '根据 nid 查找' })
   @Get('/nid/:nid')
-  @UseGuards(AuthGuard('jwt'))
   async getNoteByNid(
     @Param() params: NidType,
     @Master() isMaster: boolean,
