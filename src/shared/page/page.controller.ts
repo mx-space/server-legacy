@@ -7,6 +7,7 @@ import {
   Post,
   Put,
   UseGuards,
+  Delete,
 } from '@nestjs/common'
 import { PageService } from './page.service'
 import { IdDto } from 'src/shared/base/dto/id.dto'
@@ -14,7 +15,7 @@ import { CannotFindException } from 'src/core/exceptions/cant-find.exception'
 import { ApiTags, ApiBearerAuth } from '@nestjs/swagger'
 import { PagerDto } from 'src/shared/base/dto/pager.dto'
 import Page from '@libs/db/models/page.model'
-import { AuthGuard } from '@nestjs/passport'
+import { AuthGuard, PassportModule } from '@nestjs/passport'
 
 @ApiTags('Page Routes')
 @Controller('pages')
@@ -68,5 +69,14 @@ export class PageController {
   async modifiedPage(@Body() body: Page, @Param() params: IdDto) {
     const { id } = params
     return await this.service.updateById(id, body)
+  }
+
+  @Delete(':id')
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard('jwt'))
+  async deletePage(@Param() params: IdDto) {
+    return await this.service.deleteOneAsync({
+      _id: params.id,
+    })
   }
 }
