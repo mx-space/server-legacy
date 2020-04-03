@@ -8,15 +8,18 @@ import Post from './models/post.model'
 import Option from './models/option.model'
 import Category from './models/category.model'
 import Menu from '@libs/db/models/menu.model'
+import Page from './models/page.model'
 
 const models = TypegooseModule.forFeature([
-  User,
-  Note,
-  Comment,
-  Post,
-  Option,
   Category,
+  Comment,
   Menu,
+  Note,
+  Option,
+  Option,
+  Page,
+  Post,
+  User,
 ])
 
 @Global()

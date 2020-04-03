@@ -108,8 +108,20 @@ export abstract class BaseService<T extends BaseModel> {
    * 根据条件查找
    */
   // FIXME async maybe cause some bugs
-  public async find(condition: FilterQuery<T>, options = {}) {
-    return this.model.find(condition as any, options)
+  public async find(
+    condition: FilterQuery<T>,
+    options: {
+      lean?: boolean
+      populates?: ModelPopulateOptions[] | ModelPopulateOptions
+      populate?: string | Array<string>
+      [key: string]: AnyType
+      sort?: OrderType<T>
+      limit?: number
+      skip?: number
+      select?: string | Array<string>
+    } = {},
+  ) {
+    return this.model.find(condition as any).setOptions(options)
   }
   public async findAsync(
     condition: FilterQuery<T>,
