@@ -1,12 +1,13 @@
-# Focus server
+# Mix Space Server
 
-这是 focus 的后端代码仓库, 该项目正在开发中...
+MiX Space, (Mx-space), 混合空间，又作梦想空间(MX 梦想)。这是后端部分。正在开发中。又前身代号 Focus 重写而来。（Focus 项目废止）
 
 ## 技术栈
 
 - NestJS
 - MongoDB
 - Typegoose
+- WebSocket
 
 ## 项目结构
 
