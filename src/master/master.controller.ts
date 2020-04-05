@@ -5,26 +5,26 @@ import {
   Get,
   HttpCode,
   HttpStatus,
+  Patch,
   Post,
   SerializeOptions,
   UseGuards,
-  Patch,
-  Param,
 } from '@nestjs/common'
 import { AuthGuard } from '@nestjs/passport'
 import {
+  ApiBearerAuth,
   ApiOperation,
   ApiSecurity,
   ApiTags,
-  ApiBearerAuth,
 } from '@nestjs/swagger'
+import { DocumentType } from '@typegoose/typegoose'
 import { AuthService } from 'src/auth/auth.service'
 import { RolesGuard } from 'src/auth/roles.guard'
 import { CurrentUser } from 'src/core/decorators/current-user.decorator'
 import { Master } from 'src/core/decorators/guest.decorator'
 import { LoginDto, UserDto, UserPatchDto } from 'src/master/dto/user.dto'
 import MasterService from 'src/master/master.service'
-import { DocumentType } from '@typegoose/typegoose'
+import { IpLocation, IpRecord } from 'src/core/decorators/ip.decorator'
 
 @Controller('master')
 @ApiTags('Master Routes')
@@ -59,8 +59,13 @@ export class MasterController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: '登录' })
   @UseGuards(AuthGuard('local'))
-  async login(@Body() dto: LoginDto, @CurrentUser() user: UserDocument) {
-    return { token: await this.authService.signToken(user._id) }
+  async login(
+    @Body() dto: LoginDto,
+    @CurrentUser() user: UserDocument,
+    @IpLocation() ipLocation: IpRecord,
+  ) {
+    const footstep = await this.masterService.recordFootstep(ipLocation.ip)
+    return { token: await this.authService.signToken(user._id), ...footstep }
   }
 
   @Get('check_logged')
@@ -80,6 +85,6 @@ export class MasterController {
     @Body() body: UserPatchDto,
     @CurrentUser() user: DocumentType<User>,
   ) {
-    return await this.masterService.patchData(user, body)
+    return await this.masterService.changePassword(user, body)
   }
 }

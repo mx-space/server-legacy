@@ -43,9 +43,6 @@ export class User extends BaseModel {
   @ApiProperty()
   url?: string
 
-  // @prop({ default: new Date() })
-  // created?: Date
-  //
   @prop()
   lastLoginTime?: Date
 

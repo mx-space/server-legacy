@@ -9,14 +9,12 @@ import {
 } from 'class-validator'
 
 export class CategoryAndSlug {
-  @ApiProperty({
-    enum: ['programming', 'Z-Turn'],
-  })
+  @ApiProperty({ example: 'Z-Turn' })
   @IsString()
   readonly category: string
 
   @IsString()
-  @ApiProperty({ enum: ['why-winserver', 'learning-from-AS'] })
+  @ApiProperty({ example: 'why-winserver' })
   readonly slug: string
 }
 
@@ -38,12 +36,7 @@ export class PostDto {
 
   @IsMongoId()
   @ApiProperty({
-    enum: [
-      '5e6f67e75b303781d2807278',
-      '5e6f67e75b303781d280727a',
-      '5e6f67e75b303781d280727c',
-      '5e6f67e75b303781d280727e',
-    ],
+    example: '5e6f67e75b303781d2807278',
   })
   categoryId: string
 

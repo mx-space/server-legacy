@@ -12,7 +12,7 @@ export default class MasterService {
     @InjectModel(User) private readonly userModel: ReturnModelType<typeof User>,
     private readonly authService: AuthService,
   ) {}
-
+  // TODO: 扩展 <05-04-20 Innei> //
   async getMasterInfo() {
     return await this.userModel.findOne()
   }
@@ -29,7 +29,14 @@ export default class MasterService {
     return { token, username: res.username, authCode: res.authCode }
   }
 
-  async patchData(user: DocumentType<User>, data: Partial<User>) {
+  /**
+   * 修改密码
+   *
+   * @async
+   * @param {DocumentType} user - 用户查询结果, 已经挂载在 req.user
+   * @param {Partial} data - 部分修改数据
+   */
+  async changePassword(user: DocumentType<User>, data: Partial<User>) {
     const { password } = data
     const doc = { ...data }
     if (password !== undefined) {
@@ -50,5 +57,26 @@ export default class MasterService {
     return await this.userModel
       .updateOne({ _id: user._id }, doc)
       .setOptions({ omitUndefined: true })
+  }
+
+  /**
+   * 记录登陆的足迹(ip, 时间)
+   *
+   * @async
+   * @param {string} ip - string
+   * @return {Promise<Record<string, Date|string>>} 返回上次足迹
+   */
+  async recordFootstep(ip: string): Promise<Record<string, Date | string>> {
+    const master = await this.userModel.findOne()
+    const PrevFootstep = {
+      lastLoginTime: master.lastLoginTime || new Date(1586090559569),
+      lastLoginIp: master.lastLoginIp || null,
+    }
+    await master.updateOne({
+      lastLoginTime: new Date(),
+      lastLoginIp: ip,
+    })
+
+    return PrevFootstep
   }
 }

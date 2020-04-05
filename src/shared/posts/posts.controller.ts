@@ -12,17 +12,22 @@ import {
   UseInterceptors,
 } from '@nestjs/common'
 import { AuthGuard } from '@nestjs/passport'
-import { ApiQuery, ApiSecurity, ApiTags } from '@nestjs/swagger'
+import {
+  ApiSecurity,
+  ApiTags,
+  ApiProperty,
+  ApiOperation,
+} from '@nestjs/swagger'
 import { Types } from 'mongoose'
 import { RolesGuard } from 'src/auth/roles.guard'
 import { Master } from 'src/core/decorators/guest.decorator'
 import { PermissionInterceptor } from 'src/core/interceptors/permission.interceptors'
 import { IdDto } from 'src/shared/base/dto/id.dto'
+import { PagerDto } from 'src/shared/base/dto/pager.dto'
+import { SearchDto } from 'src/shared/base/dto/search.dto'
 import { addCondition } from 'src/shared/utils'
 import { CategoryAndSlug, PostDto } from './dto'
 import { PostsService } from './posts.service'
-import { PagerDto } from 'src/shared/base/dto/pager.dto'
-import { SearchDto } from 'src/shared/base/dto/search.dto'
 
 @Controller('posts')
 @ApiTags('Post Routes')
@@ -33,6 +38,7 @@ export class PostsController {
   constructor(private readonly postService: PostsService) {}
 
   @Get()
+  @ApiOperation({ summary: '获取全部文章带分页器' })
   async getAll(@Master() isMaster?: boolean, @Query() query?: PagerDto) {
     const { size, select, page } = query
     const condition = addCondition(isMaster)
@@ -44,6 +50,7 @@ export class PostsController {
   }
 
   @Get('/:category/:slug')
+  @ApiOperation({ summary: '根据分类名和自定义别名获取' })
   async getByCateAndSlug(@Param() params: CategoryAndSlug) {
     const { category, slug } = params
     // search category
@@ -68,12 +75,14 @@ export class PostsController {
   }
 
   @Get(':id')
-  async getById(@Query() query: IdDto) {
+  @ApiOperation({ summary: '根据 ID 查找' })
+  async getById(@Param() query: IdDto) {
     return await this.postService.findPostById(query.id)
   }
 
   @Post()
   @UseGuards(AuthGuard('jwt'))
+  @ApiOperation({ summary: '新建一篇文章' })
   async createNew(@Body() postDto: PostDto) {
     const _id = Types.ObjectId()
     const {
@@ -106,6 +115,7 @@ export class PostsController {
 
   @Put(':id')
   @UseGuards(AuthGuard('jwt'))
+  @ApiOperation({ summary: '修改一篇文章' })
   async modifyPost(@Body() postDto: PostDto, @Param() params: IdDto) {
     const { id } = params
     const postId = id
@@ -145,6 +155,7 @@ export class PostsController {
 
   @Delete(':id')
   @UseGuards(AuthGuard('jwt'))
+  @ApiOperation({ summary: '删除一篇文章' })
   async deletePost(@Param() params: IdDto) {
     const { id } = params
     const r = await this.postService.deletePost(id)
@@ -152,6 +163,7 @@ export class PostsController {
   }
 
   @Get('search')
+  @ApiOperation({ summary: '搜索文章' })
   async searchPost(@Query() query: SearchDto) {
     const { keyword, page, size } = query
     const select = '_id title created modified categoryId'
