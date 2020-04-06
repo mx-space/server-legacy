@@ -5,7 +5,7 @@ import {
   NestInterceptor,
   UnprocessableEntityException,
 } from '@nestjs/common'
-import { Observable } from 'rxjs'
+import { Observable, of } from 'rxjs'
 import { map } from 'rxjs/operators'
 
 export interface Response<T> {
@@ -29,7 +29,11 @@ export class ResponseInterceptor<T> implements NestInterceptor<T, Response<T>> {
     return next
       .handle()
       .pipe(
-        map((data) => ({ ok: 1, timestamp: new Date(), ...reorganize(data) })),
+        map((data) =>
+          typeof data === 'object' && data !== null
+            ? { ok: 1, timestamp: new Date(), ...reorganize(data) }
+            : data,
+        ),
       )
   }
 }

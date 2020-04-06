@@ -12,8 +12,8 @@ import { NotesService } from './notes/notes.service'
 import { TestModule } from './test/test.module'
 import { PageController } from 'src/shared/page/page.controller'
 import { PageService } from 'src/shared/page/page.service'
-import { AdminController } from './admin/admin.controller';
-import { AdminService } from './admin/admin.service';
+import { AdminController } from './admin/admin.controller'
+import { AdminService } from './admin/admin.service'
 
 @Module({
   providers: [
