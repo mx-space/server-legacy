@@ -1,11 +1,12 @@
 import { CommonModule } from '@libs/common'
 import { DbModule } from '@libs/db'
 import { Module, Provider, ValidationPipe } from '@nestjs/common'
-import { APP_PIPE } from '@nestjs/core'
+import { APP_PIPE, APP_GUARD } from '@nestjs/core'
 import { GatewayModule } from 'src/gateway/gateway.module'
 import { AuthModule } from './auth/auth.module'
 import { MasterModule } from './master/master.module'
 import { SharedModule } from './shared/shared.module'
+import { SpiderGuard } from 'src/core/guards/spider.guard'
 
 const providers: Provider<any>[] = [
   {
@@ -18,6 +19,10 @@ const providers: Provider<any>[] = [
         // exceptionFactory: errors => new BadRequestException(errors),
       })
     },
+  },
+  {
+    provide: APP_GUARD,
+    useClass: SpiderGuard,
   },
 ]
 
