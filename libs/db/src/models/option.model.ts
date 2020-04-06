@@ -1,10 +1,10 @@
 import { prop } from '@typegoose/typegoose'
 import { Schema } from 'mongoose'
 
-export default class Option {
+export class Option {
   @prop({ unique: true, required: true })
-  name!: string
+  name: string
 
   @prop({ type: Schema.Types.Mixed })
-  value?: any
+  value: any
 }
