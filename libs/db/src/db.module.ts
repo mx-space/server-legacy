@@ -25,12 +25,15 @@ const models = TypegooseModule.forFeature([
 @Global()
 @Module({
   imports: [
-    TypegooseModule.forRoot('mongodb://localhost/nest-test', {
-      useCreateIndex: true,
-      useFindAndModify: false,
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-      autoIndex: true,
+    TypegooseModule.forRootAsync({
+      useFactory: () => ({
+        uri: (process.env.DB_URL || 'mongodb://localhost') + '/nest-test',
+        useCreateIndex: true,
+        useFindAndModify: false,
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+        autoIndex: true,
+      }),
     }),
     models,
   ],

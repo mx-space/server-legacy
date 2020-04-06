@@ -39,7 +39,7 @@ async function bootstrap() {
   SwaggerModule.setup('api-docs', app, document)
 
   const PORT = parseInt(process.env.PORT) || 3003
-  await app.listen(PORT)
+  await app.listen(PORT, '0.0.0.0')
 
   if (module.hot) {
     module.hot.accept()
