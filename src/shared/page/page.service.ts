@@ -1,8 +1,8 @@
-import { Injectable } from '@nestjs/common'
-import { BaseService } from '../base/base.service'
 import Page from '@libs/db/models/page.model'
+import { Injectable } from '@nestjs/common'
 import { ReturnModelType } from '@typegoose/typegoose'
 import { InjectModel } from 'nestjs-typegoose'
+import { BaseService } from '../base/base.service'
 
 @Injectable()
 export class PageService extends BaseService<Page> {

@@ -1,7 +1,7 @@
-import { Injectable } from '@nestjs/common'
-import { InjectModel } from 'nestjs-typegoose'
 import Menu from '@libs/db/models/menu.model'
+import { Injectable } from '@nestjs/common'
 import { ReturnModelType } from '@typegoose/typegoose'
+import { InjectModel } from 'nestjs-typegoose'
 import { BaseService } from '../base/base.service'
 
 @Injectable()

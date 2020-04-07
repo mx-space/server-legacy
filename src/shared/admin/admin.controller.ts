@@ -1,8 +1,8 @@
 import { Controller } from '@nestjs/common'
 import { AdminService } from 'src/shared/admin/admin.service'
-import { PostsService } from 'src/shared/posts/posts.service'
-import { NotesService } from 'src/shared/notes/notes.service'
 import { CommentsService } from 'src/shared/comments/comments.service'
+import { NotesService } from 'src/shared/notes/notes.service'
+import { PostsService } from 'src/shared/posts/posts.service'
 
 @Controller('admin')
 export class AdminController {

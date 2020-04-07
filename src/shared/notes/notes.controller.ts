@@ -18,10 +18,10 @@ import { Master } from 'src/core/decorators/guest.decorator'
 import { CannotFindException } from 'src/core/exceptions/cant-find.exception'
 import { PermissionInterceptor } from 'src/core/interceptors/permission.interceptors'
 import { IdDto } from 'src/shared/base/dto/id.dto'
+import { SearchDto } from 'src/shared/base/dto/search.dto'
 import { ListQueryDto, NidType, NoteDto } from 'src/shared/notes/dto/note.dto'
 import { addCondition } from 'src/shared/utils'
 import { NotesService } from './notes.service'
-import { SearchDto } from 'src/shared/base/dto/search.dto'
 @ApiTags('Note Routes')
 @Controller('notes')
 @UseInterceptors(PermissionInterceptor)

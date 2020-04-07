@@ -2,15 +2,15 @@ import { ApiProperty } from '@nestjs/swagger'
 import { Transform } from 'class-transformer'
 import {
   IsBoolean,
+  IsDefined,
   IsEnum,
+  IsInt,
   IsNotEmpty,
   IsNumber,
   IsOptional,
   IsString,
   Max,
   Min,
-  IsInt,
-  IsDefined,
 } from 'class-validator'
 
 export enum Mood {

@@ -1,10 +1,10 @@
 import Category from '@libs/db/models/category.model'
+import Comment from '@libs/db/models/comment.model'
 import Post from '@libs/db/models/post.model'
 import { Injectable } from '@nestjs/common'
 import { DocumentType, ReturnModelType } from '@typegoose/typegoose'
 import { InjectModel } from 'nestjs-typegoose'
 import { BaseService } from 'src/shared/base/base.service'
-import Comment from '@libs/db/models/comment.model'
 
 @Injectable()
 export class PostsService extends BaseService<Post> {

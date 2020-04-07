@@ -1,6 +1,6 @@
-import { IsOptional, IsNumber, Max, Min, IsEnum } from 'class-validator'
-import { Transform } from 'class-transformer'
 import { ApiProperty } from '@nestjs/swagger'
+import { Transform } from 'class-transformer'
+import { IsEnum, IsNumber, IsOptional, Max, Min } from 'class-validator'
 
 export class Pager {
   @Transform((val) => parseInt(val))

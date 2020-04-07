@@ -12,12 +12,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common'
 import { AuthGuard } from '@nestjs/passport'
-import {
-  ApiSecurity,
-  ApiTags,
-  ApiProperty,
-  ApiOperation,
-} from '@nestjs/swagger'
+import { ApiOperation, ApiSecurity, ApiTags } from '@nestjs/swagger'
 import { Types } from 'mongoose'
 import { RolesGuard } from 'src/auth/roles.guard'
 import { Master } from 'src/core/decorators/guest.decorator'

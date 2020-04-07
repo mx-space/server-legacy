@@ -1,4 +1,4 @@
-import { prop, modelOptions } from '@typegoose/typegoose'
+import { prop } from '@typegoose/typegoose'
 import { Schema } from 'mongoose'
 import { BaseModel } from './base.model'
 

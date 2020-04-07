@@ -1,7 +1,7 @@
-import { Module, HttpModule } from '@nestjs/common'
-import { TestController } from './test.controller'
-import { TestService } from 'src/shared/test/test.service'
+import { HttpModule, Module } from '@nestjs/common'
 import { GatewayModule } from 'src/gateway/gateway.module'
+import { TestService } from 'src/shared/test/test.service'
+import { TestController } from './test.controller'
 
 @Module({
   controllers: [TestController],

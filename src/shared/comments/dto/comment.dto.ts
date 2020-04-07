@@ -2,9 +2,9 @@ import { ApiProperty } from '@nestjs/swagger'
 import {
   IsEmail,
   IsNotEmpty,
+  IsOptional,
   IsString,
   IsUrl,
-  IsOptional,
 } from 'class-validator'
 
 export class CommentDto {

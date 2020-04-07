@@ -1,21 +1,21 @@
+import Page from '@libs/db/models/page.model'
 import {
+  Body,
   Controller,
+  Delete,
   Get,
   Param,
-  Query,
-  Body,
   Post,
   Put,
+  Query,
   UseGuards,
-  Delete,
 } from '@nestjs/common'
-import { PageService } from './page.service'
-import { IdDto } from 'src/shared/base/dto/id.dto'
+import { AuthGuard } from '@nestjs/passport'
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
 import { CannotFindException } from 'src/core/exceptions/cant-find.exception'
-import { ApiTags, ApiBearerAuth } from '@nestjs/swagger'
+import { IdDto } from 'src/shared/base/dto/id.dto'
 import { PagerDto } from 'src/shared/base/dto/pager.dto'
-import Page from '@libs/db/models/page.model'
-import { AuthGuard, PassportModule } from '@nestjs/passport'
+import { PageService } from './page.service'
 
 @ApiTags('Page Routes')
 @Controller('pages')

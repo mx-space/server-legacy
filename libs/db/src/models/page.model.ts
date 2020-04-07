@@ -1,19 +1,17 @@
 import { ApiProperty } from '@nestjs/swagger'
 import { arrayProp, prop } from '@typegoose/typegoose'
-import { Schema, Types } from 'mongoose'
-import { BaseModel } from './base.model'
 import {
-  IsEmail,
-  IsString,
-  IsNotEmpty,
-  IsOptional,
-  IsIn,
-  IsInt,
-  Min,
-  IsEnum,
   IsArray,
+  IsEnum,
+  IsInt,
+  IsNotEmpty,
   IsObject,
+  IsOptional,
+  IsString,
+  Min,
 } from 'class-validator'
+import { Schema } from 'mongoose'
+import { BaseModel } from './base.model'
 
 export const pageType = ['md', 'html', 'frame']
 export interface Message {

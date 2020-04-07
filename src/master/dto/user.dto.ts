@@ -1,11 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger'
 import {
-  IsString,
-  IsEmail,
-  IsUrl,
-  IsOptional,
-  IsNotEmpty,
   IsArray,
+  IsEmail,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  IsUrl,
 } from 'class-validator'
 export class UserDto {
   @ApiProperty()
