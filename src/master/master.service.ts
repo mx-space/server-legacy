@@ -14,7 +14,7 @@ export default class MasterService {
   ) {}
   // TODO: 扩展 <05-04-20 Innei> //
   async getMasterInfo() {
-    return await this.userModel.findOne()
+    return await this.userModel.findOne().select('-authCode')
   }
 
   async createMaster(model: User) {

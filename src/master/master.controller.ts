@@ -25,6 +25,7 @@ import { Master } from 'src/core/decorators/guest.decorator'
 import { LoginDto, UserDto, UserPatchDto } from 'src/master/dto/user.dto'
 import MasterService from 'src/master/master.service'
 import { IpLocation, IpRecord } from 'src/core/decorators/ip.decorator'
+import { getAvatar } from 'src/shared/utils'
 
 @Controller('master')
 @ApiTags('Master Routes')
@@ -36,7 +37,10 @@ export class MasterController {
   @Get()
   @ApiOperation({ summary: '获取主人信息' })
   async getMasterInfo() {
-    return await this.masterService.getMasterInfo()
+    const info = await this.masterService.getMasterInfo()
+
+    const avatar = getAvatar(info.mail)
+    return { ...info.toObject(), avatar }
   }
 
   @Post('register')
@@ -65,7 +69,19 @@ export class MasterController {
     @IpLocation() ipLocation: IpRecord,
   ) {
     const footstep = await this.masterService.recordFootstep(ipLocation.ip)
-    return { token: await this.authService.signToken(user._id), ...footstep }
+    const { name, username, created, url, mail } = user
+    const avatar = getAvatar(mail)
+    return {
+      token: await this.authService.signToken(user._id),
+      ...footstep,
+      name,
+      username,
+      created,
+      url,
+      mail,
+      avatar,
+      expiresIn: 7,
+    }
   }
 
   @Get('check_logged')

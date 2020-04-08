@@ -7,7 +7,8 @@ import {
 } from '@nestjs/common'
 import { Observable, of } from 'rxjs'
 import { map } from 'rxjs/operators'
-
+import { ServerResponse, IncomingMessage } from 'http'
+import { FastifyError, FastifyReply, FastifyRequest } from 'fastify'
 export interface Response<T> {
   data: T
 }
@@ -18,6 +19,13 @@ export class ResponseInterceptor<T> implements NestInterceptor<T, Response<T>> {
     context: ExecutionContext,
     next: CallHandler,
   ): Observable<Response<T>> {
+    // const req = context
+    //   .switchToHttp()
+    //   .getRequest<FastifyRequest<IncomingMessage>>()
+    // context
+    //   .switchToHttp()
+    //   .getResponse<FastifyReply<ServerResponse>>()
+    //   .header('Access-Control-Allow-Origin', req.hostname + req.req.url)
     const reorganize = (data) => {
       if (!data) {
         throw new UnprocessableEntityException('数据丢失了(｡ ́︿ ̀｡)')

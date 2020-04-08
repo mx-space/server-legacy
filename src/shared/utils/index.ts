@@ -25,3 +25,9 @@ export function PickOne<T>(arr: Array<T>): T {
   const random = getRandomInt(0, length)
   return arr[random]
 }
+
+const md5 = (text: string) =>
+  require('crypto').createHash('md5').update(text).digest('hex')
+export function getAvatar(mail: string) {
+  return `https://www.gravatar.com/avatar/${md5(mail)}`
+}

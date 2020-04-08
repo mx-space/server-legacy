@@ -20,7 +20,7 @@ async function bootstrap() {
   app.useGlobalFilters(new AllExceptionsFilter())
   app.useGlobalInterceptors(new ResponseInterceptor())
   if (process.env.NODE_ENV !== 'production') {
-    app.enableCors()
+    app.enableCors({ credentials: true })
   } else {
     app.setGlobalPrefix('api')
   }
