@@ -41,6 +41,7 @@ export class PostsController {
       limit: size,
       skip: (page - 1) * size,
       select,
+      sort: { created: -1 },
     })
   }
 
