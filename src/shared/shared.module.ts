@@ -14,6 +14,8 @@ import { PageController } from 'src/shared/page/page.controller'
 import { PageService } from 'src/shared/page/page.service'
 import { AdminController } from './admin/admin.controller'
 import { AdminService } from './admin/admin.service'
+import { ProjectsController } from './projects/projects.controller';
+import { ProjectsService } from './projects/projects.service';
 
 @Module({
   providers: [
@@ -24,6 +26,7 @@ import { AdminService } from './admin/admin.service'
     PageService,
     PostsService,
     AdminService,
+    ProjectsService,
   ],
   controllers: [
     CategoriesController,
@@ -33,6 +36,7 @@ import { AdminService } from './admin/admin.service'
     PageController,
     PostsController,
     AdminController,
+    ProjectsController,
   ],
   imports: [TestModule],
 })

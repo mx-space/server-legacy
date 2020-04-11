@@ -9,6 +9,7 @@ import { Option } from './models/option.model'
 import Page from './models/page.model'
 import Post from './models/post.model'
 import { User } from './models/user.model'
+import { Project } from './models/project.model'
 
 const models = TypegooseModule.forFeature([
   Category,
@@ -18,6 +19,7 @@ const models = TypegooseModule.forFeature([
   Option,
   Page,
   Post,
+  Project,
   User,
 ])
 
