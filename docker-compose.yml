@@ -1,0 +1,34 @@
+version: '3'
+services:
+  back_app:
+    depends_on:
+      - db
+    restart: always
+    build: .
+    ports:
+      - '2333:2333'
+    environment:
+      - DB_URL=mongodb://db_mongo
+      - SECRET=ahsdljhaisASHLDJ0asdJHJSHD
+      - PORT=2333
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+
+  db:
+    image: mongo
+    container_name: db_mongo
+    volumes:
+      - mongodata:/data/db
+    ports:
+      - '27017:27017'
+
+  restore:
+    image: mongo
+    volumes:
+      - ./dump:/var/dump
+    links:
+      - db:mongo
+    command: mongorestore --host db_mongo:27017 --db nest-test /var/dump/nest-test
+volumes:
+  mongodata:
