@@ -13,6 +13,14 @@ export default class Comment extends BaseModel {
   @prop({ ref: 'Post', required: true })
   pid!: Ref<Post>
 
+  @prop({
+    ref: 'Post',
+    foreignField: '_id',
+    localField: 'pid',
+    justOne: true,
+  })
+  public post: Ref<Post>
+
   @prop({ trim: true, required: true })
   author!: string
 

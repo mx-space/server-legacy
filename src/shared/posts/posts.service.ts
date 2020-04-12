@@ -5,6 +5,7 @@ import { Injectable } from '@nestjs/common'
 import { DocumentType, ReturnModelType } from '@typegoose/typegoose'
 import { InjectModel } from 'nestjs-typegoose'
 import { BaseService } from 'src/shared/base/base.service'
+import { CannotFindException } from 'src/core/exceptions/cant-find.exception'
 
 @Injectable()
 export class PostsService extends BaseService<Post> {
@@ -23,7 +24,11 @@ export class PostsService extends BaseService<Post> {
   }
 
   async findPostById(id: string) {
-    return await super.findById(id).populate('categoryId')
+    const doc = await super.findById(id).populate('category')
+    if (!doc) {
+      throw new CannotFindException()
+    }
+    return doc
   }
 
   async findCategoryById(id: string) {

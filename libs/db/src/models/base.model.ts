@@ -9,6 +9,11 @@ import * as uniqueValidator from 'mongoose-unique-validator'
     },
     toJSON: {
       versionKey: false,
+      virtuals: true,
+    },
+    toObject: {
+      versionKey: false,
+      virtuals: true,
     },
   },
 })

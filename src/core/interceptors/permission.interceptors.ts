@@ -20,7 +20,7 @@ export class PermissionInterceptor<T> implements NestInterceptor<T, AnyType> {
     const req = http.getRequest<FastifyRequest<IncomingMessage>>()
     return next.handle().pipe(
       map((data) => {
-        if (data.hide === true && !(req as any).isMaster) {
+        if (data && data.hide === true && !(req as any).isMaster) {
           throw new UnauthorizedException('你.是我的主人吗 ಠ_ಠ')
         }
         return data

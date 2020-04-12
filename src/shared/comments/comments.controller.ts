@@ -137,7 +137,7 @@ export class CommentsController {
     }
 
     const { id } = params
-    const parent = await this.commentService.findById(id).populate('pid')
+    const parent = await this.commentService.findById(id).populate('post')
     if (!parent) {
       throw new CannotFindException()
     }
@@ -146,7 +146,7 @@ export class CommentsController {
 
     const model = {
       parent,
-      pid: (parent.pid as DocumentType<PostModel>)._id,
+      pid: (parent.post as DocumentType<PostModel>)._id,
       ...body,
       ...ipLocation,
       key,

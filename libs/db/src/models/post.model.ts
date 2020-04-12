@@ -26,8 +26,16 @@ export default class Post extends BaseModel {
   @prop()
   summary?: string
 
-  @prop({ ref: 'Category' })
-  categoryId?: Ref<Category>
+  @prop({ ref: 'Category', required: true })
+  categoryId: Ref<Category>
+
+  @prop({
+    ref: 'Category',
+    foreignField: '_id',
+    localField: 'categoryId',
+    justOne: true,
+  })
+  public category: Ref<Category>
 
   @ApiProperty({ description: 'Hide?' })
   @prop({ default: false })
