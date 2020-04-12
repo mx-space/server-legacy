@@ -80,6 +80,9 @@ export class NotesService extends BaseService<Note> {
     if (!hasPassword) {
       return true
     }
+    if (!password) {
+      return false
+    }
     const isValid = compareSync(password, doc.password)
     return isValid
   }
