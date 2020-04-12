@@ -10,27 +10,48 @@ import {
   Query,
   UseGuards,
   UseInterceptors,
+  ForbiddenException,
 } from '@nestjs/common'
 import { AuthGuard } from '@nestjs/passport'
-import { ApiHeader, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger'
+import { ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger'
 import { RolesGuard } from 'src/auth/roles.guard'
 import { Master } from 'src/core/decorators/guest.decorator'
 import { CannotFindException } from 'src/core/exceptions/cant-find.exception'
 import { PermissionInterceptor } from 'src/core/interceptors/permission.interceptors'
 import { IdDto } from 'src/shared/base/dto/id.dto'
 import { SearchDto } from 'src/shared/base/dto/search.dto'
-import { ListQueryDto, NidType, NoteDto } from 'src/shared/notes/dto/note.dto'
+import {
+  ListQueryDto,
+  NidType,
+  NoteDto,
+  PasswordQueryDto,
+} from 'src/shared/notes/dto/note.dto'
 import { addCondition } from 'src/shared/utils'
+import { PagerDto } from '../base/dto/pager.dto'
 import { NotesService } from './notes.service'
+import { Auth } from 'src/core/decorators/auth.decorator'
 @ApiTags('Note Routes')
 @Controller('notes')
 @UseInterceptors(PermissionInterceptor)
 @UseGuards(RolesGuard)
 export class NotesController {
   constructor(private readonly noteService: NotesService) {}
+
+  @Get()
+  @ApiOperation({ summary: '获取随记带分页器' })
+  async getNotes(@Master() isMaster: boolean, @Query() query: PagerDto) {
+    const { size, select, page } = query
+    const condition = addCondition(isMaster)
+    return await this.noteService.findWithPaginator(condition, {
+      limit: size,
+      skip: (page - 1) * size,
+      select,
+      sort: { created: -1 },
+    })
+  }
+
   @Get('latest')
   @ApiOperation({ summary: '获取最新发布一篇随记' })
-  @ApiHeader({ name: 'referer', required: false })
   async getLatestOne(
     @Master() isMaster: boolean,
     @Headers('referer') referrer: string,
@@ -41,20 +62,29 @@ export class NotesController {
   }
 
   @Get(':id')
-  @ApiHeader({ name: 'referer', required: false })
   async getOneNote(
     @Param() params: IdDto,
     @Master() isMaster: boolean,
     @Headers('referer') referrer: string,
+    @Query() query: PasswordQueryDto,
   ) {
     const { id } = params
+    const { password } = query
     const condition = addCondition(isMaster)
-    const current = await this.noteService.findOne({
-      _id: id,
-      ...condition,
-    })
+    const current = await this.noteService
+      .findOne({
+        _id: id,
+        ...condition,
+      })
+      .select('+password')
     if (!current) {
       throw new CannotFindException()
+    }
+    if (
+      !this.noteService.checkPasswordToAccess(current, password) &&
+      !isMaster
+    ) {
+      throw new ForbiddenException('不要偷看人家的小心思啦~')
     }
     await this.noteService.shouldAddReadCount(referrer, current)
     const prev = await this.noteService
@@ -131,14 +161,14 @@ export class NotesController {
   }
 
   @Post()
-  @UseGuards(AuthGuard('jwt'))
+  @Auth()
   async createNewNote(@Body() body: NoteDto) {
     const res = await this.noteService.createNew(body)
     return res
   }
 
   @Put(':id')
-  @UseGuards(AuthGuard('jwt'))
+  @Auth()
   async modifyNote(@Body() body: NoteDto, @Param() params: IdDto) {
     const { id } = params
     const res = await this.noteService.update({ _id: id }, body)
@@ -146,7 +176,7 @@ export class NotesController {
   }
 
   @Delete(':id')
-  @UseGuards(AuthGuard('jwt'))
+  @Auth()
   async deleteNote(@Param() params: IdDto) {
     return await this.noteService.deleteByIdAsync(params.id)
   }
@@ -157,14 +187,15 @@ export class NotesController {
     @Param() params: NidType,
     @Master() isMaster: boolean,
     @Headers('referer') referrer: string,
+    @Query() query: PasswordQueryDto,
   ) {
     const _id = await this.noteService.validNid(params.nid)
-    return await this.getOneNote({ id: _id }, isMaster, referrer)
+    return await this.getOneNote({ id: _id }, isMaster, referrer, query)
   }
 
   @ApiOperation({ summary: '根据 nid 修改' })
   @Put('/nid/:nid')
-  @UseGuards(AuthGuard('jwt'))
+  @Auth()
   async modifyNoteByNid(@Param() params: NidType, @Body() body: NoteDto) {
     const _id = await this.noteService.validNid(params.nid)
     return await this.modifyNote(body, {

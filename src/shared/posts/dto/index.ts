@@ -52,7 +52,6 @@ export class PostDto {
   hide: boolean
 
   @IsOptional()
-  // @IsObject()
   @IsNotEmptyObject()
   @ApiProperty({ required: false, type: Object })
   options?: Record<any, any>

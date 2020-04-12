@@ -6,6 +6,7 @@ import {
   IsEnum,
   IsInt,
   IsNotEmpty,
+  IsNotEmptyObject,
   IsNumber,
   IsOptional,
   IsString,
@@ -45,6 +46,9 @@ export class NoteDto {
   @IsNotEmpty()
   @Transform((password) => (String(password).length === 0 ? null : password))
   password?: string
+  @IsOptional()
+  @IsNotEmptyObject()
+  options?: Record<string, unknown>
 }
 export class ListQueryDto {
   @IsNumber()
@@ -63,4 +67,11 @@ export class NidType {
   @ApiProperty()
   @Transform((val) => parseInt(val))
   nid: number
+}
+
+export class PasswordQueryDto {
+  @IsString()
+  @IsOptional()
+  @IsNotEmpty()
+  password?: string
 }

@@ -5,6 +5,7 @@ import { InjectModel } from 'nestjs-typegoose'
 import { CannotFindException } from 'src/core/exceptions/cant-find.exception'
 import { addCondition } from 'src/shared/utils'
 import { BaseService } from '../base/base.service'
+import { compareSync } from 'bcrypt'
 
 @Injectable()
 export class NotesService extends BaseService<Note> {
@@ -72,5 +73,14 @@ export class NotesService extends BaseService<Note> {
       throw new CannotFindException()
     }
     return document._id
+  }
+
+  checkPasswordToAccess(doc: DocumentType<Note>, password: string): boolean {
+    const hasPassword = doc.password
+    if (!hasPassword) {
+      return true
+    }
+    const isValid = compareSync(password, doc.password)
+    return isValid
   }
 }

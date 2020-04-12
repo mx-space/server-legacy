@@ -1,4 +1,3 @@
-// TODO 限制密码访问
 export function addCondition(isMaster: boolean) {
   return isMaster
     ? {
@@ -7,7 +6,7 @@ export function addCondition(isMaster: boolean) {
     : { $or: [{ hide: false }] }
 }
 
-export const Range = (min: number, max: number): number[] => {
+export const range = (min: number, max: number): number[] => {
   const arr = []
   for (let index = min; index <= max; index++) {
     arr.push(index)
