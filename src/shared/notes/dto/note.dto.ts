@@ -14,7 +14,7 @@ import {
   Min,
 } from 'class-validator'
 
-export enum Mood {
+export enum MoodSet {
   'happy' = '开心',
   'sad' = '伤心',
   'angry' = '生气',
@@ -28,6 +28,8 @@ export enum Mood {
   'anxiety' = '焦虑',
   'excite' = '激动',
 }
+
+export const Mood = Object.keys(MoodSet)
 
 export class NoteDto {
   @ApiProperty({ example: 'This is title' })
