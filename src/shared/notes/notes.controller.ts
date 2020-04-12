@@ -39,6 +39,7 @@ export class NotesController {
 
   @Get()
   @ApiOperation({ summary: '获取随记带分页器' })
+  @Auth()
   async getNotes(@Master() isMaster: boolean, @Query() query: PagerDto) {
     const { size, select, page } = query
     const condition = addCondition(isMaster)
