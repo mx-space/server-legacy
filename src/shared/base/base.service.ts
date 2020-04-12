@@ -126,7 +126,6 @@ export abstract class BaseService<T extends BaseModel> {
   public async findAsync(
     condition: FilterQuery<T>,
     options: {
-      lean?: boolean
       populates?: ModelPopulateOptions[] | ModelPopulateOptions
       populate?: string | Array<string>
       [key: string]: AnyType
@@ -136,7 +135,10 @@ export abstract class BaseService<T extends BaseModel> {
       select?: string | Array<string>
     } = {},
   ): AsyncQueryList<T> {
-    return await this.model.find(condition as any).setOptions(options)
+    return await this.model
+      .find(condition as any)
+      .setOptions(options)
+      .lean()
   }
 
   public async findWithPaginator(
@@ -182,15 +184,12 @@ export abstract class BaseService<T extends BaseModel> {
     return this.model.countDocuments(condition)
   }
 
-  // FIXME:  <25-03-20 some bugs> //
-  public async findByIdAsync(
-    id: string | Types.ObjectId,
-  ): Promise<DocumentType<T> | null> {
-    const query = await this.model.findById(id)
+  public async findByIdAsync(id: string | Types.ObjectId): Promise<T> {
+    const query = await this.model.findById(id).lean().sort({ created: -1 })
     if (!query) {
       throw new BadRequestException('此记录不存在')
     }
-    return query
+    return query as T
   }
 
   public findById(
@@ -231,14 +230,17 @@ export abstract class BaseService<T extends BaseModel> {
     conditions: AnyType,
     projection?: object | string,
     options: {
-      lean?: boolean
       populates?: ModelPopulateOptions[] | ModelPopulateOptions
       [key: string]: AnyType
     } = {},
-  ): Promise<DocumentType<T>> {
+  ): Promise<T> {
     const { ...option } = options
-    const docsQuery = await this.findOne(conditions, projection || {}, option)
-    return docsQuery
+    const docsQuery = await this.findOne(
+      conditions,
+      projection || {},
+      option,
+    ).lean()
+    return docsQuery as T
   }
 
   /**

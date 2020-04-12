@@ -46,10 +46,11 @@ export class CategoriesController {
 
     const isId = Types.ObjectId.isValid(query)
     const res = isId
-      ? await this.categoryService.findById(query).sort({ created: -1 })
+      ? await this.categoryService.findById(query).sort({ created: -1 }).lean()
       : await this.categoryService
           .findOne({ slug: query })
           .sort({ created: -1 })
+          .lean()
 
     if (!res) {
       throw new CannotFindException()
@@ -58,7 +59,7 @@ export class CategoriesController {
     // the expect is [] or null
     const children =
       (await this.categoryService.findCategoryPost(res._id, isMaster)) || []
-    return { data: { ...res.toObject(), children } }
+    return { data: { ...res, children } }
   }
 
   @Post()

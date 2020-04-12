@@ -64,12 +64,6 @@ export default class Page extends BaseModel {
   @IsOptional()
   type?: string
 
-  @ApiProperty({ description: '留言', required: false })
-  @arrayProp({ items: Schema.Types.Mixed })
-  @IsArray()
-  @IsOptional()
-  messages?: Message[]
-
   @ApiProperty({ description: 'Other Options', required: false })
   @prop({ type: Schema.Types.Mixed })
   @IsOptional()
