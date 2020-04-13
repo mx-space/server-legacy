@@ -34,7 +34,7 @@
     "cache-manager": "^3.2.1",
     "class-transformer": "^0.2.3",
     "class-validator": "^0.11.1",
-    "fastify": "^2.13.0",
+    "fastify": "^2.13.1",
     "fastify-multipart": "^1.0.5",
     "fastify-swagger": "^2.5.1",
     "file-type": "^14.1.4",
