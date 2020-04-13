@@ -8,12 +8,23 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 import { AllExceptionsFilter } from 'src/core/filters/any-exception.filter'
 import { ResponseInterceptor } from 'src/core/interceptors/response.interceptors'
 import { AppModule } from './app.module'
+import * as FastifyMultipart from 'fastify-multipart'
 declare const module: any
 
 async function bootstrap() {
+  const fAdapt = new FastifyAdapter({ logger: true })
+  fAdapt.register(FastifyMultipart, {
+    addToBody: true,
+    limits: {
+      fields: 10, // Max number of non-file fields
+      fileSize: 1024 * 1024 * 6, // limit size 6M
+      files: 5, // Max number of file fields
+    },
+  })
+
   const app = await NestFactory.create<NestFastifyApplication>(
     AppModule,
-    new FastifyAdapter({ logger: true }),
+    fAdapt,
   )
 
   app.useWebSocketAdapter(new WsAdapter(app))

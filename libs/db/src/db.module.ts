@@ -1,19 +1,21 @@
-import Menu from '@libs/db/models/menu.model'
-import { Global, Module } from '@nestjs/common'
-import { TypegooseModule } from 'nestjs-typegoose'
-import { DbService } from './db.service'
 import Category from './models/category.model'
 import Comment from './models/comment.model'
+import Menu from '@libs/db/models/menu.model'
 import Note from './models/note.model'
-import { Option } from './models/option.model'
 import Page from './models/page.model'
 import Post from './models/post.model'
-import { User } from './models/user.model'
+import { DbService } from './db.service'
+import { File } from './models/file.model'
+import { Global, Module } from '@nestjs/common'
+import { Option } from './models/option.model'
 import { Project } from './models/project.model'
+import { TypegooseModule } from 'nestjs-typegoose'
+import { User } from './models/user.model'
 
 const models = TypegooseModule.forFeature([
   Category,
   Comment,
+  File,
   Menu,
   Note,
   Option,

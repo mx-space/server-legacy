@@ -20,11 +20,14 @@ const providers: Provider<any>[] = [
       })
     },
   },
-  {
+]
+
+if (process.env.NODE_ENV === 'production') {
+  providers.push({
     provide: APP_GUARD,
     useClass: SpiderGuard,
-  },
-]
+  })
+}
 
 @Module({
   imports: [
