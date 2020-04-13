@@ -12,7 +12,6 @@ import {
   UseInterceptors,
   ForbiddenException,
 } from '@nestjs/common'
-import { AuthGuard } from '@nestjs/passport'
 import { ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger'
 import { RolesGuard } from 'src/auth/roles.guard'
 import { Master } from 'src/core/decorators/guest.decorator'

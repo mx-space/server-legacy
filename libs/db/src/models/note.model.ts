@@ -23,6 +23,14 @@ export enum MoodSet {
   'excite' = '激动',
 }
 
+export enum WeatherSet {
+  'sunshine' = '晴',
+  'cloudy' = '多云',
+  'rainy' = '雨',
+  'overcast' = '阴',
+  'snow' = '雪',
+}
+
 class Count {
   @prop({ default: 0 })
   read?: number
@@ -67,7 +75,7 @@ export default class Note extends BaseCommentIndexModel {
   @prop({ enum: Object.keys(MoodSet) })
   mood?: string
 
-  @prop()
+  @prop({ enum: Object.keys(WeatherSet) })
   weather?: string
 
   // TODO bugs

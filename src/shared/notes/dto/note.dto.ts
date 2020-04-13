@@ -13,10 +13,10 @@ import {
   Max,
   Min,
 } from 'class-validator'
-import { MoodSet } from '@libs/db/models/note.model'
+import { MoodSet, WeatherSet } from '@libs/db/models/note.model'
 
 export const Mood = Object.keys(MoodSet)
-
+export const Weather = Object.keys(WeatherSet)
 export class NoteDto {
   @ApiProperty({ example: 'This is title' })
   @IsString()
@@ -29,8 +29,8 @@ export class NoteDto {
   @IsOptional()
   @IsEnum(Mood)
   mood?: string
-  @ApiProperty({ required: false })
-  @IsString()
+  @ApiProperty({ required: false, enum: Weather })
+  @IsEnum(Weather)
   @IsOptional()
   weather?: string
   @ApiProperty({ example: false })
