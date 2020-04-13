@@ -23,3 +23,8 @@ export abstract class BaseModel {
   @prop()
   modified: Date
 }
+
+export abstract class BaseCommentIndexModel extends BaseModel {
+  @prop({ default: 0 })
+  commentsIndex?: number
+}

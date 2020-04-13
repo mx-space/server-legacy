@@ -1,3 +1,4 @@
+import Comment, { CommentRefTypes } from '@libs/db/models/comment.model'
 import {
   Body,
   Controller,
@@ -12,24 +13,27 @@ import {
 } from '@nestjs/common'
 import { AuthGuard } from '@nestjs/passport'
 import {
+  ApiBearerAuth,
   ApiOperation,
   ApiParam,
   ApiSecurity,
   ApiTags,
-  ApiBearerAuth,
 } from '@nestjs/swagger'
 import { DocumentType } from '@typegoose/typegoose'
-import PostModel from 'libs/db/src/models/post.model'
 import { RolesGuard } from 'src/auth/roles.guard'
 import { Master } from 'src/core/decorators/guest.decorator'
 import { IpLocation, IpRecord } from 'src/core/decorators/ip.decorator'
 import { CannotFindException } from 'src/core/exceptions/cant-find.exception'
-import { CommentDto, TextOnlyDto } from 'src/shared/comments/dto/comment.dto'
+import { PagerDto } from 'src/shared/base/dto/pager.dto'
+import {
+  CommentDto,
+  CommentRefTypesDto,
+  TextOnlyDto,
+} from 'src/shared/comments/dto/comment.dto'
+import { Pager } from 'src/shared/comments/dto/pager.dto'
 import { StateQueryDto } from 'src/shared/comments/dto/state.dto'
 import { IdDto } from '../base/dto/id.dto'
 import { CommentsService } from './comments.service'
-import { Pager } from 'src/shared/comments/dto/pager.dto'
-import { PagerDto } from 'src/shared/base/dto/pager.dto'
 
 @Controller('comments')
 @ApiTags('Comment Routes')
@@ -53,19 +57,22 @@ export class CommentsController {
     })
   }
 
-  @Get('/post/:id')
+  @Get('/ref/:id')
   @ApiParam({
     name: 'id',
-    description: 'pid',
+    description: 'refId',
     example: '5e6f67e85b303781d28072a3',
   })
-  async getCommentsByPid(@Param() params: IdDto, @Query() query: PagerDto) {
+  async getCommentsByRefId(
+    @Param() params: IdDto,
+    @Query() query: PagerDto & CommentRefTypesDto,
+  ) {
     const { id } = params
     const { page, size, select } = query
     const comments = await this.commentService.findWithPaginator(
       {
         parent: undefined,
-        pid: id,
+        ref: id,
       },
       {
         limit: size,
@@ -105,14 +112,21 @@ export class CommentsController {
     @Body('author') author: string,
     @Master() isMaster: boolean,
     @IpLocation() ipLocation: IpRecord,
+    @Query() query: CommentRefTypesDto,
   ) {
     if (!isMaster) {
       await this.commentService.ValidAuthorName(author)
     }
-    const pid = params.id
+    const { ref } = query
+
+    const id = params.id
     const model = { ...body, ...ipLocation }
     try {
-      const comment = await this.commentService.createComment(pid, model)
+      const comment = await this.commentService.createComment(
+        id,
+        ref || CommentRefTypes.Post,
+        model,
+      )
       return comment
     } catch {
       throw new CannotFindException()
@@ -137,16 +151,17 @@ export class CommentsController {
     }
 
     const { id } = params
-    const parent = await this.commentService.findById(id).populate('post')
+    const parent = await this.commentService.findById(id).populate('ref')
     if (!parent) {
       throw new CannotFindException()
     }
     const commentIndex = parent.commentsIndex
     const key = `${parent.key}#${commentIndex + 1}`
 
-    const model = {
+    const model: Partial<Comment> = {
       parent,
-      pid: (parent.post as DocumentType<PostModel>)._id,
+      ref: (parent.ref as DocumentType<any>)._id,
+      refType: parent.refType,
       ...body,
       ...ipLocation,
       key,
@@ -175,6 +190,7 @@ export class CommentsController {
     @Param() params: IdDto,
     @Body() body: TextOnlyDto,
     @IpLocation() ipLocation: IpRecord,
+    @Query() query: CommentRefTypesDto,
   ) {
     // console.log(req.user)
     const { name, mail, url } = req.user
@@ -184,7 +200,14 @@ export class CommentsController {
       mail,
       url,
     }
-    return await this.comment(params, model as any, undefined, true, ipLocation)
+    return await this.comment(
+      params,
+      model as any,
+      undefined,
+      true,
+      ipLocation,
+      query,
+    )
   }
 
   @Post('/master/reply/:id')

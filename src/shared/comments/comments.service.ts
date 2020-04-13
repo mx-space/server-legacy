@@ -1,17 +1,19 @@
-import Comment from '@libs/db/models/comment.model'
+import Comment, { CommentRefTypes } from '@libs/db/models/comment.model'
 import Post from '@libs/db/models/post.model'
+import { User } from '@libs/db/models/user.model'
 import {
+  BadRequestException,
   Injectable,
   UnprocessableEntityException,
-  BadRequestException,
 } from '@nestjs/common'
 import { ReturnModelType } from '@typegoose/typegoose'
-import { Types, FilterQuery, QueryCursor } from 'mongoose'
+import { Cursor } from 'mongodb'
+import { FilterQuery, Types } from 'mongoose'
 import { InjectModel } from 'nestjs-typegoose'
 import { CannotFindException } from 'src/core/exceptions/cant-find.exception'
 import { BaseService } from '../base/base.service'
-import { User } from '@libs/db/models/user.model'
-import { Cursor } from 'mongodb'
+import Note from '@libs/db/models/note.model'
+import Page from '@libs/db/models/page.model'
 @Injectable()
 export class CommentsService extends BaseService<Comment> {
   constructor(
@@ -19,24 +21,47 @@ export class CommentsService extends BaseService<Comment> {
     private readonly commentModel: ReturnModelType<typeof Comment>,
     @InjectModel(Post)
     private readonly postModel: ReturnModelType<typeof Post>,
+    @InjectModel(Note)
+    private readonly noteModel: ReturnModelType<typeof Note>,
+    @InjectModel(Page)
+    private readonly pageModel: ReturnModelType<typeof Page>,
     @InjectModel(User)
     private readonly userModel: ReturnModelType<typeof User>,
   ) {
     super(commentModel)
   }
 
-  async createComment(pid: string, model: Partial<Comment>) {
-    const post = await this.postModel.findById(pid)
-    if (!post) {
+  getModelByRefType(type: CommentRefTypes) {
+    const map = new Map(
+      Object.entries({
+        Post: this.postModel,
+        Note: this.noteModel,
+        page: this.pageModel,
+      }),
+    )
+    return (map.get(type) as any) as ReturnModelType<
+      typeof Note | typeof Post | typeof Page
+    >
+  }
+
+  async createComment(
+    id: string,
+    type: CommentRefTypes,
+    doc: Partial<Comment>,
+  ) {
+    const model = this.getModelByRefType(type)
+    const ref = await model.findById(id)
+    if (!ref) {
       throw new CannotFindException()
     }
-    const commentIndex = post.commentsIndex
-    model.key = `#${commentIndex + 1}`
+    const commentIndex = ref.commentsIndex
+    doc.key = `#${commentIndex + 1}`
     const comment = await this.createNew({
-      ...model,
-      pid: Types.ObjectId(pid),
+      ...doc,
+      ref: Types.ObjectId(id),
+      refType: type,
     })
-    await post.updateOne({
+    await ref.updateOne({
       $inc: {
         commentsIndex: 1,
       },

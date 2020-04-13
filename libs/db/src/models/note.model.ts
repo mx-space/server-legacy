@@ -6,7 +6,23 @@ import { index, plugin, prop } from '@typegoose/typegoose'
 import { hashSync } from 'bcrypt'
 import { Schema } from 'mongoose'
 import * as uniqueValidator from 'mongoose-unique-validator'
-import { BaseModel } from './base.model'
+import { BaseCommentIndexModel } from './base.model'
+
+export enum MoodSet {
+  'happy' = '开心',
+  'sad' = '伤心',
+  'angry' = '生气',
+  'sorrow' = '悲哀',
+  'pain' = '痛苦',
+  'terrible' = '可怕',
+  'unhappy' = '不快',
+  'detestable' = '可恶',
+  'worry' = '担心',
+  'despair' = '绝望',
+  'anxiety' = '焦虑',
+  'excite' = '激动',
+}
+
 class Count {
   @prop({ default: 0 })
   read?: number
@@ -24,7 +40,7 @@ class Count {
 @index({ text: 'text' })
 @index({ modified: -1 })
 @index({ created: -1, modified: -1 })
-export default class Note extends BaseModel {
+export default class Note extends BaseCommentIndexModel {
   @prop({ index: true, required: false })
   public nid: number
 
@@ -48,7 +64,7 @@ export default class Note extends BaseModel {
   })
   password?: string
 
-  @prop()
+  @prop({ enum: Object.keys(MoodSet) })
   mood?: string
 
   @prop()

@@ -13,21 +13,7 @@ import {
   Max,
   Min,
 } from 'class-validator'
-
-export enum MoodSet {
-  'happy' = '开心',
-  'sad' = '伤心',
-  'angry' = '生气',
-  'sorrow' = '悲哀',
-  'pain' = '痛苦',
-  'terrible' = '可怕',
-  'unhappy' = '不快',
-  'detestable' = '可恶',
-  'worry' = '担心',
-  'despair' = '绝望',
-  'anxiety' = '焦虑',
-  'excite' = '激动',
-}
+import { MoodSet } from '@libs/db/models/note.model'
 
 export const Mood = Object.keys(MoodSet)
 

@@ -5,7 +5,9 @@ import {
   IsOptional,
   IsString,
   IsUrl,
+  IsEnum,
 } from 'class-validator'
+import { CommentRefTypes } from '@libs/db/models/comment.model'
 
 export class CommentDto {
   @IsString()
@@ -35,4 +37,11 @@ export class TextOnlyDto {
   @IsNotEmpty()
   @ApiProperty()
   text: string
+}
+
+export class CommentRefTypesDto {
+  @IsOptional()
+  @IsEnum(CommentRefTypes)
+  @ApiProperty({ enum: CommentRefTypes, required: false })
+  ref: CommentRefTypes
 }

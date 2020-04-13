@@ -1,7 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { arrayProp, prop } from '@typegoose/typegoose'
+import { prop } from '@typegoose/typegoose'
 import {
-  IsArray,
   IsEnum,
   IsInt,
   IsNotEmpty,
@@ -11,7 +10,7 @@ import {
   Min,
 } from 'class-validator'
 import { Schema } from 'mongoose'
-import { BaseModel } from './base.model'
+import { BaseCommentIndexModel } from './base.model'
 
 export const pageType = ['md', 'html', 'frame']
 export interface Message {
@@ -21,7 +20,7 @@ export interface Message {
   created: Date
 }
 
-export default class Page extends BaseModel {
+export default class Page extends BaseCommentIndexModel {
   @ApiProperty({ description: 'Slug', required: true })
   @prop({ trim: 1, index: true, required: true, unique: true })
   @IsString()
