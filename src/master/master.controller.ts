@@ -50,13 +50,13 @@ export class MasterController {
   @ApiOperation({ summary: '注册' })
   async register(@Body() userDto: UserDto) {
     userDto.name = userDto.name ?? userDto.username
-    return await this.masterService.createMaster(userDto as User)
+    return this.masterService.createMaster(userDto as User)
   }
 
   @Post('sign_up')
   @ApiOperation({ summary: '注册重定向' })
   async signUp(@Body() userDto: UserDto) {
-    return await this.register(userDto)
+    return this.register(userDto)
   }
 
   @Post('login')
@@ -101,6 +101,6 @@ export class MasterController {
     @Body() body: UserPatchDto,
     @CurrentUser() user: DocumentType<User>,
   ) {
-    return await this.masterService.changePassword(user, body)
+    return this.masterService.changePassword(user, body)
   }
 }

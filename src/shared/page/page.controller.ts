@@ -60,7 +60,7 @@ export class PageController {
   @ApiBearerAuth()
   @UseGuards(AuthGuard('jwt'))
   async createPage(@Body() body: Page) {
-    return await this.service.createNew(body)
+    return this.service.createNew(body)
   }
 
   @Put(':id')
@@ -68,14 +68,14 @@ export class PageController {
   @UseGuards(AuthGuard('jwt'))
   async modifiedPage(@Body() body: Page, @Param() params: IdDto) {
     const { id } = params
-    return await this.service.updateById(id, body)
+    return this.service.updateById(id, body)
   }
 
   @Delete(':id')
   @ApiBearerAuth()
   @UseGuards(AuthGuard('jwt'))
   async deletePage(@Param() params: IdDto) {
-    return await this.service.deleteOneAsync({
+    return this.service.deleteOneAsync({
       _id: params.id,
     })
   }

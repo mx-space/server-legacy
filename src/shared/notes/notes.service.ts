@@ -50,7 +50,7 @@ export class NotesService extends BaseService<Note> {
     document: DocumentType<Note>,
   ) {
     if (condition) {
-      return await document.updateOne({
+      return document.updateOne({
         $inc: {
           'count.read': 1,
         },

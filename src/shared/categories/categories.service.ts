@@ -20,7 +20,7 @@ export class CategoriesService extends BaseService<Category> {
   async findCategoryPost(categoryId: string, isMaster = false) {
     const condition = addCondition(isMaster)
     // FIXME 2020-04-01 it will be show hide post if guest access this api
-    return await this.postModel
+    return this.postModel
       .find({
         categoryId,
         ...condition,
@@ -30,7 +30,7 @@ export class CategoriesService extends BaseService<Category> {
   }
 
   async findPostsInCategory(id: string) {
-    return await this.postModel.find({
+    return this.postModel.find({
       categoryId: id,
     })
   }

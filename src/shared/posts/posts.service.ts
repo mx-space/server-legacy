@@ -20,7 +20,7 @@ export class PostsService extends BaseService<Post> {
   }
 
   async getCategoryBySlug(slug: string): Promise<DocumentType<Category>> {
-    return await this.categoryModel.findOne({ slug })
+    return this.categoryModel.findOne({ slug })
   }
 
   async findPostById(id: string) {
@@ -32,7 +32,7 @@ export class PostsService extends BaseService<Post> {
   }
 
   async findCategoryById(id: string) {
-    return await this.categoryModel.findById(id)
+    return this.categoryModel.findById(id)
   }
 
   async deletePost(id: string) {

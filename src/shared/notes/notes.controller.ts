@@ -42,7 +42,7 @@ export class NotesController {
   async getNotes(@Master() isMaster: boolean, @Query() query: PagerDto) {
     const { size, select, page } = query
     const condition = addCondition(isMaster)
-    return await this.noteService.findWithPaginator(condition, {
+    return this.noteService.findWithPaginator(condition, {
       limit: size,
       skip: (page - 1) * size,
       select,
@@ -178,7 +178,7 @@ export class NotesController {
   @Delete(':id')
   @Auth()
   async deleteNote(@Param() params: IdDto) {
-    return await this.noteService.deleteByIdAsync(params.id)
+    return this.noteService.deleteByIdAsync(params.id)
   }
 
   @ApiOperation({ summary: '根据 nid 查找' })
@@ -190,7 +190,7 @@ export class NotesController {
     @Query() query: PasswordQueryDto,
   ) {
     const _id = await this.noteService.validNid(params.nid)
-    return await this.getOneNote({ id: _id }, isMaster, referrer, query)
+    return this.getOneNote({ id: _id }, isMaster, referrer, query)
   }
 
   @ApiOperation({ summary: '根据 nid 修改' })
@@ -198,7 +198,7 @@ export class NotesController {
   @Auth()
   async modifyNoteByNid(@Param() params: NidType, @Body() body: NoteDto) {
     const _id = await this.noteService.validNid(params.nid)
-    return await this.modifyNote(body, {
+    return this.modifyNote(body, {
       id: _id,
     })
   }
@@ -211,7 +211,7 @@ export class NotesController {
     const keywordArr = keyword
       .split(/\s+/)
       .map((item) => new RegExp(String(item), 'ig'))
-    return await this.noteService.findWithPaginator(
+    return this.noteService.findWithPaginator(
       { $or: [{ title: { $in: keywordArr } }, { text: { $in: keywordArr } }] },
       {
         limit: size,

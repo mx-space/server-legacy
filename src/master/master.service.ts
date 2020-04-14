@@ -14,7 +14,7 @@ export default class MasterService {
   ) {}
   // TODO: 扩展 <05-04-20 Innei> //
   async getMasterInfo() {
-    return await this.userModel.findOne().select('-authCode')
+    return this.userModel.findOne().select('-authCode')
   }
 
   async createMaster(model: User) {
@@ -54,7 +54,7 @@ export default class MasterService {
       const newCode = nanoid(10)
       doc.authCode = newCode
     }
-    return await this.userModel
+    return this.userModel
       .updateOne({ _id: user._id }, doc)
       .setOptions({ omitUndefined: true })
   }

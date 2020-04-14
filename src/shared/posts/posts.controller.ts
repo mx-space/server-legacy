@@ -37,7 +37,7 @@ export class PostsController {
   async getAll(@Master() isMaster?: boolean, @Query() query?: PagerDto) {
     const { size, select, page } = query
     const condition = addCondition(isMaster)
-    return await this.postService.findWithPaginator(condition, {
+    return this.postService.findWithPaginator(condition, {
       limit: size,
       skip: (page - 1) * size,
       select,
@@ -73,7 +73,7 @@ export class PostsController {
   @Get(':id')
   @ApiOperation({ summary: '根据 ID 查找' })
   async getById(@Param() query: IdDto) {
-    return await this.postService.findPostById(query.id)
+    return this.postService.findPostById(query.id)
   }
 
   @Post()
@@ -166,7 +166,7 @@ export class PostsController {
     const keywordArr = keyword
       .split(/\s+/)
       .map((item) => new RegExp(String(item), 'ig'))
-    return await this.postService.findWithPaginator(
+    return this.postService.findWithPaginator(
       { $or: [{ title: { $in: keywordArr } }, { text: { $in: keywordArr } }] },
       {
         limit: size,

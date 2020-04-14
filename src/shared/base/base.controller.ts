@@ -14,13 +14,13 @@ export abstract class BaseCrud<
   @Get(':id')
   async get(@Param() param: IdDto) {
     const { id } = param
-    return await this.service.findByIdAsync(id)
+    return this.service.findByIdAsync(id)
   }
 
   @Get()
   async gets(@Query() pager: PagerDto) {
     const { size, page, select } = pager
-    return await this.service.findWithPaginator(
+    return this.service.findWithPaginator(
       {},
       {
         limit: size,
@@ -34,18 +34,18 @@ export abstract class BaseCrud<
   @Post()
   @Auth()
   async post(@Body() body: U) {
-    return await this.service.createNew(body)
+    return this.service.createNew(body)
   }
 
   @Put(':id')
   @Auth()
   async put(@Body() body: U, @Param() param: IdDto) {
-    return await this.service.updateAsync({ _id: param.id as any }, body)
+    return this.service.updateAsync({ _id: param.id as any }, body)
   }
 
   @Delete(':id')
   @Auth()
   async delete(@Param() param: IdDto) {
-    return await this.service.deleteAsync({ _id: param.id })
+    return this.service.deleteAsync({ _id: param.id })
   }
 }

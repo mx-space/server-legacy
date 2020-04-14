@@ -135,7 +135,7 @@ export abstract class BaseService<T extends BaseModel> {
       select?: string | Array<string>
     } = {},
   ): AsyncQueryList<T> {
-    return await this.model
+    return this.model
       .find(condition as any)
       .setOptions(options)
       .lean()
@@ -249,7 +249,7 @@ export abstract class BaseService<T extends BaseModel> {
    * @returns {Promise<DocumentType<T>>}
    */
   async createNew(data: Partial<T>): Promise<DocumentType<T>> {
-    return await this.model.create(data)
+    return this.model.create(data)
   }
   /**
    * @description 删除指定数据
@@ -267,7 +267,7 @@ export abstract class BaseService<T extends BaseModel> {
     conditions: AnyType,
     options?: QueryFindOneAndRemoveOptions,
   ): Promise<DocumentType<T>> {
-    return await this.delete(conditions, options).exec()
+    return this.delete(conditions, options).exec()
   }
 
   /**
@@ -287,7 +287,7 @@ export abstract class BaseService<T extends BaseModel> {
     id: string | Types.ObjectId,
     options?: QueryFindOneAndRemoveOptions,
   ): Promise<FindAndModifyWriteOpResultObject<DocumentType<T>>> {
-    return await this.findAndDeleteById(id, options).exec()
+    return this.findAndDeleteById(id, options).exec()
   }
 
   public deleteOne(conditions: AnyType) {
@@ -301,7 +301,7 @@ export abstract class BaseService<T extends BaseModel> {
 
   public async deleteByIdAsync(id: string) {
     if (Types.ObjectId.isValid(id)) {
-      return await this.deleteOneAsync({
+      return this.deleteOneAsync({
         _id: id,
       })
     }

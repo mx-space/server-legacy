@@ -31,7 +31,7 @@ export class CategoriesController {
 
   @Get()
   async getAllCategories() {
-    return await this.categoryService.find({})
+    return this.categoryService.find({})
   }
 
   @Get(':query')

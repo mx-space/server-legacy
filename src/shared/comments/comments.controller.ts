@@ -44,7 +44,7 @@ export class CommentsController {
   @Get()
   async getRecentlyComments(@Query() query: Pager) {
     const { size = 10, page = 1, state = 0 } = query
-    return await this.commentService.getRecently({ size, page, state })
+    return this.commentService.getRecently({ size, page, state })
   }
 
   // TODO show comment agent and ip for admin 2020-04-01 //
@@ -52,7 +52,7 @@ export class CommentsController {
   @ApiOperation({ summary: '根据 cid 获取评论, 包括子评论 ' })
   async getComments(@Param() params: IdDto) {
     const { id } = params
-    return await this.commentService.findOne({
+    return this.commentService.findOne({
       _id: id,
     })
   }
@@ -200,7 +200,7 @@ export class CommentsController {
       mail,
       url,
     }
-    return await this.comment(
+    return this.comment(
       params,
       model as any,
       undefined,
@@ -228,7 +228,7 @@ export class CommentsController {
       mail,
       url,
     }
-    return await this.replyByCid(params, model, undefined, true, ipLocation)
+    return this.replyByCid(params, model, undefined, true, ipLocation)
   }
   @Put(':id')
   @ApiOperation({ summary: '修改评论的状态' })
@@ -260,6 +260,6 @@ export class CommentsController {
   @ApiSecurity('bearer')
   async deleteComment(@Param() params: IdDto) {
     const { id } = params
-    return await this.commentService.deleteComments(id)
+    return this.commentService.deleteComments(id)
   }
 }
