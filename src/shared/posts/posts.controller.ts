@@ -35,7 +35,7 @@ export class PostsController {
   @Get()
   @ApiOperation({ summary: '获取全部文章带分页器' })
   async getAll(@Master() isMaster?: boolean, @Query() query?: PagerDto) {
-    const { size, select, page } = query
+    const { size, select, page, year } = query
     const condition = addCondition(isMaster)
     return await this.postService.findWithPaginator(condition, {
       limit: size,
@@ -61,7 +61,7 @@ export class PostsController {
         categoryId: categoryDocument._id,
         // ...condition,
       })
-      .populate('categoryId')
+      .populate('category')
 
     if (!postDocument) {
       throw new BadRequestException('该文章未找到 (｡ŏ_ŏ)')

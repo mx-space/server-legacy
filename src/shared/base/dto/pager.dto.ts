@@ -28,4 +28,11 @@ export class PagerDto {
   @IsNotEmpty()
   @ApiProperty({ required: false })
   select?: string
+
+  @IsOptional()
+  @Transform((val) => parseInt(val))
+  @Min(1)
+  @IsInt()
+  @ApiProperty({ example: 2020 })
+  year?: number
 }
