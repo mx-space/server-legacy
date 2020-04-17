@@ -561,10 +561,10 @@
     optional "0.1.4"
     tslib "1.11.1"
 
-"@nestjs/websockets@^7.0.7":
-  version "7.0.7"
-  resolved "https://registry.yarnpkg.com/@nestjs/websockets/-/websockets-7.0.7.tgz#a07019203d2bbf42b87f7d15f5671bc01efac0e6"
-  integrity sha512-lKCp5JgZ2YO6mnP6amkffy0c9nD4Dq7IwidKS0OKUzS7H6NiuvQQXM9gsoVoYTwGk5/jJ6Y5TlegIsHG0cA5SQ==
+"@nestjs/websockets@^7.0.8":
+  version "7.0.8"
+  resolved "https://registry.yarnpkg.com/@nestjs/websockets/-/websockets-7.0.8.tgz#d1fcdf96eaf9fb14d7f08bd2715beb6e8db97562"
+  integrity sha512-8pCIg0K1qD/dyXPYqIXFvdIEDiScKM4LsukkiJjAqS3RKTWlVjh6mCFRS7Y2FiwvXe+v2IbTYnbIeRsg/a+XpQ==
   dependencies:
     iterare "1.2.0"
     tslib "1.11.1"
