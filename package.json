@@ -53,7 +53,7 @@
   "devDependencies": {
     "@nestjs/cli": "^7.1.2",
     "@nestjs/schematics": "^7.0.0",
-    "@nestjs/testing": "^7.0.7",
+    "@nestjs/testing": "^7.0.8",
     "@types/bcrypt": "^3.0.0",
     "@types/jest": "^25.1.4",
     "@types/mongoose": "^5.7.10",
