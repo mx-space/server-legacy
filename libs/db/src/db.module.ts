@@ -11,6 +11,7 @@ import { Option } from './models/option.model'
 import { Project } from './models/project.model'
 import { TypegooseModule } from 'nestjs-typegoose'
 import { User } from './models/user.model'
+import { Say } from './models/say.model'
 
 const models = TypegooseModule.forFeature([
   Category,
@@ -22,6 +23,7 @@ const models = TypegooseModule.forFeature([
   Page,
   Post,
   Project,
+  Say,
   User,
 ])
 
