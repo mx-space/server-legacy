@@ -68,12 +68,9 @@ export class CommentsController {
     example: '5e6f67e85b303781d28072a3',
   })
   @ApiOperation({ summary: '根据评论的 refId 获取评论, 如 Post Id' })
-  async getCommentsByRefId(
-    @Param() params: IdDto,
-    @Query() query: PagerDto & CommentRefTypesDto,
-  ) {
+  async getCommentsByRefId(@Param() params: IdDto, @Query() query: PagerDto) {
     const { id } = params
-    const { page, size, select } = query
+    const { page = 1, size = 10, select } = query
     const comments = await this.commentService.findWithPaginator(
       {
         parent: undefined,
