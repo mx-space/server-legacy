@@ -1,4 +1,4 @@
-import { UnprocessableEntityException } from '@nestjs/common'
+import { NotFoundException } from '@nestjs/common'
 import { PickOne } from 'src/shared/utils'
 
 export const NotFoundMessage = [
@@ -8,7 +8,7 @@ export const NotFoundMessage = [
   '这也不是我的错啦 (๐•̆ ·̭ •̆๐)',
 ]
 
-export class CannotFindException extends UnprocessableEntityException {
+export class CannotFindException extends NotFoundException {
   constructor() {
     super(PickOne(NotFoundMessage))
   }
