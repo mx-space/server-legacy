@@ -66,7 +66,7 @@ export interface Paginator {
 
 @Injectable()
 export abstract class BaseService<T extends BaseModel> {
-  constructor(protected model: ReturnModelType<AnyParamConstructor<T>>) {}
+  constructor(protected _model: ReturnModelType<AnyParamConstructor<T>>) {}
 
   /**
    * @description 抛出mongodb异常
@@ -101,7 +101,7 @@ export abstract class BaseService<T extends BaseModel> {
   }
 
   public findAll() {
-    return this.model.find()
+    return this._model.find()
   }
 
   /**
@@ -121,7 +121,7 @@ export abstract class BaseService<T extends BaseModel> {
       select?: string | Array<string>
     } = {},
   ) {
-    return this.model.find(condition as any).setOptions(options)
+    return this._model.find(condition as any).setOptions(options)
   }
   public async findAsync(
     condition: FilterQuery<T>,
@@ -135,7 +135,7 @@ export abstract class BaseService<T extends BaseModel> {
       select?: string | Array<string>
     } = {},
   ): AsyncQueryList<T> {
-    return await this.model.find(condition as any).setOptions(options)
+    return await this._model.find(condition as any).setOptions(options)
   }
 
   public async findWithPaginator(
@@ -178,11 +178,11 @@ export abstract class BaseService<T extends BaseModel> {
   }
 
   public async countDocument(condition: AnyType): Promise<number> {
-    return this.model.countDocuments(condition)
+    return this._model.countDocuments(condition)
   }
 
   public async findByIdAsync(id: string | Types.ObjectId): Promise<T> {
-    const query = await this.model.findById(id).sort({ created: -1 })
+    const query = await this._model.findById(id).sort({ created: -1 })
     if (!query) {
       throw new BadRequestException('此记录不存在')
     }
@@ -198,7 +198,7 @@ export abstract class BaseService<T extends BaseModel> {
       [key: string]: AnyType
     } = {},
   ): QueryItem<T> {
-    return this.model.findById(this.toObjectId(id), projection, options)
+    return this._model.findById(this.toObjectId(id), projection, options)
   }
   /**
    * @description 获取单条数据
@@ -220,7 +220,7 @@ export abstract class BaseService<T extends BaseModel> {
       [key: string]: AnyType
     } = {},
   ): QueryItem<T> {
-    return this.model.findOne(conditions as any, projection || {}, options)
+    return this._model.findOne(conditions as any, projection || {}, options)
   }
 
   public async findOneAsync(
@@ -242,7 +242,7 @@ export abstract class BaseService<T extends BaseModel> {
    * @returns {Promise<DocumentType<T>>}
    */
   async createNew(data: Partial<T>): Promise<DocumentType<T>> {
-    return await this.model.create(data)
+    return await this._model.create(data)
   }
   /**
    * @description 删除指定数据
@@ -254,7 +254,7 @@ export abstract class BaseService<T extends BaseModel> {
     conditions: AnyType,
     options?: QueryFindOneAndRemoveOptions,
   ): QueryItem<T> {
-    return this.model.findOneAndDelete(conditions, options)
+    return this._model.findOneAndDelete(conditions, options)
   }
   public async deleteAsync(
     conditions: AnyType,
@@ -273,7 +273,7 @@ export abstract class BaseService<T extends BaseModel> {
     id: string | Types.ObjectId,
     options?: QueryFindOneAndRemoveOptions,
   ): Query<FindAndModifyWriteOpResultObject<DocumentType<T>>> {
-    return this.model.findByIdAndDelete(this.toObjectId(id as string), options)
+    return this._model.findByIdAndDelete(this.toObjectId(id as string), options)
   }
 
   public async findAndDeleteByIdAsync(
@@ -284,7 +284,7 @@ export abstract class BaseService<T extends BaseModel> {
   }
 
   public deleteOne(conditions: AnyType) {
-    return this.model.deleteOne(conditions)
+    return this._model.deleteOne(conditions)
   }
 
   public async deleteOneAsync(conditions: AnyType) {
@@ -312,7 +312,7 @@ export abstract class BaseService<T extends BaseModel> {
     update: Partial<T>,
     options: QueryFindOneAndUpdateOptions = { omitUndefined: true },
   ): QueryItem<T> {
-    return this.model.findByIdAndUpdate(this.toObjectId(id), update, options)
+    return this._model.findByIdAndUpdate(this.toObjectId(id), update, options)
   }
 
   async updateByIdAsync(
@@ -337,7 +337,7 @@ export abstract class BaseService<T extends BaseModel> {
     doc: Partial<T>,
     options: QueryUpdateOptions = { omitUndefined: true },
   ): Query<any> {
-    return this.model.updateOne(conditions as any, doc, options)
+    return this._model.updateOne(conditions as any, doc, options)
   }
 
   public async updateAsync(
