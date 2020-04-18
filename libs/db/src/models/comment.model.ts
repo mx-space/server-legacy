@@ -6,7 +6,7 @@ import Page from './page.model'
 import { getAvatar } from 'src/shared/utils'
 
 function autoPopulateSubs(next: Function) {
-  this.populate('children')
+  this.populate({ options: { sort: { created: -1 } }, path: 'children' })
   next()
 }
 

@@ -138,6 +138,10 @@ export abstract class BaseService<T extends BaseModel> {
     return await this._model.find(condition as any).setOptions(options)
   }
 
+  public async findWithSimplePager(page = 1, size = 10) {
+    return this.findWithPaginator({}, { limit: size, skip: (page - 1) * size })
+  }
+
   public async findWithPaginator(
     condition: FilterQuery<T> = {},
     options: {

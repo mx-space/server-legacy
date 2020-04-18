@@ -52,9 +52,13 @@ export class CommentsController {
   @ApiOperation({ summary: '根据 comment id 获取评论, 包括子评论' })
   async getComments(@Param() params: IdDto) {
     const { id } = params
-    return await this.commentService.findOne({
+    const data = await this.commentService.findOne({
       _id: id,
     })
+    if (!data) {
+      throw new CannotFindException()
+    }
+    return data
   }
 
   @Get('/ref/:id')
