@@ -135,10 +135,7 @@ export abstract class BaseService<T extends BaseModel> {
       select?: string | Array<string>
     } = {},
   ): AsyncQueryList<T> {
-    return await this.model
-      .find(condition as any)
-      .setOptions(options)
-      .lean()
+    return await this.model.find(condition as any).setOptions(options)
   }
 
   public async findWithPaginator(
@@ -160,7 +157,7 @@ export abstract class BaseService<T extends BaseModel> {
   ): AsyncQueryListWithPaginator<T> {
     options.limit = options.limit ?? 10
     const queryList = await this.findAsync(condition, options)
-    if (queryList.length === 0) {
+    if (queryList.length === 0 && options.skip !== 0) {
       throw new BadRequestException('没有下页啦!')
     }
     const total = await this.countDocument(condition)
@@ -185,7 +182,7 @@ export abstract class BaseService<T extends BaseModel> {
   }
 
   public async findByIdAsync(id: string | Types.ObjectId): Promise<T> {
-    const query = await this.model.findById(id).lean().sort({ created: -1 })
+    const query = await this.model.findById(id).sort({ created: -1 })
     if (!query) {
       throw new BadRequestException('此记录不存在')
     }
@@ -235,11 +232,7 @@ export abstract class BaseService<T extends BaseModel> {
     } = {},
   ): Promise<T> {
     const { ...option } = options
-    const docsQuery = await this.findOne(
-      conditions,
-      projection || {},
-      option,
-    ).lean()
+    const docsQuery = await this.findOne(conditions, projection || {}, option)
     return docsQuery as T
   }
 

@@ -3,6 +3,7 @@ import { BaseModel } from './base.model'
 import Post from './post.model'
 import Note from './note.model'
 import Page from './page.model'
+import { getAvatar } from 'src/shared/utils'
 
 function autoPopulateSubs(next: Function) {
   this.populate('children')
@@ -84,4 +85,8 @@ export default class Comment extends BaseModel {
     justOne: true,
   })
   public page: Ref<Page>
+
+  public get avatar() {
+    return getAvatar(this.mail)
+  }
 }
