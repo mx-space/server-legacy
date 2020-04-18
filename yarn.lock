@@ -528,10 +528,10 @@
     path-to-regexp "3.2.0"
     tslib "1.11.1"
 
-"@nestjs/platform-ws@^7.0.7":
-  version "7.0.7"
-  resolved "https://registry.yarnpkg.com/@nestjs/platform-ws/-/platform-ws-7.0.7.tgz#64b1f6b04eb91eca6c5d5f45a54207e7b798251e"
-  integrity sha512-6u6da49jEJGcogRoO6HuO37vXCtwJO4eWy69hwSnwr00vjmRvFiuxMS966eDTKv0U3q6LIeRTJ2RH/rDfys/Xw==
+"@nestjs/platform-ws@^7.0.8":
+  version "7.0.8"
+  resolved "https://registry.yarnpkg.com/@nestjs/platform-ws/-/platform-ws-7.0.8.tgz#3ccab9865befcd1db46fede6ba2c3682d176ccf7"
+  integrity sha512-yQlaYR+fUs+3lBujOvz4IsMJy8Se5QU4e7mQ0QvqDYMTjmPO4aabaJ0twbwaMF3pz2Oewa9xafmlCSy7b5VwbA==
   dependencies:
     tslib "1.11.1"
     ws "7.2.3"
