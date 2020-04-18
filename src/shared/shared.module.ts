@@ -20,6 +20,8 @@ import { UploadsController } from './uploads/uploads.controller';
 import { UploadsService } from './uploads/uploads.service';
 import { SaysController } from './says/says.controller';
 import { SaysService } from './says/says.service';
+import { AggregateController } from './aggregate/aggregate.controller';
+import { AggregateService } from './aggregate/aggregate.service';
 
 @Module({
   providers: [
@@ -33,6 +35,7 @@ import { SaysService } from './says/says.service';
     ProjectsService,
     UploadsService,
     SaysService,
+    AggregateService,
   ],
   controllers: [
     CategoriesController,
@@ -45,6 +48,7 @@ import { SaysService } from './says/says.service';
     ProjectsController,
     UploadsController,
     SaysController,
+    AggregateController,
   ],
   imports: [TestModule],
 })
