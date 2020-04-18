@@ -56,7 +56,7 @@
     "@nestjs/testing": "^7.0.8",
     "@types/bcrypt": "^3.0.0",
     "@types/jest": "^25.1.4",
-    "@types/mongoose": "^5.7.11",
+    "@types/mongoose": "^5.7.12",
     "@types/nanoid": "^2.1.0",
     "@types/node": "^13.11.1",
     "@types/supertest": "^2.0.8",
