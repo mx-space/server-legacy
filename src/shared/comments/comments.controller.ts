@@ -49,7 +49,7 @@ export class CommentsController {
 
   // TODO show comment agent and ip for admin 2020-04-01 //
   @Get(':id')
-  @ApiOperation({ summary: '根据 cid 获取评论, 包括子评论 ' })
+  @ApiOperation({ summary: '根据 comment id 获取评论, 包括子评论' })
   async getComments(@Param() params: IdDto) {
     const { id } = params
     return await this.commentService.findOne({
@@ -63,6 +63,7 @@ export class CommentsController {
     description: 'refId',
     example: '5e6f67e85b303781d28072a3',
   })
+  @ApiOperation({ summary: '根据评论的 refId 获取评论, 如 Post Id' })
   async getCommentsByRefId(
     @Param() params: IdDto,
     @Query() query: PagerDto & CommentRefTypesDto,
