@@ -312,7 +312,11 @@ export abstract class BaseService<T extends BaseModel> {
     update: Partial<T>,
     options: QueryFindOneAndUpdateOptions = { omitUndefined: true },
   ): QueryItem<T> {
-    return this._model.findByIdAndUpdate(this.toObjectId(id), update, options)
+    return this._model.findByIdAndUpdate(
+      this.toObjectId(id),
+      update as any,
+      options,
+    )
   }
 
   async updateByIdAsync(
@@ -337,7 +341,7 @@ export abstract class BaseService<T extends BaseModel> {
     doc: Partial<T>,
     options: QueryUpdateOptions = { omitUndefined: true },
   ): Query<any> {
-    return this._model.updateOne(conditions as any, doc, options)
+    return this._model.updateOne(conditions as any, doc as any, options)
   }
 
   public async updateAsync(
