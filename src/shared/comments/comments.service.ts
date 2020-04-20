@@ -1,19 +1,14 @@
 import Comment, { CommentRefTypes } from '@libs/db/models/comment.model'
+import Note from '@libs/db/models/note.model'
+import Page from '@libs/db/models/page.model'
 import Post from '@libs/db/models/post.model'
 import { User } from '@libs/db/models/user.model'
-import {
-  BadRequestException,
-  Injectable,
-  UnprocessableEntityException,
-} from '@nestjs/common'
+import { Injectable, UnprocessableEntityException } from '@nestjs/common'
 import { ReturnModelType } from '@typegoose/typegoose'
-import { Cursor } from 'mongodb'
 import { FilterQuery, Types } from 'mongoose'
 import { InjectModel } from 'nestjs-typegoose'
 import { CannotFindException } from 'src/core/exceptions/cant-find.exception'
 import { BaseService } from '../base/base.service'
-import Note from '@libs/db/models/note.model'
-import Page from '@libs/db/models/page.model'
 @Injectable()
 export class CommentsService extends BaseService<Comment> {
   constructor(
@@ -107,15 +102,16 @@ export class CommentsService extends BaseService<Comment> {
     const queryList = await this.findWithPaginator(
       { state },
       {
-        select: '+ip +agent',
+        select: '+ip +agent -children',
         skip,
         limit: size,
         populate: [
-          { path: 'parent' },
+          { path: 'parent', select: '-children' },
           { path: 'ref', select: 'title _id slug' },
         ],
       },
     )
+
     return queryList
   }
 }
