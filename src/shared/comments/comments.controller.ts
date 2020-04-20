@@ -43,7 +43,7 @@ export class CommentsController {
   constructor(private readonly commentService: CommentsService) {}
 
   @Get()
-  @Auth()
+  // @Auth()
   async getRecentlyComments(@Query() query: Pager) {
     const { size = 10, page = 1, state = 0 } = query
     return await this.commentService.getRecently({ size, page, state })

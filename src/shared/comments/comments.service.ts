@@ -106,7 +106,15 @@ export class CommentsService extends BaseService<Comment> {
     const skip = size * (page - 1)
     const queryList = await this.findWithPaginator(
       { state },
-      { select: '+ip +agent', skip, limit: size, populate: 'parent' },
+      {
+        select: '+ip +agent',
+        skip,
+        limit: size,
+        populate: [
+          { path: 'parent' },
+          { path: 'ref', select: 'title _id slug' },
+        ],
+      },
     )
     return queryList
   }
