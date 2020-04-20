@@ -104,29 +104,10 @@ export class CommentsService extends BaseService<Comment> {
 
   async getRecently({ page, size, state } = { page: 1, size: 10, state: 0 }) {
     const skip = size * (page - 1)
-    const cursor = (this.commentModel.collection
-      .find({ state })
-      .sort({ created: -1 })
-      .skip(skip)
-      .limit(size) as any) as Cursor
-    const queryList = await cursor.toArray()
-    if (queryList.length === 0) {
-      if (page === 1) {
-        throw new UnprocessableEntityException('暂没有评论呢')
-      } else throw new BadRequestException('没有下页啦!')
-    }
-    const count = await this.countDocument({ state })
-    const totalPage = Math.ceil(count / size)
-    return {
-      data: queryList,
-      page: {
-        total: count,
-        size: queryList.length,
-        currentPage: page,
-        totalPage,
-        hasPrevPage: page !== 1,
-        hasNextPage: page < totalPage,
-      },
-    }
+    const queryList = await this.findWithPaginator(
+      { state },
+      { select: '+ip +agent', skip, limit: size, populate: 'parent' },
+    )
+    return queryList
   }
 }

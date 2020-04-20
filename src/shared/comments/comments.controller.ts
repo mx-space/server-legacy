@@ -34,6 +34,7 @@ import { Pager } from 'src/shared/comments/dto/pager.dto'
 import { StateQueryDto } from 'src/shared/comments/dto/state.dto'
 import { IdDto } from '../base/dto/id.dto'
 import { CommentsService } from './comments.service'
+import { Auth } from 'src/core/decorators/auth.decorator'
 
 @Controller('comments')
 @ApiTags('Comment Routes')
@@ -42,6 +43,7 @@ export class CommentsController {
   constructor(private readonly commentService: CommentsService) {}
 
   @Get()
+  @Auth()
   async getRecentlyComments(@Query() query: Pager) {
     const { size = 10, page = 1, state = 0 } = query
     return await this.commentService.getRecently({ size, page, state })
@@ -52,9 +54,11 @@ export class CommentsController {
   @ApiOperation({ summary: '根据 comment id 获取评论, 包括子评论' })
   async getComments(@Param() params: IdDto) {
     const { id } = params
-    const data = await this.commentService.findOne({
-      _id: id,
-    })
+    const data = await this.commentService
+      .findOne({
+        _id: id,
+      })
+      .populate('parent')
     if (!data) {
       throw new CannotFindException()
     }
