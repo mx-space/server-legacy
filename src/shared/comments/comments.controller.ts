@@ -49,7 +49,6 @@ export class CommentsController {
     return await this.commentService.getRecently({ size, page, state })
   }
 
-  // TODO show comment agent and ip for admin 2020-04-01 //
   @Get(':id')
   @ApiOperation({ summary: '根据 comment id 获取评论, 包括子评论' })
   async getComments(@Param() params: IdDto) {
