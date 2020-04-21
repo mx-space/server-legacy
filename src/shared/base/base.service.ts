@@ -38,6 +38,20 @@ export type QueryItem<T extends BaseModel> = DocumentQuery<
   DocumentType<T>,
   DocumentType<T>
 >
+
+export interface QueryOptions<T = any> {
+  lean?: boolean
+  populate?:
+    | string
+    | Array<string>
+    | ModelPopulateOptions[]
+    | ModelPopulateOptions
+  [key: string]: AnyType
+  sort?: OrderType<T>
+  limit?: number
+  skip?: number
+  select?: string[] | string
+}
 /**
  * 分页器返回结果
  * @export
@@ -108,32 +122,12 @@ export abstract class BaseService<T extends BaseModel> {
    * 根据条件查找
    */
   // FIXME async maybe cause some bugs
-  public async find(
-    condition: FilterQuery<T>,
-    options: {
-      lean?: boolean
-      populates?: ModelPopulateOptions[] | ModelPopulateOptions
-      populate?: string | Array<string>
-      [key: string]: AnyType
-      sort?: OrderType<T>
-      limit?: number
-      skip?: number
-      select?: string | Array<string>
-    } = {},
-  ) {
+  public async find(condition: FilterQuery<T>, options: QueryOptions = {}) {
     return this._model.find(condition as any).setOptions(options)
   }
   public async findAsync(
     condition: FilterQuery<T>,
-    options: {
-      populates?: ModelPopulateOptions[] | ModelPopulateOptions
-      populate?: string | Array<string>
-      [key: string]: AnyType
-      sort?: OrderType<T>
-      limit?: number
-      skip?: number
-      select?: string | Array<string>
-    } = {},
+    options: QueryOptions<T> = {},
   ): AsyncQueryList<T> {
     return await this._model.find(condition as any).setOptions(options)
   }
@@ -144,16 +138,7 @@ export abstract class BaseService<T extends BaseModel> {
 
   public async findWithPaginator(
     condition: FilterQuery<T> = {},
-    options: {
-      lean?: boolean
-      populates?: ModelPopulateOptions[] | ModelPopulateOptions
-      populate?: string | Array<string>
-      [key: string]: AnyType
-      sort?: OrderType<T>
-      limit?: number
-      skip?: number
-      select?: string[] | string
-    } = {
+    options: QueryOptions<T> = {
       sort: { created: -1 },
       limit: 10,
       skip: 0,
@@ -218,11 +203,7 @@ export abstract class BaseService<T extends BaseModel> {
   public findOne(
     conditions: FilterQuery<T>,
     projection?: object | string,
-    options: {
-      lean?: boolean
-      populates?: ModelPopulateOptions[] | ModelPopulateOptions
-      [key: string]: AnyType
-    } = {},
+    options: QueryOptions<T> = {},
   ): QueryItem<T> {
     return this._model.findOne(conditions as any, projection || {}, options)
   }
@@ -230,10 +211,7 @@ export abstract class BaseService<T extends BaseModel> {
   public async findOneAsync(
     conditions: AnyType,
     projection?: object | string,
-    options: {
-      populates?: ModelPopulateOptions[] | ModelPopulateOptions
-      [key: string]: AnyType
-    } = {},
+    options: QueryOptions<T> = {},
   ): Promise<T> {
     const { ...option } = options
     const docsQuery = await this.findOne(conditions, projection || {}, option)

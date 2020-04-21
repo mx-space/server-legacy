@@ -1,19 +1,14 @@
 import Comment, { CommentRefTypes } from '@libs/db/models/comment.model'
+import Note from '@libs/db/models/note.model'
+import Page from '@libs/db/models/page.model'
 import Post from '@libs/db/models/post.model'
 import { User } from '@libs/db/models/user.model'
-import {
-  BadRequestException,
-  Injectable,
-  UnprocessableEntityException,
-} from '@nestjs/common'
+import { Injectable, UnprocessableEntityException } from '@nestjs/common'
 import { ReturnModelType } from '@typegoose/typegoose'
-import { Cursor } from 'mongodb'
 import { FilterQuery, Types } from 'mongoose'
 import { InjectModel } from 'nestjs-typegoose'
 import { CannotFindException } from 'src/core/exceptions/cant-find.exception'
 import { BaseService } from '../base/base.service'
-import Note from '@libs/db/models/note.model'
-import Page from '@libs/db/models/page.model'
 @Injectable()
 export class CommentsService extends BaseService<Comment> {
   constructor(
@@ -104,29 +99,19 @@ export class CommentsService extends BaseService<Comment> {
 
   async getRecently({ page, size, state } = { page: 1, size: 10, state: 0 }) {
     const skip = size * (page - 1)
-    const cursor = (this.commentModel.collection
-      .find({ state })
-      .sort({ created: -1 })
-      .skip(skip)
-      .limit(size) as any) as Cursor
-    const queryList = await cursor.toArray()
-    if (queryList.length === 0) {
-      if (page === 1) {
-        throw new UnprocessableEntityException('暂没有评论呢')
-      } else throw new BadRequestException('没有下页啦!')
-    }
-    const count = await this.countDocument({ state })
-    const totalPage = Math.ceil(count / size)
-    return {
-      data: queryList,
-      page: {
-        total: count,
-        size: queryList.length,
-        currentPage: page,
-        totalPage,
-        hasPrevPage: page !== 1,
-        hasNextPage: page < totalPage,
+    const queryList = await this.findWithPaginator(
+      { state },
+      {
+        select: '+ip +agent -children',
+        skip,
+        limit: size,
+        populate: [
+          { path: 'parent', select: '-children' },
+          { path: 'ref', select: 'title _id slug' },
+        ],
       },
-    }
+    )
+
+    return queryList
   }
 }
