@@ -10,6 +10,7 @@ import {
   Query,
   Req,
   UseGuards,
+  Patch,
 } from '@nestjs/common'
 import { AuthGuard } from '@nestjs/passport'
 import {
@@ -31,7 +32,7 @@ import {
   TextOnlyDto,
 } from 'src/shared/comments/dto/comment.dto'
 import { Pager } from 'src/shared/comments/dto/pager.dto'
-import { StateQueryDto } from 'src/shared/comments/dto/state.dto'
+import { StateDto } from 'src/shared/comments/dto/state.dto'
 import { IdDto } from '../base/dto/id.dto'
 import { CommentsService } from './comments.service'
 import { Auth } from 'src/core/decorators/auth.decorator'
@@ -235,16 +236,13 @@ export class CommentsController {
     }
     return await this.replyByCid(params, model, undefined, true, ipLocation)
   }
-  @Put(':id')
+  @Patch(':id')
   @ApiOperation({ summary: '修改评论的状态' })
   @ApiBearerAuth()
   @UseGuards(AuthGuard('jwt'))
-  async modifyCommentState(
-    @Param() params: IdDto,
-    @Query() query: StateQueryDto,
-  ) {
+  async modifyCommentState(@Param() params: IdDto, @Body() body: StateDto) {
     const { id } = params
-    const { state } = query
+    const { state } = body
 
     try {
       const query = await this.commentService.updateAsync(
