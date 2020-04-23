@@ -26,9 +26,9 @@ export class CommentDto {
   mail: string
 
   @IsString()
-  @IsUrl()
+  @IsUrl({ require_protocol: true }, { message: '请更正为正确的网址' })
   @IsOptional()
-  @ApiProperty({ example: 'example.com' })
+  @ApiProperty({ example: 'http://example.com' })
   url?: string
 }
 

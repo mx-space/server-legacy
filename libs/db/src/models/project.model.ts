@@ -7,18 +7,18 @@ export class Project extends BaseModel {
   name: string
 
   @prop()
-  @IsUrl()
+  @IsUrl({ require_protocol: true }, { message: '请更正为正确的网址' })
   @IsOptional()
   previewUrl?: string
 
   @prop()
   @IsOptional()
-  @IsUrl()
+  @IsUrl({ require_protocol: true }, { message: '请更正为正确的网址' })
   docUrl?: string
 
   @prop()
   @IsOptional()
-  @IsUrl()
+  @IsUrl({ require_protocol: true }, { message: '请更正为正确的网址' })
   projectUrl?: string
 
   @arrayProp({ items: String })
@@ -28,7 +28,7 @@ export class Project extends BaseModel {
   description: string
 
   @prop()
-  @IsUrl()
+  @IsUrl({ require_protocol: true }, { message: '请更正为正确的网址' })
   @IsOptional()
   avatar?: string
 

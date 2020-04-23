@@ -6,5 +6,5 @@ export class Option {
   name: string
 
   @prop({ type: Schema.Types.Mixed })
-  value: any
+  value: Record<string, unknown>
 }

@@ -28,8 +28,8 @@ export class UserDto {
   @IsOptional()
   name?: string
 
-  @ApiProperty({ required: false, example: 'example.com' })
-  @IsUrl()
+  @ApiProperty({ required: false, example: 'http://example.com' })
+  @IsUrl({ require_protocol: true }, { message: '请更正为正确的网址' })
   @IsOptional()
   readonly url?: string
 
@@ -70,8 +70,8 @@ export class UserPatchDto {
   @IsOptional()
   name?: string
 
-  @ApiProperty({ required: false, example: 'example.com' })
-  @IsUrl()
+  @ApiProperty({ required: false, example: 'http://example.com' })
+  @IsUrl({ require_protocol: true }, { message: '请更正为正确的网址' })
   @IsOptional()
   readonly url?: string
 

@@ -6,7 +6,7 @@ export class ProjectDto {
   @IsString()
   name: string
 
-  @IsUrl()
+  @IsUrl({ require_protocol: true }, { message: '请更正为正确的网址' })
   @IsOptional()
   @ApiProperty({
     description: '预览地址',
@@ -21,11 +21,11 @@ export class ProjectDto {
     required: false,
     example: 'http://example.com/image',
   })
-  @IsUrl()
+  @IsUrl({ require_protocol: true }, { message: '请更正为正确的网址' })
   docUrl?: string
 
   @IsOptional()
-  @IsUrl()
+  @IsUrl({ require_protocol: true }, { message: '请更正为正确的网址' })
   @ApiProperty({
     description: '项目地址',
     required: false,
@@ -45,7 +45,7 @@ export class ProjectDto {
   @IsString()
   description: string
 
-  @IsUrl()
+  @IsUrl({ require_protocol: true }, { message: '请更正为正确的网址' })
   @IsOptional()
   @ApiProperty({
     description: '头像地址',
