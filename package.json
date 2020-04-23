@@ -29,7 +29,7 @@
     "@nestjs/swagger": "^4.5.3",
     "@nestjs/websockets": "^7.0.8",
     "@typegoose/auto-increment": "^0.4.1",
-    "@typegoose/typegoose": "^6.4.0",
+    "@typegoose/typegoose": "^6.5.0",
     "bcrypt": "^4.0.1",
     "cache-manager": "^3.2.1",
     "class-transformer": "^0.2.3",
