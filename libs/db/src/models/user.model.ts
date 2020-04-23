@@ -19,6 +19,9 @@ export class User extends BaseModel {
   })
   name!: string
 
+  @prop()
+  description?: string
+
   @prop({
     select: false,
     get(val) {

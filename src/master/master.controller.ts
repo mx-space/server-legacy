@@ -53,12 +53,6 @@ export class MasterController {
     return await this.masterService.createMaster(userDto as User)
   }
 
-  @Post('sign_up')
-  @ApiOperation({ summary: '注册重定向' })
-  async signUp(@Body() userDto: UserDto) {
-    return await this.register(userDto)
-  }
-
   @Post('login')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: '登录' })
@@ -101,6 +95,6 @@ export class MasterController {
     @Body() body: UserPatchDto,
     @CurrentUser() user: DocumentType<User>,
   ) {
-    return await this.masterService.changePassword(user, body)
+    return await this.masterService.patchUserData(user, body)
   }
 }

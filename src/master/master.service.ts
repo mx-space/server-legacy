@@ -36,7 +36,7 @@ export default class MasterService {
    * @param {DocumentType} user - 用户查询结果, 已经挂载在 req.user
    * @param {Partial} data - 部分修改数据
    */
-  async changePassword(user: DocumentType<User>, data: Partial<User>) {
+  async patchUserData(user: DocumentType<User>, data: Partial<User>) {
     const { password } = data
     const doc = { ...data }
     if (password !== undefined) {
