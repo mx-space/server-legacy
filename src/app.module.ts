@@ -7,7 +7,7 @@ import { AuthModule } from './auth/auth.module'
 import { MasterModule } from './master/master.module'
 import { SharedModule } from './shared/shared.module'
 import { SpiderGuard } from 'src/core/guards/spider.guard'
-import { ConfigsModule } from './configs/configs.module';
+import { ConfigsModule } from './configs/configs.module'
 
 const providers: Provider<any>[] = [
   {
