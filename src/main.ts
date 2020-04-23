@@ -9,7 +9,6 @@ import { AllExceptionsFilter } from 'src/core/filters/any-exception.filter'
 import { ResponseInterceptor } from 'src/core/interceptors/response.interceptors'
 import { AppModule } from './app.module'
 import * as FastifyMultipart from 'fastify-multipart'
-declare const module: any
 
 async function bootstrap() {
   const fAdapt = new FastifyAdapter({ logger: true })
@@ -52,10 +51,6 @@ async function bootstrap() {
   const PORT = parseInt(process.env.PORT) || 3003
   await app.listen(PORT, '0.0.0.0')
 
-  if (module.hot) {
-    module.hot.accept()
-    module.hot.dispose(() => app.close())
-  }
   console.log(`http://localhost:${PORT}/api-docs`)
 }
 bootstrap()
