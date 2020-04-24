@@ -33,7 +33,7 @@ export class UploadsController {
     description: 'Upload images',
     type: FileUploadDto,
   })
-  // @Auth()
+  @Auth()
   async uploadImage(
     @Req() req: FastifyRequest<IncomingMessage>,
     @Query() query: FileTypeQueryDto,
