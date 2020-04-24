@@ -40,7 +40,7 @@ export class MasterController {
     const info = await this.masterService.getMasterInfo()
 
     const avatar = getAvatar(info.mail)
-    return { ...info.toObject(), avatar }
+    return { avatar, ...info.toObject() }
   }
 
   @Post('register')

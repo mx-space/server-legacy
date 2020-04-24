@@ -1,11 +1,11 @@
+import Comment from '@libs/db/models/comment.model'
+import Note from '@libs/db/models/note.model'
+import Post from '@libs/db/models/post.model'
+import { Project } from '@libs/db/models/project.model'
+import { Say } from '@libs/db/models/say.model'
 import { Injectable } from '@nestjs/common'
 import { ReturnModelType } from '@typegoose/typegoose'
-import Post from '@libs/db/models/post.model'
 import { InjectModel } from 'nestjs-typegoose'
-import Note from '@libs/db/models/note.model'
-import { Say } from '@libs/db/models/say.model'
-import { Project } from '@libs/db/models/project.model'
-import Comment from '@libs/db/models/comment.model'
 @Injectable()
 export class AggregateService {
   constructor(
@@ -23,23 +23,27 @@ export class AggregateService {
       .find(condition)
       .sort({ created: -1 })
       .limit(size)
-      .select('-text')
+      .select('_id title name slug category avatar nid')
+      .lean()
   }
 
-  async topActivity(size = 6) {
+  async topActivity(size = 6, isMaster = false) {
     const notes = await this.findTop(
       this.noteModel,
-      {
-        hide: false,
-        password: undefined,
-      },
+      isMaster
+        ? {
+            hide: false,
+            password: undefined,
+          }
+        : {},
       size,
     )
-    const posts = await this.findTop(this.postModel, { hide: false }, size)
-    const projects = await this.projectModel
-      .find()
-      .sort({ created: -1 })
-      .limit(size)
+    const posts = await this.findTop(
+      this.postModel,
+      isMaster ? { hide: false } : {},
+      size,
+    )
+    const projects = await this.findTop(this.projectModel, {}, size)
     const says = await this.findTop(this.sayModel, {}, size)
 
     return { notes, posts, projects, says }

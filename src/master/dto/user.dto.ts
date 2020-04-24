@@ -33,8 +33,10 @@ export class UserDto {
   @IsOptional()
   readonly url?: string
 
-  // @ApiProperty()
-  // readonly
+  @ApiProperty({ required: false })
+  @IsUrl({ require_protocol: true })
+  @IsOptional()
+  readonly avatar?: string
 }
 
 export class LoginDto {
@@ -79,4 +81,9 @@ export class UserPatchDto {
   @IsOptional()
   @IsArray()
   apiToken: string[]
+
+  @ApiProperty({ required: false })
+  @IsUrl({ require_protocol: true })
+  @IsOptional()
+  readonly avatar?: string
 }

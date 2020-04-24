@@ -22,6 +22,9 @@ export class User extends BaseModel {
   @prop()
   description?: string
 
+  @prop()
+  avatar?: string
+
   @prop({
     select: false,
     get(val) {
