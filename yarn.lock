@@ -571,10 +571,10 @@
   resolved "https://registry.yarnpkg.com/@nestjs/passport/-/passport-7.0.0.tgz#c59617779b7e5888a0c72039a6980e28fd659518"
   integrity sha512-ZJk08zqLxSXY1rXIt9dAK7tcCos3DETQ88Nn/UGmA136SHMG5P0sbw+PU1zfLQyEsU5uHyr7MTD+/S+aOxXS6w==
 
-"@nestjs/platform-fastify@^7.0.8":
-  version "7.0.8"
-  resolved "https://registry.yarnpkg.com/@nestjs/platform-fastify/-/platform-fastify-7.0.8.tgz#ba570dc392a4cf62c795e375a06b7f8a788c37fd"
-  integrity sha512-d2mi+YaC4j/J3U1kSDP8hu3FKuwJ0NnKwpGI3Vqh6eQbtyXoWQILlExOfqBDoQTif7fvSo2LOTMMT+TubmSEZw==
+"@nestjs/platform-fastify@^7.0.9":
+  version "7.0.9"
+  resolved "https://registry.yarnpkg.com/@nestjs/platform-fastify/-/platform-fastify-7.0.9.tgz#aecbad4fe3f1dc218575dbd47f1578a7c2550d74"
+  integrity sha512-cH7ccXhu/O9ohPA6fBIo9NxMppgb7BrI7TMN1QizvquUS1UqGgNaxaQ2+fg1YUxHlWhOHf0tMpz9+r0XkXUbeA==
   dependencies:
     fastify "2.13.1"
     fastify-cors "3.0.3"
