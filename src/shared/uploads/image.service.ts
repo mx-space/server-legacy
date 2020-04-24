@@ -15,25 +15,25 @@ export class ImageService {
     }
 
     const allImages = await this.model.find({ type }).lean()
-
+    const randomImages = shuffle(allImages)
     if (size === 1) {
-      return shuffle(allImages).pop()
+      return randomImages.pop()
     }
 
     if (allImages.length <= size) {
-      return shuffle(allImages)
+      return randomImages
     }
 
-    const indexes = new Set()
-    const images = []
-    while (indexes.size < size) {
-      const randInt = random(0, allImages.length - 1, false)
-      if (!indexes.has(randInt)) {
-        images.push(allImages[randInt])
-      }
-      indexes.add(randInt)
-    }
+    // const indexes = new Set()
+    // const images = []
+    // while (indexes.size < size) {
+    //   const randInt = random(0, allImages.length - 1, false)
+    //   if (!indexes.has(randInt)) {
+    //     images.push(allImages[randInt])
+    //   }
+    //   indexes.add(randInt)
+    // }
 
-    return images
+    return randomImages.splice(0, size)
   }
 }
