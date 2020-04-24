@@ -24,7 +24,7 @@ export class SEODto {
   @IsUrl({ require_protocol: true }, { message: '站点图标必须为正确的网址' })
   icon?: string
 
-  @IsArray({ each: true, message: '关键字必须为一个数组' })
+  @IsArray({ message: '关键字必须为一个数组' })
   @IsOptional()
   @ApiProperty({ example: ['blog', 'mx-space'] })
   keywords?: string[]
