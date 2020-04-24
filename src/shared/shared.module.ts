@@ -20,8 +20,7 @@ import { ProjectsService } from './projects/projects.service'
 import { SaysController } from './says/says.controller'
 import { SaysService } from './says/says.service'
 import { TestModule } from './test/test.module'
-import { UploadsController } from './uploads/uploads.controller'
-import { UploadsService } from './uploads/uploads.service'
+import { UploadsModule } from './uploads/uploads.module'
 
 @Module({
   providers: [
@@ -35,7 +34,6 @@ import { UploadsService } from './uploads/uploads.service'
     PostsService,
     ProjectsService,
     SaysService,
-    UploadsService,
   ],
   controllers: [
     AdminController,
@@ -48,8 +46,7 @@ import { UploadsService } from './uploads/uploads.service'
     PostsController,
     ProjectsController,
     SaysController,
-    UploadsController,
   ],
-  imports: [TestModule],
+  imports: [TestModule, UploadsModule],
 })
 export class SharedModule {}
