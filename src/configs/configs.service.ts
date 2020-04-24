@@ -4,18 +4,24 @@ import { InjectModel } from 'nestjs-typegoose'
 import { Option } from '@libs/db/models/option.model'
 import { SEODto, UrlDto } from './configs.dto'
 
+export interface IConfig {
+  seo: SEODto
+  url: UrlDto
+}
+
 @Injectable()
 export class ConfigsService {
-  public seo = {
-    title: 'mx-space',
-    description: 'Hello World~',
-  } as SEODto
-
-  public url: UrlDto = {
-    wsUrl: 'http://localhost:8080', //todo
-    adminUrl: 'http://localhost:9528',
-    serverUrl: 'http://localhost:2333',
-    webUrl: 'http://localhost:2323',
+  public config: IConfig = {
+    seo: {
+      title: 'mx-space',
+      description: 'Hello World~',
+    } as SEODto,
+    url: {
+      wsUrl: 'http://localhost:8080', //todo
+      adminUrl: 'http://localhost:9528',
+      serverUrl: 'http://localhost:2333',
+      webUrl: 'http://localhost:2323',
+    } as UrlDto,
   }
 
   constructor(
@@ -27,28 +33,36 @@ export class ConfigsService {
   protected async configInit() {
     const configs = await this.optionModel.find().lean()
     configs.map((field) => {
-      const name = field.name as keyof this
+      const name = field.name as keyof IConfig
       const value = field.value
-      this[name] = value
+      this.config[name] = value
     })
   }
 
-  public async setSEO(seo: SEODto) {
+  public get seo() {
+    return this.config.seo
+  }
+
+  public get url() {
+    return this.config.url
+  }
+  async setSEO(seo: SEODto) {
     return await this.patch('seo', seo)
   }
-  public async setUrl(url: UrlDto) {
+  async setUrl(url: UrlDto) {
     return await this.patch('url', url)
   }
-  private async patch<T>(key: keyof this, data: T) {
+
+  private async patch<T>(key: keyof IConfig, data: T) {
     await this.optionModel.updateOne(
       { name: key as string },
-      { value: { ...this[key], ...data } },
+      { value: { ...this.config[key], ...data } },
       { upsert: true, omitUndefined: true },
     )
-
     const newData = (await this.optionModel.findOne({ name: key as string }))
       .value
-    this[key] = newData
-    return this[key]
+    this.config[key] = newData
+
+    return this.config[key]
   }
 }
