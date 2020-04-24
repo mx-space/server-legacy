@@ -1,21 +1,33 @@
-import { Injectable, BadRequestException } from '@nestjs/common'
+import { File } from '@libs/db/models/file.model'
+import { BadRequestException, Injectable } from '@nestjs/common'
+import { ReturnModelType } from '@typegoose/typegoose'
 import * as crypto from 'crypto'
 import { fromBuffer } from 'file-type'
-import { writeFileSync, readFileSync, existsSync } from 'fs'
-import { join } from 'path'
-import { InjectModel } from 'nestjs-typegoose'
-import { ReturnModelType } from '@typegoose/typegoose'
+import { existsSync, readFileSync, writeFileSync } from 'fs'
 import { imageSize } from 'image-size'
-import { File } from '@libs/db/models/file.model'
+import * as mkdirp from 'mkdirp'
+import { InjectModel } from 'nestjs-typegoose'
+import { join } from 'path'
 import { CannotFindException } from 'src/core/exceptions/cant-find.exception'
 import { Readable } from 'stream'
+
 @Injectable()
 export class UploadsService {
   constructor(
     @InjectModel(File) private readonly model: ReturnModelType<typeof File>,
-  ) {}
+  ) {
+    const path = join(this.rootPath, this.imagePath)
+    mkdirp.sync(path)
+  }
+
   public static imagePath = '/images'
+  public static rootPath =
+    process.env.NODE_ENV === 'development'
+      ? join(__dirname, '../uploads')
+      : '~/.mxspace/uploads'
   public imagePath = UploadsService.imagePath
+  public rootPath = UploadsService.rootPath
+
   async saveImage(fileInfo) {
     const { data, filename /* , mimetype, limit  */ } = fileInfo
     const hashFilename = crypto.createHash('md5').update(filename).digest('hex')
@@ -35,11 +47,7 @@ export class UploadsService {
       { upsert: true },
     )
 
-    const path = join(
-      __dirname,
-      `../uploads${this.imagePath}`,
-      hashFilename,
-    )
+    const path = join(`${this.rootPath}${this.imagePath}`, hashFilename)
     if (!existsSync(path)) {
       writeFileSync(path, data)
     }
@@ -53,7 +61,7 @@ export class UploadsService {
     }
     const { name, mime } = doc
     return {
-      buffer: readFileSync(join(__dirname, `../uploads${postfix}`, name)),
+      buffer: readFileSync(join(`${this.rootPath}${postfix}`, name)),
       mime,
     }
   }

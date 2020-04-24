@@ -47,7 +47,7 @@ export class UploadsController {
     return { ...data }
   }
 
-  @Get(':hashname')
+  @Get('image/:hashname')
   async getImage(
     @Param('hashname') name: string,
     @Res() res: FastifyReply<ServerResponse>,
