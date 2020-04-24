@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common'
 import { ReturnModelType } from '@typegoose/typegoose'
 import { InjectModel } from 'nestjs-typegoose'
 import { Option } from '@libs/db/models/option.model'
-import { SEODto } from './configs.dto'
+import { SEODto, UrlDto } from './configs.dto'
 
 @Injectable()
 export class ConfigsService {
@@ -11,34 +11,44 @@ export class ConfigsService {
     description: 'Hello World~',
   } as SEODto
 
+  public url: UrlDto = {
+    wsUrl: 'http://localhost:8080', //todo
+    adminUrl: 'http://localhost:9528',
+    serverUrl: 'http://localhost:2333',
+    webUrl: 'http://localhost:2323',
+  }
+
   constructor(
     @InjectModel(Option)
     private readonly optionModel: ReturnModelType<typeof Option>,
   ) {
-    optionModel
-      .findOne({ name: 'sec' })
-      .lean()
-      .then((res) => {
-        if (res) {
-          this.seo = res.value as SEODto
-        }
-      })
+    this.configInit()
+  }
+  protected async configInit() {
+    const configs = await this.optionModel.find().lean()
+    configs.map((field) => {
+      const name = field.name as keyof this
+      const value = field.value
+      this[name] = value
+    })
   }
 
   public async setSEO(seo: SEODto) {
+    return await this.patch('seo', seo)
+  }
+  public async setUrl(url: UrlDto) {
+    return await this.patch('url', url)
+  }
+  private async patch<T>(key: keyof this, data: T) {
     await this.optionModel.updateOne(
-      { name: 'seo' },
-      { value: { ...seo } },
+      { name: key as string },
+      { value: { ...this[key], ...data } },
       { upsert: true, omitUndefined: true },
     )
 
-    const newSeo = (await this.optionModel.findOne({ name: 'seo' }))
-      .value as SEODto
-    this.patch('seo', newSeo)
-    return this.seo
-  }
-
-  private patch<T>(key: keyof this, data: T) {
-    this[key] = { ...this[key], ...data }
+    const newData = (await this.optionModel.findOne({ name: key as string }))
+      .value
+    this[key] = newData
+    return this[key]
   }
 }

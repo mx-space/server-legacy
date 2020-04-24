@@ -32,7 +32,7 @@ async function bootstrap() {
   if (process.env.NODE_ENV !== 'production') {
     app.enableCors({ credentials: true })
   } else {
-    app.setGlobalPrefix('api')
+    app.setGlobalPrefix('api/v1')
   }
 
   const options = new DocumentBuilder()

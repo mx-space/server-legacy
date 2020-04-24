@@ -94,7 +94,7 @@ export class CommentsService extends BaseService<Comment> {
         },
       })
     }
-    return { msg: '删除成功' }
+    return { message: '删除成功' }
   }
 
   async getRecently({ page, size, state } = { page: 1, size: 10, state: 0 }) {

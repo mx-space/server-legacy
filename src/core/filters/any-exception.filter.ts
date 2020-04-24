@@ -34,9 +34,9 @@ export class AllExceptionsFilter implements ExceptionFilter {
     response.status(status).send({
       ok: 0,
       statusCode: status,
-      msg:
+      message:
         (exception as any)?.response?.message ||
-        (exception as myError)?.msg ||
+        (exception as myError)?.message ||
         (exception as myError).message,
       timestamp: new Date().toISOString(),
       path: request.req.url,

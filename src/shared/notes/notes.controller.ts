@@ -172,7 +172,7 @@ export class NotesController {
   async modifyNote(@Body() body: NoteDto, @Param() params: IdDto) {
     const { id } = params
     const res = await this.noteService.update({ _id: id }, body)
-    return { ...res, msg: res.nModified ? '修改成功' : '没有内容被修改' }
+    return { ...res, message: res.nModified ? '修改成功' : '没有内容被修改' }
   }
 
   @Delete(':id')

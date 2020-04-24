@@ -184,7 +184,7 @@ export class CommentsController {
       },
     })
 
-    return { msg: '回复成功!' }
+    return { message: '回复成功!' }
   }
 
   @Post('/master/comment/:id')

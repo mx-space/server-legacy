@@ -1,10 +1,10 @@
-import { Strategy, IStrategyOptions } from 'passport-local'
-import { PassportStrategy } from '@nestjs/passport'
-import { InjectModel } from 'nestjs-typegoose'
 import { User } from '@libs/db/models/user.model'
+import { ForbiddenException } from '@nestjs/common'
+import { PassportStrategy } from '@nestjs/passport'
 import { ReturnModelType } from '@typegoose/typegoose'
-import { BadRequestException } from '@nestjs/common'
 import { compareSync } from 'bcrypt'
+import { InjectModel } from 'nestjs-typegoose'
+import { IStrategyOptions, Strategy } from 'passport-local'
 
 export class LocalStrategy extends PassportStrategy(Strategy, 'local') {
   constructor(
@@ -19,10 +19,10 @@ export class LocalStrategy extends PassportStrategy(Strategy, 'local') {
   async validate(username: string, password: string) {
     const user = await this.userModel.findOne({ username }).select('+password')
     if (!user) {
-      throw new BadRequestException('用户名不正确')
+      throw new ForbiddenException('用户名不正确')
     }
     if (!compareSync(password, user.password)) {
-      throw new BadRequestException('密码不正确')
+      throw new ForbiddenException('密码不正确')
     }
     // console.log(user)
     return user

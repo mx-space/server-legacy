@@ -145,7 +145,7 @@ export class PostsController {
     )
     return {
       ...updateDocument,
-      msg: updateDocument.nModified ? '修改成功' : '没有文章被修改',
+      message: updateDocument.nModified ? '修改成功' : '没有文章被修改',
     }
   }
 
@@ -155,7 +155,7 @@ export class PostsController {
   async deletePost(@Param() params: IdDto) {
     const { id } = params
     const r = await this.postService.deletePost(id)
-    return { ...r, msg: r.deletedCount ? '删除成功' : '删除失败' }
+    return { ...r, message: r.deletedCount ? '删除成功' : '删除失败' }
   }
 
   @Get('search')

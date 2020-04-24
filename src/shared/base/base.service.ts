@@ -271,7 +271,7 @@ export abstract class BaseService<T extends BaseModel> {
 
   public async deleteOneAsync(conditions: AnyType) {
     const r = await this.deleteOne(conditions)
-    return { ...r, msg: r.deletedCount ? '删除成功' : '删除失败' }
+    return { ...r, message: r.deletedCount ? '删除成功' : '删除失败' }
   }
 
   public async deleteByIdAsync(id: string) {
@@ -333,7 +333,7 @@ export abstract class BaseService<T extends BaseModel> {
   ) {
     const res = await this.update(conditions as any, doc, options)
     return res.nModified > 0
-      ? { msg: '修改成功啦~' }
-      : { msg: '没有内容被修改' }
+      ? { message: '修改成功啦~' }
+      : { message: '没有内容被修改' }
   }
 }
