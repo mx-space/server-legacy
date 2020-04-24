@@ -36,7 +36,7 @@
     "fastify": "^2.13.1",
     "fastify-multipart": "^1.0.5",
     "fastify-swagger": "^2.5.1",
-    "file-type": "^14.1.4",
+    "file-type": "^14.2.0",
     "image-size": "^0.8.3",
     "mongoose": "^5.9.10",
     "mongoose-lean-virtuals": "^0.6.1",
