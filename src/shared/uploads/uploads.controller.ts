@@ -22,14 +22,14 @@ class FileUploadDto {
 export class UploadsController {
   constructor(private readonly service: UploadsService) {}
 
-  @Post()
+  @Post('image')
   @ApiConsumes('multipart/form-data')
   @ApiBody({
     description: 'Upload images',
     type: FileUploadDto,
   })
-  @Auth()
-  async upload(@Req() req: FastifyRequest<IncomingMessage>) {
+  // @Auth()
+  async uploadImage(@Req() req: FastifyRequest<IncomingMessage>) {
     if (!req.isMultipart()) {
       throw new BadRequestException('仅供上传文件!')
     }
@@ -43,16 +43,19 @@ export class UploadsController {
     if (fileInfo.limit) {
       throw new BadRequestException('文件不符合, 大小不得超过 6M')
     }
-    const data = await this.service.saveFile(fileInfo)
+    const data = await this.service.saveImage(fileInfo)
     return { ...data }
   }
 
-  @Get(':hashname')
+  @Get('image/:hashname')
   async getImage(
     @Param('hashname') name: string,
     @Res() res: FastifyReply<ServerResponse>,
   ) {
-    const { buffer, mime } = await this.service.checkFileExist(name)
+    const { buffer, mime } = await this.service.checkFileExist(
+      name,
+      this.service.imagePath,
+    )
     const stream = this.service.getReadableStream(buffer)
     res.type(mime).send(stream)
   }
