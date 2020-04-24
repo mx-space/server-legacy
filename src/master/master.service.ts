@@ -5,6 +5,7 @@ import { InjectModel } from 'nestjs-typegoose'
 import { AuthService } from 'src/auth/auth.service'
 import { nanoid } from 'nanoid'
 import { compareSync } from 'bcrypt'
+import { getAvatar } from 'src/shared/utils'
 
 @Injectable()
 export default class MasterService {
@@ -12,9 +13,11 @@ export default class MasterService {
     @InjectModel(User) private readonly userModel: ReturnModelType<typeof User>,
     private readonly authService: AuthService,
   ) {}
-  // TODO: 扩展 <05-04-20 Innei> //
+
   async getMasterInfo() {
-    return await this.userModel.findOne().select('-authCode')
+    const user = await this.userModel.findOne().select('-authCode').lean()
+    const avatar = getAvatar(user.mail)
+    return { ...user, avatar }
   }
 
   async createMaster(model: User) {

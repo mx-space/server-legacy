@@ -37,10 +37,7 @@ export class MasterController {
   @Get()
   @ApiOperation({ summary: '获取主人信息' })
   async getMasterInfo() {
-    const info = await this.masterService.getMasterInfo()
-
-    const avatar = getAvatar(info.mail)
-    return { avatar, ...info.toObject() }
+    return await this.masterService.getMasterInfo()
   }
 
   @Post('register')

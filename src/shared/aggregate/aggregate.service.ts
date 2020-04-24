@@ -6,6 +6,8 @@ import { Say } from '@libs/db/models/say.model'
 import { Injectable } from '@nestjs/common'
 import { ReturnModelType } from '@typegoose/typegoose'
 import { InjectModel } from 'nestjs-typegoose'
+import Category from '@libs/db/models/category.model'
+import Page from '@libs/db/models/page.model'
 @Injectable()
 export class AggregateService {
   constructor(
@@ -16,6 +18,9 @@ export class AggregateService {
     @InjectModel(Say) private readonly sayModel: ReturnModelType<typeof Say>,
     @InjectModel(Project)
     private readonly projectModel: ReturnModelType<typeof Project>,
+    @InjectModel(Category)
+    private readonly categoryModel: ReturnModelType<typeof Category>,
+    @InjectModel(Page) private readonly pageModel: ReturnModelType<typeof Page>,
   ) {}
 
   private async findTop(model: any, condition = {}, size = 6) {
@@ -47,5 +52,13 @@ export class AggregateService {
     const says = await this.findTop(this.sayModel, {}, size)
 
     return { notes, posts, projects, says }
+  }
+
+  async getAllCategory() {
+    return await this.categoryModel.find().lean()
+  }
+
+  async getAllPages(select: string) {
+    return await this.pageModel.find().select(select).sort({ order: -1 }).lean()
   }
 }

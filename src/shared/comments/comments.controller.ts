@@ -5,12 +5,11 @@ import {
   Delete,
   Get,
   Param,
+  Patch,
   Post,
-  Put,
   Query,
   Req,
   UseGuards,
-  Patch,
 } from '@nestjs/common'
 import { AuthGuard } from '@nestjs/passport'
 import {
@@ -35,7 +34,6 @@ import { Pager } from 'src/shared/comments/dto/pager.dto'
 import { StateDto } from 'src/shared/comments/dto/state.dto'
 import { IdDto } from '../base/dto/id.dto'
 import { CommentsService } from './comments.service'
-import { Auth } from 'src/core/decorators/auth.decorator'
 
 @Controller('comments')
 @ApiTags('Comment Routes')
