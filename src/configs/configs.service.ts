@@ -33,9 +33,9 @@ export class ConfigsService {
   protected async configInit() {
     const configs = await this.optionModel.find().lean()
     configs.map((field) => {
-      const name = field.name as keyof this
+      const name = field.name as keyof IConfig
       const value = field.value
-      this[name] = value
+      this.config[name] = value
     })
   }
 
