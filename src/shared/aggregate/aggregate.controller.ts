@@ -1,15 +1,14 @@
-import { Controller, Get, UseGuards, Query } from '@nestjs/common'
-import { ApiTags, ApiProperty } from '@nestjs/swagger'
-import { AggregateService } from 'src/shared/aggregate/aggregate.service'
-import { ConfigsService } from 'src/configs/configs.service'
+import { FileType } from '@libs/db/models/file.model'
+import { Controller, Get, Query, UseGuards } from '@nestjs/common'
+import { ApiProperty, ApiTags } from '@nestjs/swagger'
 import { RolesGuard } from 'src/auth/roles.guard'
-import { TopQueryDto } from './dtos/top.dto'
+import { ConfigsService } from 'src/configs/configs.service'
 import { Master } from 'src/core/decorators/guest.decorator'
 import MasterService from 'src/master/master.service'
+import { AggregateService } from 'src/shared/aggregate/aggregate.service'
 import { ImageService } from '../uploads/image.service'
-import { FileTypeQueryDto } from '../uploads/dto/filetype.dto'
-import { FileType } from '@libs/db/models/file.model'
 import { RandomTypeDto } from './dtos/random.dto'
+import { TopQueryDto } from './dtos/top.dto'
 
 @Controller('aggregate')
 @ApiTags('Aggregate Routes')
@@ -43,12 +42,6 @@ export class AggregateController {
   async getRandomImage(@Query() query: RandomTypeDto) {
     const { type, imageType = FileType.IMAGE, size = 1 } = query
 
-    switch (type) {
-      case 'IMAGE':
-        return await this.imageService.getRandomImages(size, imageType)
-      // TODO random api
-      default:
-        break
-    }
+    return await this.service.getRandomContent(type, imageType, size)
   }
 }

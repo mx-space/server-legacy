@@ -1,13 +1,17 @@
+import Category from '@libs/db/models/category.model'
 import Comment from '@libs/db/models/comment.model'
+import { FileType } from '@libs/db/models/file.model'
 import Note from '@libs/db/models/note.model'
+import Page from '@libs/db/models/page.model'
 import Post from '@libs/db/models/post.model'
 import { Project } from '@libs/db/models/project.model'
 import { Say } from '@libs/db/models/say.model'
 import { Injectable } from '@nestjs/common'
 import { ReturnModelType } from '@typegoose/typegoose'
+import { sample, sampleSize } from 'lodash'
 import { InjectModel } from 'nestjs-typegoose'
-import Category from '@libs/db/models/category.model'
-import Page from '@libs/db/models/page.model'
+import { ImageService } from '../uploads/image.service'
+import { RandomType } from './dtos/random.dto'
 @Injectable()
 export class AggregateService {
   constructor(
@@ -21,6 +25,7 @@ export class AggregateService {
     @InjectModel(Category)
     private readonly categoryModel: ReturnModelType<typeof Category>,
     @InjectModel(Page) private readonly pageModel: ReturnModelType<typeof Page>,
+    private readonly imageService: ImageService,
   ) {}
 
   private async findTop(model: any, condition = {}, size = 6) {
@@ -60,5 +65,27 @@ export class AggregateService {
 
   async getAllPages(select: string) {
     return await this.pageModel.find().select(select).sort({ order: -1 }).lean()
+  }
+
+  async getRandomContent(type: RandomType, imageType: FileType, size: number) {
+    switch (type) {
+      case 'NOTE':
+        return sample(
+          await this.noteModel
+            .find({ hide: false, password: undefined })
+            .limit(10),
+        )
+      case 'POST':
+        return sample(
+          await this.postModel
+            .find({ hide: false })
+            .populate('category')
+            .limit(10),
+        )
+      case 'SAY':
+        return sampleSize(await this.sayModel.find(), size)
+      case 'IMAGE':
+        return await this.imageService.getRandomImages(size, imageType)
+    }
   }
 }
