@@ -69,22 +69,22 @@ export class AggregateService {
 
   async getRandomContent(type: RandomType, imageType: FileType, size: number) {
     switch (type) {
-      case 'NOTE':
+      case RandomType.NOTE:
         return sample(
           await this.noteModel
             .find({ hide: false, password: undefined })
             .limit(10),
         )
-      case 'POST':
+      case RandomType.POST:
         return sample(
           await this.postModel
             .find({ hide: false })
             .populate('category')
             .limit(10),
         )
-      case 'SAY':
+      case RandomType.SAY:
         return sampleSize(await this.sayModel.find(), size)
-      case 'IMAGE':
+      case RandomType.IMAGE:
         return await this.imageService.getRandomImages(size, imageType)
     }
   }

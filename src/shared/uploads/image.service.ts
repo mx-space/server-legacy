@@ -15,6 +15,9 @@ export class ImageService {
     }
 
     const allImages = await this.model.find({ type }).lean()
+    if (!allImages.length) {
+      return []
+    }
     const randomImages = shuffle(allImages)
     if (size === 1) {
       return randomImages.pop()
