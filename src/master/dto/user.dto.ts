@@ -13,6 +13,12 @@ export class UserDto {
   @IsNotEmpty()
   readonly username: string
 
+  @IsOptional()
+  @IsString()
+  @IsNotEmpty()
+  @ApiProperty({ example: '我是练习时长两年半的个人练习生' })
+  readonly introduce?: string
+
   @IsString()
   @ApiProperty()
   @IsNotEmpty()
@@ -70,7 +76,13 @@ export class UserPatchDto {
   @ApiProperty({ required: false })
   @IsString()
   @IsOptional()
-  name?: string
+  readonly name?: string
+
+  @IsOptional()
+  @IsString()
+  @IsNotEmpty()
+  @ApiProperty({ example: '我是练习时长两年半的个人练习生' })
+  readonly introduce?: string
 
   @ApiProperty({ required: false, example: 'http://example.com' })
   @IsUrl({ require_protocol: true }, { message: '请更正为正确的网址' })

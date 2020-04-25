@@ -1,4 +1,3 @@
-import { ApiProperty } from '@nestjs/swagger'
 import { arrayProp, DocumentType, prop } from '@typegoose/typegoose'
 import { hashSync } from 'bcrypt'
 import { BaseModel } from './base.model'
@@ -6,21 +5,13 @@ import { BaseModel } from './base.model'
 export type UserDocument = DocumentType<User>
 export class User extends BaseModel {
   @prop({ required: true, unique: true, trim: true })
-  @ApiProperty({
-    description: 'Username',
-    example: 'test',
-    required: true,
-  })
   username!: string
 
   @prop({ trim: true })
-  @ApiProperty({
-    description: 'Display name',
-  })
   name!: string
 
   @prop()
-  description?: string
+  introduce?: string
 
   @prop()
   avatar?: string
@@ -35,18 +26,12 @@ export class User extends BaseModel {
     },
     required: true,
   })
-  @ApiProperty({
-    description: 'Password',
-    required: true,
-  })
   password!: string
 
   @prop()
-  @ApiProperty()
   mail?: string
 
   @prop()
-  @ApiProperty()
   url?: string
 
   @prop()

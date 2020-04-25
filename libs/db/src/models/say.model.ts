@@ -1,11 +1,9 @@
-import { prop } from '@typegoose/typegoose'
-import { ApiProperty } from '@nestjs/swagger'
-import { IsString, IsOptional } from 'class-validator'
 import { BaseModel } from '@libs/db/models/base.model'
+import { prop } from '@typegoose/typegoose'
+import { IsOptional, IsString } from 'class-validator'
 
 export class Say extends BaseModel {
   @prop({ required: true })
-  @ApiProperty()
   @IsString()
   text: string
 

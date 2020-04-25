@@ -1,5 +1,4 @@
 import Category from '@libs/db/models/category.model'
-import { ApiProperty } from '@nestjs/swagger'
 import { index, prop, Ref } from '@typegoose/typegoose'
 import { Schema } from 'mongoose'
 import { BaseCommentIndexModel } from './base.model'
@@ -10,19 +9,15 @@ import { BaseCommentIndexModel } from './base.model'
 @index({ created: -1, modified: -1 })
 @index({ text: 'text' })
 export default class Post extends BaseCommentIndexModel {
-  @ApiProperty({ description: 'Title', required: true })
   @prop({ trim: true, index: true, required: true })
   title!: string
 
-  @ApiProperty({ description: 'Slug', required: true })
   @prop({ trim: true, unique: true, required: true })
   slug!: string
 
-  @ApiProperty({ description: 'Text Body' })
   @prop({ trim: true, index: true })
   text?: string
 
-  @ApiProperty({ description: '(Optional): Summary' })
   @prop()
   summary?: string
 
@@ -37,11 +32,9 @@ export default class Post extends BaseCommentIndexModel {
   })
   public category: Ref<Category>
 
-  @ApiProperty({ description: 'Hide?' })
   @prop({ default: false })
   hide?: boolean
 
-  @ApiProperty({ description: 'Other Options' })
   @prop({ type: Schema.Types.Mixed })
   options?: Record<any, any>
 }
