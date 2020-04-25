@@ -1,4 +1,4 @@
-export function addCondition(isMaster: boolean) {
+export function addConditionToSeeHideContent(isMaster: boolean) {
   return isMaster
     ? {
         $or: [{ hide: false }, { hide: true }],

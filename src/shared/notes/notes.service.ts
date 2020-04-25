@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common'
 import { DocumentType, ReturnModelType } from '@typegoose/typegoose'
 import { InjectModel } from 'nestjs-typegoose'
 import { CannotFindException } from 'src/core/exceptions/cant-find.exception'
-import { addCondition } from 'src/shared/utils'
+import { addConditionToSeeHideContent } from 'src/shared/utils'
 import { BaseService } from '../base/base.service'
 import { compareSync } from 'bcrypt'
 
@@ -16,10 +16,13 @@ export class NotesService extends BaseService<Note> {
   }
 
   async getLatestOne(isMaster: boolean) {
-    const condition = addCondition(isMaster)
-    const latest = await this.noteModel.findOne(condition).sort({
-      created: -1,
-    })
+    const condition = addConditionToSeeHideContent(isMaster)
+    // TODO master
+    const latest = await this.noteModel
+      .findOne({ ...condition, password: undefined })
+      .sort({
+        created: -1,
+      })
 
     if (!latest) {
       throw new CannotFindException()

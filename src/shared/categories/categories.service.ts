@@ -3,7 +3,7 @@ import Post from '@libs/db/models/post.model'
 import { Injectable } from '@nestjs/common'
 import { ReturnModelType } from '@typegoose/typegoose'
 import { InjectModel } from 'nestjs-typegoose'
-import { addCondition } from 'src/shared/utils'
+import { addConditionToSeeHideContent } from 'src/shared/utils'
 import { BaseService } from '../base/base.service'
 
 @Injectable()
@@ -18,7 +18,7 @@ export class CategoriesService extends BaseService<Category> {
   }
 
   async findCategoryPost(categoryId: string, isMaster = false) {
-    const condition = addCondition(isMaster)
+    const condition = addConditionToSeeHideContent(isMaster)
     // FIXME 2020-04-01 it will be show hide post if guest access this api
     return await this.postModel
       .find({

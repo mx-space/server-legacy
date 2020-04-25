@@ -6,7 +6,6 @@ import { ConfigsService } from 'src/configs/configs.service'
 import { Master } from 'src/core/decorators/guest.decorator'
 import MasterService from 'src/master/master.service'
 import { AggregateService } from 'src/shared/aggregate/aggregate.service'
-import { ImageService } from '../uploads/image.service'
 import { RandomTypeDto } from './dtos/random.dto'
 import { TopQueryDto } from './dtos/top.dto'
 
@@ -18,13 +17,11 @@ export class AggregateController {
     private readonly service: AggregateService,
     private readonly configs: ConfigsService,
     private readonly userService: MasterService,
-    private readonly imageService: ImageService,
   ) {}
   @Get()
   async aggregate(@Master() isMaster: boolean) {
     return {
       user: await this.userService.getMasterInfo(),
-      top: await this.top({ size: 6 }, isMaster),
       seo: this.configs.seo,
       categories: await this.service.getAllCategory(),
       pageMeta: await this.service.getAllPages('title _id slug order'),

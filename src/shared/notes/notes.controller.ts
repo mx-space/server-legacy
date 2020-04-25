@@ -25,7 +25,7 @@ import {
   NoteDto,
   PasswordQueryDto,
 } from 'src/shared/notes/dto/note.dto'
-import { addCondition } from 'src/shared/utils'
+import { addConditionToSeeHideContent } from 'src/shared/utils'
 import { PagerDto } from '../base/dto/pager.dto'
 import { NotesService } from './notes.service'
 import { Auth } from 'src/core/decorators/auth.decorator'
@@ -41,7 +41,7 @@ export class NotesController {
   @Auth()
   async getNotes(@Master() isMaster: boolean, @Query() query: PagerDto) {
     const { size, select, page } = query
-    const condition = addCondition(isMaster)
+    const condition = addConditionToSeeHideContent(isMaster)
     return await this.noteService.findWithPaginator(condition, {
       limit: size,
       skip: (page - 1) * size,
@@ -70,7 +70,7 @@ export class NotesController {
   ) {
     const { id } = params
     const { password } = query
-    const condition = addCondition(isMaster)
+    const condition = addConditionToSeeHideContent(isMaster)
     const current = await this.noteService
       .findOne({
         _id: id,
@@ -118,7 +118,7 @@ export class NotesController {
     const half = Math.floor(size / 2)
     const { id } = params
     const select = 'nid _id title created'
-    const condition = addCondition(isMaster)
+    const condition = addConditionToSeeHideContent(isMaster)
     const currentDocument = await this.noteService
       .findOne({
         _id: id,

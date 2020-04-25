@@ -53,8 +53,12 @@ export class AggregateService {
       isMaster ? { hide: false } : {},
       size,
     )
-    const projects = await this.findTop(this.projectModel, {}, size)
-    const says = await this.findTop(this.sayModel, {}, size)
+    const projects = await this.projectModel
+      .find()
+      .sort({ create: -1 })
+      .limit(size)
+      .select('avatar _id name')
+    const says = await this.sayModel.find({}).sort({ create: -1 }).limit(size)
 
     return { notes, posts, projects, says }
   }
