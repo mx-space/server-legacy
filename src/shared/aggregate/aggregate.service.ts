@@ -12,6 +12,10 @@ import { sample, sampleSize } from 'lodash'
 import { InjectModel } from 'nestjs-typegoose'
 import { ImageService } from '../uploads/image.service'
 import { RandomType } from './dtos/random.dto'
+import { AnyParamConstructor } from '@typegoose/typegoose/lib/types'
+import { DocumentQuery } from 'mongoose'
+import { DocumentType } from '@typegoose/typegoose'
+import { pick } from 'lodash'
 @Injectable()
 export class AggregateService {
   constructor(
@@ -28,13 +32,19 @@ export class AggregateService {
     private readonly imageService: ImageService,
   ) {}
 
-  private async findTop(model: any, condition = {}, size = 6) {
-    return await model
+  private findTop<
+    U extends AnyParamConstructor<any>,
+    T extends ReturnModelType<U>
+  >(
+    model: T,
+    condition = {},
+    size = 6,
+  ): DocumentQuery<DocumentType<T>[], DocumentType<T>, {}> {
+    return model
       .find(condition)
       .sort({ created: -1 })
       .limit(size)
-      .select('_id title name slug category avatar nid')
-      .lean()
+      .select('_id title name slug avatar nid')
   }
 
   async topActivity(size = 6, isMaster = false) {
@@ -47,17 +57,28 @@ export class AggregateService {
           }
         : {},
       size,
-    )
-    const posts = await this.findTop(
+    ).lean()
+
+    const _posts = (await this.findTop(
       this.postModel,
       isMaster ? { hide: false } : {},
       size,
     )
+      .populate('categoryId')
+      .lean()) as any[]
+
+    const posts = _posts.map((post) => {
+      post.category = pick(post.categoryId, ['name', 'slug'])
+      delete post.categoryId
+      return post
+    })
+
     const projects = await this.projectModel
       .find()
       .sort({ create: -1 })
       .limit(size)
       .select('avatar _id name')
+
     const says = await this.sayModel.find({}).sort({ create: -1 }).limit(size)
 
     return { notes, posts, projects, says }
