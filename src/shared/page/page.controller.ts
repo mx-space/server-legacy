@@ -7,14 +7,12 @@ import {
   Param,
   Post,
   Put,
-  Query,
   UseGuards,
 } from '@nestjs/common'
 import { AuthGuard } from '@nestjs/passport'
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
 import { CannotFindException } from 'src/core/exceptions/cant-find.exception'
 import { IdDto } from 'src/shared/base/dto/id.dto'
-import { PagerDto } from 'src/shared/base/dto/pager.dto'
 import { PageService } from './page.service'
 
 @ApiTags('Page Routes')
@@ -23,15 +21,11 @@ export class PageController {
   constructor(private readonly service: PageService) {}
 
   @Get()
-  async getPagesSummary(@Query() query: PagerDto) {
-    const { page, size, select } = query
+  async getPagesSummary() {
     const pages = await this.service.find(
       {},
-      { sort: { order: -1 }, select: '-text -type -subtitle' },
+      { sort: { order: -1 }, select: '-text -type' },
     )
-    if (!pages.length) {
-      throw new CannotFindException()
-    }
     return { data: pages }
   }
 
