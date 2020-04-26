@@ -19,7 +19,7 @@ export class AggregateController {
     private readonly userService: MasterService,
   ) {}
   @Get()
-  async aggregate(@Master() isMaster: boolean) {
+  async aggregate() {
     return {
       user: await this.userService.getMasterInfo(),
       seo: this.configs.seo,

@@ -1,8 +1,10 @@
 import { arrayProp, DocumentType, prop } from '@typegoose/typegoose'
 import { hashSync } from 'bcrypt'
+import { Schema } from 'mongoose'
 import { BaseModel } from './base.model'
 
 export type UserDocument = DocumentType<User>
+
 export class User extends BaseModel {
   @prop({ required: true, unique: true, trim: true })
   username!: string
@@ -39,6 +41,9 @@ export class User extends BaseModel {
 
   @prop()
   lastLoginIp?: string
+
+  @prop({ type: Schema.Types.Mixed })
+  socialIds?: any
 
   @prop({ select: true, required: true })
   authCode!: string

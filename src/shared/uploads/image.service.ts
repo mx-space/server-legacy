@@ -27,16 +27,6 @@ export class ImageService {
       return randomImages
     }
 
-    // const indexes = new Set()
-    // const images = []
-    // while (indexes.size < size) {
-    //   const randInt = random(0, allImages.length - 1, false)
-    //   if (!indexes.has(randInt)) {
-    //     images.push(allImages[randInt])
-    //   }
-    //   indexes.add(randInt)
-    // }
-
     return randomImages.splice(0, size)
   }
 }

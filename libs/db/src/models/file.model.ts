@@ -19,6 +19,11 @@ export enum FileType {
   // VIDEO,
   // FILE,
 }
+export enum FileLocate {
+  Local,
+  Online,
+}
+
 export const getFileType = (type: FileType) => {
   const ft = Object.keys(FileType)
   return ft.splice(ft.length / 2)[type].toLowerCase()
@@ -52,4 +57,7 @@ export class File {
 
   @prop({ default: FileType.IMAGE })
   type: number
+
+  @prop({ default: FileLocate.Local })
+  locate: 0 | 1
 }
