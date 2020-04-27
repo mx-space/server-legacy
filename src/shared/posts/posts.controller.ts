@@ -42,6 +42,7 @@ export class PostsController {
       skip: (page - 1) * size,
       select,
       sort: { created: -1 },
+      populate: 'category',
     })
   }
 
