@@ -3,7 +3,7 @@ export function addConditionToSeeHideContent(isMaster: boolean) {
     ? {
         $or: [{ hide: false }, { hide: true }],
       }
-    : { $or: [{ hide: false }] }
+    : { hide: false, password: undefined }
 }
 
 export const range = (min: number, max: number): number[] => {
