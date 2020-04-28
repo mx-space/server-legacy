@@ -50,7 +50,7 @@ export class AggregateService {
   async topActivity(size = 6, isMaster = false) {
     const notes = await this.findTop(
       this.noteModel,
-      isMaster
+      !isMaster
         ? {
             hide: false,
             password: undefined,
@@ -61,7 +61,7 @@ export class AggregateService {
 
     const _posts = (await this.findTop(
       this.postModel,
-      isMaster ? { hide: false } : {},
+      !isMaster ? { hide: false } : {},
       size,
     )
       .populate('categoryId')
