@@ -31,7 +31,7 @@ export class CommentsService extends BaseService<Comment> {
       Object.entries({
         Post: this.postModel,
         Note: this.noteModel,
-        page: this.pageModel,
+        Page: this.pageModel,
       }),
     )
     return (map.get(type) as any) as ReturnModelType<
