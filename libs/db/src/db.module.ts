@@ -12,11 +12,13 @@ import { Project } from './models/project.model'
 import { TypegooseModule } from 'nestjs-typegoose'
 import { User } from './models/user.model'
 import { Say } from './models/say.model'
+import { Link } from './models/link.model'
 
 const models = TypegooseModule.forFeature([
   Category,
   Comment,
   File,
+  Link,
   Menu,
   Note,
   Option,

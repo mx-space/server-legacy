@@ -136,7 +136,7 @@ export class UploadsService {
   protected initDirectory() {
     const keys = Object.keys(FileType)
     const types = keys.splice(keys.length / 2)
-    types.map((type) => {
+    types.forEach((type) => {
       const t = type.toLowerCase()
       const dir = plural(t)
       const path = join(this.rootPath, dir)

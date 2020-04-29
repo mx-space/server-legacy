@@ -1,7 +1,7 @@
 import { File, FileType } from '@libs/db/models/file.model'
 import { Injectable } from '@nestjs/common'
 import { ReturnModelType } from '@typegoose/typegoose'
-import { random, shuffle } from 'lodash'
+import { shuffle } from 'lodash'
 import { InjectModel } from 'nestjs-typegoose'
 @Injectable()
 export class ImageService {

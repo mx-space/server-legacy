@@ -19,17 +19,17 @@ import { pick } from 'lodash'
 @Injectable()
 export class AggregateService {
   constructor(
-    @InjectModel(Post) private readonly postModel: ReturnModelType<typeof Post>,
-    @InjectModel(Note) private readonly noteModel: ReturnModelType<typeof Note>,
+    @InjectModel(Post) public readonly postModel: ReturnModelType<typeof Post>,
+    @InjectModel(Note) public readonly noteModel: ReturnModelType<typeof Note>,
     @InjectModel(Comment)
-    private readonly commentModel: ReturnModelType<typeof Comment>,
-    @InjectModel(Say) private readonly sayModel: ReturnModelType<typeof Say>,
+    public readonly commentModel: ReturnModelType<typeof Comment>,
+    @InjectModel(Say) public readonly sayModel: ReturnModelType<typeof Say>,
     @InjectModel(Project)
-    private readonly projectModel: ReturnModelType<typeof Project>,
+    public readonly projectModel: ReturnModelType<typeof Project>,
     @InjectModel(Category)
-    private readonly categoryModel: ReturnModelType<typeof Category>,
-    @InjectModel(Page) private readonly pageModel: ReturnModelType<typeof Page>,
-    private readonly imageService: ImageService,
+    public readonly categoryModel: ReturnModelType<typeof Category>,
+    @InjectModel(Page) public readonly pageModel: ReturnModelType<typeof Page>,
+    public readonly imageService: ImageService,
   ) {}
 
   private findTop<
@@ -50,7 +50,7 @@ export class AggregateService {
   async topActivity(size = 6, isMaster = false) {
     const notes = await this.findTop(
       this.noteModel,
-      isMaster
+      !isMaster
         ? {
             hide: false,
             password: undefined,
@@ -61,7 +61,7 @@ export class AggregateService {
 
     const _posts = (await this.findTop(
       this.postModel,
-      isMaster ? { hide: false } : {},
+      !isMaster ? { hide: false } : {},
       size,
     )
       .populate('categoryId')

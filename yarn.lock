@@ -3081,10 +3081,30 @@ fastify-swagger@^2.5.1:
     fastify-static "^2.5.1"
     js-yaml "^3.12.1"
 
-fastify@2.13.1, fastify@^2.13.1:
+fastify@2.13.1:
   version "2.13.1"
   resolved "https://registry.yarnpkg.com/fastify/-/fastify-2.13.1.tgz#38d9a5b030ddbc472b4ab756b584c5f0cc538593"
   integrity sha512-ssh4CneRqWqYeHun03XicIcYxWXLEam5V9wHYSYm22yvSm91SnTzzajxs1w135rdZnT+VJ1MwOfToqwR6G5MoA==
+  dependencies:
+    abstract-logging "^2.0.0"
+    ajv "^6.12.0"
+    avvio "^6.3.1"
+    fast-json-stringify "^1.18.0"
+    find-my-way "^2.2.2"
+    flatstr "^1.0.12"
+    light-my-request "^3.7.3"
+    middie "^4.1.0"
+    pino "^5.17.0"
+    proxy-addr "^2.0.6"
+    readable-stream "^3.6.0"
+    rfdc "^1.1.2"
+    secure-json-parse "^2.1.0"
+    tiny-lru "^7.0.2"
+
+fastify@^2.14.0:
+  version "2.14.0"
+  resolved "https://registry.yarnpkg.com/fastify/-/fastify-2.14.0.tgz#296c300884bf9dbf403bac1723f3ae0f0325dfe4"
+  integrity sha512-uofJOU9Zf20iklDrACZZVe+qef6dswOe8IUnxUdHTY9QfHv301MgPxodvJFiRE2WAse7YrWr4sI5Lx6YIAuUAA==
   dependencies:
     abstract-logging "^2.0.0"
     ajv "^6.12.0"
@@ -5145,10 +5165,10 @@ mongodb@3.5.6:
   optionalDependencies:
     saslprep "^1.0.0"
 
-mongoose-lean-virtuals@^0.6.1:
-  version "0.6.1"
-  resolved "https://registry.yarnpkg.com/mongoose-lean-virtuals/-/mongoose-lean-virtuals-0.6.1.tgz#43ab987a2d447a264fcde24af2de0f991b821857"
-  integrity sha512-qRRavDPzHkIY9eEMCrWAL1j9HzMGHWn8lSMSYqp9n4KiZ6Qfl/FQmfHhnn0kH0YHx2jEVUYENjbHsxAepeLT+Q==
+mongoose-lean-virtuals@^0.6.2:
+  version "0.6.2"
+  resolved "https://registry.yarnpkg.com/mongoose-lean-virtuals/-/mongoose-lean-virtuals-0.6.2.tgz#f416f156808f538e4d71f8b79d39058ef4c4faf7"
+  integrity sha512-ih5Z4YXsohxWXiFNgclGgRK+UfDjmvG28hofW175rhzfoeGPSqL5GuiJiZMPWD7YmR0woWLlEHXSHKleqCIjZg==
   dependencies:
     mpath "0.5.x"
 
@@ -5276,10 +5296,10 @@ neo-async@^2.5.0, neo-async@^2.6.1:
   resolved "https://registry.yarnpkg.com/neo-async/-/neo-async-2.6.1.tgz#ac27ada66167fa8849a6addd837f6b189ad2081c"
   integrity sha512-iyam8fBuCUpWeKPGpaNMetEocMt364qkCsfL9JuhjXX6dRnguRVOfk2GZaDpPjcOKiiXCPINZC1GczQ7iTq3Zw==
 
-nestjs-typegoose@^7.1.16:
-  version "7.1.16"
-  resolved "https://registry.yarnpkg.com/nestjs-typegoose/-/nestjs-typegoose-7.1.16.tgz#7f80b8384d451cd16c75bb637cd977098162df76"
-  integrity sha512-v1/a1jI4e7p1G5iyybFfsxqPK7ih2+n+b0eFiFXS7KmfPUlMJlf+pviXssPmXJGBghLCXY55O+VldI90I5iR+g==
+nestjs-typegoose@^7.1.22:
+  version "7.1.22"
+  resolved "https://registry.yarnpkg.com/nestjs-typegoose/-/nestjs-typegoose-7.1.22.tgz#eb2eff133c357d6a6730db5338000497529b7cd3"
+  integrity sha512-p1QKnomSCN/vC6R9aXzUy8cqowFp3QdAfT/TzI3wOsC3N/+oZJW8l/HhJOfiVEoVzdaZEXu1vs9nXu6jTqAnJw==
   dependencies:
     is-class "^0.0.9"
     reflect-metadata "^0.1.13"

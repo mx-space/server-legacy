@@ -4,8 +4,8 @@ import { PostsService } from 'src/shared/posts/posts.service'
 import { PostsController } from './posts.controller'
 
 describe('Posts Controller', () => {
-  let controller: PostsController
-  let service: PostsService
+  // let controller: PostsController
+  // let service: PostsService
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -13,9 +13,9 @@ describe('Posts Controller', () => {
       providers: [PostsService],
       controllers: [PostsController],
     }).compile()
-    service = module.get<PostsService>(PostsService)
+    // service = module.get<PostsService>(PostsService)
 
-    controller = module.get<PostsController>(PostsController)
+    // controller = module.get<PostsController>(PostsController)
   })
 
   // describe('it should be pass', async () => {})

@@ -3,7 +3,7 @@ export function addConditionToSeeHideContent(isMaster: boolean) {
     ? {
         $or: [{ hide: false }, { hide: true }],
       }
-    : { $or: [{ hide: false }] }
+    : { hide: false, password: undefined }
 }
 
 export const range = (min: number, max: number): number[] => {
@@ -29,4 +29,16 @@ const md5 = (text: string) =>
   require('crypto').createHash('md5').update(text).digest('hex')
 export function getAvatar(mail: string) {
   return `https://www.gravatar.com/avatar/${md5(mail)}`
+}
+
+export const yearCondition = (year?: number) => {
+  if (!year) {
+    return {}
+  }
+  return {
+    created: {
+      $gte: new Date(year, 1, 1),
+      $lte: new Date(year + 1, 1, 1),
+    },
+  }
 }
