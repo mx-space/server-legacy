@@ -83,9 +83,11 @@ export class AggregateController {
     switch (type) {
       case TimelineType.Post: {
         data.posts = await getPosts()
+        return
       }
       case TimelineType.Note: {
         data.notes = await getNotes()
+        return
       }
       default: {
         data.notes = await getNotes()

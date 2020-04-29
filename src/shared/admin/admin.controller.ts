@@ -1,12 +1,12 @@
-import { Controller, Get, Post, Body, Patch } from '@nestjs/common'
+import { Body, Controller, Get, Patch } from '@nestjs/common'
+import { ApiResponseProperty, ApiTags } from '@nestjs/swagger'
+import { SEODto, UrlDto } from 'src/configs/configs.dto'
+import { ConfigsService } from 'src/configs/configs.service'
+import { Auth } from 'src/core/decorators/auth.decorator'
 import { AdminService } from 'src/shared/admin/admin.service'
 import { CommentsService } from 'src/shared/comments/comments.service'
 import { NotesService } from 'src/shared/notes/notes.service'
 import { PostsService } from 'src/shared/posts/posts.service'
-import { ConfigsService } from 'src/configs/configs.service'
-import { SEODto, UrlDto } from 'src/configs/configs.dto'
-import { ApiTags, ApiResponseProperty } from '@nestjs/swagger'
-import { Auth } from 'src/core/decorators/auth.decorator'
 
 @Controller('admin')
 @ApiTags('Admin Routes')

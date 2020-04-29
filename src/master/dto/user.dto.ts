@@ -1,12 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger'
 import {
-  IsArray,
   IsEmail,
   IsNotEmpty,
+  IsObject,
   IsOptional,
   IsString,
   IsUrl,
-  IsObject,
 } from 'class-validator'
 
 class UserOptionDto {
