@@ -5296,10 +5296,10 @@ neo-async@^2.5.0, neo-async@^2.6.1:
   resolved "https://registry.yarnpkg.com/neo-async/-/neo-async-2.6.1.tgz#ac27ada66167fa8849a6addd837f6b189ad2081c"
   integrity sha512-iyam8fBuCUpWeKPGpaNMetEocMt364qkCsfL9JuhjXX6dRnguRVOfk2GZaDpPjcOKiiXCPINZC1GczQ7iTq3Zw==
 
-nestjs-typegoose@^7.1.16:
-  version "7.1.16"
-  resolved "https://registry.yarnpkg.com/nestjs-typegoose/-/nestjs-typegoose-7.1.16.tgz#7f80b8384d451cd16c75bb637cd977098162df76"
-  integrity sha512-v1/a1jI4e7p1G5iyybFfsxqPK7ih2+n+b0eFiFXS7KmfPUlMJlf+pviXssPmXJGBghLCXY55O+VldI90I5iR+g==
+nestjs-typegoose@^7.1.22:
+  version "7.1.22"
+  resolved "https://registry.yarnpkg.com/nestjs-typegoose/-/nestjs-typegoose-7.1.22.tgz#eb2eff133c357d6a6730db5338000497529b7cd3"
+  integrity sha512-p1QKnomSCN/vC6R9aXzUy8cqowFp3QdAfT/TzI3wOsC3N/+oZJW8l/HhJOfiVEoVzdaZEXu1vs9nXu6jTqAnJw==
   dependencies:
     is-class "^0.0.9"
     reflect-metadata "^0.1.13"
