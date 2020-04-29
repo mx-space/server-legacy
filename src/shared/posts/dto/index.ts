@@ -6,6 +6,7 @@ import {
   IsNotEmptyObject,
   IsOptional,
   IsString,
+  MaxLength,
 } from 'class-validator'
 
 export class CategoryAndSlug {
@@ -44,6 +45,7 @@ export class PostDto {
   @IsString()
   @IsOptional()
   @IsNotEmpty()
+  @MaxLength(150, { message: '总结的字数不得大于 150 个字符哦' })
   summary: string
 
   @IsBoolean()

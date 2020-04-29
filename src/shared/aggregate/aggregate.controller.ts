@@ -60,6 +60,11 @@ export class AggregateController {
       return data.map((item) => ({
         ...pick(item, ['_id', 'title', 'slug']),
         category: item.category,
+        summary:
+          item.summary ??
+          (item.text.length > 150
+            ? item.text.slice(0, 150) + '...'
+            : item.text),
         url: encodeURI(
           '/posts/' + (item.category as Category).slug + '/' + item.slug,
         ),
@@ -73,7 +78,7 @@ export class AggregateController {
           ...yearCondition(year),
         })
         .sort({ created: sort })
-        .select('_id nid title')
+        .select('_id nid title weather mood')
         .lean()
     switch (type) {
       case TimelineType.Post: {
