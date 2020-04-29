@@ -8,7 +8,10 @@ import MasterService from 'src/master/master.service'
 import { AggregateService } from 'src/shared/aggregate/aggregate.service'
 import { RandomTypeDto } from './dtos/random.dto'
 import { TopQueryDto } from './dtos/top.dto'
-
+import { TimelineQueryDto, TimelineType } from './dtos/timeline.dto'
+import { pick } from 'lodash'
+import Category from '@libs/db/models/category.model'
+import { yearCondition } from '../utils'
 @Controller('aggregate')
 @ApiTags('Aggregate Routes')
 @UseGuards(RolesGuard)
@@ -40,5 +43,51 @@ export class AggregateController {
     const { type, imageType = FileType.IMAGE, size = 1 } = query
 
     return await this.service.getRandomContent(type, imageType, size)
+  }
+
+  @Get('timeline')
+  async getTimeline(@Query() query: TimelineQueryDto) {
+    const { sort = 1, type, year } = query
+    const data = {} as any
+
+    const getPosts = async () => {
+      const data = await this.service.postModel
+        .find({ hide: false, ...yearCondition(year) })
+        .sort({ created: sort })
+        .populate('category')
+        .lean()
+
+      return data.map((item) => ({
+        ...pick(item, ['_id', 'title', 'slug']),
+        category: item.category,
+        url: encodeURI(
+          '/posts/' + (item.category as Category).slug + '/' + item.slug,
+        ),
+      }))
+    }
+    const getNotes = async () =>
+      await this.service.noteModel
+        .find({
+          hide: false,
+          password: undefined,
+          ...yearCondition(year),
+        })
+        .sort({ created: sort })
+        .select('_id nid title')
+        .lean()
+    switch (type) {
+      case TimelineType.Post: {
+        data.posts = await getPosts()
+      }
+      case TimelineType.Note: {
+        data.notes = await getNotes()
+      }
+      default: {
+        data.notes = await getNotes()
+        data.posts = await getPosts()
+      }
+    }
+
+    return { data }
   }
 }

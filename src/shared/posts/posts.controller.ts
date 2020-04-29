@@ -20,7 +20,7 @@ import { PermissionInterceptor } from 'src/core/interceptors/permission.intercep
 import { IdDto } from 'src/shared/base/dto/id.dto'
 import { PagerDto } from 'src/shared/base/dto/pager.dto'
 import { SearchDto } from 'src/shared/base/dto/search.dto'
-import { addConditionToSeeHideContent } from 'src/shared/utils'
+import { addConditionToSeeHideContent, yearCondition } from 'src/shared/utils'
 import { CategoryAndSlug, PostDto } from './dto'
 import { PostsService } from './posts.service'
 
@@ -35,8 +35,11 @@ export class PostsController {
   @Get()
   @ApiOperation({ summary: '获取全部文章带分页器' })
   async getAll(@Master() isMaster?: boolean, @Query() query?: PagerDto) {
-    const { size, select, page } = query // TODO year
-    const condition = addConditionToSeeHideContent(isMaster)
+    const { size, select, page, year } = query
+    const condition = {
+      ...addConditionToSeeHideContent(isMaster),
+      ...yearCondition(year),
+    }
     return await this.postService.findWithPaginator(condition, {
       limit: size,
       skip: (page - 1) * size,

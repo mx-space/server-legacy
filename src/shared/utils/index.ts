@@ -30,3 +30,15 @@ const md5 = (text: string) =>
 export function getAvatar(mail: string) {
   return `https://www.gravatar.com/avatar/${md5(mail)}`
 }
+
+export const yearCondition = (year?: number) => {
+  if (!year) {
+    return {}
+  }
+  return {
+    created: {
+      $gte: new Date(year, 1, 1),
+      $lte: new Date(year + 1, 1, 1),
+    },
+  }
+}
