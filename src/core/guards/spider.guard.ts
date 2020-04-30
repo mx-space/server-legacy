@@ -16,10 +16,10 @@ export class SpiderGuard implements CanActivate {
     const http = context.switchToHttp()
     const request = http.getRequest<FastifyRequest<IncomingMessage>>()
     const headers = request.headers
-    const { referer } = headers
+    // const { referer } = headers
     const ua: string = headers['user-agent'] || ''
     const isSpiderUA = !!ua.match(/(Scrapy|Curl|HttpClient|python|requests)/i)
-    if (ua && referer && !isSpiderUA) {
+    if (ua && !isSpiderUA) {
       return true
     }
     throw new ForbiddenException('爬虫, 禁止')
