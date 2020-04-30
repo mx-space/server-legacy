@@ -78,9 +78,7 @@ export class UploadsService {
     const path = join(`${this.getType2Path(type)}`, hashFilename)
     if (!existsSync(path)) {
       writeFileSync(path, data)
-      this.imageService
-        .syncToImageBed([{ path, name: hashFilename }])
-        .then((_) => console.log('success'))
+      this.imageService.syncToImageBed([{ path, name: hashFilename }])
     }
     return { ext, mime, hashFilename, filename }
   }
