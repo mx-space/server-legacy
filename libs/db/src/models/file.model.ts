@@ -60,4 +60,7 @@ export class File {
 
   @prop({ default: FileLocate.Local })
   locate: 0 | 1
+
+  @prop()
+  url?: string
 }

@@ -18,19 +18,24 @@ import { Readable } from 'stream'
 import { FastifyRequest } from 'fastify'
 import { IncomingMessage } from 'http'
 import { plural } from 'pluralize'
+import { ImageService } from './image.service'
+import { ConfigsService } from '../../configs/configs.service'
 @Injectable({ scope: Scope.REQUEST })
 export class UploadsService {
   // TODO sync file between db and disk
+  private readonly imageService: ImageService
   constructor(
     @InjectModel(File) private readonly model: ReturnModelType<typeof File>,
+    private readonly configs: ConfigsService, // private readonly imageService: ImageService,
   ) {
+    this.imageService = new ImageService(model, configs)
     this.initDirectory()
   }
 
   public static rootPath =
     process.env.NODE_ENV === 'development'
       ? join(__dirname, '../uploads')
-      : '~/.mxspace/uploads'
+      : '~/.mx-space/uploads'
   public rootPath = UploadsService.rootPath
 
   ValidImage(req: FastifyRequest<IncomingMessage>) {
@@ -73,6 +78,9 @@ export class UploadsService {
     const path = join(`${this.getType2Path(type)}`, hashFilename)
     if (!existsSync(path)) {
       writeFileSync(path, data)
+      this.imageService
+        .syncToImageBed([{ path, name: hashFilename }])
+        .then((_) => console.log('success'))
     }
     return { ext, mime, hashFilename, filename }
   }

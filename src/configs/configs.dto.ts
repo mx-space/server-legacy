@@ -4,6 +4,7 @@ import {
   IsString,
   IsNotEmpty,
   IsArray,
+  IsEnum,
 } from 'class-validator'
 import { ApiProperty } from '@nestjs/swagger'
 
@@ -50,4 +51,21 @@ export class UrlDto {
   @IsOptional()
   @ApiProperty({ example: 'http://127.0.0.1:8080' })
   wsUrl: string
+}
+
+export class ImageBedDto {
+  @IsEnum(['github']) // TODO
+  type: 'github'
+
+  @IsOptional()
+  @IsString()
+  token?: string
+
+  @IsOptional()
+  @IsString()
+  repo?: string
+
+  @IsOptional()
+  @IsUrl({ require_protocol: true })
+  customUrl?: string
 }
