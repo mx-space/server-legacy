@@ -33,7 +33,7 @@
     "@typegoose/auto-increment": "^0.4.1",
     "@typegoose/typegoose": "^6.5.0",
     "bcrypt": "^4.0.1",
-    "cache-manager": "^3.2.1",
+    "cache-manager": "^3.3.0",
     "class-transformer": "^0.2.3",
     "class-validator": "^0.12.2",
     "fastify": "^2.14.0",
