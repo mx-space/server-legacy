@@ -22,6 +22,7 @@ import {
   CategoryDto,
   SlugOrIdDto,
 } from 'src/shared/categories/dto/category.dto'
+import { CategoryType } from '../../../libs/db/src/models/category.model'
 
 @Controller('categories')
 @ApiTags('Category Routes')
@@ -66,7 +67,7 @@ export class CategoriesController {
   @UseGuards(AuthGuard('jwt'))
   @ApiSecurity('bearer')
   async createCategory(@Body() body: CategoryDto) {
-    const { type = 'Category', name } = body
+    const { type = CategoryType.Category, name } = body
     const { slug = name } = body
     try {
       const category = await this.categoryService.createNew({
