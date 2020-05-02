@@ -122,8 +122,9 @@ export class CommentsService extends BaseService<Comment> {
     return { message: '删除成功' }
   }
 
-  async getRecently({ page, size, state } = { page: 1, size: 10, state: 0 }) {
+  async getComments({ page, size, state } = { page: 1, size: 10, state: 0 }) {
     const skip = size * (page - 1)
+
     const queryList = await this.findWithPaginator(
       { state },
       {
