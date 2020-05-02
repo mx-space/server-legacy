@@ -1,4 +1,4 @@
-import { createTransport } from 'nodeMailer'
+import { createTransport } from 'nodemailer'
 import { render } from 'ejs'
 import { renderGuestText } from './render/guest'
 import { renderOwnerText } from './render/owner'

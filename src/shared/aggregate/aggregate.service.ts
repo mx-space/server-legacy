@@ -16,6 +16,7 @@ import { AnyParamConstructor } from '@typegoose/typegoose/lib/types'
 import { DocumentQuery } from 'mongoose'
 import { DocumentType } from '@typegoose/typegoose'
 import { pick } from 'lodash'
+import { ConfigsService } from '../../configs/configs.service'
 @Injectable()
 export class AggregateService {
   constructor(
@@ -30,6 +31,7 @@ export class AggregateService {
     public readonly categoryModel: ReturnModelType<typeof Category>,
     @InjectModel(Page) public readonly pageModel: ReturnModelType<typeof Page>,
     public readonly imageService: ImageService,
+    private readonly configs: ConfigsService,
   ) {}
 
   private findTop<
@@ -111,6 +113,39 @@ export class AggregateService {
         return sampleSize(await this.sayModel.find(), size)
       case RandomType.IMAGE:
         return await this.imageService.getRandomImages(size, imageType)
+    }
+  }
+  async getSiteMapContent() {
+    const baseURL = this.configs.get('url').webUrl
+    const posts = (await this.postModel.find().populate('category')).map(
+      (doc) => {
+        return {
+          url: new URL(
+            `/posts/${(doc.category as Category).slug}/${doc.slug}`,
+            baseURL,
+          ),
+          published_at: doc.modified,
+        }
+      },
+    )
+    const notes = (await this.noteModel.find().lean()).map((doc) => {
+      return {
+        url: new URL(`/notes/${doc.nid}`, baseURL),
+        published_at: doc.modified,
+      }
+    })
+
+    const pages = (await this.pageModel.find().lean()).map((doc) => {
+      return {
+        url: new URL(`/${doc.slug}`, baseURL),
+        published_at: doc.modified,
+      }
+    })
+
+    return {
+      data: [...pages, ...notes, ...posts].sort(
+        (a, b) => -(a.published_at.getTime() - b.published_at.getTime()),
+      ),
     }
   }
 }

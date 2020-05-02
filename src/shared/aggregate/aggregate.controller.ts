@@ -97,4 +97,9 @@ export class AggregateController {
 
     return { data }
   }
+
+  @Get('sitemap')
+  async getSiteMapContent() {
+    return await this.service.getSiteMapContent()
+  }
 }
