@@ -32,10 +32,10 @@ import {
 } from 'src/shared/comments/dto/comment.dto'
 import { Pager } from 'src/shared/comments/dto/pager.dto'
 import { StateDto } from 'src/shared/comments/dto/state.dto'
+import { ConfigsService } from '../../configs/configs.service'
+import { ReplyMailType } from '../../plugins/mailer'
 import { IdDto } from '../base/dto/id.dto'
 import { CommentsService } from './comments.service'
-import { ConfigsService } from '../../configs/configs.service'
-import { Mailer, ReplyMailType } from '../../plugins/mailer'
 
 @Controller('comments')
 @ApiTags('Comment Routes')
@@ -130,17 +130,14 @@ export class CommentsController {
 
     const id = params.id
     const model = { ...body, ...ipLocation }
-    try {
-      const comment = await this.commentService.createComment(
-        id,
-        ref || CommentRefTypes.Post,
-        model,
-      )
-      this.commentService.sendEmail(comment, ReplyMailType.Owner)
-      return comment
-    } catch {
-      throw new CannotFindException()
-    }
+
+    const comment = await this.commentService.createComment(
+      id,
+      ref || CommentRefTypes.Post,
+      model,
+    )
+    this.commentService.sendEmail(comment, ReplyMailType.Owner)
+    return comment
   }
 
   @Post('/reply/:id')

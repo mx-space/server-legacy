@@ -7,6 +7,7 @@ import {
   IsEnum,
   IsEmail,
   IsObject,
+  IsBoolean,
 } from 'class-validator'
 import { ApiProperty } from '@nestjs/swagger'
 
@@ -85,4 +86,13 @@ export class MailOptionsDto {
     host?: string
     service?: string
   }
+}
+
+export class CommentOptions {
+  @IsBoolean()
+  antiSpam: boolean
+  @IsNotEmpty()
+  @IsOptional()
+  @IsString()
+  akismetApiKey?: string
 }

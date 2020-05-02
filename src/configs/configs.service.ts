@@ -2,13 +2,20 @@ import { Injectable } from '@nestjs/common'
 import { ReturnModelType } from '@typegoose/typegoose'
 import { InjectModel } from 'nestjs-typegoose'
 import { Option } from '@libs/db/models/option.model'
-import { SEODto, UrlDto, ImageBedDto, MailOptionsDto } from './configs.dto'
+import {
+  SEODto,
+  UrlDto,
+  ImageBedDto,
+  MailOptionsDto,
+  CommentOptions,
+} from './configs.dto'
 
 export interface IConfig {
   seo: SEODto
   url: UrlDto
   imageBed: ImageBedDto
   mailOptions: MailOptionsDto
+  commentOptions: CommentOptions
 }
 
 @Injectable()
@@ -17,15 +24,16 @@ export class ConfigsService {
     seo: {
       title: 'mx-space',
       description: 'Hello World~',
-    } as SEODto,
+    },
     url: {
       wsUrl: 'http://localhost:8080', //todo
       adminUrl: 'http://localhost:9528',
       serverUrl: 'http://localhost:2333',
       webUrl: 'http://localhost:2323',
-    } as UrlDto,
+    },
     imageBed: {} as ImageBedDto,
     mailOptions: {} as MailOptionsDto,
+    commentOptions: { antiSpam: false },
   }
 
   constructor(
@@ -34,6 +42,7 @@ export class ConfigsService {
   ) {
     this.configInit()
   }
+
   protected async configInit() {
     const configs = await this.optionModel.find().lean()
     configs.map((field) => {

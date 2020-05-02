@@ -1,4 +1,7 @@
-import Comment, { CommentRefTypes } from '@libs/db/models/comment.model'
+import Comment, {
+  CommentRefTypes,
+  CommentState,
+} from '@libs/db/models/comment.model'
 import Note from '@libs/db/models/note.model'
 import Page from '@libs/db/models/page.model'
 import Post from '@libs/db/models/post.model'
@@ -12,6 +15,7 @@ import { BaseService } from '../base/base.service'
 import { ConfigsService } from '../../configs/configs.service'
 import { Mailer, ReplyMailType } from '../../plugins/mailer'
 import { DocumentType } from '@typegoose/typegoose'
+import { SpamCheck } from '../../plugins/antiSpam'
 @Injectable()
 export class CommentsService extends BaseService<Comment> {
   constructor(
@@ -48,6 +52,23 @@ export class CommentsService extends BaseService<Comment> {
     type: CommentRefTypes,
     doc: Partial<Comment>,
   ) {
+    const commentOptions = this.configs.get('commentOptions')
+    if (commentOptions.antiSpam) {
+      const client = new SpamCheck({
+        apiKey: commentOptions.akismetApiKey,
+        blog: this.configs.get('url').webUrl,
+      })
+      const isSpam = await client.isSpam({
+        ip: doc.ip,
+        author: doc.author,
+        content: doc.text,
+        url: doc.url,
+      })
+
+      if (isSpam) {
+        throw new UnprocessableEntityException('此评论为垃圾评论已屏蔽')
+      }
+    }
     const model = this.getModelByRefType(type)
     const ref = await model.findById(id)
     if (!ref) {

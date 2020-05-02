@@ -16,6 +16,12 @@ export enum CommentRefTypes {
   Page = 'Page',
 }
 
+export enum CommentState {
+  Unread,
+  Read,
+  Junk,
+}
+
 @pre<Comment>('findOne', autoPopulateSubs)
 @pre<Comment>('find', autoPopulateSubs)
 export default class Comment extends BaseModel {
