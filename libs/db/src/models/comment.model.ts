@@ -23,7 +23,7 @@ export default class Comment extends BaseModel {
   ref: Ref<Post | Note | Page>
 
   @prop({ required: true, default: 'Post', enum: CommentRefTypes })
-  refType: string
+  refType: CommentRefTypes
 
   @prop({ trim: true, required: true })
   author!: string

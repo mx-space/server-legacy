@@ -34,12 +34,17 @@ import { Pager } from 'src/shared/comments/dto/pager.dto'
 import { StateDto } from 'src/shared/comments/dto/state.dto'
 import { IdDto } from '../base/dto/id.dto'
 import { CommentsService } from './comments.service'
+import { ConfigsService } from '../../configs/configs.service'
+import { Mailer, ReplyMailType } from '../../plugins/mailer'
 
 @Controller('comments')
 @ApiTags('Comment Routes')
 @UseGuards(RolesGuard)
 export class CommentsController {
-  constructor(private readonly commentService: CommentsService) {}
+  constructor(
+    private readonly commentService: CommentsService,
+    private readonly configs: ConfigsService,
+  ) {}
 
   @Get()
   // @Auth()
@@ -131,6 +136,7 @@ export class CommentsController {
         ref || CommentRefTypes.Post,
         model,
       )
+      this.commentService.sendEmail(comment, ReplyMailType.Owner)
       return comment
     } catch {
       throw new CannotFindException()
@@ -171,17 +177,25 @@ export class CommentsController {
       key,
     }
 
-    const res = await this.commentService.createNew(model)
+    const comment = await this.commentService.createNew(model)
 
     await parent.updateOne({
       $push: {
-        children: res._id,
+        children: comment._id,
       },
       $inc: {
         commentsIndex: 1,
       },
     })
-
+    if (isMaster) {
+      this.commentService.sendEmail(comment, ReplyMailType.Guest)
+    } else {
+      this.commentService.sendEmail(
+        comment,
+        ReplyMailType.Guest,
+        comment.author,
+      )
+    }
     return { message: '回复成功!' }
   }
 

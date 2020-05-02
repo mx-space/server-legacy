@@ -5,6 +5,8 @@ import {
   IsNotEmpty,
   IsArray,
   IsEnum,
+  IsEmail,
+  IsObject,
 } from 'class-validator'
 import { ApiProperty } from '@nestjs/swagger'
 
@@ -68,4 +70,19 @@ export class ImageBedDto {
   @IsOptional()
   @IsUrl({ require_protocol: true })
   customUrl?: string
+}
+
+export class MailOptionsDto {
+  @IsEmail()
+  user: string
+  @IsString()
+  @IsNotEmpty()
+  pass: string
+  @IsObject()
+  options?: {
+    name?: string
+    port?: number
+    host?: string
+    service?: string
+  }
 }
