@@ -1,5 +1,6 @@
 import { prop, index } from '@typegoose/typegoose'
 import { Schema } from 'mongoose'
+import { BaseModel } from './base.model'
 
 export interface Dimensions {
   height: number
@@ -39,7 +40,7 @@ export const getEnumFromType = (type: keyof typeof FileType) => {
 
 @index({ filename: 1 })
 @index({ name: 1 })
-export class File {
+export class File extends BaseModel {
   @prop({ required: true })
   filename: string
 
@@ -49,6 +50,7 @@ export class File {
   @prop()
   mime: string
 
+  // TODO 除图片之外的其他信息
   @prop({ type: Schema.Types.Mixed })
   info?: Record<string, any>
 

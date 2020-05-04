@@ -16,7 +16,7 @@ export default class MasterService {
 
   async getMasterInfo() {
     const user = await this.userModel.findOne().select('-authCode').lean()
-    const avatar = getAvatar(user.mail)
+    const avatar = user.avatar ?? getAvatar(user.mail)
     return { ...user, avatar }
   }
 
