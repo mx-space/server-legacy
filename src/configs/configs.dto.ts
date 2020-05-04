@@ -4,6 +4,10 @@ import {
   IsString,
   IsNotEmpty,
   IsArray,
+  IsEnum,
+  IsEmail,
+  IsObject,
+  IsBoolean,
 } from 'class-validator'
 import { ApiProperty } from '@nestjs/swagger'
 
@@ -50,4 +54,45 @@ export class UrlDto {
   @IsOptional()
   @ApiProperty({ example: 'http://127.0.0.1:8080' })
   wsUrl: string
+}
+
+export class ImageBedDto {
+  @IsEnum(['github']) // TODO
+  type: 'github'
+
+  @IsOptional()
+  @IsString()
+  token?: string
+
+  @IsOptional()
+  @IsString()
+  repo?: string
+
+  @IsOptional()
+  @IsUrl({ require_protocol: true })
+  customUrl?: string
+}
+
+export class MailOptionsDto {
+  @IsEmail()
+  user: string
+  @IsString()
+  @IsNotEmpty()
+  pass: string
+  @IsObject()
+  options?: {
+    name?: string
+    port?: number
+    host?: string
+    service?: string
+  }
+}
+
+export class CommentOptions {
+  @IsBoolean()
+  antiSpam: boolean
+  @IsNotEmpty()
+  @IsOptional()
+  @IsString()
+  akismetApiKey?: string
 }

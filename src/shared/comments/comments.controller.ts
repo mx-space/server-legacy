@@ -32,20 +32,26 @@ import {
 } from 'src/shared/comments/dto/comment.dto'
 import { Pager } from 'src/shared/comments/dto/pager.dto'
 import { StateDto } from 'src/shared/comments/dto/state.dto'
+import { ConfigsService } from '../../configs/configs.service'
+import { ReplyMailType } from '../../plugins/mailer'
 import { IdDto } from '../base/dto/id.dto'
 import { CommentsService } from './comments.service'
+import { Auth } from '../../core/decorators/auth.decorator'
 
 @Controller('comments')
 @ApiTags('Comment Routes')
 @UseGuards(RolesGuard)
 export class CommentsController {
-  constructor(private readonly commentService: CommentsService) {}
+  constructor(
+    private readonly commentService: CommentsService,
+    private readonly configs: ConfigsService,
+  ) {}
 
   @Get()
-  // @Auth()
+  @Auth()
   async getRecentlyComments(@Query() query: Pager) {
     const { size = 10, page = 1, state = 0 } = query
-    return await this.commentService.getRecently({ size, page, state })
+    return await this.commentService.getComments({ size, page, state })
   }
 
   @Get(':id')
@@ -77,6 +83,12 @@ export class CommentsController {
       {
         parent: undefined,
         ref: id,
+        $or: [
+          {
+            state: 0,
+          },
+          { state: 1 },
+        ],
       },
       {
         limit: size,
@@ -125,16 +137,14 @@ export class CommentsController {
 
     const id = params.id
     const model = { ...body, ...ipLocation }
-    try {
-      const comment = await this.commentService.createComment(
-        id,
-        ref || CommentRefTypes.Post,
-        model,
-      )
-      return comment
-    } catch {
-      throw new CannotFindException()
-    }
+
+    const comment = await this.commentService.createComment(
+      id,
+      ref || CommentRefTypes.Post,
+      model,
+    )
+    this.commentService.sendEmail(comment, ReplyMailType.Owner)
+    return comment
   }
 
   @Post('/reply/:id')
@@ -171,17 +181,25 @@ export class CommentsController {
       key,
     }
 
-    const res = await this.commentService.createNew(model)
+    const comment = await this.commentService.createNew(model)
 
     await parent.updateOne({
       $push: {
-        children: res._id,
+        children: comment._id,
       },
       $inc: {
         commentsIndex: 1,
       },
     })
-
+    if (isMaster) {
+      this.commentService.sendEmail(comment, ReplyMailType.Guest)
+    } else {
+      this.commentService.sendEmail(
+        comment,
+        ReplyMailType.Guest,
+        comment.author,
+      )
+    }
     return { message: '回复成功!' }
   }
 

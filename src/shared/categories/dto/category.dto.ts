@@ -2,8 +2,8 @@ import { ApiProperty } from '@nestjs/swagger'
 import { IsEnum, IsNotEmpty, IsOptional, IsString } from 'class-validator'
 
 export enum CategoryType {
-  Category = 'Category',
-  Tag = 'Tag',
+  Category,
+  Tag,
 }
 
 export class CategoryDto {
@@ -14,13 +14,12 @@ export class CategoryDto {
 
   @IsEnum(CategoryType)
   @IsOptional()
-  @ApiProperty({ required: false })
+  @ApiProperty({ enum: [0, 1] })
   type?: CategoryType
 
   @IsString()
   @IsNotEmpty()
   @IsOptional()
-  @ApiProperty({ required: false })
   slug?: string
 }
 

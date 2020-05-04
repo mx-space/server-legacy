@@ -58,7 +58,7 @@ export class AggregateController {
         .lean()
 
       return data.map((item) => ({
-        ...pick(item, ['_id', 'title', 'slug']),
+        ...pick(item, ['_id', 'title', 'slug', 'created']),
         category: item.category,
         summary:
           item.summary ??
@@ -78,7 +78,7 @@ export class AggregateController {
           ...yearCondition(year),
         })
         .sort({ created: sort })
-        .select('_id nid title weather mood')
+        .select('_id nid title weather mood created')
         .lean()
     switch (type) {
       case TimelineType.Post: {
@@ -96,5 +96,10 @@ export class AggregateController {
     }
 
     return { data }
+  }
+
+  @Get('sitemap')
+  async getSiteMapContent() {
+    return await this.service.getSiteMapContent()
   }
 }

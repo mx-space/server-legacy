@@ -20,7 +20,7 @@ export class CommentDto {
   @IsString()
   @IsNotEmpty()
   @ApiProperty()
-  @MaxLength(200, { message: '评论内容不得大于 200 个字符' })
+  @MaxLength(500, { message: '评论内容不得大于 500 个字符' })
   text: string
 
   @IsString()

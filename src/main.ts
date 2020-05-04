@@ -32,6 +32,9 @@ async function bootstrap() {
   if (process.env.NODE_ENV !== 'production') {
     app.enableCors({ credentials: true })
   } else {
+    if (1 === parseInt(process.env.CORS as any)) {
+      app.enableCors({ credentials: true })
+    }
     app.setGlobalPrefix('api/v1')
   }
 

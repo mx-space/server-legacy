@@ -2,11 +2,20 @@ import { Injectable } from '@nestjs/common'
 import { ReturnModelType } from '@typegoose/typegoose'
 import { InjectModel } from 'nestjs-typegoose'
 import { Option } from '@libs/db/models/option.model'
-import { SEODto, UrlDto } from './configs.dto'
+import {
+  SEODto,
+  UrlDto,
+  ImageBedDto,
+  MailOptionsDto,
+  CommentOptions,
+} from './configs.dto'
 
 export interface IConfig {
   seo: SEODto
   url: UrlDto
+  imageBed: ImageBedDto
+  mailOptions: MailOptionsDto
+  commentOptions: CommentOptions
 }
 
 @Injectable()
@@ -15,13 +24,16 @@ export class ConfigsService {
     seo: {
       title: 'mx-space',
       description: 'Hello World~',
-    } as SEODto,
+    },
     url: {
       wsUrl: 'http://localhost:8080', //todo
       adminUrl: 'http://localhost:9528',
       serverUrl: 'http://localhost:2333',
       webUrl: 'http://localhost:2323',
-    } as UrlDto,
+    },
+    imageBed: {} as ImageBedDto,
+    mailOptions: {} as MailOptionsDto,
+    commentOptions: { antiSpam: false },
   }
 
   constructor(
@@ -30,6 +42,7 @@ export class ConfigsService {
   ) {
     this.configInit()
   }
+
   protected async configInit() {
     const configs = await this.optionModel.find().lean()
     configs.map((field) => {
@@ -46,14 +59,24 @@ export class ConfigsService {
   public get url() {
     return this.config.url
   }
+
+  public get imageBed() {
+    return this.config.imageBed
+  }
+
   async setSEO(seo: SEODto) {
     return await this.patch('seo', seo)
   }
+
   async setUrl(url: UrlDto) {
     return await this.patch('url', url)
   }
 
-  private async patch<T>(key: keyof IConfig, data: T) {
+  public get<T extends keyof IConfig>(key: T): IConfig[T] {
+    return this.config[key]
+  }
+
+  public async patch<T extends keyof IConfig>(key: T, data: IConfig[T]) {
     await this.optionModel.updateOne(
       { name: key as string },
       { value: { ...this.config[key], ...data } },

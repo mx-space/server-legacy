@@ -30,6 +30,10 @@ export abstract class BaseCrud<
       },
     )
   }
+  @Get('all')
+  async getAll() {
+    return await this._service.find({})
+  }
 
   @Post()
   @Auth()

@@ -1,4 +1,7 @@
-import Comment, { CommentRefTypes } from '@libs/db/models/comment.model'
+import Comment, {
+  CommentRefTypes,
+  CommentState,
+} from '@libs/db/models/comment.model'
 import Note from '@libs/db/models/note.model'
 import Page from '@libs/db/models/page.model'
 import Post from '@libs/db/models/post.model'
@@ -9,6 +12,10 @@ import { FilterQuery, Types } from 'mongoose'
 import { InjectModel } from 'nestjs-typegoose'
 import { CannotFindException } from 'src/core/exceptions/cant-find.exception'
 import { BaseService } from '../base/base.service'
+import { ConfigsService } from '../../configs/configs.service'
+import { Mailer, ReplyMailType } from '../../plugins/mailer'
+import { DocumentType } from '@typegoose/typegoose'
+import { SpamCheck } from '../../plugins/antiSpam'
 @Injectable()
 export class CommentsService extends BaseService<Comment> {
   constructor(
@@ -22,6 +29,7 @@ export class CommentsService extends BaseService<Comment> {
     private readonly pageModel: ReturnModelType<typeof Page>,
     @InjectModel(User)
     private readonly userModel: ReturnModelType<typeof User>,
+    private readonly configs: ConfigsService,
   ) {
     super(commentModel)
   }
@@ -44,6 +52,23 @@ export class CommentsService extends BaseService<Comment> {
     type: CommentRefTypes,
     doc: Partial<Comment>,
   ) {
+    const commentOptions = this.configs.get('commentOptions')
+    if (commentOptions.antiSpam) {
+      const client = new SpamCheck({
+        apiKey: commentOptions.akismetApiKey,
+        blog: this.configs.get('url').webUrl,
+      })
+      const isSpam = await client.isSpam({
+        ip: doc.ip,
+        author: doc.author,
+        content: doc.text,
+        url: doc.url,
+      })
+
+      if (isSpam) {
+        throw new UnprocessableEntityException('此评论为垃圾评论已屏蔽')
+      }
+    }
     const model = this.getModelByRefType(type)
     const ref = await model.findById(id)
     if (!ref) {
@@ -97,8 +122,9 @@ export class CommentsService extends BaseService<Comment> {
     return { message: '删除成功' }
   }
 
-  async getRecently({ page, size, state } = { page: 1, size: 10, state: 0 }) {
+  async getComments({ page, size, state } = { page: 1, size: 10, state: 0 }) {
     const skip = size * (page - 1)
+
     const queryList = await this.findWithPaginator(
       { state },
       {
@@ -113,5 +139,56 @@ export class CommentsService extends BaseService<Comment> {
     )
 
     return queryList
+  }
+
+  async sendEmail(
+    model: DocumentType<Comment>,
+    type: ReplyMailType,
+    who?: string,
+  ) {
+    const mailerOptions = this.configs.get('mailOptions')
+    this.userModel.findOne().then(async (master) => {
+      // const ref = (await this.commentModel.findById(model._id).populate('ref')).ref
+      const refType = model.refType
+      const refModel = this.getModelByRefType(refType)
+      const ref = await refModel.findById(model.ref).populate('category')
+      const time = new Date(model.created)
+      const parsedTime = `${time.getDate()}/${
+        time.getMonth() + 1
+      }/${time.getFullYear()}`
+      new Mailer(
+        mailerOptions.user,
+        mailerOptions.pass,
+        mailerOptions.options,
+      ).send({
+        to: type === ReplyMailType.Owner ? master.mail : model.mail,
+        type,
+        source: {
+          title: ref.title,
+          text: model.text,
+          author: model.author,
+          master: who || master.name,
+          link: this.resolveUrlByType(refType, ref),
+          time: parsedTime,
+          mail: ReplyMailType.Owner ? model.mail : master.mail,
+          ip: model.ip || '',
+        },
+      })
+    })
+  }
+
+  resolveUrlByType(type: CommentRefTypes, model: any) {
+    const base = this.configs.get('url').webUrl
+    switch (type) {
+      case CommentRefTypes.Note: {
+        return new URL('/notes/' + model.nid, base).toString()
+      }
+      case CommentRefTypes.Page: {
+        return new URL(`/${model.slug}`, base).toString()
+      }
+      case CommentRefTypes.Post: {
+        return new URL(`/${model.category.slug}/${model.slug}`, base).toString()
+      }
+    }
   }
 }

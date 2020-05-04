@@ -4,7 +4,7 @@ import { ImageService } from './image.service'
 import { UploadsController } from './uploads.controller'
 
 @Module({
-  providers: [UploadsService, ImageService],
+  providers: [ImageService, UploadsService],
   controllers: [UploadsController],
   exports: [ImageService],
 })
