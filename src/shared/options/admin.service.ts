@@ -6,7 +6,7 @@ import { InjectModel } from 'nestjs-typegoose'
 import Post from '@libs/db/models/post.model'
 import Note from '@libs/db/models/note.model'
 @Injectable()
-export class AdminService {
+export class OptionsService {
   constructor(
     @InjectModel(Option)
     private readonly optionModel: ReturnModelType<typeof Option>,

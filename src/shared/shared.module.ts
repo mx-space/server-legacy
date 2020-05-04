@@ -5,8 +5,8 @@ import { PageController } from 'src/shared/page/page.controller'
 import { PageService } from 'src/shared/page/page.service'
 import { PostsController } from 'src/shared/posts/posts.controller'
 import { PostsService } from 'src/shared/posts/posts.service'
-import { AdminController } from './admin/admin.controller'
-import { AdminService } from './admin/admin.service'
+import { OptionsController } from './options/admin.controller'
+import { OptionsService } from './options/admin.service'
 import { AggregateController } from './aggregate/aggregate.controller'
 import { AggregateService } from './aggregate/aggregate.service'
 import { CategoriesController } from './categories/categories.controller'
@@ -21,12 +21,12 @@ import { SaysController } from './says/says.controller'
 import { SaysService } from './says/says.service'
 import { TestModule } from './test/test.module'
 import { UploadsModule } from './uploads/uploads.module'
-import { LinksController } from './links/links.controller';
-import { LinksService } from './links/links.service';
+import { LinksController } from './links/links.controller'
+import { LinksService } from './links/links.service'
 
 @Module({
   providers: [
-    AdminService,
+    OptionsService,
     AggregateService,
     CategoriesService,
     CommentsService,
@@ -39,7 +39,7 @@ import { LinksService } from './links/links.service';
     LinksService,
   ],
   controllers: [
-    AdminController,
+    OptionsController,
     AggregateController,
     CategoriesController,
     CommentsController,
