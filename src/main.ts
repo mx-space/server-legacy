@@ -10,6 +10,8 @@ import { ResponseInterceptor } from 'src/core/interceptors/response.interceptors
 import { AppModule } from './app.module'
 import * as FastifyMultipart from 'fastify-multipart'
 
+const APIVersion = 1
+const isDev = process.env.NODE_ENV === 'development'
 async function bootstrap() {
   const fAdapt = new FastifyAdapter({ logger: true })
   fAdapt.register(FastifyMultipart, {
@@ -29,19 +31,19 @@ async function bootstrap() {
   app.useWebSocketAdapter(new WsAdapter(app))
   app.useGlobalFilters(new AllExceptionsFilter())
   app.useGlobalInterceptors(new ResponseInterceptor())
-  if (process.env.NODE_ENV !== 'production') {
+  if (isDev) {
     app.enableCors({ credentials: true })
   } else {
     if (1 === parseInt(process.env.CORS as any)) {
       app.enableCors({ credentials: true })
     }
-    app.setGlobalPrefix('api/v1')
   }
+  app.setGlobalPrefix(isDev ? '' : `api/v${APIVersion}`)
 
   const options = new DocumentBuilder()
     .setTitle('API')
     .setDescription('The blog API description')
-    .setVersion('1.0')
+    .setVersion(`${APIVersion}`)
     .addSecurity('bearer', {
       type: 'http',
       scheme: 'bearer',

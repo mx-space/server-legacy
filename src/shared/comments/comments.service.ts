@@ -135,6 +135,7 @@ export class CommentsService extends BaseService<Comment> {
           { path: 'parent', select: '-children' },
           { path: 'ref', select: 'title _id slug' },
         ],
+        sort: { created: -1 },
       },
     )
 

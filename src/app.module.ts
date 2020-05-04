@@ -8,7 +8,8 @@ import { MasterModule } from './master/master.module'
 import { SharedModule } from './shared/shared.module'
 import { SpiderGuard } from 'src/core/guards/spider.guard'
 import { ConfigsModule } from './configs/configs.module'
-
+import { ServeStaticModule } from '@nestjs/serve-static'
+import { join } from 'path'
 const providers: Provider<any>[] = [
   {
     provide: APP_PIPE,
@@ -39,6 +40,10 @@ if (process.env.NODE_ENV === 'production') {
     MasterModule,
     SharedModule,
     ConfigsModule,
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'admin'),
+      renderPath: '/admin',
+    }),
   ],
   providers,
 })
