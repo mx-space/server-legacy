@@ -80,7 +80,7 @@ export interface Paginator {
 
 @Injectable()
 export abstract class BaseService<T extends BaseModel> {
-  constructor(protected _model: ReturnModelType<AnyParamConstructor<T>>) {}
+  constructor(private _model: ReturnModelType<AnyParamConstructor<T>>) {}
 
   /**
    * @description 抛出mongodb异常

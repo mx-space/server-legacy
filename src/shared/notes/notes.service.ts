@@ -89,4 +89,16 @@ export class NotesService extends BaseService<Note> {
     const isValid = compareSync(password, doc.password)
     return isValid
   }
+
+  async likeNote(id: string) {
+    const doc = await this.noteModel.findById(id)
+    if (!doc) {
+      throw new CannotFindException()
+    }
+    return doc.updateOne({
+      $inc: {
+        'count.like': 1,
+      },
+    })
+  }
 }

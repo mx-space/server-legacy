@@ -18,8 +18,7 @@ const providers: Provider<any>[] = [
         transform: true,
         whitelist: true,
         forbidNonWhitelisted: true,
-        // errorHttpStatusCode: 422,
-        // exceptionFactory: errors => new BadRequestException(errors),
+        errorHttpStatusCode: 422,
       })
     },
   },

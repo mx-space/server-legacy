@@ -22,6 +22,16 @@ async function bootstrap() {
       files: 5, // Max number of file fields
     },
   })
+  fAdapt.register(require('fastify-cookie'), {
+    secret: 'asdasdasdasdsadsaxsaxassdasdqwdasdxczardja', // for cookies signature
+    parseOptions: {}, // options for parsing cookies
+  })
+  fAdapt.register(require('fastify-session'), {
+    cookieName: 'mx-space',
+    secret: 'asdasdasdasdsadsaxsaxassdasdqwdasdxczardja',
+    cookie: { secure: false },
+    expires: 84000,
+  })
 
   const app = await NestFactory.create<NestFastifyApplication>(
     AppModule,

@@ -73,6 +73,8 @@ export class ImageBedDto {
 }
 
 export class MailOptionsDto {
+  @IsBoolean()
+  enable: boolean
   @IsEmail()
   user: string
   @IsString()

@@ -21,7 +21,7 @@ export class OptionsController {
 
   @Get()
   getOption() {
-    return this.configs.config
+    return this.configs.getConfig()
   }
 
   // @Patch('seo')
