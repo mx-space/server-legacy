@@ -57,6 +57,7 @@ export class UrlDto {
 
 export class ImageBedDto {
   @IsEnum(['github']) // TODO
+  @IsOptional()
   type: 'github'
 
   @IsOptional()
@@ -74,13 +75,17 @@ export class ImageBedDto {
 
 export class MailOptionsDto {
   @IsBoolean()
+  @IsOptional()
   enable: boolean
   @IsEmail()
+  @IsOptional()
   user: string
   @IsString()
   @IsNotEmpty()
+  @IsOptional()
   pass: string
   @IsObject()
+  @IsOptional()
   options?: {
     name?: string
     port?: number
@@ -91,6 +96,7 @@ export class MailOptionsDto {
 
 export class CommentOptions {
   @IsBoolean()
+  @IsOptional()
   antiSpam: boolean
   @IsNotEmpty()
   @IsOptional()
