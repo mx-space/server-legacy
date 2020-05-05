@@ -1,12 +1,15 @@
 import { Body, Controller, Get, Patch } from '@nestjs/common'
 import { ApiResponseProperty, ApiTags } from '@nestjs/swagger'
-import { SEODto, UrlDto } from 'src/configs/configs.dto'
+import {
+  CommentOptions,
+  ImageBedDto,
+  MailOptionsDto,
+  SEODto,
+  UrlDto,
+} from 'src/configs/configs.dto'
 import { ConfigsService } from 'src/configs/configs.service'
-import { Auth } from 'src/core/decorators/auth.decorator'
 import { OptionsService } from 'src/shared/options/admin.service'
-import { CommentsService } from 'src/shared/comments/comments.service'
-import { NotesService } from 'src/shared/notes/notes.service'
-import { PostsService } from 'src/shared/posts/posts.service'
+import { Auth } from '../../core/decorators/auth.decorator'
 
 @Controller('options')
 @ApiTags('Option Routes')
@@ -14,9 +17,6 @@ import { PostsService } from 'src/shared/posts/posts.service'
 export class OptionsController {
   constructor(
     private readonly adminService: OptionsService,
-    private readonly postService: PostsService,
-    private readonly noteService: NotesService,
-    private readonly commentService: CommentsService,
     private readonly configs: ConfigsService,
   ) {}
 
@@ -36,5 +36,18 @@ export class OptionsController {
   @ApiResponseProperty({ type: UrlDto })
   async setUrl(@Body() body: UrlDto) {
     return await this.configs.setUrl(body)
+  }
+
+  @Patch('comments')
+  async setCommentsOption(@Body() body: CommentOptions) {
+    return await this.configs.patch('commentOptions', body)
+  }
+  @Patch('mail')
+  async setMailOptions(@Body() body: MailOptionsDto) {
+    return await this.configs.patch('mailOptions', body)
+  }
+  @Patch('imageBed')
+  async setImageBed(@Body() body: ImageBedDto) {
+    return await this.configs.patch('imageBed', body)
   }
 }

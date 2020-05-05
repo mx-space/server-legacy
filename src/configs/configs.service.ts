@@ -17,7 +17,13 @@ export interface IConfig {
   mailOptions: MailOptionsDto
   commentOptions: CommentOptions
 }
-
+export enum IConfigKeys {
+  seo,
+  url,
+  imageBed,
+  mailOptions,
+  commentOptions,
+}
 @Injectable()
 export class ConfigsService {
   public config: IConfig = {
