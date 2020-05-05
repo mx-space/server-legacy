@@ -40,7 +40,6 @@ export class OptionsService {
   }
   validOptions = {
     whitelist: true,
-    forbidNonWhitelisted: true,
   }
   validate = new ValidationPipe(this.validOptions)
   async patchAndValid(key: keyof IConfig, value: any) {
