@@ -1,8 +1,21 @@
 {
-  "name": "server",
-  "version": "0.5.1",
+  "name": "@mx-space/server",
+  "version": "0.5.2",
   "description": "Mix Space Server",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mx-space/server.git"
+  },
+  "author": "Innei",
+  "bugs": {
+    "url": "https://github.com/mx-space/server/issues"
+  },
+  "files": [
+    "dist/src/*",
+    "dist/libs/*"
+  ],
+  "homepage": "https://github.com/mx-space/server#readme",
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "nest build",

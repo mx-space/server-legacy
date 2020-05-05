@@ -17,6 +17,7 @@ const providers: Provider<any>[] = [
       return new ValidationPipe({
         transform: true,
         whitelist: true,
+        forbidNonWhitelisted: true,
         // errorHttpStatusCode: 422,
         // exceptionFactory: errors => new BadRequestException(errors),
       })

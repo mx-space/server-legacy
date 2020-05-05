@@ -1,0 +1,10 @@
+@base = http://localhost:2333/
+
+### 
+PATCH {{base}}options/url
+Content-Type: application/json
+
+{
+  "webUrl": "https://e.com",
+  "a": "as"
+}
