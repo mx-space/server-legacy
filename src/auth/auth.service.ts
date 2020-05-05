@@ -18,7 +18,7 @@ export class AuthService {
       _id,
       authCode,
     }
-    // console.log(process.env.SECRET)
+
     return this.jwtService.sign(payload)
   }
   async verifyPayload(payload: JwtPayload): Promise<UserDocument> {

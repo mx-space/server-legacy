@@ -40,7 +40,7 @@ function getResgisterResponseCallback(done: jest.DoneCallback) {
     return done()
   }
 }
-console.log(process.env.NODE_ENV)
+
 describe('AuthController (e2e)', () => {
   let app: INestApplication
   let request: supertest.SuperTest<supertest.Test>

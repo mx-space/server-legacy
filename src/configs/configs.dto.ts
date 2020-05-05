@@ -1,15 +1,14 @@
+import { ApiProperty } from '@nestjs/swagger'
 import {
-  IsUrl,
+  IsBoolean,
+  IsEmail,
+  IsEnum,
+  IsNotEmpty,
+  IsObject,
   IsOptional,
   IsString,
-  IsNotEmpty,
-  IsArray,
-  IsEnum,
-  IsEmail,
-  IsObject,
-  IsBoolean,
+  IsUrl,
 } from 'class-validator'
-import { ApiProperty } from '@nestjs/swagger'
 
 export class SEODto {
   @IsString({ message: '标题必须是字符串' })
