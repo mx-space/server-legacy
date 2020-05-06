@@ -36,6 +36,8 @@ jobs:
       matrix:
         os: [ubuntu-latest, macOS-latest]
     runs-on: ${{ matrix.os }}
+    env:
+      KERNEL: $(uname | tr '[:upper:]' '[:lower:]')
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -59,7 +61,6 @@ jobs:
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          KERNEL: $(uname | tr '[:upper:]' '[:lower:]')
         with:
           upload_url: ${{ steps.get_release_info.outputs.upload_url }}
           asset_path: ./release.zip
