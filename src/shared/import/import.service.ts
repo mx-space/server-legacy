@@ -1,10 +1,11 @@
 import { Injectable } from '@nestjs/common'
-import { DatatypeDto } from './dto/datatype.dto'
-import Post from '../../../libs/db/src/models/post.model'
 import { ReturnModelType } from '@typegoose/typegoose'
-import Category from '../../../libs/db/src/models/category.model'
-import { InjectModel } from 'nestjs-typegoose'
 import { Types } from 'mongoose'
+import { InjectModel } from 'nestjs-typegoose'
+import Category from '../../../libs/db/src/models/category.model'
+import Note from '../../../libs/db/src/models/note.model'
+import Post from '../../../libs/db/src/models/post.model'
+import { DatatypeDto } from './dto/datatype.dto'
 
 @Injectable()
 export class ImportService {
@@ -13,6 +14,8 @@ export class ImportService {
     private readonly categoryModel: ReturnModelType<typeof Category>,
     @InjectModel(Post)
     private readonly postModel: ReturnModelType<typeof Post>,
+    @InjectModel(Note)
+    private readonly noteModel: ReturnModelType<typeof Note>,
   ) {}
   async insertPostsToDb(data: DatatypeDto[]) {
     let count = 1
@@ -105,5 +108,24 @@ export class ImportService {
       }
     }
     return await this.postModel.insertMany(models)
+  }
+  async insertNotesToDb(data: DatatypeDto[]) {
+    const models = [] as Note[]
+
+    for await (const item of data) {
+      if (!item.meta) {
+        models.push({
+          title: '未命名随记',
+          text: item.text,
+        } as Note)
+      } else {
+        models.push({
+          title: item.meta.title,
+          text: item.text,
+        } as Note)
+      }
+    }
+
+    return await this.noteModel.insertMany(models)
   }
 }

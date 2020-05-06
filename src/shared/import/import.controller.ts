@@ -22,6 +22,9 @@ export class ImportController {
       case ArticleType.Post: {
         return await this.service.insertPostsToDb(body.data)
       }
+      case ArticleType.Note: {
+        return await this.service.insertNotesToDb(body.data)
+      }
     }
   }
 }
