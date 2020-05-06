@@ -15,7 +15,7 @@ export default class Post extends BaseCommentIndexModel {
   @prop({ trim: true, unique: true, required: true })
   slug!: string
 
-  @prop({ trim: true, index: true })
+  @prop({ trim: true })
   text?: string
 
   @prop()

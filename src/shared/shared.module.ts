@@ -23,6 +23,8 @@ import { TestModule } from './test/test.module'
 import { UploadsModule } from './uploads/uploads.module'
 import { LinksController } from './links/links.controller'
 import { LinksService } from './links/links.service'
+import { ImportController } from './import/import.controller';
+import { ImportService } from './import/import.service';
 
 @Module({
   providers: [
@@ -37,6 +39,7 @@ import { LinksService } from './links/links.service'
     ProjectsService,
     SaysService,
     LinksService,
+    ImportService,
   ],
   controllers: [
     OptionsController,
@@ -50,6 +53,7 @@ import { LinksService } from './links/links.service'
     ProjectsController,
     SaysController,
     LinksController,
+    ImportController,
   ],
   imports: [TestModule, UploadsModule],
 })

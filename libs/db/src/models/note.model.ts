@@ -55,7 +55,7 @@ export default class Note extends BaseCommentIndexModel {
   @prop({ index: true, trim: true, required: true })
   title!: string
 
-  @prop({ trim: true, index: true })
+  @prop({ trim: true })
   text: string
 
   @prop({ default: false })
