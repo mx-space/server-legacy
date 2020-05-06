@@ -20,15 +20,15 @@ import { IncomingMessage } from 'http'
 import { plural } from 'pluralize'
 import { ImageService } from './image.service'
 import { ConfigsService } from '../../configs/configs.service'
-@Injectable({ scope: Scope.REQUEST })
+// @Injectable({ scope: Scope.REQUEST })
 export class UploadsService {
   // TODO sync file between db and disk
-  private readonly imageService: ImageService
+  // private readonly imageService: ImageService
   constructor(
     @InjectModel(File) private readonly model: ReturnModelType<typeof File>,
     private readonly configs: ConfigsService, // private readonly imageService: ImageService,
   ) {
-    this.imageService = new ImageService(model, configs)
+    // this.imageService = new ImageService(model, configs)
     this.initDirectory()
   }
 
@@ -78,7 +78,11 @@ export class UploadsService {
     const path = join(`${this.getType2Path(type)}`, hashFilename)
     if (!existsSync(path)) {
       writeFileSync(path, data)
-      this.imageService.syncToImageBed([{ path, name: hashFilename }])
+      // FIXME image service bug
+      new Promise(() => {
+        const imageService = new ImageService(this.model, this.configs)
+        imageService.syncToImageBed([{ path, name: hashFilename }])
+      })
     }
     return { ext, mime, hashFilename, filename }
   }
@@ -148,5 +152,9 @@ export class UploadsService {
       const path = join(this.rootPath, dir)
       mkdirp.sync(path)
     })
+  }
+
+  findFiles(type?: FileType) {
+    return this.model.find(type ? { type } : {}).sort({ created: -1 })
   }
 }

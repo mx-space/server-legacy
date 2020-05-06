@@ -135,6 +135,7 @@ export class CommentsService extends BaseService<Comment> {
           { path: 'parent', select: '-children' },
           { path: 'ref', select: 'title _id slug' },
         ],
+        sort: { created: -1 },
       },
     )
 
@@ -146,6 +147,10 @@ export class CommentsService extends BaseService<Comment> {
     type: ReplyMailType,
     who?: string,
   ) {
+    const enable = this.configs.get('mailOptions').enable
+    if (!enable) {
+      return
+    }
     const mailerOptions = this.configs.get('mailOptions')
     this.userModel.findOne().then(async (master) => {
       // const ref = (await this.commentModel.findById(model._id).populate('ref')).ref

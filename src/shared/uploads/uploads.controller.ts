@@ -33,7 +33,7 @@ export class UploadsController {
     description: 'Upload images',
     type: FileUploadDto,
   })
-  // @Auth()
+  @Auth()
   async uploadImage(
     @Req() req: FastifyRequest<IncomingMessage>,
     @Query() query: FileTypeQueryDto,
@@ -72,5 +72,10 @@ export class UploadsController {
   async deleteFile(@Param() param: IdDto) {
     const { id } = param
     return this.service.deleteFile(id)
+  }
+  @Auth()
+  @Get()
+  async getFilesList(@Query() query: FileTypeQueryDto) {
+    return await this.service.findFiles(query.type)
   }
 }

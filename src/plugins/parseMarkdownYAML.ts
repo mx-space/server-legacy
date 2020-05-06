@@ -83,7 +83,6 @@ export class ParseMarkdownYAML {
     for await (const file of files) {
       contents.push(await this.readFileAndParse(file))
     }
-    console.log(contents)
     return contents
   }
 }

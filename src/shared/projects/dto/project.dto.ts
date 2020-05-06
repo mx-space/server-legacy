@@ -38,7 +38,7 @@ export class ProjectDto {
     required: true,
     example: ['http://example.com/image'],
   })
-  @IsArray()
+  @IsUrl({ require_protocol: true }, { each: true })
   images?: string[]
 
   @ApiProperty({ description: '描述', example: '这是一段描述' })

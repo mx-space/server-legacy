@@ -1,15 +1,14 @@
+import { ApiProperty } from '@nestjs/swagger'
 import {
-  IsUrl,
+  IsBoolean,
+  IsEmail,
+  IsEnum,
+  IsNotEmpty,
+  IsObject,
   IsOptional,
   IsString,
-  IsNotEmpty,
-  IsArray,
-  IsEnum,
-  IsEmail,
-  IsObject,
-  IsBoolean,
+  IsUrl,
 } from 'class-validator'
-import { ApiProperty } from '@nestjs/swagger'
 
 export class SEODto {
   @IsString({ message: '标题必须是字符串' })
@@ -28,7 +27,7 @@ export class SEODto {
   @IsUrl({ require_protocol: true }, { message: '站点图标必须为正确的网址' })
   icon?: string
 
-  @IsArray({ message: '关键字必须为一个数组' })
+  @IsString({ message: '关键字必须为一个数组', each: true })
   @IsOptional()
   @ApiProperty({ example: ['blog', 'mx-space'] })
   keywords?: string[]
@@ -58,6 +57,7 @@ export class UrlDto {
 
 export class ImageBedDto {
   @IsEnum(['github']) // TODO
+  @IsOptional()
   type: 'github'
 
   @IsOptional()
@@ -74,12 +74,18 @@ export class ImageBedDto {
 }
 
 export class MailOptionsDto {
+  @IsBoolean()
+  @IsOptional()
+  enable: boolean
   @IsEmail()
+  @IsOptional()
   user: string
   @IsString()
   @IsNotEmpty()
+  @IsOptional()
   pass: string
   @IsObject()
+  @IsOptional()
   options?: {
     name?: string
     port?: number
@@ -90,6 +96,7 @@ export class MailOptionsDto {
 
 export class CommentOptions {
   @IsBoolean()
+  @IsOptional()
   antiSpam: boolean
   @IsNotEmpty()
   @IsOptional()

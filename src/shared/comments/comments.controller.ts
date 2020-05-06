@@ -1,4 +1,7 @@
-import Comment, { CommentRefTypes } from '@libs/db/models/comment.model'
+import Comment, {
+  CommentRefTypes,
+  CommentState,
+} from '@libs/db/models/comment.model'
 import {
   Body,
   Controller,
@@ -196,7 +199,7 @@ export class CommentsController {
     } else {
       this.commentService.sendEmail(
         comment,
-        ReplyMailType.Guest,
+        ReplyMailType.Owner,
         comment.author,
       )
     }
@@ -221,7 +224,8 @@ export class CommentsController {
       ...body,
       mail,
       url,
-    }
+      state: CommentState.Read,
+    } as CommentDto
     return await this.comment(
       params,
       model as any,
@@ -249,7 +253,8 @@ export class CommentsController {
       ...body,
       mail,
       url,
-    }
+      state: CommentState.Read,
+    } as CommentDto
     return await this.replyByCid(params, model, undefined, true, ipLocation)
   }
   @Patch(':id')

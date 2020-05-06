@@ -17,10 +17,16 @@ export interface IConfig {
   mailOptions: MailOptionsDto
   commentOptions: CommentOptions
 }
-
+export enum IConfigKeys {
+  seo,
+  url,
+  imageBed,
+  mailOptions,
+  commentOptions,
+}
 @Injectable()
 export class ConfigsService {
-  public config: IConfig = {
+  private config: IConfig = {
     seo: {
       title: 'mx-space',
       description: 'Hello World~',
@@ -72,8 +78,11 @@ export class ConfigsService {
     return await this.patch('url', url)
   }
 
-  public get<T extends keyof IConfig>(key: T): IConfig[T] {
+  public get<T extends keyof IConfig>(key: T): Readonly<IConfig[T]> {
     return this.config[key]
+  }
+  public getConfig(): Readonly<IConfig> {
+    return this.config
   }
 
   public async patch<T extends keyof IConfig>(key: T, data: IConfig[T]) {

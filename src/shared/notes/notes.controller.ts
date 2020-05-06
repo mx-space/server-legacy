@@ -2,18 +2,21 @@ import {
   Body,
   Controller,
   Delete,
+  ForbiddenException,
   Get,
   Headers,
   Param,
   Post,
   Put,
   Query,
+  Req,
+  Res,
   UseGuards,
   UseInterceptors,
-  ForbiddenException,
 } from '@nestjs/common'
 import { ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger'
 import { RolesGuard } from 'src/auth/roles.guard'
+import { Auth } from 'src/core/decorators/auth.decorator'
 import { Master } from 'src/core/decorators/guest.decorator'
 import { CannotFindException } from 'src/core/exceptions/cant-find.exception'
 import { PermissionInterceptor } from 'src/core/interceptors/permission.interceptors'
@@ -28,7 +31,8 @@ import {
 import { addConditionToSeeHideContent } from 'src/shared/utils'
 import { PagerDto } from '../base/dto/pager.dto'
 import { NotesService } from './notes.service'
-import { Auth } from 'src/core/decorators/auth.decorator'
+import { FastifyReply } from 'fastify'
+import { ServerResponse, IncomingMessage } from 'http'
 @ApiTags('Note Routes')
 @Controller('notes')
 @UseInterceptors(PermissionInterceptor)
@@ -171,8 +175,32 @@ export class NotesController {
   @Auth()
   async modifyNote(@Body() body: NoteDto, @Param() params: IdDto) {
     const { id } = params
-    const res = await this.noteService.update({ _id: id }, body)
-    return { ...res, message: res.nModified ? '修改成功' : '没有内容被修改' }
+    return await this.noteService.update({ _id: id }, body)
+  }
+
+  @Get('like/:id')
+  async likeNote(
+    @Param() param: IdDto,
+    @Req() req: FastifyReply<IncomingMessage> & { session: any },
+    @Res() res: FastifyReply<ServerResponse>,
+  ) {
+    if (!req.session.liked) {
+      req.session.liked = [param.id]
+    } else {
+      if ((req.session.liked as string[]).includes(param.id)) {
+        return res
+          .status(422)
+          .header('Access-Control-Allow-Origin', req.headers['origin'])
+          .header('Access-Control-Allow-Credentials', true)
+          .send({ message: '一天一次就够啦' })
+      }
+      req.session.liked.push(param.id)
+    }
+    await this.noteService.likeNote(param.id)
+    res
+      .header('Access-Control-Allow-Origin', req.headers['origin'])
+      .header('Access-Control-Allow-Credentials', true)
+      .send('OK')
   }
 
   @Delete(':id')

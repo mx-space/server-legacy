@@ -8,7 +8,8 @@ import { MasterModule } from './master/master.module'
 import { SharedModule } from './shared/shared.module'
 import { SpiderGuard } from 'src/core/guards/spider.guard'
 import { ConfigsModule } from './configs/configs.module'
-
+import { ServeStaticModule } from '@nestjs/serve-static'
+import { join } from 'path'
 const providers: Provider<any>[] = [
   {
     provide: APP_PIPE,
@@ -16,8 +17,7 @@ const providers: Provider<any>[] = [
       return new ValidationPipe({
         transform: true,
         whitelist: true,
-        // errorHttpStatusCode: 422,
-        // exceptionFactory: errors => new BadRequestException(errors),
+        errorHttpStatusCode: 422,
       })
     },
   },
@@ -39,6 +39,10 @@ if (process.env.NODE_ENV === 'production') {
     MasterModule,
     SharedModule,
     ConfigsModule,
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'admin'),
+      renderPath: '/admin',
+    }),
   ],
   providers,
 })
