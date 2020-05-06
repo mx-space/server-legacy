@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   OnGatewayConnection,
   OnGatewayDisconnect,
@@ -6,10 +5,10 @@ import {
   WebSocketGateway,
   WebSocketServer,
 } from '@nestjs/websockets'
-import { Socket } from 'dgram'
-import { Server } from 'ws'
 
-@WebSocketGateway(8080)
+import { Server } from 'socket.io'
+
+@WebSocketGateway()
 export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @WebSocketServer()
   server: Server
@@ -21,17 +20,17 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
     }
   }
   @SubscribeMessage('events')
-  onEvent(client: Socket, data: any) {
+  onEvent(client: SocketIO.Socket, data: any) {
     return {
       type: 'message',
       data: 'hello',
     }
   }
 
-  handleConnection(client: Socket) {
-    client.send('connect')
+  handleConnection(client: SocketIO.Socket) {
+    client.send({ type: 'connect' })
   }
-  handleDisconnect(client: Socket) {
-    console.log('disconnect')
+  handleDisconnect(client: SocketIO.Socket) {
+    client.send({ type: 'close' })
   }
 }

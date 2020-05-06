@@ -3,12 +3,12 @@ import {
   FastifyAdapter,
   NestFastifyApplication,
 } from '@nestjs/platform-fastify'
-import { WsAdapter } from '@nestjs/platform-ws'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 import { AllExceptionsFilter } from 'src/core/filters/any-exception.filter'
 import { ResponseInterceptor } from 'src/core/interceptors/response.interceptors'
 import { AppModule } from './app.module'
 import * as FastifyMultipart from 'fastify-multipart'
+import { ExtendsIoAdapter } from './core/gateway/extend.gateway'
 
 const APIVersion = 1
 const isDev = process.env.NODE_ENV === 'development'
@@ -37,8 +37,7 @@ async function bootstrap() {
     AppModule,
     fAdapt,
   )
-
-  app.useWebSocketAdapter(new WsAdapter(app))
+  app.useWebSocketAdapter(new ExtendsIoAdapter(app))
   app.useGlobalFilters(new AllExceptionsFilter())
   app.useGlobalInterceptors(new ResponseInterceptor())
   if (isDev) {
