@@ -153,4 +153,8 @@ export class UploadsService {
       mkdirp.sync(path)
     })
   }
+
+  findFiles(type?: FileType) {
+    return this.model.find(type ? { type } : {}).sort({ created: -1 })
+  }
 }

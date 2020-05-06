@@ -73,4 +73,9 @@ export class UploadsController {
     const { id } = param
     return this.service.deleteFile(id)
   }
+  @Auth()
+  @Get()
+  async getFilesList(@Query() query: FileTypeQueryDto) {
+    return await this.service.findFiles(query.type)
+  }
 }
