@@ -17,6 +17,21 @@ export class ImportService {
     @InjectModel(Note)
     private readonly noteModel: ReturnModelType<typeof Note>,
   ) {}
+  private readonly genDate = (item: DatatypeDto) => {
+    const { meta } = item
+    if (!meta) {
+      return {
+        created: new Date(),
+        modified: new Date(),
+      }
+    }
+    const { date, updated } = meta
+    return {
+      created: new Date(date) || new Date(),
+      modified: new Date(updated) || new Date(date) || new Date(),
+    }
+  }
+
   async insertPostsToDb(data: DatatypeDto[]) {
     let count = 1
     const categoryNameAndId = (await this.categoryModel.find().lean()).map(
@@ -58,20 +73,7 @@ export class ImportService {
         return hasCategory
       }
     }
-    const genDate = (item: DatatypeDto) => {
-      const { meta } = item
-      if (!meta) {
-        return {
-          created: new Date(),
-          modified: new Date(),
-        }
-      }
-      const { date, updated } = meta
-      return {
-        created: new Date(date) || new Date(),
-        modified: new Date(updated) || new Date(date) || new Date(),
-      }
-    }
+    const genDate = this.genDate
     const models = [] as Post[]
     const _defaultCategory = await this.categoryModel.findOne()
     const defaultCategory = new Proxy(_defaultCategory, {
@@ -111,21 +113,34 @@ export class ImportService {
   }
   async insertNotesToDb(data: DatatypeDto[]) {
     const models = [] as Note[]
-
+    // let count =
+    //   (await this.noteModel.findOne().sort({ nid: -1 }).lean())?.nid + 1 || 1
     for await (const item of data) {
       if (!item.meta) {
         models.push({
           title: '未命名随记',
           text: item.text,
+          ...this.genDate(item),
         } as Note)
       } else {
         models.push({
           title: item.meta.title,
           text: item.text,
+          ...this.genDate(item),
         } as Note)
       }
     }
 
-    return await this.noteModel.insertMany(models)
+    // return await this.noteModel.insertMany(
+    //   models.map((m) => {
+    //     m.nid = count++
+    //     return m
+    //   }),
+    // )
+    // FIXME typegoose/auto-increment bug
+    for await (const mo of models) {
+      await this.noteModel.create(mo)
+    }
+    return 'OK'
   }
 }

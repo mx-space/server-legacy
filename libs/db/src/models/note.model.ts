@@ -48,11 +48,12 @@ class Count {
 @index({ text: 'text' })
 @index({ modified: -1 })
 @index({ created: -1, modified: -1 })
+@index({ nid: -1 })
 export default class Note extends BaseCommentIndexModel {
-  @prop({ index: true, required: false })
+  @prop({ required: false, unique: true })
   public nid: number
 
-  @prop({ index: true, trim: true, required: true })
+  @prop({ trim: true, required: true })
   title!: string
 
   @prop({ trim: true })
