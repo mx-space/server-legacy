@@ -142,22 +142,19 @@ export class CommentsService extends BaseService<Comment> {
     return queryList
   }
 
-  async sendEmail(
-    model: DocumentType<Comment>,
-    type: ReplyMailType,
-    who?: string,
-  ) {
+  async sendEmail(model: DocumentType<Comment>, type: ReplyMailType) {
     const enable = this.configs.get('mailOptions').enable
     if (!enable) {
       return
     }
     const mailerOptions = this.configs.get('mailOptions')
     this.userModel.findOne().then(async (master) => {
-      // const ref = (await this.commentModel.findById(model._id).populate('ref')).ref
       const refType = model.refType
       const refModel = this.getModelByRefType(refType)
       const ref = await refModel.findById(model.ref).populate('category')
       const time = new Date(model.created)
+      const parent = await this.commentModel.findOne({ _id: model.parent })
+
       const parsedTime = `${time.getDate()}/${
         time.getMonth() + 1
       }/${time.getFullYear()}`
@@ -166,13 +163,13 @@ export class CommentsService extends BaseService<Comment> {
         mailerOptions.pass,
         mailerOptions.options,
       ).send({
-        to: type === ReplyMailType.Owner ? master.mail : model.mail,
+        to: type === ReplyMailType.Owner ? master.mail : parent.mail,
         type,
         source: {
           title: ref.title,
           text: model.text,
-          author: model.author,
-          master: who || master.name,
+          author: type === ReplyMailType.Guest ? parent.author : model.author,
+          master: master.name,
           link: this.resolveUrlByType(refType, ref),
           time: parsedTime,
           mail: ReplyMailType.Owner ? model.mail : master.mail,

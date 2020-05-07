@@ -200,7 +200,7 @@ export class CommentsController {
       this.commentService.sendEmail(
         comment,
         ReplyMailType.Owner,
-        comment.author,
+        // comment.author,
       )
     }
     return { message: '回复成功!' }
