@@ -48,19 +48,20 @@ async function bootstrap() {
     }
   }
   app.setGlobalPrefix(isDev ? '' : `api/v${APIVersion}`)
-
-  const options = new DocumentBuilder()
-    .setTitle('API')
-    .setDescription('The blog API description')
-    .setVersion(`${APIVersion}`)
-    .addSecurity('bearer', {
-      type: 'http',
-      scheme: 'bearer',
-    })
-    .addBearerAuth()
-    .build()
-  const document = SwaggerModule.createDocument(app, options)
-  SwaggerModule.setup('api-docs', app, document)
+  if (isDev) {
+    const options = new DocumentBuilder()
+      .setTitle('API')
+      .setDescription('The blog API description')
+      .setVersion(`${APIVersion}`)
+      .addSecurity('bearer', {
+        type: 'http',
+        scheme: 'bearer',
+      })
+      .addBearerAuth()
+      .build()
+    const document = SwaggerModule.createDocument(app, options)
+    SwaggerModule.setup('api-docs', app, document)
+  }
 
   const PORT = parseInt(process.env.PORT) || 3003
   await app.listen(PORT, '0.0.0.0')
