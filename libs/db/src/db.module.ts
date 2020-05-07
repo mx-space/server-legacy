@@ -34,7 +34,7 @@ const models = TypegooseModule.forFeature([
   imports: [
     TypegooseModule.forRootAsync({
       useFactory: () => ({
-        uri: (process.env.DB_URL || 'mongodb://localhost') + '/nest-test',
+        uri: (process.env.DB_URL || 'mongodb://localhost') + '/mx-space',
         useCreateIndex: true,
         useFindAndModify: false,
         useNewUrlParser: true,
