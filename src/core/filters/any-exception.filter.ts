@@ -4,6 +4,7 @@ import {
   ExceptionFilter,
   HttpException,
   HttpStatus,
+  Logger,
 } from '@nestjs/common'
 type myError = {
   readonly status: number
@@ -16,6 +17,7 @@ import { ServerResponse, IncomingMessage } from 'http'
 
 @Catch()
 export class AllExceptionsFilter implements ExceptionFilter {
+  private readonly logger = new Logger('捕获异常')
   catch(exception: unknown, host: ArgumentsHost) {
     // super.catch(exception, host)
     const ctx = host.switchToHttp()
@@ -28,8 +30,16 @@ export class AllExceptionsFilter implements ExceptionFilter {
         : (exception as myError)?.status ||
           (exception as myError)?.statusCode ||
           HttpStatus.INTERNAL_SERVER_ERROR
-
-    console.error(exception)
+    if (process.env.NODE_ENV === 'development') {
+      console.error(exception)
+    } else {
+      this.logger.warn(
+        (exception as any)?.response?.message ||
+          (exception as myError)?.message ||
+          (exception as myError).message ||
+          '',
+      )
+    }
 
     response.status(status).send({
       ok: 0,

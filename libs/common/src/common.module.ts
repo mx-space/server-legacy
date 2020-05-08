@@ -1,6 +1,7 @@
 import { CacheInterceptor, CacheModule, Module, Provider } from '@nestjs/common'
 import { ConfigModule } from '@nestjs/config'
 import { APP_INTERCEPTOR } from '@nestjs/core'
+import { TasksModule } from './tasks/tasks.module'
 const providers: Provider<any>[] = []
 
 const CacheProvider = {
@@ -26,6 +27,7 @@ if (process.env.NODE_ENV === 'production') {
       ttl: 30, // seconds
       max: 100, // maximum number of items in cache
     }),
+    TasksModule,
   ],
   providers,
 })

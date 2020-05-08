@@ -9,6 +9,8 @@ import {
   MailOptionsDto,
   CommentOptions,
 } from './configs.dto'
+import { SchedulerRegistry } from '@nestjs/schedule'
+import { TasksService } from '../../libs/common/src/tasks/tasks.service'
 
 export interface IConfig {
   seo: SEODto

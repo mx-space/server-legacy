@@ -69,8 +69,8 @@ export class NotesController {
   async getOneNote(
     @Param() params: IdDto,
     @Master() isMaster: boolean,
-    @Headers('referer') referrer: string,
     @Query() query: PasswordQueryDto,
+    @Headers('referer') referrer?: string,
   ) {
     const { id } = params
     const { password } = query
@@ -98,6 +98,7 @@ export class NotesController {
           $gt: current.created,
         },
       })
+      .sort({ created: 1 })
       .select('-text')
     const next = await this.noteService
       .findOne({
@@ -106,6 +107,7 @@ export class NotesController {
           $lt: current.created,
         },
       })
+      .sort({ created: -1 })
       .select('-text')
     return { data: current, next, prev }
   }
@@ -218,7 +220,7 @@ export class NotesController {
     @Query() query: PasswordQueryDto,
   ) {
     const _id = await this.noteService.validNid(params.nid)
-    return await this.getOneNote({ id: _id }, isMaster, referrer, query)
+    return await this.getOneNote({ id: _id }, isMaster, query, referrer)
   }
 
   @ApiOperation({ summary: '根据 nid 修改' })
