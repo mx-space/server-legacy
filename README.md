@@ -8,3 +8,8 @@
 - MongoDB
 - Typegoose
 - WebSocket
+
+## 已实现的功能
+
+- 自动备份数据库, 同步到腾讯 COS
+- 图床, 支持 GitHub Repo 和 jsDeliver CDN
