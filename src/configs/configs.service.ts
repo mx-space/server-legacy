@@ -8,9 +8,8 @@ import {
   ImageBedDto,
   MailOptionsDto,
   CommentOptions,
+  BackupOptions,
 } from './configs.dto'
-import { SchedulerRegistry } from '@nestjs/schedule'
-import { TasksService } from '../../libs/common/src/tasks/tasks.service'
 
 export interface IConfig {
   seo: SEODto
@@ -18,6 +17,7 @@ export interface IConfig {
   imageBed: ImageBedDto
   mailOptions: MailOptionsDto
   commentOptions: CommentOptions
+  backupOptions: BackupOptions
 }
 export enum IConfigKeys {
   seo,
@@ -25,6 +25,7 @@ export enum IConfigKeys {
   imageBed,
   mailOptions,
   commentOptions,
+  backupOptions,
 }
 @Injectable()
 export class ConfigsService {
@@ -42,6 +43,7 @@ export class ConfigsService {
     imageBed: {} as ImageBedDto,
     mailOptions: {} as MailOptionsDto,
     commentOptions: { antiSpam: false },
+    backupOptions: { enable: false } as BackupOptions,
   }
 
   constructor(

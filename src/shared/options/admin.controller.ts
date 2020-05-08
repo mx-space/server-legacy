@@ -24,32 +24,6 @@ export class OptionsController {
     return this.configs.getConfig()
   }
 
-  // @Patch('seo')
-  // @ApiResponseProperty({ type: SEODto })
-  // async setSEO(@Body() body: SEODto) {
-  //   await this.configs.setSEO(body)
-  //   return this.configs.seo
-  // }
-
-  // @Patch('url')
-  // @ApiResponseProperty({ type: UrlDto })
-  // async setUrl(@Body() body: UrlDto) {
-  //   return await this.configs.setUrl(body)
-  // }
-
-  // @Patch('comments')
-  // async setCommentsOption(@Body() body: CommentOptions) {
-  //   return await this.configs.patch('commentOptions', body)
-  // }
-  // @Patch('mail')
-  // async setMailOptions(@Body() body: MailOptionsDto) {
-  //   return await this.configs.patch('mailOptions', body)
-  // }
-  // @Patch('imageBed')
-  // async setImageBed(@Body() body: ImageBedDto) {
-  //   return await this.configs.patch('imageBed', body)
-  // }
-
   @Patch(':key')
   async patch(@Param() params: ConfigKeyDto, @Body() body: { name: string }) {
     return await this.adminService.patchAndValid(params.key, body)

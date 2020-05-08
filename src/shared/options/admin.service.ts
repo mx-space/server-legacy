@@ -17,6 +17,7 @@ import {
   ImageBedDto,
   MailOptionsDto,
   SEODto,
+  BackupOptions,
 } from '../../configs/configs.dto'
 import { IConfig, ConfigsService } from '../../configs/configs.service'
 import { ClassType } from 'class-transformer/ClassTransformer'
@@ -63,6 +64,10 @@ export class OptionsService {
       case 'seo': {
         await this.validWithDto(SEODto, value)
         return this.configs.patch('seo', value)
+      }
+      case 'backupOptions': {
+        await this.validWithDto(BackupOptions, value)
+        return this.configs.patch('backupOptions', value)
       }
       default: {
         throw new UnprocessableEntityException('设置不存在')

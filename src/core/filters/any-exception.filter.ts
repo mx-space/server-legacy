@@ -43,7 +43,10 @@ export class AllExceptionsFilter implements ExceptionFilter {
         ip = ip.split(',')[0]
       }
       this.logger.warn(
-        'IP: ' + ip + '  错误信息: ' + (exception as any)?.response?.message ||
+        'IP: ' +
+          ip +
+          `  错误信息: (${status})` +
+          (exception as any)?.response?.message ||
           (exception as myError)?.message ||
           (exception as myError).message ||
           '',

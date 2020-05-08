@@ -103,3 +103,25 @@ export class CommentOptions {
   @IsString()
   akismetApiKey?: string
 }
+
+export class BackupOptions {
+  @IsBoolean()
+  @IsOptional()
+  enable: boolean
+
+  @IsString()
+  @IsOptional()
+  SecretId?: string
+
+  @IsOptional()
+  @IsString()
+  SecretKey?: string
+
+  @IsOptional()
+  @IsString()
+  Bucket?: string
+
+  @IsString()
+  @IsOptional()
+  Region: string
+}
