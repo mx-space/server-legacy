@@ -69,6 +69,7 @@ export class UploadsController {
     return await this.service.getImageInfo(name, type)
   }
   @Delete(':id')
+  @Auth()
   async deleteFile(@Param() param: IdDto) {
     const { id } = param
     return this.service.deleteFile(id)
