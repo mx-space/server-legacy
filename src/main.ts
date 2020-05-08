@@ -13,7 +13,7 @@ import { ExtendsIoAdapter } from './core/gateway/extend.gateway'
 const APIVersion = 1
 const isDev = process.env.NODE_ENV === 'development'
 async function bootstrap() {
-  const fAdapt = new FastifyAdapter({ logger: true })
+  const fAdapt = new FastifyAdapter({ logger: isDev ? true : false })
   fAdapt.register(FastifyMultipart, {
     addToBody: true,
     limits: {
