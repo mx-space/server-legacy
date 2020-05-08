@@ -33,8 +33,17 @@ export class AllExceptionsFilter implements ExceptionFilter {
     if (process.env.NODE_ENV === 'development') {
       console.error(exception)
     } else {
+      let ip =
+        request.headers['x-forwarded-for'] ||
+        request.ip ||
+        request.req.connection.remoteAddress ||
+        request.req.socket.remoteAddress ||
+        undefined
+      if (ip && ip.split(',').length > 0) {
+        ip = ip.split(',')[0]
+      }
       this.logger.warn(
-        (exception as any)?.response?.message ||
+        'IP: ' + ip + '  错误信息: ' + (exception as any)?.response?.message ||
           (exception as myError)?.message ||
           (exception as myError).message ||
           '',
