@@ -44,3 +44,7 @@ export const yearCondition = (year?: number) => {
     },
   }
 }
+
+export function hasChinese(str: string) {
+  return escape(str).indexOf('%u') < 0 ? false : true
+}

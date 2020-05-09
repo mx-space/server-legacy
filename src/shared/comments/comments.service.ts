@@ -20,6 +20,7 @@ import { ConfigsService } from '../../configs/configs.service'
 import { Mailer, ReplyMailType } from '../../plugins/mailer'
 import { DocumentType } from '@typegoose/typegoose'
 import { SpamCheck } from '../../plugins/antiSpam'
+import { hasChinese } from '../utils'
 @Injectable()
 export class CommentsService extends BaseService<Comment> {
   private readonly logger: Logger = new Logger(CommentsService.name)
@@ -59,6 +60,9 @@ export class CommentsService extends BaseService<Comment> {
     const master = await this.userModel.findOne().select('username')
     if (doc.author === master.username) {
       return false
+    }
+    if (!hasChinese(doc.text)) {
+      return true
     }
     if (!commentOptions.akismetApiKey) {
       this.logger.warn('--> 反垃圾评论 api 填写错误')
