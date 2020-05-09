@@ -35,7 +35,10 @@ export class TasksService {
       })
       this.logger.log('--> 备份成功')
     } catch {
-      this.logger.error('--> 备份失败, 请确保已安装 zip 或 mongotools')
+      this.logger.error(
+        '--> 备份失败, 请确保已安装 zip 或 mongo-tools, mongo-tools 的版本需要与 mongod 版本一致',
+      )
+      return
     }
     new Promise(() => {
       const backupOptions = this.configs.get('backupOptions')

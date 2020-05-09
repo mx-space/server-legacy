@@ -58,8 +58,8 @@ export class AllExceptionsFilter implements ExceptionFilter {
       statusCode: status,
       message:
         (exception as any)?.response?.message ||
-        (exception as myError)?.message ||
-        (exception as myError).message,
+        (exception as any)?.message ||
+        '未知错误',
       timestamp: new Date().toISOString(),
       path: request.req.url,
     })

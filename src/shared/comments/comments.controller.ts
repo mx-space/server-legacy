@@ -146,7 +146,16 @@ export class CommentsController {
       ref || CommentRefTypes.Post,
       model,
     )
-    this.commentService.sendEmail(comment, ReplyMailType.Owner)
+
+    new Promise(async () => {
+      if (await this.commentService.checkSpam(comment)) {
+        comment.state = CommentState.Junk
+        await comment.save()
+      } else {
+        this.commentService.sendEmail(comment, ReplyMailType.Owner)
+      }
+    })
+
     return comment
   }
 

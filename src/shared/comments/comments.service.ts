@@ -6,7 +6,11 @@ import Note from '@libs/db/models/note.model'
 import Page from '@libs/db/models/page.model'
 import Post from '@libs/db/models/post.model'
 import { User } from '@libs/db/models/user.model'
-import { Injectable, UnprocessableEntityException } from '@nestjs/common'
+import {
+  Injectable,
+  UnprocessableEntityException,
+  Logger,
+} from '@nestjs/common'
 import { ReturnModelType } from '@typegoose/typegoose'
 import { FilterQuery, Types } from 'mongoose'
 import { InjectModel } from 'nestjs-typegoose'
@@ -18,6 +22,7 @@ import { DocumentType } from '@typegoose/typegoose'
 import { SpamCheck } from '../../plugins/antiSpam'
 @Injectable()
 export class CommentsService extends BaseService<Comment> {
+  private readonly logger: Logger = new Logger(CommentsService.name)
   constructor(
     @InjectModel(Comment)
     private readonly commentModel: ReturnModelType<typeof Comment>,
@@ -46,14 +51,20 @@ export class CommentsService extends BaseService<Comment> {
       typeof Note | typeof Post | typeof Page
     >
   }
-
-  async createComment(
-    id: string,
-    type: CommentRefTypes,
-    doc: Partial<Comment>,
-  ) {
+  async checkSpam(doc: Partial<Comment>) {
     const commentOptions = this.configs.get('commentOptions')
-    if (commentOptions.antiSpam) {
+    if (!commentOptions.antiSpam) {
+      return false
+    }
+    const master = await this.userModel.findOne().select('username')
+    if (doc.author === master.username) {
+      return false
+    }
+    if (!commentOptions.akismetApiKey) {
+      this.logger.warn('--> 反垃圾评论 api 填写错误')
+      return false
+    }
+    try {
       const client = new SpamCheck({
         apiKey: commentOptions.akismetApiKey,
         blog: this.configs.get('url').webUrl,
@@ -64,11 +75,19 @@ export class CommentsService extends BaseService<Comment> {
         content: doc.text,
         url: doc.url,
       })
-
       if (isSpam) {
-        throw new UnprocessableEntityException('此评论为垃圾评论已屏蔽')
+        return true
       }
+      return false
+    } catch {
+      return false
     }
+  }
+  async createComment(
+    id: string,
+    type: CommentRefTypes,
+    doc: Partial<Comment>,
+  ) {
     const model = this.getModelByRefType(type)
     const ref = await model.findById(id)
     if (!ref) {

@@ -47,7 +47,7 @@ export default class Comment extends BaseModel {
   // 1 : 已读
   // 2 : 垃圾
   @prop({ default: 0 })
-  state?: number
+  state?: CommentState
 
   // @prop({ default: false })
   // hasParent?: boolean
