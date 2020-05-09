@@ -113,8 +113,6 @@ export class ImportService {
   }
   async insertNotesToDb(data: DatatypeDto[]) {
     const models = [] as Note[]
-    // let count =
-    //   (await this.noteModel.findOne().sort({ nid: -1 }).lean())?.nid + 1 || 1
     for await (const item of data) {
       if (!item.meta) {
         models.push({
@@ -131,16 +129,6 @@ export class ImportService {
       }
     }
 
-    // return await this.noteModel.insertMany(
-    //   models.map((m) => {
-    //     m.nid = count++
-    //     return m
-    //   }),
-    // )
-    // FIXME typegoose/auto-increment bug
-    for await (const mo of models) {
-      await this.noteModel.create(mo)
-    }
-    return 'OK'
+    return await this.noteModel.create(models)
   }
 }
