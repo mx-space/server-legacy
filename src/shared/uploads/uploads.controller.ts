@@ -1,4 +1,8 @@
-import { FileType, getEnumFromType } from '@libs/db/models/file.model'
+import {
+  FileType,
+  getEnumFromType,
+  FileLocate,
+} from '@libs/db/models/file.model'
 import {
   Controller,
   Delete,
@@ -55,7 +59,13 @@ export class UploadsController {
       throw new CannotFindException()
     }
 
-    const { buffer, mime } = await this.service.checkFileExist(name, type)
+    const { buffer, mime, url, locate } = await this.service.checkFileExist(
+      name,
+      type,
+    )
+    if (locate === FileLocate.Online && url) {
+      return res.redirect(302, url)
+    }
     const stream = this.service.getReadableStream(buffer)
     res.type(mime).send(stream)
   }

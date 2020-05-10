@@ -1,4 +1,9 @@
-import { File, FileType, getFileType } from '@libs/db/models/file.model'
+import {
+  File,
+  FileType,
+  getFileType,
+  FileLocate,
+} from '@libs/db/models/file.model'
 import {
   BadRequestException,
   Injectable,
@@ -93,7 +98,10 @@ export class UploadsService {
     if (!doc) {
       throw new CannotFindException()
     }
-    const { name, mime } = doc
+    const { name, mime, locate, url } = doc
+    if (locate === FileLocate.Online) {
+      return { url, mime, locate }
+    }
     try {
       const buffer = readFileSync(join(this.rootPath, postfix, name))
 
@@ -109,10 +117,15 @@ export class UploadsService {
 
   async getImageInfo(name: string, type: FileType) {
     const { mime, buffer } = await this.checkFileExist(name, type)
-    const fType = await fromBuffer(buffer)
-    const size = imageSize(buffer)
+    if (buffer) {
+      const fType = await fromBuffer(buffer)
+      const size = imageSize(buffer)
 
-    return { mime, type: fType, size }
+      return { mime, type: fType, size }
+    } else {
+      const doc = await this.model.findOne({ name, type } as File)
+      return doc
+    }
   }
 
   getReadableStream(buffer: Buffer): Readable {

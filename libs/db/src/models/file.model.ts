@@ -61,7 +61,7 @@ export class File extends BaseModel {
   type: number
 
   @prop({ default: FileLocate.Local })
-  locate: 0 | 1
+  locate: FileLocate
 
   @prop()
   url?: string
