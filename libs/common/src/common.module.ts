@@ -31,6 +31,8 @@ if (process.env.NODE_ENV === 'production') {
               store: redisStore,
               host: 'localhost',
               port: 6379,
+              ttl: 30,
+              max: 300,
             }
           : {
               ttl: 30, // seconds
