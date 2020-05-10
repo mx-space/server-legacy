@@ -10,8 +10,10 @@ import { AppModule } from './app.module'
 import * as FastifyMultipart from 'fastify-multipart'
 import { ExtendsIoAdapter } from './core/gateway/extend.gateway'
 
+const PORT = parseInt(process.env.PORT) || 3003
 const APIVersion = 1
 const isDev = process.env.NODE_ENV === 'development'
+
 async function bootstrap() {
   const fAdapt = new FastifyAdapter({ logger: isDev ? true : false })
   fAdapt.register(FastifyMultipart, {
@@ -61,11 +63,9 @@ async function bootstrap() {
       .build()
     const document = SwaggerModule.createDocument(app, options)
     SwaggerModule.setup('api-docs', app, document)
+    console.log(`http://localhost:${PORT}/api-docs`)
   }
 
-  const PORT = parseInt(process.env.PORT) || 3003
   await app.listen(PORT, '0.0.0.0')
-
-  console.log(`http://localhost:${PORT}/api-docs`)
 }
 bootstrap()

@@ -1,30 +1,26 @@
 import {
   File,
+  FileLocate,
   FileType,
   getFileType,
-  FileLocate,
 } from '@libs/db/models/file.model'
-import {
-  BadRequestException,
-  Injectable,
-  NotFoundException,
-  Scope,
-} from '@nestjs/common'
+import { BadRequestException, NotFoundException } from '@nestjs/common'
 import { ReturnModelType } from '@typegoose/typegoose'
 import * as crypto from 'crypto'
+import { FastifyRequest } from 'fastify'
 import { fromBuffer } from 'file-type'
-import { existsSync, readFileSync, writeFileSync, unlinkSync } from 'fs'
+import { existsSync, readFileSync, unlinkSync, writeFileSync } from 'fs'
+import { IncomingMessage } from 'http'
 import { imageSize } from 'image-size'
 import * as mkdirp from 'mkdirp'
 import { InjectModel } from 'nestjs-typegoose'
+import { homedir } from 'os'
 import { join } from 'path'
+import { plural } from 'pluralize'
 import { CannotFindException } from 'src/core/exceptions/cant-find.exception'
 import { Readable } from 'stream'
-import { FastifyRequest } from 'fastify'
-import { IncomingMessage } from 'http'
-import { plural } from 'pluralize'
-import { ImageService } from './image.service'
 import { ConfigsService } from '../../configs/configs.service'
+import { ImageService } from './image.service'
 // @Injectable({ scope: Scope.REQUEST })
 export class UploadsService {
   // TODO sync file between db and disk
@@ -40,7 +36,7 @@ export class UploadsService {
   public static rootPath =
     process.env.NODE_ENV === 'development'
       ? join(__dirname, '../uploads')
-      : '~/.mx-space/uploads'
+      : join(homedir(), '/.mx-space/uploads')
   public rootPath = UploadsService.rootPath
 
   ValidImage(req: FastifyRequest<IncomingMessage>) {
