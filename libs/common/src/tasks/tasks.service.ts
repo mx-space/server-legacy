@@ -7,10 +7,19 @@ import * as mkdirp from 'mkdirp'
 import { homedir } from 'os'
 import { join } from 'path'
 import { ConfigsService } from '../../../../src/configs/configs.service'
+import { Analyze } from '../../../db/src/models/analyze.model'
+import { ReturnModelType } from '@typegoose/typegoose'
+import { InjectModel } from 'nestjs-typegoose'
+import { RedisService } from 'nestjs-redis'
 @Injectable()
 export class TasksService {
   private readonly logger = new Logger(TasksService.name)
-  constructor(private readonly configs: ConfigsService) {}
+  constructor(
+    private readonly configs: ConfigsService,
+    @InjectModel(Analyze)
+    private readonly analyzeModel: ReturnModelType<typeof Analyze>,
+    private readonly redisCtx: RedisService,
+  ) {}
   @Cron(CronExpression.EVERY_DAY_AT_10PM, { name: 'backup' })
   backupDB() {
     if (!this.configs.get('backupOptions').enable) {
@@ -78,5 +87,22 @@ export class TasksService {
         },
       )
     })
+  }
+  @Cron(CronExpression.EVERY_1ST_DAY_OF_MONTH_AT_MIDNIGHT, {
+    name: 'clear_access',
+  })
+  async clearAccessRecord() {
+    const now = new Date().getTime()
+    const rmBeforeDate = new Date(now - 7 * 60 * 60 * 24 * 1000)
+
+    await this.analyzeModel.deleteMany({
+      timestamp: {
+        $lte: rmBeforeDate,
+      },
+    })
+  }
+  @Cron(CronExpression.EVERY_DAY_AT_1AM, { name: 'reset_ua' })
+  async resetIPAccess() {
+    await this.redisCtx.getClient('access').set('ips', '[]')
   }
 }

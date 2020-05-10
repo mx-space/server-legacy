@@ -13,8 +13,10 @@ import { TypegooseModule } from 'nestjs-typegoose'
 import { User } from './models/user.model'
 import { Say } from './models/say.model'
 import { Link } from './models/link.model'
+import { Analyze } from './models/analyze.model'
 
 const models = TypegooseModule.forFeature([
+  Analyze,
   Category,
   Comment,
   File,

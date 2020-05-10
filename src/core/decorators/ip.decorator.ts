@@ -1,6 +1,7 @@
 import { createParamDecorator, ExecutionContext } from '@nestjs/common'
 import { FastifyRequest } from 'fastify'
 import { IncomingMessage } from 'http'
+import { getIp } from '../../shared/utils/ip'
 
 export type IpRecord = {
   ip: string
@@ -11,16 +12,7 @@ export const IpLocation = createParamDecorator(
     const request = ctx
       .switchToHttp()
       .getRequest<FastifyRequest<IncomingMessage>>()
-    // const ip = request.headers[''] || request.ip
-    let ip =
-      request.headers['x-forwarded-for'] ||
-      request.ip ||
-      request.req.connection.remoteAddress ||
-      request.req.socket.remoteAddress ||
-      undefined
-    if (ip && ip.split(',').length > 0) {
-      ip = ip.split(',')[0]
-    }
+    const ip = getIp(request)
     const agent = request.headers['user-agent']
     return {
       ip,

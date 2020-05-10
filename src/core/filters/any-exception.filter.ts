@@ -14,6 +14,7 @@ type myError = {
 }
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { ServerResponse, IncomingMessage } from 'http'
+import { getIp } from '../../shared/utils/ip'
 
 @Catch()
 export class AllExceptionsFilter implements ExceptionFilter {
@@ -33,15 +34,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
     if (process.env.NODE_ENV === 'development') {
       console.error(exception)
     } else {
-      let ip =
-        request.headers['x-forwarded-for'] ||
-        request.ip ||
-        request.req.connection.remoteAddress ||
-        request.req.socket.remoteAddress ||
-        undefined
-      if (ip && ip.split(',').length > 0) {
-        ip = ip.split(',')[0]
-      }
+      const ip = getIp(request)
       this.logger.warn(
         'IP: ' +
           ip +

@@ -3,6 +3,7 @@ import * as redisStore from 'cache-manager-redis-store'
 import { ConfigModule } from '@nestjs/config'
 import { APP_INTERCEPTOR } from '@nestjs/core'
 import { TasksModule } from './tasks/tasks.module'
+import { RedisModule } from 'nestjs-redis'
 const providers: Provider<any>[] = []
 
 const CacheProvider = {
@@ -38,6 +39,10 @@ if (process.env.NODE_ENV === 'production') {
               ttl: 30, // seconds
               max: 100, // maximum number of items in cache
             },
+    }),
+    RedisModule.register({
+      name: 'access',
+      keyPrefix: 'access_',
     }),
     TasksModule,
   ],
