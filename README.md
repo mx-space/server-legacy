@@ -8,6 +8,7 @@
 - MongoDB
 - Typegoose
 - WebSocket
+- Redis
 
 ## 已实现的功能
 
