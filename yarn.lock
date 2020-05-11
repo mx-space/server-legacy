@@ -3721,9 +3721,9 @@ fastify-formbody@3.1.0:
     qs "^6.5.1"
 
 fastify-multipart@^1.0.5:
-  version "1.0.5"
-  resolved "https://registry.yarnpkg.com/fastify-multipart/-/fastify-multipart-1.0.5.tgz#bb6e39d4d20c09e0ac5ba676ab60c0b40947a671"
-  integrity sha512-H7rlk/wCZBHYec4aSYY20EdCkTjvRbC2SACnRuqPY639WCMylecqBrCbMo2B79CQE/WUOn7GJOVcCtEkd7EDfQ==
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/fastify-multipart/-/fastify-multipart-1.0.6.tgz#cfa16e3509ccaa37e9a19b62ba2ed38d75300608"
+  integrity sha512-3qjTGMzMgfy4hEs3UtVBS26mjy8pJ4VTozrwBrdoXdVM9HHYLR9VbCQtQjdbsn4eVgWlXkQbocCNUrf8XFkvwg==
   dependencies:
     busboy "^0.3.0"
     deepmerge "^4.0.0"
