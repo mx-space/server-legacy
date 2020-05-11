@@ -24,6 +24,8 @@ import { ProjectsService } from './projects/projects.service'
 import { SaysController } from './says/says.controller'
 import { SaysService } from './says/says.service'
 import { UploadsModule } from './uploads/uploads.module'
+import { AnalyzeController } from './analyze/analyze.controller';
+import { AnalyzeService } from './analyze/analyze.service';
 
 @Module({
   providers: [
@@ -39,6 +41,7 @@ import { UploadsModule } from './uploads/uploads.module'
     SaysService,
     LinksService,
     ImportService,
+    AnalyzeService,
   ],
   controllers: [
     OptionsController,
@@ -53,6 +56,7 @@ import { UploadsModule } from './uploads/uploads.module'
     SaysController,
     LinksController,
     ImportController,
+    AnalyzeController,
   ],
   imports: [UploadsModule],
 })
