@@ -76,8 +76,6 @@
     "picgo": "^1.4.8",
     "pluralize": "^8.0.0",
     "reflect-metadata": "^0.1.13",
-    "rimraf": "^3.0.2",
-    "rxjs": "^6.5.5",
     "ua-parser-js": "^0.7.21"
   },
   "devDependencies": {
@@ -105,6 +103,8 @@
     "jest": "^25.5.4",
     "pino-colada": "^2.0.0",
     "prettier": "^2.0.5",
+    "rimraf": "^3.0.2",
+    "rxjs": "^6.5.5",
     "start-server-webpack-plugin": "^2.2.5",
     "supertest": "^4.0.2",
     "ts-jest": "^25.3.0",

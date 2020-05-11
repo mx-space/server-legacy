@@ -1,4 +1,4 @@
-import { Controller, Get, Query } from '@nestjs/common'
+import { Controller, Get, Query, Delete } from '@nestjs/common'
 import { AnalyzeService } from './analyze.service'
 import { ApiTags } from '@nestjs/swagger'
 import { AnalyzeDto } from './analyze.dto'
@@ -63,7 +63,7 @@ export class AnalyzeController {
     const now = new Date()
     const todayData: Pick<
       DocumentType<Analyze>,
-      '_id' | 'ip' | 'ua' | 'timestamp' | 'typegooseName'
+      '_id' | 'ip' | 'ua' | 'created' | 'typegooseName'
     >[] = (await this.service.getRangeAnalyzeData(getTodayEarly(now), now, {
       withPaginator: false,
     })) as any
@@ -72,21 +72,21 @@ export class AnalyzeController {
       [key: number]: number
     }
     todayData.forEach((d) => {
-      const time = new Date(d.timestamp)
+      const time = new Date(d.created)
       const hour = time.getHours()
       todayHours[hour] = -~todayHours[hour]
     })
     // week fragment
     const weekData: Pick<
       DocumentType<Analyze>,
-      '_id' | 'ip' | 'ua' | 'timestamp' | 'typegooseName'
+      '_id' | 'ip' | 'ua' | 'created' | 'typegooseName'
     >[] = (await this.service.getRangeAnalyzeData(getWeekStart(now), now, {
       withPaginator: false,
     })) as any
 
     const weeks = {} as { [key: number]: number }
     weekData.forEach((i) => {
-      const time = new Date(i.timestamp)
+      const time = new Date(i.created)
       const day = time.getDate()
       weeks[day] = -~weeks[day]
     })
@@ -95,13 +95,13 @@ export class AnalyzeController {
     const monthEveryDays = {} as { [key: number]: number }
     const thisMonthData: Pick<
       DocumentType<Analyze>,
-      '_id' | 'ip' | 'ua' | 'timestamp' | 'typegooseName'
+      '_id' | 'ip' | 'ua' | 'created' | 'typegooseName'
     >[] = (await this.service.getRangeAnalyzeData(getMonthStart(now), now, {
       withPaginator: false,
     })) as any
 
     thisMonthData.forEach((i) => {
-      const time = new Date(i.timestamp)
+      const time = new Date(i.created)
       const day = time.getDate()
       monthEveryDays[day] = -~monthEveryDays[day]
     })
@@ -111,5 +111,11 @@ export class AnalyzeController {
       weeks,
       months: monthEveryDays,
     }
+  }
+
+  @Delete()
+  async clearAnalyze() {
+    await this.service.clearAnalyzeRange()
+    return 'OK'
   }
 }

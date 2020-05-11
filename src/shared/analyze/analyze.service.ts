@@ -29,12 +29,12 @@ export class AnalyzeService extends BaseService<Analyze> {
     const condition = {
       $and: [
         {
-          timestamp: {
+          created: {
             $gte: from,
           },
         },
         {
-          timestamp: {
+          created: {
             $lte: to,
           },
         },
@@ -42,11 +42,12 @@ export class AnalyzeService extends BaseService<Analyze> {
     }
     const data = withPaginator
       ? await this.findWithPaginator(condition, {
-          sort: { timestamp: -1 },
+          sort: { created: -1 },
           limit,
           skip,
         })
-      : await this.model.find(condition).sort({ timestamp: -1 }).lean()
+      : await this.model.find(condition).sort({ created: -1 }).lean()
+
     return data
   }
 
@@ -70,5 +71,27 @@ export class AnalyzeService extends BaseService<Analyze> {
       )?.value || 0
 
     return { callTime, uv }
+  }
+  async clearAnalyzeRange(range?: { from?: Date; to?: Date }) {
+    if (range) {
+      const { from, to } = range
+
+      await this.model.deleteMany({
+        $and: [
+          {
+            created: {
+              $gte: from,
+            },
+          },
+          {
+            created: {
+              $lte: to,
+            },
+          },
+        ],
+      })
+    } else {
+      await this.model.deleteMany({})
+    }
   }
 }
