@@ -7,8 +7,10 @@ import { RedisService } from 'nestjs-redis'
 import { PagerDto } from '../base/dto/pager.dto'
 import { getTodayEarly, getWeekStart, getMonthStart } from '../utils/time'
 import { Analyze } from '../../../libs/db/src/models/analyze.model'
+import { Auth } from '../../core/decorators/auth.decorator'
 @Controller('analyze')
 @ApiTags('Analyze Routes')
+@Auth()
 export class AnalyzeController {
   constructor(
     private readonly service: AnalyzeService,
