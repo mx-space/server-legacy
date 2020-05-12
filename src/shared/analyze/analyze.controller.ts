@@ -8,6 +8,7 @@ import { PagerDto } from '../base/dto/pager.dto'
 import { getTodayEarly, getWeekStart, getMonthStart } from '../utils/time'
 import { Analyze } from '../../../libs/db/src/models/analyze.model'
 import { Auth } from '../../core/decorators/auth.decorator'
+import * as dayjs from 'dayjs'
 @Controller('analyze')
 @ApiTags('Analyze Routes')
 @Auth()
@@ -71,6 +72,7 @@ export class AnalyzeController {
     const todayHours = {} as {
       [key: number]: number
     }
+
     todayData.forEach((d) => {
       const time = new Date(d.created)
       const hour = time.getHours()
@@ -87,8 +89,8 @@ export class AnalyzeController {
     const weeks = {} as { [key: number]: number }
     weekData.forEach((i) => {
       const time = new Date(i.created)
-      const day = time.getDate()
-      weeks[day] = -~weeks[day]
+      const gap = dayjs(now).diff(dayjs(time), 'day')
+      weeks[gap] = -~weeks[gap]
     })
 
     // month fragment
