@@ -26,7 +26,7 @@ export class AnalyzeMiddleware implements NestMiddleware {
     res: FastifyReply<ServerResponse>,
     next: Function,
   ) {
-    if (req.headers['Authorization']) {
+    if (req.headers['Authorization'] || req.headers['authorization']) {
       return next()
     }
 
