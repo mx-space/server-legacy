@@ -33,6 +33,7 @@ import { PagerDto } from '../base/dto/pager.dto'
 import { NotesService } from './notes.service'
 import { FastifyReply } from 'fastify'
 import { ServerResponse, IncomingMessage } from 'http'
+
 @ApiTags('Note Routes')
 @Controller('notes')
 @UseInterceptors(PermissionInterceptor)
@@ -199,6 +200,7 @@ export class NotesController {
       req.session.liked.push(param.id)
     }
     await this.noteService.likeNote(param.id)
+
     res
       .header('Access-Control-Allow-Origin', req.headers['origin'])
       .header('Access-Control-Allow-Credentials', true)

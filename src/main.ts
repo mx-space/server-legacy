@@ -43,10 +43,10 @@ async function bootstrap() {
   app.useGlobalFilters(new AllExceptionsFilter())
   app.useGlobalInterceptors(new ResponseInterceptor())
   if (isDev) {
-    app.enableCors({ credentials: true })
+    app.enableCors({ origin: true, credentials: true })
   } else {
     if (1 === parseInt(process.env.CORS as any)) {
-      app.enableCors({ credentials: true })
+      app.enableCors({ origin: true, credentials: true })
     }
   }
   app.setGlobalPrefix(isDev ? '' : `api/v${APIVersion}`)

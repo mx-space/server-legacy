@@ -7,4 +7,7 @@ export class Analyze extends BaseModel {
 
   @prop()
   ua: IUAParser.IResult
+
+  @prop()
+  path?: string
 }

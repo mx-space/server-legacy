@@ -26,6 +26,10 @@ export class AnalyzeMiddleware implements NestMiddleware {
     res: FastifyReply<ServerResponse>,
     next: Function,
   ) {
+    if (req.headers['Authorization']) {
+      return next()
+    }
+
     try {
       const ip = getIp(req)
       this.parser.setUA(req.headers['user-agent'])
@@ -34,6 +38,7 @@ export class AnalyzeMiddleware implements NestMiddleware {
       await this.model.create({
         ip,
         ua,
+        path: (req as any).url,
       })
       const apiCallTimeRecord = await this.options.findOne({
         name: 'apiCallTime',
