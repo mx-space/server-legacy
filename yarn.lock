@@ -649,9 +649,9 @@
     fs-extra "8.1.0"
 
 "@nestjs/serve-static@^2.1.0":
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/@nestjs/serve-static/-/serve-static-2.1.0.tgz#fe2955d8d176674046d2eb16724803ca409384d3"
-  integrity sha512-syC7x3vacNYOAqpITqiPd7NS0gAc3IbzexyMOpUu00mVt/8NZc3zXNEV5r4DeatRKUwc11tt1TRlMEsmTLTQIA==
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/@nestjs/serve-static/-/serve-static-2.1.1.tgz#b18573bb14a52fc9ebc82fc887d1bc0846f1d18c"
+  integrity sha512-hkrCm7R8BWE8k9iiFlRtBIw+/VR4SMWos3yErRvC12y1ADI7gWkbu46+urx8jlcMnOEQW/xTAWY51xe6miBvHQ==
   dependencies:
     path-to-regexp "0.1.7"
 
