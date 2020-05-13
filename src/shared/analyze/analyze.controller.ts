@@ -5,7 +5,12 @@ import { AnalyzeDto } from './analyze.dto'
 import { DocumentType } from '@typegoose/typegoose'
 import { RedisService } from 'nestjs-redis'
 import { PagerDto } from '../base/dto/pager.dto'
-import { getTodayEarly, getWeekStart, getMonthStart } from '../utils/time'
+import {
+  getTodayEarly,
+  getWeekStart,
+  getMonthStart,
+  getMonthLength,
+} from '../utils/time'
 import { Analyze } from '../../../libs/db/src/models/analyze.model'
 import { Auth } from '../../core/decorators/auth.decorator'
 import * as dayjs from 'dayjs'
@@ -62,22 +67,50 @@ export class AnalyzeController {
   @Get('fragment')
   async getFragment() {
     const now = new Date()
+    const todayEarly = getTodayEarly(now)
     const todayData: Pick<
       DocumentType<Analyze>,
       '_id' | 'ip' | 'ua' | 'created' | 'typegooseName'
-    >[] = (await this.service.getRangeAnalyzeData(getTodayEarly(now), now, {
+    >[] = (await this.service.getRangeAnalyzeData(todayEarly, now, {
       withPaginator: false,
     })) as any
-    // today fragment
-    const todayHours = {} as {
-      [key: number]: number
-    }
 
-    todayData.forEach((d) => {
+    // today fragment
+    const nowHour = now.getHours()
+    const todayHours = await Promise.all(
+      Array(24)
+        .fill(undefined)
+        .map(async (v, i) => {
+          const from = dayjs(now)
+            .set('hour', i)
+            .set('minute', 0)
+            .set('second', 0)
+          const to = from.add(1, 'hour')
+          const ipCount = await this.service.getRangeAnalyzeIpCount(
+            from.toDate(),
+            to.toDate(),
+          )
+
+          return [
+            {
+              hour: i === nowHour ? '现在' : i + '时',
+              key: 'ip',
+              value: ipCount,
+            },
+            {
+              hour: i === nowHour ? '现在' : i + '时',
+              key: 'pv',
+              value: 0,
+            },
+          ]
+        }),
+    )
+
+    for await (const d of todayData) {
       const time = new Date(d.created)
       const hour = time.getHours()
-      todayHours[hour] = -~todayHours[hour]
-    })
+      todayHours[hour][1].value = -~todayHours[hour][1].value
+    }
     // week fragment
     const weekData: Pick<
       DocumentType<Analyze>,
@@ -86,35 +119,83 @@ export class AnalyzeController {
       withPaginator: false,
     })) as any
 
-    const weeks = {} as { [key: number]: number }
-    weekData.forEach((i) => {
-      const time = new Date(i.created)
-      const gap = dayjs(now).diff(dayjs(time), 'day')
-      weeks[gap] = -~weeks[gap]
-    })
+    const getWeekLabel = (index: number) =>
+      ['日', '一', '二', '三', '四', '五', '六'][index]
+    const todayDay = now.getDay()
+    const weeks = await Promise.all(
+      Array(7)
+        .fill(undefined)
+        .map(async (v, i) => {
+          const from = dayjs(now)
+            .set('day', i)
+            .set('minute', 0)
+            .set('second', 0)
+          const to = from.add(1, 'day')
+          const ipCount = await this.service.getRangeAnalyzeIpCount(
+            from.toDate(),
+            to.toDate(),
+          )
+          const day = i === todayDay ? '今天' : '周' + getWeekLabel(i)
+          return [
+            {
+              day,
+              key: 'ip',
+              value: ipCount,
+            },
+            {
+              day,
+              key: 'pv',
+              value: 0,
+            },
+          ]
+        }),
+    )
+
+    for await (const d of weekData) {
+      const time = new Date(d.created)
+      const day = time.getDay()
+      weeks[day][1].value = -~weeks[day][1].value
+    }
 
     // month fragment
-    const monthEveryDays = {} as { [key: number]: number }
+    const month = now.getMonth() + 1
+    const monthEveryDays = await Promise.all(
+      Array(getMonthLength(now))
+        .fill(undefined)
+        .map(async (v, i) => {
+          const from = dayjs(now)
+            .set('date', i)
+            .set('minute', 0)
+            .set('second', 0)
+          const to = from.add(1, 'day')
+          const ipCount = await this.service.getRangeAnalyzeIpCount(
+            from.toDate(),
+            to.toDate(),
+          )
+          const date = `${month}-${i}`
+          return [
+            { date, key: 'ip', value: ipCount },
+            { date, key: 'pv', value: 0 },
+          ]
+        }),
+    )
     const thisMonthData: Pick<
       DocumentType<Analyze>,
       '_id' | 'ip' | 'ua' | 'created' | 'typegooseName'
     >[] = (await this.service.getRangeAnalyzeData(getMonthStart(now), now, {
       withPaginator: false,
     })) as any
-
-    thisMonthData.forEach((i) => {
-      const time = new Date(i.created)
-      const day = time.getDate()
-      monthEveryDays[day] = -~monthEveryDays[day]
-    })
-
+    for await (const d of thisMonthData) {
+      const time = new Date(d.created)
+      const date = time.getDate()
+      monthEveryDays[date][1].value = -~monthEveryDays[date][1].value
+    }
     return {
-      today: todayHours,
-      weeks,
-      months: monthEveryDays,
+      today: todayHours.flat(2),
+      weeks: weeks.flat(2),
+      months: monthEveryDays.flat(2),
     }
   }
-
   @Delete()
   async clearAnalyze() {
     await this.service.clearAnalyzeRange()

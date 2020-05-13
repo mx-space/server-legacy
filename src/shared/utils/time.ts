@@ -5,7 +5,7 @@ export const getTodayEarly = (today: Date) =>
 
 export const getWeekStart = (today: Date) =>
   dayjs(today)
-    .add(-7, 'day')
+    .set('day', 0)
     .set('hour', 0)
     .set('millisecond', 0)
     .set('minute', 0)
@@ -18,3 +18,13 @@ export const getMonthStart = (today: Date) =>
     .set('minute', 0)
     .set('millisecond', 0)
     .toDate()
+
+export function getMonthLength(date: Date) {
+  const d = new Date(date)
+
+  d.setMonth(d.getMonth() + 1)
+  d.setDate(1)
+
+  d.setDate(d.getDate() - 1)
+  return d.getDate()
+}
