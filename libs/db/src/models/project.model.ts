@@ -1,33 +1,63 @@
-import { prop, arrayProp } from '@typegoose/typegoose'
-import { IsUrl, IsOptional, IsString } from 'class-validator'
 import { BaseModel } from '@libs/db/models/base.model'
+import { arrayProp, prop } from '@typegoose/typegoose'
+import { IsOptional, IsString, IsUrl, isURL } from 'class-validator'
 
+const validateURL = {
+  message: '请更正为正确的网址',
+  validator: (v: string | Array<string>): boolean => {
+    if (!v) {
+      return true
+    }
+    if (Array.isArray(v)) {
+      return v.every((url) => isURL(url, { require_protocol: true }))
+    }
+    if (!isURL(v, { require_protocol: true })) {
+      return false
+    }
+  },
+}
 export class Project extends BaseModel {
   @prop({ required: true, unique: true })
+  @IsString()
   name: string
 
-  @prop()
+  @prop({
+    validate: validateURL,
+  })
   @IsUrl({ require_protocol: true }, { message: '请更正为正确的网址' })
   @IsOptional()
   previewUrl?: string
 
-  @prop()
+  @prop({
+    validate: validateURL,
+  })
   @IsOptional()
   @IsUrl({ require_protocol: true }, { message: '请更正为正确的网址' })
   docUrl?: string
 
-  @prop()
+  @prop({
+    validate: validateURL,
+  })
   @IsOptional()
   @IsUrl({ require_protocol: true }, { message: '请更正为正确的网址' })
   projectUrl?: string
 
-  @arrayProp({ items: String })
+  @IsUrl({ require_protocol: true }, { each: true })
+  @IsOptional()
+  @arrayProp({
+    items: String,
+    validate: validateURL,
+  })
   images?: string[]
 
   @prop({ required: true })
-  description: string
+  @IsString()
+  @IsOptional()
+  description?: string
 
-  @prop()
+  @prop({
+    validate: validateURL,
+  })
   @IsUrl({ require_protocol: true }, { message: '请更正为正确的网址' })
   @IsOptional()
   avatar?: string

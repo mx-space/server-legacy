@@ -6,7 +6,7 @@ import { ProjectsService } from './projects.service'
 
 @Controller('projects')
 @ApiTags('Project Routes')
-export class ProjectsController extends BaseCrud<Project> {
+export class ProjectsController extends BaseCrud<Project, Project> {
   constructor(private readonly projectService: ProjectsService) {
     super(projectService)
   }

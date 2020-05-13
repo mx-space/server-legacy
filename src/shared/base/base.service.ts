@@ -16,6 +16,7 @@ import {
   QueryFindOneAndUpdateOptions,
   QueryUpdateOptions,
   Types,
+  UpdateQuery,
 } from 'mongoose'
 import { AnyType } from 'src/shared/base/interfaces'
 
@@ -320,7 +321,7 @@ export abstract class BaseService<T extends BaseModel> {
    */
   public update(
     conditions: FilterQuery<T>,
-    doc: Partial<T>,
+    doc: UpdateQuery<T>,
     options: QueryUpdateOptions = { omitUndefined: true },
   ): Query<any> {
     return this._model.updateOne(conditions as any, doc as any, options)
@@ -328,7 +329,7 @@ export abstract class BaseService<T extends BaseModel> {
 
   public async updateAsync(
     conditions: FilterQuery<T>,
-    doc: Partial<T>,
+    doc: UpdateQuery<T>,
     options: QueryUpdateOptions = { omitUndefined: true },
   ) {
     const res = await this.update(conditions as any, doc, options)
