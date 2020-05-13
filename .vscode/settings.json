@@ -4,5 +4,6 @@
     "Paginator",
     "dtos",
     "nestjs"
-  ]
+  ],
+  "typescript.tsdk": "node_modules/typescript/lib"
 }

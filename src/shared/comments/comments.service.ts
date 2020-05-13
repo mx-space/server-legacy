@@ -1,25 +1,21 @@
-import Comment, {
-  CommentRefTypes,
-  CommentState,
-} from '@libs/db/models/comment.model'
+import Comment, { CommentRefTypes } from '@libs/db/models/comment.model'
 import Note from '@libs/db/models/note.model'
 import Page from '@libs/db/models/page.model'
 import Post from '@libs/db/models/post.model'
 import { User } from '@libs/db/models/user.model'
 import {
   Injectable,
-  UnprocessableEntityException,
   Logger,
+  UnprocessableEntityException,
 } from '@nestjs/common'
-import { ReturnModelType } from '@typegoose/typegoose'
+import { DocumentType, ReturnModelType } from '@typegoose/typegoose'
 import { FilterQuery, Types } from 'mongoose'
 import { InjectModel } from 'nestjs-typegoose'
 import { CannotFindException } from 'src/core/exceptions/cant-find.exception'
-import { BaseService } from '../base/base.service'
 import { ConfigsService } from '../../configs/configs.service'
-import { Mailer, ReplyMailType } from '../../plugins/mailer'
-import { DocumentType } from '@typegoose/typegoose'
 import { SpamCheck } from '../../plugins/antiSpam'
+import { Mailer, ReplyMailType } from '../../plugins/mailer'
+import { BaseService } from '../base/base.service'
 import { hasChinese } from '../utils'
 @Injectable()
 export class CommentsService extends BaseService<Comment> {
@@ -130,8 +126,8 @@ export class CommentsService extends BaseService<Comment> {
     }
     const { children, parent } = comment
     if (children && children.length > 0) {
-      children.map(async (id: string) => {
-        await this.deleteComments(id)
+      children.map(async (id) => {
+        await this.deleteComments((id as any) as string)
       })
     }
     if (parent) {
