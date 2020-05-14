@@ -28,7 +28,17 @@ import { CategoryType } from '../../../libs/db/src/models/category.model'
 @ApiTags('Category Routes')
 @UseGuards(RolesGuard)
 export class CategoriesController {
-  constructor(private readonly categoryService: CategoriesService) {}
+  constructor(private readonly categoryService: CategoriesService) {
+    // if there hasn't category
+    this.createDefaultCategory()
+  }
+
+  private async createDefaultCategory() {
+    return await this.createCategory({
+      name: '默认分类',
+      slug: 'default',
+    })
+  }
 
   @Get()
   async getAllCategories() {
@@ -113,6 +123,9 @@ export class CategoriesController {
     const res = await this.categoryService.deleteOne({
       _id: category._id,
     })
+    if ((await this.categoryService.countDocument({})) === 0) {
+      await this.createDefaultCategory()
+    }
     return res
   }
 }
