@@ -189,7 +189,7 @@ export class AnalyzeController {
     })) as any
     for await (const d of thisMonthData) {
       const time = new Date(d.created)
-      const date = time.getDate()
+      const date = time.getDate() - 1
       monthEveryDays[date][1].value = -~monthEveryDays[date][1].value
     }
     return {
