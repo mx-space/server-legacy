@@ -166,7 +166,7 @@ export class AnalyzeController {
         .map(async (v, i) => {
           const from = dayjs(now)
             .set('hour', 0)
-            .set('date', i)
+            .set('date', i + 1)
             .set('minute', 0)
             .set('second', 0)
           const to = from.add(1, 'day')
@@ -174,7 +174,7 @@ export class AnalyzeController {
             from.toDate(),
             to.toDate(),
           )
-          const date = `${month}-${i}`
+          const date = `${month}-${i + 1}`
           return [
             { date, key: 'ip', value: ipCount },
             { date, key: 'pv', value: 0 },
