@@ -63,6 +63,7 @@
     "fastify-session": "^4.0.0",
     "fastify-swagger": "^2.5.1",
     "file-type": "^14.2.0",
+    "get-folder-size": "^2.0.1",
     "image-size": "^0.8.3",
     "mongoose": "^5.9.10",
     "mongoose-lean-virtuals": "^0.6.2",

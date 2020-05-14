@@ -5,5 +5,6 @@ import { TasksService } from './tasks.service'
 @Module({
   imports: [ScheduleModule.forRoot()],
   providers: [TasksService],
+  exports: [TasksService],
 })
 export class TasksModule {}

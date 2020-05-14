@@ -63,9 +63,12 @@ async function bootstrap() {
       .build()
     const document = SwaggerModule.createDocument(app, options)
     SwaggerModule.setup('api-docs', app, document)
-    console.log(`http://localhost:${PORT}/api-docs`)
   }
 
-  await app.listen(PORT, '0.0.0.0')
+  await app.listen(PORT, '0.0.0.0', () => {
+    if (isDev) {
+      console.log(`http://localhost:${PORT}/api-docs`)
+    }
+  })
 }
 bootstrap()

@@ -26,8 +26,12 @@ import { SaysService } from './says/says.service'
 import { UploadsModule } from './uploads/uploads.module'
 import { AnalyzeController } from './analyze/analyze.controller'
 import { AnalyzeService } from './analyze/analyze.service'
+import { BackupsService } from './backups/backups.service'
+import { BackupsController } from './backups/backups.controller'
+import { TasksModule } from '../../libs/common/src/tasks/tasks.module'
 
 @Module({
+  imports: [UploadsModule, TasksModule],
   providers: [
     OptionsService,
     AggregateService,
@@ -42,6 +46,7 @@ import { AnalyzeService } from './analyze/analyze.service'
     LinksService,
     ImportService,
     AnalyzeService,
+    BackupsService,
   ],
   controllers: [
     OptionsController,
@@ -57,7 +62,7 @@ import { AnalyzeService } from './analyze/analyze.service'
     LinksController,
     ImportController,
     AnalyzeController,
+    BackupsController,
   ],
-  imports: [UploadsModule],
 })
 export class SharedModule {}
