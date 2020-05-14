@@ -11,7 +11,11 @@ import { BackupsService } from './backups.service'
 import { TasksService } from '../../../libs/common/src/tasks/tasks.service'
 import { FastifyReply } from 'fastify'
 import { ServerResponse } from 'http'
+import { Auth } from '../../core/decorators/auth.decorator'
+import { ApiTags } from '@nestjs/swagger'
 @Controller('backups')
+@ApiTags('Backup Routes')
+@Auth()
 export class BackupsController {
   constructor(
     private readonly service: BackupsService,
