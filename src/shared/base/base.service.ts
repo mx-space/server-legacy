@@ -1,7 +1,6 @@
 import { BaseModel } from '@libs/db/models/base.model'
 import {
   BadRequestException,
-  Injectable,
   InternalServerErrorException,
 } from '@nestjs/common'
 import { DocumentType, ReturnModelType } from '@typegoose/typegoose'
@@ -79,8 +78,7 @@ export interface Paginator {
   hasPrevPage: boolean
 }
 
-@Injectable()
-export abstract class BaseService<T extends BaseModel> {
+export class BaseService<T extends BaseModel> {
   constructor(private _model: ReturnModelType<AnyParamConstructor<T>>) {}
 
   /**

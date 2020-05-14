@@ -128,6 +128,7 @@ export class AnalyzeController {
         .map(async (v, i) => {
           const from = dayjs(now)
             .set('day', i)
+            .set('hour', 0)
             .set('minute', 0)
             .set('second', 0)
           const to = from.add(1, 'day')
@@ -164,6 +165,7 @@ export class AnalyzeController {
         .fill(undefined)
         .map(async (v, i) => {
           const from = dayjs(now)
+            .set('hour', 0)
             .set('date', i)
             .set('minute', 0)
             .set('second', 0)

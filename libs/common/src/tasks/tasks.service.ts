@@ -11,6 +11,7 @@ import { Analyze } from '../../../db/src/models/analyze.model'
 import { ReturnModelType } from '@typegoose/typegoose'
 import { InjectModel } from 'nestjs-typegoose'
 import { RedisService } from 'nestjs-redis'
+
 @Injectable()
 export class TasksService {
   private readonly logger = new Logger(TasksService.name)
@@ -26,11 +27,8 @@ export class TasksService {
       return
     }
     this.logger.log('--> 备份数据库中')
-    const date = new Date()
-    const year = date.getFullYear()
-    const month = date.getMonth() + 1
-    const day = date.getDate()
-    const dateDir = `${year}-${month}-${day}`
+
+    const dateDir = this.nowStr
     const backupDirPath = join(homedir(), '.mx-space/backup/' + dateDir)
     mkdirp.sync(backupDirPath)
     try {
@@ -104,5 +102,14 @@ export class TasksService {
   @Cron(CronExpression.EVERY_DAY_AT_1AM, { name: 'reset_ua' })
   async resetIPAccess() {
     await this.redisCtx.getClient('access').set('ips', '[]')
+  }
+
+  get nowStr() {
+    const date = new Date()
+    const year = date.getFullYear()
+    const month = date.getMonth() + 1
+    const day = date.getDate()
+    const nowStr = `${year}-${month}-${day}`
+    return nowStr
   }
 }

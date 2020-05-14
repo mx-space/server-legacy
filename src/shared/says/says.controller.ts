@@ -1,8 +1,8 @@
-import { Controller } from '@nestjs/common'
-import { BaseCrud } from 'src/shared/base/base.controller'
 import { Say } from '@libs/db/models/say.model'
-import { SaysService } from 'src/shared/says/says.service'
+import { Controller } from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
+import { BaseCrud } from 'src/shared/base/base.controller'
+import { SaysService } from 'src/shared/says/says.service'
 
 @Controller('says')
 @ApiTags('Says Routes')

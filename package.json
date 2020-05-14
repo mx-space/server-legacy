@@ -55,6 +55,7 @@
     "class-transformer": "^0.2.3",
     "class-validator": "^0.12.2",
     "cos-nodejs-sdk-v5": "^2.5.20",
+    "dayjs": "^1.8.26",
     "ejs": "^3.1.2",
     "fastify": "^2.14.0",
     "fastify-cookie": "^3.6.1",
