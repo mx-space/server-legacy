@@ -24,7 +24,7 @@ export class PageController {
   async getPagesSummary() {
     const pages = await this.service.find(
       {},
-      { sort: { order: -1 }, select: '-text -type' },
+      { sort: { order: -1, created: 1 }, select: '-text -type' },
     )
     return { data: pages }
   }

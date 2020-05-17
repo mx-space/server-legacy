@@ -11,6 +11,7 @@ import {
 } from 'class-validator'
 import { Schema } from 'mongoose'
 import { BaseCommentIndexModel } from './base.model'
+import { IsNilOrString } from '../decorators/isNilOrString'
 
 export const pageType = ['md', 'html', 'frame']
 export interface Message {
@@ -37,8 +38,8 @@ export default class Page extends BaseCommentIndexModel {
   @prop({ trim: true })
   @IsString()
   @IsOptional()
-  @IsNotEmpty()
-  subtitle?: string
+  @IsNilOrString()
+  subtitle?: string | null
 
   @ApiProperty({ description: 'Order', required: false })
   @prop({ default: 1 })
