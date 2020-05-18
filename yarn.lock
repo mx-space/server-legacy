@@ -547,9 +547,9 @@
     uuid "3.3.2"
 
 "@nestjs/common@^7.0.11":
-  version "7.0.11"
-  resolved "https://registry.yarnpkg.com/@nestjs/common/-/common-7.0.11.tgz#aa082e2464a0243436d131afdc1c19331b56cabe"
-  integrity sha512-/Cae4gMfcrBKDnRFRR458MbNgbG/Y3iwZ4nGJ3fdE/1jdhyEdtkzjdcv25awaEY0EdKJ6UkdvYJ8/Gp77X3w9w==
+  version "7.0.13"
+  resolved "https://registry.yarnpkg.com/@nestjs/common/-/common-7.0.13.tgz#7effc4c0a00307121151547fe8f7e9ea10d0c256"
+  integrity sha512-jSEBnmeuxzorYzG+RAjcQxhs9Sga2/LYelt+ZOwWqxeRVxlB1d4bMWzhCDrVQ3uep9xJD67TbKztchkDBomokA==
   dependencies:
     axios "0.19.2"
     cli-color "2.0.0"
