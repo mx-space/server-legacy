@@ -34,10 +34,12 @@ export class CategoriesController {
   }
 
   private async createDefaultCategory() {
-    return await this.createCategory({
-      name: '默认分类',
-      slug: 'default',
-    })
+    if ((await this.categoryService.countDocument({})) === 0) {
+      return await this.createCategory({
+        name: '默认分类',
+        slug: 'default',
+      })
+    }
   }
 
   @Get()

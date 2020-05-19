@@ -8,6 +8,7 @@ import {
   IsString,
   MaxLength,
 } from 'class-validator'
+import { Transform } from 'class-transformer'
 
 export class CategoryAndSlug {
   @ApiProperty({ example: 'Z-Turn' })
@@ -16,6 +17,7 @@ export class CategoryAndSlug {
 
   @IsString()
   @ApiProperty({ example: 'why-winserver' })
+  @Transform((v) => decodeURI(v))
   readonly slug: string
 }
 
