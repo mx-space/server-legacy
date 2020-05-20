@@ -43,10 +43,8 @@ class Count {
   startAt: 1,
 })
 @plugin(uniqueValidator)
-@index({ created: -1 })
 @index({ text: 'text' })
 @index({ modified: -1 })
-@index({ created: -1, modified: -1 })
 @index({ nid: -1 })
 export default class Note extends BaseCommentIndexModel {
   @prop({ required: false, unique: true })

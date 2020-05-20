@@ -1,4 +1,10 @@
-import { modelOptions, plugin, prop, Severity } from '@typegoose/typegoose'
+import {
+  modelOptions,
+  plugin,
+  prop,
+  Severity,
+  index,
+} from '@typegoose/typegoose'
 import * as uniqueValidator from 'mongoose-unique-validator'
 import * as mongooseLeanVirtuals from 'mongoose-lean-virtuals'
 
@@ -21,8 +27,8 @@ import * as mongooseLeanVirtuals from 'mongoose-lean-virtuals'
   },
   options: { allowMixed: Severity.ALLOW },
 })
+@index({ created: -1 })
 export abstract class BaseModel {
-  @prop()
   created: Date
   @prop()
   modified: Date

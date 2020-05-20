@@ -3,10 +3,8 @@ import { index, prop, Ref } from '@typegoose/typegoose'
 import { Schema } from 'mongoose'
 import { BaseCommentIndexModel } from './base.model'
 
-@index({ created: -1 })
 @index({ slug: 1 })
 @index({ modified: -1 })
-@index({ created: -1, modified: -1 })
 @index({ text: 'text' })
 export default class Post extends BaseCommentIndexModel {
   @prop({ trim: true, index: true, required: true })

@@ -6,7 +6,7 @@ export enum CategoryType {
   Category,
   Tag,
 }
-@index({ created: -1 })
+
 @index({ count: -1 })
 @index({ slug: -1 })
 export default class Category extends BaseModel {
