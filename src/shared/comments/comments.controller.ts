@@ -103,26 +103,6 @@ export class CommentsController {
     return comments
   }
 
-  @Get('info')
-  @UseGuards(AuthGuard('jwt'))
-  @ApiSecurity('bearer')
-  @ApiOperation({ summary: '获取评论各类型的数量的接口' })
-  async getCommentsInfo() {
-    const passed = await this.commentService.countDocument({
-      state: 1,
-    })
-    const gomi = await this.commentService.countDocument({ state: 2 })
-    const needChecked = await this.commentService.countDocument({
-      state: 0,
-    })
-
-    return {
-      passed,
-      gomi,
-      needChecked,
-    }
-  }
-
   @Post(':id')
   @ApiOperation({ summary: '根据文章的 _id 评论' })
   async comment(
@@ -202,6 +182,11 @@ export class CommentsController {
       $inc: {
         commentsIndex: 1,
       },
+      state:
+        comment.state === CommentState.Read &&
+        parent.state !== CommentState.Read
+          ? CommentState.Read
+          : parent.state,
     })
     if (isMaster) {
       this.commentService.sendEmail(comment, ReplyMailType.Guest)
@@ -217,8 +202,7 @@ export class CommentsController {
 
   @Post('/master/comment/:id')
   @ApiOperation({ summary: '主人专用评论接口 需要登录' })
-  @UseGuards(AuthGuard('jwt'))
-  @ApiSecurity('bearer')
+  @Auth()
   async commentByMaster(
     @Req() req: any,
     @Param() params: IdDto,
@@ -248,8 +232,7 @@ export class CommentsController {
   @Post('/master/reply/:id')
   @ApiOperation({ summary: '主人专用评论回复 需要登录' })
   @ApiParam({ name: 'id', description: 'cid' })
-  @UseGuards(AuthGuard('jwt'))
-  @ApiSecurity('bearer')
+  @Auth()
   async replyByMaster(
     @Req() req: any,
     @Param() params: IdDto,
@@ -268,8 +251,7 @@ export class CommentsController {
   }
   @Patch(':id')
   @ApiOperation({ summary: '修改评论的状态' })
-  @ApiBearerAuth()
-  @UseGuards(AuthGuard('jwt'))
+  @Auth()
   async modifyCommentState(@Param() params: IdDto, @Body() body: StateDto) {
     const { id } = params
     const { state } = body
@@ -289,8 +271,7 @@ export class CommentsController {
   }
 
   @Delete(':id')
-  @UseGuards(AuthGuard('jwt'))
-  @ApiSecurity('bearer')
+  @Auth()
   async deleteComment(@Param() params: IdDto) {
     const { id } = params
     return await this.commentService.deleteComments(id)
