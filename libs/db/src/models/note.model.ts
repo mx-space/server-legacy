@@ -4,7 +4,6 @@ import {
 } from '@typegoose/auto-increment'
 import { index, plugin, prop } from '@typegoose/typegoose'
 import { hashSync } from 'bcrypt'
-import { Schema } from 'mongoose'
 import * as uniqueValidator from 'mongoose-unique-validator'
 import { BaseCommentIndexModel } from './base.model'
 
@@ -39,7 +38,7 @@ class Count {
   like?: number
 }
 
-@plugin<AutoIncrementIDOptions>(AutoIncrementID, {
+@plugin(AutoIncrementID, {
   field: 'nid',
   startAt: 1,
 })
@@ -80,6 +79,6 @@ export default class Note extends BaseCommentIndexModel {
   weather?: string
 
   // TODO bugs
-  @prop({ type: Schema.Types.Mixed, default: { read: 0, like: 0 } })
-  count?: Record<keyof Count, number>
+  @prop({ type: Count, default: { read: 0, like: 0 } })
+  count?: Count
 }

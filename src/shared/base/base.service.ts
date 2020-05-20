@@ -16,6 +16,7 @@ import {
   QueryUpdateOptions,
   Types,
   UpdateQuery,
+  QueryFindBaseOptions,
 } from 'mongoose'
 import { AnyType } from 'src/shared/base/interfaces'
 
@@ -202,7 +203,9 @@ export class BaseService<T extends BaseModel> {
   public findOne(
     conditions: FilterQuery<T>,
     projection?: object | string,
-    options: QueryOptions<T> = {},
+    options:
+      | QueryFindBaseOptions
+      | ({ lean: true } & Omit<QueryFindBaseOptions, 'lean'>) = {},
   ): QueryItem<T> {
     return this._model.findOne(conditions as any, projection || {}, options)
   }
@@ -210,7 +213,9 @@ export class BaseService<T extends BaseModel> {
   public async findOneAsync(
     conditions: AnyType,
     projection?: object | string,
-    options: QueryOptions<T> = {},
+    options:
+      | QueryFindBaseOptions
+      | ({ lean: true } & Omit<QueryFindBaseOptions, 'lean'>) = {},
   ): Promise<T> {
     const { ...option } = options
     const docsQuery = await this.findOne(conditions, projection || {}, option)
