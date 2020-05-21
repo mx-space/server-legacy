@@ -33,6 +33,7 @@ import { ReplyMailType } from '../../plugins/mailer'
 import { IdDto } from '../base/dto/id.dto'
 import { CommentsService } from './comments.service'
 import { EventsGateway } from '../../gateway/events.gateway'
+import { EventTypes } from '../../gateway/events.types'
 
 @Controller('comments')
 @ApiTags('Comment Routes')
@@ -124,8 +125,9 @@ export class CommentsController {
       if (await this.commentService.checkSpam(comment)) {
         comment.state = CommentState.Junk
         await comment.save()
-      } else {
+      } else if (!isMaster) {
         this.commentService.sendEmail(comment, ReplyMailType.Owner)
+        this.gateway.broadcase(EventTypes.COMMENT_CREATE, comment)
       }
     })
 
@@ -189,6 +191,7 @@ export class CommentsController {
         ReplyMailType.Owner,
         // comment.author,
       )
+      this.gateway.broadcase(EventTypes.COMMENT_CREATE, comment)
     }
     return { message: '回复成功!' }
   }

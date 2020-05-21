@@ -13,12 +13,11 @@ import { FilterQuery, Types } from 'mongoose'
 import { InjectModel } from 'nestjs-typegoose'
 import { CannotFindException } from 'src/core/exceptions/cant-find.exception'
 import { ConfigsService } from '../../configs/configs.service'
+import { EventsGateway } from '../../gateway/events.gateway'
 import { SpamCheck } from '../../plugins/antiSpam'
 import { Mailer, ReplyMailType } from '../../plugins/mailer'
 import { BaseService } from '../base/base.service'
 import { hasChinese } from '../utils'
-import { EventsGateway } from '../../gateway/events.gateway'
-import { EventTypes } from '../../gateway/events.types'
 @Injectable()
 export class CommentsService extends BaseService<Comment> {
   private readonly logger: Logger = new Logger(CommentsService.name)
@@ -108,7 +107,7 @@ export class CommentsService extends BaseService<Comment> {
         commentsIndex: 1,
       },
     } as FilterQuery<Post>)
-    this.gateway.broadcase(EventTypes.COMMENT_CREATE, comment)
+
     return comment
   }
 
