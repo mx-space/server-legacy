@@ -50,24 +50,33 @@ export class CategoriesController {
 
   @Get()
   async getCategories(@Query() query: MultiCategoriesQueryDto) {
-    const { ids } = query // categories is category's mongo id
+    const { ids, joint } = query // categories is category's mongo id
     if (ids) {
       // const categoryDocs = await this.categoryService.find({
       //   $and: [categories.map((id) => ({ _id: id }))],
       // })
-      return await Promise.all(
-        ids.map(async (id) => {
-          const posts = await this.postService.find(
-            { categoryId: id },
-            { select: 'title slug _id', sort: { created: -1 } },
+      return joint
+        ? await Promise.all(
+            ids.map(async (id) => {
+              return await this.postService.find(
+                { categoryId: id },
+                { select: 'title slug _id categoryId', sort: { created: -1 } },
+              )
+            }),
           )
-          const category = await this.categoryService.findById(id).lean()
+        : await Promise.all(
+            ids.map(async (id) => {
+              const posts = await this.postService.find(
+                { categoryId: id },
+                { select: 'title slug _id', sort: { created: -1 } },
+              )
+              const category = await this.categoryService.findById(id).lean()
 
-          return {
-            category: { ...category, children: posts },
-          }
-        }),
-      )
+              return {
+                category: { ...category, children: posts },
+              }
+            }),
+          )
     }
     return await this.categoryService.find({})
   }

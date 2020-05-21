@@ -5,8 +5,13 @@ import {
   IsOptional,
   IsString,
   IsMongoId,
+  IsBooleanString,
+  IsBoolean,
+  ValidateIf,
+  isDefined,
 } from 'class-validator'
 import { Transform } from 'class-transformer'
+import { uniq } from 'lodash'
 
 export enum CategoryType {
   Category,
@@ -43,6 +48,12 @@ export class MultiCategoriesQueryDto {
     each: true,
     message: '多分类查询使用逗号分隔, 应为 mongoID',
   })
-  @Transform((str) => str.split(','))
+  @Transform((str) => uniq(str.split(',')))
   ids?: Array<string>
+
+  @IsOptional()
+  @IsBoolean()
+  @Transform((b) => Boolean(b))
+  @ApiProperty({ enum: [1, 0] })
+  joint?: boolean
 }

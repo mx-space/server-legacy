@@ -23,7 +23,10 @@ export class TasksService {
   ) {}
   @Cron(CronExpression.EVERY_DAY_AT_10PM, { name: 'backup' })
   backupDB() {
-    if (!this.configs.get('backupOptions').enable) {
+    if (
+      !this.configs.get('backupOptions').enable ||
+      process.env.NODE_ENV === 'development'
+    ) {
       return
     }
     this.logger.log('--> 备份数据库中')
