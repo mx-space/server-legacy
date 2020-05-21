@@ -13,11 +13,12 @@ import { FilterQuery, Types } from 'mongoose'
 import { InjectModel } from 'nestjs-typegoose'
 import { CannotFindException } from 'src/core/exceptions/cant-find.exception'
 import { ConfigsService } from '../../configs/configs.service'
-import { EventsGateway } from '../../gateway/events.gateway'
+
 import { SpamCheck } from '../../plugins/antiSpam'
 import { Mailer, ReplyMailType } from '../../plugins/mailer'
 import { BaseService } from '../base/base.service'
 import { hasChinese } from '../utils'
+import { EventsGateway } from '../../gateway/admin/events.gateway'
 @Injectable()
 export class CommentsService extends BaseService<Comment> {
   private readonly logger: Logger = new Logger(CommentsService.name)
@@ -169,7 +170,10 @@ export class CommentsService extends BaseService<Comment> {
     if (!enable || process.env.NODE_ENV === 'development') {
       return
     }
-    const mailerOptions = this.configs.get('mailOptions')
+    const mailerOptions = {
+      ...this.configs.get('mailOptions'),
+      name: this.configs.get('seo').title,
+    }
     this.userModel.findOne().then(async (master) => {
       const refType = model.refType
       const refModel = this.getModelByRefType(refType)

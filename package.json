@@ -42,6 +42,7 @@
     "@nestjs/passport": "^7.0.0",
     "@nestjs/platform-fastify": "^7.0.11",
     "@nestjs/platform-socket.io": "^7.0.11",
+    "@nestjs/platform-ws": "^7.0.13",
     "@nestjs/schedule": "^0.4.0",
     "@nestjs/serve-static": "^2.1.1",
     "@nestjs/swagger": "^4.5.7",

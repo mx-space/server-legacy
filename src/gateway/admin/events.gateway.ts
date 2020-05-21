@@ -1,34 +1,22 @@
 import { JwtService } from '@nestjs/jwt'
 import {
+  GatewayMetadata,
   OnGatewayConnection,
   OnGatewayDisconnect,
   WebSocketGateway,
-  WebSocketServer,
 } from '@nestjs/websockets'
-import { Server } from 'socket.io'
-import { AuthService } from '../auth/auth.service'
-import { EventTypes } from './events.types'
+import { AuthService } from '../../auth/auth.service'
+import { BaseGateway } from '../base.gateway'
+import { EventTypes } from '../events.types'
 
-@WebSocketGateway()
-export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
+@WebSocketGateway<GatewayMetadata>({ namespace: 'admin' })
+export class EventsGateway extends BaseGateway
+  implements OnGatewayConnection, OnGatewayDisconnect {
   constructor(
     private readonly jwtService: JwtService,
     private readonly authService: AuthService,
-  ) {}
-
-  @WebSocketServer()
-  server: Server
-  wsClients: SocketIO.Socket[] = []
-  messageFormat(type: EventTypes, message: any) {
-    return {
-      type,
-      data: message,
-    }
-  }
-  broadcase(event: EventTypes, message: any) {
-    for (let c of this.wsClients) {
-      c.send(this.messageFormat(event, message))
-    }
+  ) {
+    super()
   }
 
   async handleConnection(client: SocketIO.Socket) {
@@ -45,12 +33,7 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
     )
   }
   handleDisconnect(client: SocketIO.Socket) {
-    for (let i = 0; i < this.wsClients.length; i++) {
-      if (this.wsClients[i] === client) {
-        this.wsClients.splice(i, 1)
-        break
-      }
-    }
+    super.handleDisconnect(client)
     client.send(
       this.messageFormat(EventTypes.GATEWAY_DISCONNECT, 'websock 断开'),
     )

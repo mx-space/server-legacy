@@ -32,8 +32,9 @@ import { Auth } from '../../core/decorators/auth.decorator'
 import { ReplyMailType } from '../../plugins/mailer'
 import { IdDto } from '../base/dto/id.dto'
 import { CommentsService } from './comments.service'
-import { EventsGateway } from '../../gateway/events.gateway'
+
 import { EventTypes } from '../../gateway/events.types'
+import { EventsGateway } from '../../gateway/admin/events.gateway'
 
 @Controller('comments')
 @ApiTags('Comment Routes')
