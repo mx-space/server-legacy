@@ -17,6 +17,8 @@ import { SpamCheck } from '../../plugins/antiSpam'
 import { Mailer, ReplyMailType } from '../../plugins/mailer'
 import { BaseService } from '../base/base.service'
 import { hasChinese } from '../utils'
+import { EventsGateway } from '../../gateway/events.gateway'
+import { EventTypes } from '../../gateway/events.types'
 @Injectable()
 export class CommentsService extends BaseService<Comment> {
   private readonly logger: Logger = new Logger(CommentsService.name)
@@ -32,6 +34,7 @@ export class CommentsService extends BaseService<Comment> {
     @InjectModel(User)
     private readonly userModel: ReturnModelType<typeof User>,
     private readonly configs: ConfigsService,
+    private readonly gateway: EventsGateway,
   ) {
     super(commentModel)
   }
@@ -105,6 +108,7 @@ export class CommentsService extends BaseService<Comment> {
         commentsIndex: 1,
       },
     } as FilterQuery<Post>)
+    this.gateway.broadcase(EventTypes.COMMENT_CREATE, comment)
     return comment
   }
 
@@ -163,7 +167,7 @@ export class CommentsService extends BaseService<Comment> {
 
   async sendEmail(model: DocumentType<Comment>, type: ReplyMailType) {
     const enable = this.configs.get('mailOptions').enable
-    if (!enable) {
+    if (!enable || process.env.NODE_ENV === 'development') {
       return
     }
     const mailerOptions = this.configs.get('mailOptions')

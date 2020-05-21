@@ -14,14 +14,7 @@ import {
   Req,
   UseGuards,
 } from '@nestjs/common'
-import { AuthGuard } from '@nestjs/passport'
-import {
-  ApiBearerAuth,
-  ApiOperation,
-  ApiParam,
-  ApiSecurity,
-  ApiTags,
-} from '@nestjs/swagger'
+import { ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger'
 import { DocumentType } from '@typegoose/typegoose'
 import { RolesGuard } from 'src/auth/roles.guard'
 import { Master } from 'src/core/decorators/guest.decorator'
@@ -35,11 +28,11 @@ import {
 } from 'src/shared/comments/dto/comment.dto'
 import { Pager } from 'src/shared/comments/dto/pager.dto'
 import { StateDto } from 'src/shared/comments/dto/state.dto'
-import { ConfigsService } from '../../configs/configs.service'
+import { Auth } from '../../core/decorators/auth.decorator'
 import { ReplyMailType } from '../../plugins/mailer'
 import { IdDto } from '../base/dto/id.dto'
 import { CommentsService } from './comments.service'
-import { Auth } from '../../core/decorators/auth.decorator'
+import { EventsGateway } from '../../gateway/events.gateway'
 
 @Controller('comments')
 @ApiTags('Comment Routes')
@@ -47,7 +40,7 @@ import { Auth } from '../../core/decorators/auth.decorator'
 export class CommentsController {
   constructor(
     private readonly commentService: CommentsService,
-    private readonly configs: ConfigsService,
+    private readonly gateway: EventsGateway,
   ) {}
 
   @Get()

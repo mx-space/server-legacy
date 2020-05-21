@@ -29,9 +29,10 @@ import { AnalyzeService } from './analyze/analyze.service'
 import { BackupsService } from './backups/backups.service'
 import { BackupsController } from './backups/backups.controller'
 import { TasksModule } from '../../libs/common/src/tasks/tasks.module'
+import { GatewayModule } from '../gateway/gateway.module'
 
 @Module({
-  imports: [UploadsModule, TasksModule],
+  imports: [UploadsModule, TasksModule, GatewayModule],
   providers: [
     OptionsService,
     AggregateService,

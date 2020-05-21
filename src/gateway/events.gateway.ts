@@ -7,30 +7,39 @@ import {
 } from '@nestjs/websockets'
 
 import { Server } from 'socket.io'
+import { EventTypes } from './events.types'
 
 @WebSocketGateway()
 export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @WebSocketServer()
   server: Server
-
-  sendMessage(type: string, message: any) {
+  wsClients: SocketIO.Socket[] = []
+  messageFormat(type: EventTypes, message: any) {
     return {
       type,
       data: message,
     }
   }
-  @SubscribeMessage('events')
-  onEvent(client: SocketIO.Socket, data: any) {
-    return {
-      type: 'message',
-      data: 'hello',
+  broadcase(event: EventTypes, message: any) {
+    for (let c of this.wsClients) {
+      c.send(this.messageFormat(event, message))
     }
   }
-
   handleConnection(client: SocketIO.Socket) {
-    client.send({ type: 'connect' })
+    this.wsClients.push(client)
+    client.send(
+      this.messageFormat(EventTypes.GATEWAY_CONNECT, 'websock 已连接'),
+    )
   }
   handleDisconnect(client: SocketIO.Socket) {
-    client.send({ type: 'close' })
+    for (let i = 0; i < this.wsClients.length; i++) {
+      if (this.wsClients[i] === client) {
+        this.wsClients.splice(i, 1)
+        break
+      }
+    }
+    client.send(
+      this.messageFormat(EventTypes.GATEWAY_DISCONNECT, 'websock 断开'),
+    )
   }
 }

@@ -61,7 +61,7 @@ export class MasterController {
   ) {
     const footstep = await this.masterService.recordFootstep(ipLocation.ip)
     const { name, username, created, url, mail } = user
-    const avatar = getAvatar(mail)
+    const avatar = user.avatar ?? getAvatar(mail)
     return {
       token: await this.authService.signToken(user._id),
       ...footstep,

@@ -7,5 +7,6 @@ export const gatewayAuthMiddleware = (
   if (!token) {
     next(new Error('认证异常'))
   }
+  // TODO token auth
   next()
 }

@@ -10,7 +10,7 @@ import { AppModule } from './app.module'
 import * as FastifyMultipart from 'fastify-multipart'
 import { ExtendsIoAdapter } from './core/gateway/extend.gateway'
 
-const PORT = parseInt(process.env.PORT) || 3003
+const PORT = parseInt(process.env.PORT) || 2333
 const APIVersion = 1
 const isDev = process.env.NODE_ENV === 'development'
 

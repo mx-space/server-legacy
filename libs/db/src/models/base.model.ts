@@ -37,4 +37,7 @@ export abstract class BaseModel {
 export abstract class BaseCommentIndexModel extends BaseModel {
   @prop({ default: 0 })
   commentsIndex?: number
+
+  @prop({ default: true })
+  allowComment: boolean
 }
