@@ -1,16 +1,21 @@
+import { JwtService } from '@nestjs/jwt'
 import {
   OnGatewayConnection,
   OnGatewayDisconnect,
-  SubscribeMessage,
   WebSocketGateway,
   WebSocketServer,
 } from '@nestjs/websockets'
-
 import { Server } from 'socket.io'
+import { AuthService } from '../auth/auth.service'
 import { EventTypes } from './events.types'
 
 @WebSocketGateway()
 export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
+  constructor(
+    private readonly jwtService: JwtService,
+    private readonly authService: AuthService,
+  ) {}
+
   @WebSocketServer()
   server: Server
   wsClients: SocketIO.Socket[] = []
@@ -25,7 +30,15 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
       c.send(this.messageFormat(event, message))
     }
   }
-  handleConnection(client: SocketIO.Socket) {
+
+  async handleConnection(client: SocketIO.Socket) {
+    const token = client.handshake.query.token
+    const payload = this.jwtService.verify(token)
+    const user = await this.authService.verifyPayload(payload)
+    if (!user) {
+      client.send(this.messageFormat(EventTypes.AUTH_FAILED, '认证失败'))
+      return client.disconnect()
+    }
     this.wsClients.push(client)
     client.send(
       this.messageFormat(EventTypes.GATEWAY_CONNECT, 'websock 已连接'),

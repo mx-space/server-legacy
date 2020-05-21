@@ -8,7 +8,7 @@ import { AllExceptionsFilter } from 'src/core/filters/any-exception.filter'
 import { ResponseInterceptor } from 'src/core/interceptors/response.interceptors'
 import { AppModule } from './app.module'
 import * as FastifyMultipart from 'fastify-multipart'
-import { ExtendsIoAdapter } from './core/gateway/extend.gateway'
+// import { ExtendsIoAdapter } from './core/gateway/extend.gateway'
 
 const PORT = parseInt(process.env.PORT) || 2333
 const APIVersion = 1
@@ -39,7 +39,7 @@ async function bootstrap() {
     AppModule,
     fAdapt,
   )
-  app.useWebSocketAdapter(new ExtendsIoAdapter(app))
+  // app.useWebSocketAdapter(new ExtendsIoAdapter(app))
   app.useGlobalFilters(new AllExceptionsFilter())
   app.useGlobalInterceptors(new ResponseInterceptor())
   if (isDev) {
