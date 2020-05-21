@@ -9,6 +9,7 @@ import {
   Put,
   UnprocessableEntityException,
   UseGuards,
+  Query,
 } from '@nestjs/common'
 import { AuthGuard } from '@nestjs/passport'
 import { ApiSecurity, ApiTags } from '@nestjs/swagger'
@@ -21,14 +22,19 @@ import { CategoriesService } from 'src/shared/categories/categories.service'
 import {
   CategoryDto,
   SlugOrIdDto,
+  MultiCategoriesQueryDto,
 } from 'src/shared/categories/dto/category.dto'
 import { CategoryType } from '../../../libs/db/src/models/category.model'
+import { PostsService } from '../posts/posts.service'
 
 @Controller('categories')
 @ApiTags('Category Routes')
 @UseGuards(RolesGuard)
 export class CategoriesController {
-  constructor(private readonly categoryService: CategoriesService) {
+  constructor(
+    private readonly categoryService: CategoriesService,
+    private readonly postService: PostsService,
+  ) {
     // if there hasn't category
     this.createDefaultCategory()
   }
@@ -43,7 +49,26 @@ export class CategoriesController {
   }
 
   @Get()
-  async getAllCategories() {
+  async getCategories(@Query() query: MultiCategoriesQueryDto) {
+    const { ids } = query // categories is category's mongo id
+    if (ids) {
+      // const categoryDocs = await this.categoryService.find({
+      //   $and: [categories.map((id) => ({ _id: id }))],
+      // })
+      return await Promise.all(
+        ids.map(async (id) => {
+          const posts = await this.postService.find(
+            { categoryId: id },
+            { select: 'title slug _id', sort: { created: -1 } },
+          )
+          const category = await this.categoryService.findById(id).lean()
+
+          return {
+            category: { ...category, children: posts },
+          }
+        }),
+      )
+    }
     return await this.categoryService.find({})
   }
 
