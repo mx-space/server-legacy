@@ -1,7 +1,7 @@
 /*
  * @Author: Innei
  * @Date: 2020-04-30 12:21:51
- * @LastEditTime: 2020-05-22 08:42:25
+ * @LastEditTime: 2020-05-22 09:31:29
  * @LastEditors: Innei
  * @Description:
  * @FilePath: /mx-server/src/shared/categories/categories.controller.ts
@@ -70,7 +70,10 @@ export class CategoriesController {
             ids.map(async (id) => {
               return await this.postService.find(
                 { categoryId: id },
-                { select: 'title slug _id categoryId', sort: { created: -1 } },
+                {
+                  select: 'title slug _id categoryId created modified',
+                  sort: { created: -1 },
+                },
               )
             }),
           )
@@ -78,7 +81,10 @@ export class CategoriesController {
             ids.map(async (id) => {
               const posts = await this.postService.find(
                 { categoryId: id },
-                { select: 'title slug _id', sort: { created: -1 } },
+                {
+                  select: 'title slug _id created modified',
+                  sort: { created: -1 },
+                },
               )
               const category = await this.categoryService.findById(id).lean()
 

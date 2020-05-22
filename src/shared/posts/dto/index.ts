@@ -1,3 +1,12 @@
+/*
+ * @Author: Innei
+ * @Date: 2020-04-30 12:21:51
+ * @LastEditTime: 2020-05-22 10:09:35
+ * @LastEditors: Innei
+ * @FilePath: /mx-server/src/shared/posts/dto/index.ts
+ * @MIT
+ */
+
 import { ApiProperty } from '@nestjs/swagger'
 import { Transform } from 'class-transformer'
 import {
@@ -8,7 +17,10 @@ import {
   IsOptional,
   IsString,
   MaxLength,
+  IsEnum,
+  ValidateIf,
 } from 'class-validator'
+import { PagerDto } from '../../base/dto/pager.dto'
 
 export class CategoryAndSlug {
   @ApiProperty({ example: 'Z-Turn' })
@@ -59,4 +71,17 @@ export class PostDto {
   @IsNotEmptyObject()
   @ApiProperty({ required: false, type: Object })
   options?: Record<any, any>
+}
+
+export class PostQueryDto extends PagerDto {
+  @IsOptional()
+  @IsEnum(['categoryId', 'title', 'created', 'modified'])
+  @Transform((v) => (v === 'category' ? 'categoryId' : v))
+  sortBy?: string
+
+  @IsOptional()
+  @IsEnum([1, -1])
+  @ValidateIf((o) => o.sortBy)
+  @Transform((v) => ~~v)
+  sortOrder?: 1 | -1
 }

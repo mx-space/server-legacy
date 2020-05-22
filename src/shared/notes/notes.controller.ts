@@ -28,10 +28,10 @@ import {
   ListQueryDto,
   NidType,
   NoteDto,
+  NoteQueryDto,
   PasswordQueryDto,
 } from 'src/shared/notes/dto/note.dto'
-import { addConditionToSeeHideContent } from 'src/shared/utils'
-import { PagerDto } from '../base/dto/pager.dto'
+import { addConditionToSeeHideContent, yearCondition } from 'src/shared/utils'
 import { NotesService } from './notes.service'
 
 @ApiTags('Note Routes')
@@ -44,14 +44,17 @@ export class NotesController {
   @Get()
   @ApiOperation({ summary: '获取随记带分页器' })
   @Auth()
-  async getNotes(@Master() isMaster: boolean, @Query() query: PagerDto) {
-    const { size, select, page } = query
-    const condition = addConditionToSeeHideContent(isMaster)
+  async getNotes(@Master() isMaster: boolean, @Query() query: NoteQueryDto) {
+    const { size, select, page, sortBy, sortOrder, year } = query
+    const condition = {
+      ...addConditionToSeeHideContent(isMaster),
+      ...yearCondition(year),
+    }
     return await this.noteService.findWithPaginator(condition, {
       limit: size,
       skip: (page - 1) * size,
       select,
-      sort: { created: -1 },
+      sort: sortBy ? { [sortBy]: sortOrder || -1 } : { created: -1 },
     })
   }
 

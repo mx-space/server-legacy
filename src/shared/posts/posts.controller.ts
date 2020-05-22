@@ -18,10 +18,9 @@ import { RolesGuard } from 'src/auth/roles.guard'
 import { Master } from 'src/core/decorators/guest.decorator'
 import { PermissionInterceptor } from 'src/core/interceptors/permission.interceptors'
 import { IdDto } from 'src/shared/base/dto/id.dto'
-import { PagerDto } from 'src/shared/base/dto/pager.dto'
 import { SearchDto } from 'src/shared/base/dto/search.dto'
 import { addConditionToSeeHideContent, yearCondition } from 'src/shared/utils'
-import { CategoryAndSlug, PostDto } from './dto'
+import { CategoryAndSlug, PostDto, PostQueryDto } from './dto'
 import { PostsService } from './posts.service'
 
 @Controller('posts')
@@ -34,8 +33,8 @@ export class PostsController {
 
   @Get()
   @ApiOperation({ summary: '获取全部文章带分页器' })
-  async getAll(@Master() isMaster?: boolean, @Query() query?: PagerDto) {
-    const { size, select, page, year } = query
+  async getAll(@Master() isMaster?: boolean, @Query() query?: PostQueryDto) {
+    const { size, select, page, year, sortBy, sortOrder } = query
     const condition = {
       ...addConditionToSeeHideContent(isMaster),
       ...yearCondition(year),
@@ -44,7 +43,7 @@ export class PostsController {
       limit: size,
       skip: (page - 1) * size,
       select,
-      sort: { created: -1 },
+      sort: sortBy ? { [sortBy]: sortOrder || -1 } : { created: -1 },
       populate: 'category',
     })
   }

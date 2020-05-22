@@ -13,7 +13,9 @@ import {
   IsString,
   Max,
   Min,
+  ValidateIf,
 } from 'class-validator'
+import { PagerDto } from '../../base/dto/pager.dto'
 
 export const Mood = Object.keys(MoodSet)
 export const Weather = Object.keys(WeatherSet)
@@ -71,4 +73,15 @@ export class PasswordQueryDto {
   @IsOptional()
   @IsNotEmpty()
   password?: string
+}
+export class NoteQueryDto extends PagerDto {
+  @IsOptional()
+  @IsEnum(['title', 'created', 'modified', 'weather', 'mood'])
+  sortBy?: string
+
+  @IsOptional()
+  @IsEnum([1, -1])
+  @ValidateIf((o) => o.sortBy)
+  @Transform((v) => ~~v)
+  sortOrder?: 1 | -1
 }
