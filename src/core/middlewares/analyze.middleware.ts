@@ -1,14 +1,22 @@
+/*
+ * @Author: Innei
+ * @Date: 2020-05-10 15:22:08
+ * @LastEditTime: 2020-05-22 11:27:32
+ * @LastEditors: Innei
+ * @FilePath: /mx-server/src/core/middlewares/analyze.middleware.ts
+ * @MIT
+ */
+
 import { Injectable, NestMiddleware } from '@nestjs/common'
-import { FastifyReply, FastifyRequest } from 'fastify'
-import { IncomingMessage } from 'http'
-import { ServerResponse } from 'http'
-import { UAParser } from 'ua-parser-js'
-import { getIp } from '../../shared/utils/ip'
-import { InjectModel } from 'nestjs-typegoose'
-import { Analyze } from '../../../libs/db/src/models/analyze.model'
 import { ReturnModelType } from '@typegoose/typegoose'
-import { Option } from '../../../libs/db/src/models/option.model'
+import { FastifyRequest } from 'fastify'
+import { IncomingMessage, ServerResponse } from 'http'
 import { RedisService } from 'nestjs-redis'
+import { InjectModel } from 'nestjs-typegoose'
+import { UAParser } from 'ua-parser-js'
+import { Analyze } from '../../../libs/db/src/models/analyze.model'
+import { Option } from '../../../libs/db/src/models/option.model'
+import { getIp } from '../../shared/utils/ip'
 @Injectable()
 export class AnalyzeMiddleware implements NestMiddleware {
   private parser: UAParser
@@ -23,7 +31,7 @@ export class AnalyzeMiddleware implements NestMiddleware {
   }
   async use(
     req: FastifyRequest<IncomingMessage>,
-    res: FastifyReply<ServerResponse>,
+    res: ServerResponse,
     next: Function,
   ) {
     if (req.headers['Authorization'] || req.headers['authorization']) {

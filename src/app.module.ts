@@ -1,3 +1,12 @@
+/*
+ * @Author: Innei
+ * @Date: 2020-05-12 15:52:01
+ * @LastEditTime: 2020-05-22 11:21:29
+ * @LastEditors: Innei
+ * @FilePath: /mx-server/src/app.module.ts
+ * @MIT
+ */
+
 import { CommonModule } from '@libs/common'
 import { DbModule } from '@libs/db'
 import {
@@ -18,6 +27,7 @@ import { ConfigsModule } from './configs/configs.module'
 import { ServeStaticModule } from '@nestjs/serve-static'
 import { join } from 'path'
 import { AnalyzeMiddleware } from './core/middlewares/analyze.middleware'
+import { SkipFaviconMiddleware } from './core/middlewares/favicon.middleware'
 const providers: Provider<any>[] = [
   {
     provide: APP_PIPE,
@@ -59,5 +69,7 @@ export class AppModule implements NestModule {
     consumer
       .apply(AnalyzeMiddleware)
       .forRoutes({ path: '(.*?)', method: RequestMethod.GET })
+      .apply(SkipFaviconMiddleware)
+      .forRoutes({ path: '(.*?)', method: RequestMethod.ALL })
   }
 }
