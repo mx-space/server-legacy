@@ -1,6 +1,6 @@
-import { IsOptional, IsDate } from 'class-validator'
-import { Transform } from 'class-transformer'
 import { ApiProperty } from '@nestjs/swagger'
+import { Transform } from 'class-transformer'
+import { IsDate, IsOptional } from 'class-validator'
 
 export class AnalyzeDto {
   @Transform((v) => new Date(parseInt(v)))

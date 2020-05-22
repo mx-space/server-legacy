@@ -1,16 +1,22 @@
+/*
+ * @Author: Innei
+ * @Date: 2020-04-30 12:21:51
+ * @LastEditTime: 2020-05-22 08:50:25
+ * @LastEditors: Innei
+ * @FilePath: /mx-server/src/shared/categories/dto/category.dto.ts
+ * @MIT
+ */
+
 import { ApiProperty } from '@nestjs/swagger'
+import { Transform } from 'class-transformer'
 import {
+  IsBoolean,
   IsEnum,
+  IsMongoId,
   IsNotEmpty,
   IsOptional,
   IsString,
-  IsMongoId,
-  IsBooleanString,
-  IsBoolean,
-  ValidateIf,
-  isDefined,
 } from 'class-validator'
-import { Transform } from 'class-transformer'
 import { uniq } from 'lodash'
 
 export enum CategoryType {

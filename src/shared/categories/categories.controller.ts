@@ -1,3 +1,13 @@
+/*
+ * @Author: Innei
+ * @Date: 2020-04-30 12:21:51
+ * @LastEditTime: 2020-05-22 08:42:25
+ * @LastEditors: Innei
+ * @Description:
+ * @FilePath: /mx-server/src/shared/categories/categories.controller.ts
+ * @MIT
+ */
+
 import {
   BadRequestException,
   Body,
@@ -7,9 +17,9 @@ import {
   Param,
   Post,
   Put,
+  Query,
   UnprocessableEntityException,
   UseGuards,
-  Query,
 } from '@nestjs/common'
 import { AuthGuard } from '@nestjs/passport'
 import { ApiSecurity, ApiTags } from '@nestjs/swagger'
@@ -21,8 +31,8 @@ import { IdDto } from 'src/shared/base/dto/id.dto'
 import { CategoriesService } from 'src/shared/categories/categories.service'
 import {
   CategoryDto,
-  SlugOrIdDto,
   MultiCategoriesQueryDto,
+  SlugOrIdDto,
 } from 'src/shared/categories/dto/category.dto'
 import { CategoryType } from '../../../libs/db/src/models/category.model'
 import { PostsService } from '../posts/posts.service'

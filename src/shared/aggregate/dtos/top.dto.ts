@@ -1,5 +1,5 @@
 import { Transform } from 'class-transformer'
-import { Min, Max, IsOptional } from 'class-validator'
+import { IsOptional, Max, Min } from 'class-validator'
 
 export class TopQueryDto {
   @Transform((val) => parseInt(val))

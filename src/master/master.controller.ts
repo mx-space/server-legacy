@@ -22,9 +22,9 @@ import { AuthService } from 'src/auth/auth.service'
 import { RolesGuard } from 'src/auth/roles.guard'
 import { CurrentUser } from 'src/core/decorators/current-user.decorator'
 import { Master } from 'src/core/decorators/guest.decorator'
+import { IpLocation, IpRecord } from 'src/core/decorators/ip.decorator'
 import { LoginDto, UserDto, UserPatchDto } from 'src/master/dto/user.dto'
 import MasterService from 'src/master/master.service'
-import { IpLocation, IpRecord } from 'src/core/decorators/ip.decorator'
 import { getAvatar } from 'src/shared/utils'
 
 @Controller('master')

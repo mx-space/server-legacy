@@ -1,10 +1,10 @@
 import { User } from '@libs/db/models/user.model'
 import { Injectable, UnprocessableEntityException } from '@nestjs/common'
-import { ReturnModelType, DocumentType } from '@typegoose/typegoose'
+import { DocumentType, ReturnModelType } from '@typegoose/typegoose'
+import { compareSync } from 'bcrypt'
+import { nanoid } from 'nanoid'
 import { InjectModel } from 'nestjs-typegoose'
 import { AuthService } from 'src/auth/auth.service'
-import { nanoid } from 'nanoid'
-import { compareSync } from 'bcrypt'
 import { getAvatar } from 'src/shared/utils'
 
 @Injectable()

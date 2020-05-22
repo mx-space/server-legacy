@@ -1,9 +1,9 @@
-import { Injectable } from '@nestjs/common'
-import { InjectModel } from 'nestjs-typegoose'
 import { User, UserDocument } from '@libs/db/models/user.model'
-import { ReturnModelType } from '@typegoose/typegoose'
-import { JwtPayload } from './interfaces/jwt-payload.interface'
+import { Injectable } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
+import { ReturnModelType } from '@typegoose/typegoose'
+import { InjectModel } from 'nestjs-typegoose'
+import { JwtPayload } from './interfaces/jwt-payload.interface'
 
 @Injectable()
 export class AuthService {

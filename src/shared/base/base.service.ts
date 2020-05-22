@@ -11,12 +11,12 @@ import {
   FilterQuery,
   ModelPopulateOptions,
   Query,
+  QueryFindBaseOptions,
   QueryFindOneAndRemoveOptions,
   QueryFindOneAndUpdateOptions,
   QueryUpdateOptions,
   Types,
   UpdateQuery,
-  QueryFindBaseOptions,
 } from 'mongoose'
 import { AnyType } from 'src/shared/base/interfaces'
 

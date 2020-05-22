@@ -1,3 +1,4 @@
+import { MoodSet, WeatherSet } from '@libs/db/models/note.model'
 import { ApiProperty } from '@nestjs/swagger'
 import { Transform } from 'class-transformer'
 import {
@@ -13,7 +14,6 @@ import {
   Max,
   Min,
 } from 'class-validator'
-import { MoodSet, WeatherSet } from '@libs/db/models/note.model'
 
 export const Mood = Object.keys(MoodSet)
 export const Weather = Object.keys(WeatherSet)

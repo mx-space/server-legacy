@@ -1,8 +1,8 @@
+import { Link } from '@libs/db/models/link.model'
 import { Controller } from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
 import { BaseCrud } from '../base/base.controller'
 import { LinksService } from './links.service'
-import { Link } from '@libs/db/models/link.model'
 
 @Controller('links')
 @ApiTags('Link Routes')

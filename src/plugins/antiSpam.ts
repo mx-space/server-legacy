@@ -1,4 +1,4 @@
-import { client, AkismetClient } from 'akismet'
+import { AkismetClient, client } from 'akismet'
 
 export class SpamCheck {
   private akismet: AkismetClient

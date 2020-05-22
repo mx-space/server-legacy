@@ -1,13 +1,7 @@
-import {
-  Controller,
-  Post,
-  Body,
-  UsePipes,
-  ValidationPipe,
-} from '@nestjs/common'
+import { Body, Controller, Post } from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
+import { ArticleType, DataListDto } from './dto/datatype.dto'
 import { ImportService } from './import.service'
-import { DataListDto, ArticleType } from './dto/datatype.dto'
 
 @Controller('import')
 @ApiTags('Import Routes')

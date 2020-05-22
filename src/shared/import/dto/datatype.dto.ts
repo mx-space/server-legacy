@@ -1,12 +1,11 @@
-import {
-  IsObject,
-  IsString,
-  IsDate,
-  IsOptional,
-  ValidateNested,
-  IsEnum,
-} from 'class-validator'
 import { Transform, Type } from 'class-transformer'
+import {
+  IsDate,
+  IsEnum,
+  IsOptional,
+  IsString,
+  ValidateNested,
+} from 'class-validator'
 
 export class MetaDto {
   @IsString()

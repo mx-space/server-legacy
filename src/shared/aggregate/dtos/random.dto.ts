@@ -1,7 +1,7 @@
-import { IsEnum, IsOptional, Min, Max, IsInt } from 'class-validator'
-import { ApiProperty } from '@nestjs/swagger'
 import { FileType } from '@libs/db/models/file.model'
+import { ApiProperty } from '@nestjs/swagger'
 import { Transform } from 'class-transformer'
+import { IsEnum, IsInt, IsOptional, Max, Min } from 'class-validator'
 import { range } from 'lodash'
 
 // export const RandomType = ['POST', 'NOTE', 'SAY', 'IMAGE']

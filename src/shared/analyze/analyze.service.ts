@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common'
-import { InjectModel } from 'nestjs-typegoose'
-import { Option } from '../../../libs/db/src/models/option.model'
 import { ReturnModelType } from '@typegoose/typegoose'
+import { InjectModel } from 'nestjs-typegoose'
 import { Analyze } from '../../../libs/db/src/models/analyze.model'
+import { Option } from '../../../libs/db/src/models/option.model'
 import { BaseService } from '../base/base.service'
 
 @Injectable()

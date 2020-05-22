@@ -2,8 +2,8 @@ import {
   GatewayMetadata,
   OnGatewayConnection,
   OnGatewayDisconnect,
-  WebSocketGateway,
   SubscribeMessage,
+  WebSocketGateway,
 } from '@nestjs/websockets'
 import { BaseGateway } from '../base.gateway'
 import { EventTypes } from '../events.types'

@@ -6,15 +6,15 @@ import {
   HttpStatus,
   Logger,
 } from '@nestjs/common'
+import { FastifyReply, FastifyRequest } from 'fastify'
+import { IncomingMessage, ServerResponse } from 'http'
+import { getIp } from '../../shared/utils/ip'
 type myError = {
   readonly status: number
   readonly statusCode?: number
   readonly msg: string
   readonly message?: string
 }
-import { FastifyReply, FastifyRequest } from 'fastify'
-import { ServerResponse, IncomingMessage } from 'http'
-import { getIp } from '../../shared/utils/ip'
 
 @Catch()
 export class AllExceptionsFilter implements ExceptionFilter {

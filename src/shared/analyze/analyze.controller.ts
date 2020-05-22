@@ -1,19 +1,19 @@
-import { Controller, Get, Query, Delete } from '@nestjs/common'
-import { AnalyzeService } from './analyze.service'
+import { Controller, Delete, Get, Query } from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
-import { AnalyzeDto } from './analyze.dto'
 import { DocumentType } from '@typegoose/typegoose'
+import * as dayjs from 'dayjs'
 import { RedisService } from 'nestjs-redis'
-import { PagerDto } from '../base/dto/pager.dto'
-import {
-  getTodayEarly,
-  getWeekStart,
-  getMonthStart,
-  getMonthLength,
-} from '../utils/time'
 import { Analyze } from '../../../libs/db/src/models/analyze.model'
 import { Auth } from '../../core/decorators/auth.decorator'
-import * as dayjs from 'dayjs'
+import { PagerDto } from '../base/dto/pager.dto'
+import {
+  getMonthLength,
+  getMonthStart,
+  getTodayEarly,
+  getWeekStart,
+} from '../utils/time'
+import { AnalyzeDto } from './analyze.dto'
+import { AnalyzeService } from './analyze.service'
 @Controller('analyze')
 @ApiTags('Analyze Routes')
 @Auth()

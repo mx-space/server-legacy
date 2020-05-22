@@ -1,14 +1,14 @@
+import { CommentRefTypes } from '@libs/db/models/comment.model'
 import { ApiProperty } from '@nestjs/swagger'
 import {
   IsEmail,
+  IsEnum,
   IsNotEmpty,
   IsOptional,
   IsString,
   IsUrl,
-  IsEnum,
   MaxLength,
 } from 'class-validator'
-import { CommentRefTypes } from '@libs/db/models/comment.model'
 
 export class CommentDto {
   @IsString()

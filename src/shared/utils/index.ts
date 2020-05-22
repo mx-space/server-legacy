@@ -1,5 +1,3 @@
-import { CommentRefTypes } from '../../../libs/db/src/models/comment.model'
-
 export function addConditionToSeeHideContent(isMaster: boolean) {
   return isMaster
     ? {

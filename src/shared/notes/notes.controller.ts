@@ -15,6 +15,8 @@ import {
   UseInterceptors,
 } from '@nestjs/common'
 import { ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger'
+import { FastifyReply } from 'fastify'
+import { IncomingMessage, ServerResponse } from 'http'
 import { RolesGuard } from 'src/auth/roles.guard'
 import { Auth } from 'src/core/decorators/auth.decorator'
 import { Master } from 'src/core/decorators/guest.decorator'
@@ -31,8 +33,6 @@ import {
 import { addConditionToSeeHideContent } from 'src/shared/utils'
 import { PagerDto } from '../base/dto/pager.dto'
 import { NotesService } from './notes.service'
-import { FastifyReply } from 'fastify'
-import { ServerResponse, IncomingMessage } from 'http'
 
 @ApiTags('Note Routes')
 @Controller('notes')

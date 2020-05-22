@@ -1,11 +1,11 @@
 import Note from '@libs/db/models/note.model'
 import { Injectable } from '@nestjs/common'
 import { DocumentType, ReturnModelType } from '@typegoose/typegoose'
+import { compareSync } from 'bcrypt'
 import { InjectModel } from 'nestjs-typegoose'
 import { CannotFindException } from 'src/core/exceptions/cant-find.exception'
 import { addConditionToSeeHideContent } from 'src/shared/utils'
 import { BaseService } from '../base/base.service'
-import { compareSync } from 'bcrypt'
 
 @Injectable()
 export class NotesService extends BaseService<Note> {

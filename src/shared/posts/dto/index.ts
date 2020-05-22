@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger'
+import { Transform } from 'class-transformer'
 import {
   IsBoolean,
   IsMongoId,
@@ -8,7 +9,6 @@ import {
   IsString,
   MaxLength,
 } from 'class-validator'
-import { Transform } from 'class-transformer'
 
 export class CategoryAndSlug {
   @ApiProperty({ example: 'Z-Turn' })

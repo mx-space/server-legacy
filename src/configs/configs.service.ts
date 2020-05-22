@@ -1,14 +1,23 @@
+/*
+ * @Author: Innei
+ * @Date: 2020-05-08 20:01:58
+ * @LastEditTime: 2020-05-22 08:51:38
+ * @LastEditors: Innei
+ * @FilePath: /mx-server/src/configs/configs.service.ts
+ * @MIT
+ */
+
+import { Option } from '@libs/db/models/option.model'
 import { Injectable } from '@nestjs/common'
 import { ReturnModelType } from '@typegoose/typegoose'
 import { InjectModel } from 'nestjs-typegoose'
-import { Option } from '@libs/db/models/option.model'
 import {
-  SEODto,
-  UrlDto,
+  BackupOptions,
+  CommentOptions,
   ImageBedDto,
   MailOptionsDto,
-  CommentOptions,
-  BackupOptions,
+  SEODto,
+  UrlDto,
 } from './configs.dto'
 
 export interface IConfig {
