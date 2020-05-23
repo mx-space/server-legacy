@@ -934,9 +934,9 @@
   integrity sha1-Q6Y/xe3OImvtEGsxuHUWUlYnEQc=
 
 "@types/node@^12":
-  version "12.12.41"
-  resolved "https://registry.npm.taobao.org/@types/node/download/@types/node-12.12.41.tgz#cf48562b53ab6cf85d28dde95f1d06815af275c8"
-  integrity sha1-z0hWK1OrbPhdKN3pXx0GgVrydcg=
+  version "12.12.42"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-12.12.42.tgz#d0d1149336bd07540dd1ea576692829d575dec34"
+  integrity sha512-R/9QdYFLL9dE9l5cWWzWIZByVGFd7lk7JVOJ7KD+E1SJ4gni7XJRLz9QTjyYQiHIqEAgku9VgxdLjMlhhUaAFg==
 
 "@types/nodemailer@^6.4.0":
   version "6.4.0"
