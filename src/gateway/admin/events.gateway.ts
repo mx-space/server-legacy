@@ -1,3 +1,12 @@
+/*
+ * @Author: Innei
+ * @Date: 2020-05-21 11:05:42
+ * @LastEditTime: 2020-05-23 12:38:37
+ * @LastEditors: Innei
+ * @FilePath: /mx-server/src/gateway/admin/events.gateway.ts
+ * @MIT
+ */
+
 import { JwtService } from '@nestjs/jwt'
 import {
   GatewayMetadata,
@@ -18,15 +27,25 @@ export class EventsGateway extends BaseGateway
   ) {
     super()
   }
-
+  async disconnect(client: SocketIO.Socket) {
+    client.send(this.messageFormat(EventTypes.AUTH_FAILED, '认证失败'))
+    client.disconnect()
+  }
   async handleConnection(client: SocketIO.Socket) {
     const token = client.handshake.query.token
-    const payload = this.jwtService.verify(token)
-    const user = await this.authService.verifyPayload(payload)
-    if (!user) {
-      client.send(this.messageFormat(EventTypes.AUTH_FAILED, '认证失败'))
-      return client.disconnect()
+    if (!token) {
+      return this.disconnect(client)
     }
+    try {
+      const payload = this.jwtService.verify(token)
+      const user = await this.authService.verifyPayload(payload)
+      if (!user) {
+        return this.disconnect(client)
+      }
+    } catch {
+      return this.disconnect(client)
+    }
+
     this.wsClients.push(client)
     client.send(
       this.messageFormat(EventTypes.GATEWAY_CONNECT, 'websock 已连接'),
