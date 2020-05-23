@@ -158,7 +158,7 @@ export class CommentsController {
       throw new CannotFindException()
     }
     const commentIndex = parent.commentsIndex
-    const key = `${parent.key}#${commentIndex + 1}`
+    const key = `${parent.key}#${commentIndex}`
 
     const model: Partial<Comment> = {
       parent,

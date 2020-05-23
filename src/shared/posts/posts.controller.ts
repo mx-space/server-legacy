@@ -22,6 +22,8 @@ import { SearchDto } from 'src/shared/base/dto/search.dto'
 import { addConditionToSeeHideContent, yearCondition } from 'src/shared/utils'
 import { CategoryAndSlug, PostDto, PostQueryDto } from './dto'
 import { PostsService } from './posts.service'
+import { WebEventsGateway } from '../../gateway/web/events.gateway'
+import { EventTypes } from '../../gateway/events.types'
 
 @Controller('posts')
 @ApiTags('Post Routes')
@@ -29,7 +31,10 @@ import { PostsService } from './posts.service'
 @UseInterceptors(PermissionInterceptor)
 @ApiSecurity('bearer')
 export class PostsController {
-  constructor(private readonly postService: PostsService) {}
+  constructor(
+    private readonly postService: PostsService,
+    private readonly webgateway: WebEventsGateway,
+  ) {}
 
   @Get()
   @ApiOperation({ summary: '获取全部文章带分页器' })
@@ -109,6 +114,7 @@ export class PostsController {
     })
     validCategory.count += 1
     await validCategory.save()
+    this.webgateway.broadcase(EventTypes.POST_CREATE, newPostDocument)
     return newPostDocument
   }
 
@@ -146,6 +152,15 @@ export class PostsController {
       postDto as any,
       { omitUndefined: true },
     )
+    // emit event
+    new Promise(() => {
+      this.postService
+        .findById(id)
+        .lean()
+        .then((doc) => {
+          this.webgateway.broadcase(EventTypes.POST_UPDATE, doc)
+        })
+    })
     return {
       ...updateDocument,
       message: updateDocument.nModified ? '修改成功' : '没有文章被修改',
@@ -157,8 +172,9 @@ export class PostsController {
   @ApiOperation({ summary: '删除一篇文章' })
   async deletePost(@Param() params: IdDto) {
     const { id } = params
-    const r = await this.postService.deletePost(id)
-    return { ...r, message: r.deletedCount ? '删除成功' : '删除失败' }
+    await this.postService.deletePost(id)
+    this.webgateway.broadcase(EventTypes.POST_DELETE, { id })
+    return 'OK'
   }
 
   @Get('search')

@@ -12,8 +12,8 @@ export class BaseGateway {
       data: message,
     }
   }
-  broadcase(event: EventTypes, message: any) {
-    for (let c of this.wsClients) {
+  async broadcase(event: EventTypes, message: any) {
+    for (const c of this.wsClients) {
       c.send(this.messageFormat(event, message))
     }
   }

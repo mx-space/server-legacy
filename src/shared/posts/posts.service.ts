@@ -36,7 +36,18 @@ export class PostsService extends BaseService<Post> {
   }
 
   async deletePost(id: string) {
-    const r = await this.postModel.deleteOne({ _id: id })
+    const r = await this.postModel.findOneAndDelete({ _id: id })
+    const categoryId = r.categoryId
+    await this.categoryModel.updateOne(
+      {
+        _id: categoryId,
+      },
+      {
+        $inc: {
+          count: -1,
+        },
+      },
+    )
     await this.commentModel.deleteMany({
       pid: id,
     })
