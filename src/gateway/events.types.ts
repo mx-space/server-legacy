@@ -1,7 +1,7 @@
 /*
  * @Author: Innei
  * @Date: 2020-05-21 11:05:42
- * @LastEditTime: 2020-05-23 12:56:49
+ * @LastEditTime: 2020-05-23 19:58:00
  * @LastEditors: Innei
  * @FilePath: /mx-server/src/gateway/events.types.ts
  * @MIT
@@ -25,4 +25,6 @@ export enum EventTypes {
   NOTE_CREATE = 'NOTE_CREATE',
   NOTE_UPDATE = 'NOTE_UPDATE',
   NOTE_DELETE = 'NOTE_DELETE',
+
+  DANMAKU_CREATE = 'DANMAKU_CREATE',
 }

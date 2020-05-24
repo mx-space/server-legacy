@@ -1,3 +1,4 @@
+set -e
 yarn 
 yarn build
 yarn add @zeit/ncc

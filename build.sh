@@ -1,4 +1,5 @@
 #!sh
+set -e
 git pull
 yarn
 yarn build

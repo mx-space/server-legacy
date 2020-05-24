@@ -1,3 +1,12 @@
+/*
+ * @Author: Innei
+ * @Date: 2020-04-18 13:47:30
+ * @LastEditTime: 2020-05-23 20:45:16
+ * @LastEditors: Innei
+ * @FilePath: /mx-server/libs/db/src/db.module.ts
+ * @MIT
+ */
+
 import Category from './models/category.model'
 import Comment from './models/comment.model'
 import Menu from '@libs/db/models/menu.model'
@@ -14,11 +23,13 @@ import { User } from './models/user.model'
 import { Say } from './models/say.model'
 import { Link } from './models/link.model'
 import { Analyze } from './models/analyze.model'
+import { Danmaku } from './models/danmaku.model'
 
 const models = TypegooseModule.forFeature([
   Analyze,
   Category,
   Comment,
+  Danmaku,
   File,
   Link,
   Menu,
