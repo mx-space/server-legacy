@@ -591,16 +591,16 @@
     uuid "7.0.1"
 
 "@nestjs/core@^7.0.13":
-  version "7.0.13"
-  resolved "https://registry.npm.taobao.org/@nestjs/core/download/@nestjs/core-7.0.13.tgz#bcb437a4b5fed109083d90534056d1744189f0a4"
-  integrity sha1-vLQ3pLX+0QkIPZBTQFbRdEGJ8KQ=
+  version "7.1.0"
+  resolved "https://registry.yarnpkg.com/@nestjs/core/-/core-7.1.0.tgz#fbdd2388c2fc86c11d69ffd9c4ba8936491b4548"
+  integrity sha512-gnlQp+VmcEFwUVbwBOipdOKPHgk0CSAMEKiWrr+Jih2MXFPayAKphlRGzWQ0dFTmpMuZ1LhAfBLcejJXyBIj4g==
   dependencies:
     "@nuxtjs/opencollective" "0.2.2"
     fast-safe-stringify "2.0.7"
     iterare "1.2.0"
     object-hash "2.0.3"
     path-to-regexp "3.2.0"
-    tslib "1.11.2"
+    tslib "2.0.0"
     uuid "8.0.0"
 
 "@nestjs/jwt@^7.0.0":
@@ -9204,7 +9204,7 @@ tslib@1.11.2:
   resolved "https://registry.npm.taobao.org/tslib/download/tslib-1.11.2.tgz#9c79d83272c9a7aaf166f73915c9667ecdde3cc9"
   integrity sha1-nHnYMnLJp6rxZvc5Fclmfs3ePMk=
 
-tslib@>=1.9.0, tslib@^2.0.0:
+tslib@2.0.0, tslib@>=1.9.0, tslib@^2.0.0:
   version "2.0.0"
   resolved "https://registry.npm.taobao.org/tslib/download/tslib-2.0.0.tgz#18d13fc2dce04051e20f074cc8387fd8089ce4f3"
   integrity sha1-GNE/wtzgQFHiDwdMyDh/2Aic5PM=
