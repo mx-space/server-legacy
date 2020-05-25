@@ -641,11 +641,11 @@
     tslib "1.11.2"
 
 "@nestjs/platform-ws@^7.0.13":
-  version "7.0.13"
-  resolved "https://registry.npm.taobao.org/@nestjs/platform-ws/download/@nestjs/platform-ws-7.0.13.tgz#a1fda7091080e93fe9f96be14c0dc701686fadbc"
-  integrity sha1-of2nCRCA6T/p+WvhTA3HAWhvrbw=
+  version "7.1.0"
+  resolved "https://registry.yarnpkg.com/@nestjs/platform-ws/-/platform-ws-7.1.0.tgz#ae2a2dca2c5b0953fdff5669b2d26b637a571840"
+  integrity sha512-l6W3/R6RZxNHPqVzxBKPkUc+uHa77P3hf/oVgjANVGw06fBssjg2iBV07u5AjeFUofybTJU9NMHy/vHFwgPvgw==
   dependencies:
-    tslib "1.11.2"
+    tslib "2.0.0"
     ws "7.3.0"
 
 "@nestjs/schedule@^0.4.0":
@@ -9204,7 +9204,7 @@ tslib@1.11.2:
   resolved "https://registry.npm.taobao.org/tslib/download/tslib-1.11.2.tgz#9c79d83272c9a7aaf166f73915c9667ecdde3cc9"
   integrity sha1-nHnYMnLJp6rxZvc5Fclmfs3ePMk=
 
-tslib@>=1.9.0, tslib@^2.0.0:
+tslib@2.0.0, tslib@>=1.9.0, tslib@^2.0.0:
   version "2.0.0"
   resolved "https://registry.npm.taobao.org/tslib/download/tslib-2.0.0.tgz#18d13fc2dce04051e20f074cc8387fd8089ce4f3"
   integrity sha1-GNE/wtzgQFHiDwdMyDh/2Aic5PM=
