@@ -1,13 +1,24 @@
+/*
+ * @Author: Innei
+ * @Date: 2020-04-30 18:14:55
+ * @LastEditTime: 2020-05-25 21:05:26
+ * @LastEditors: Innei
+ * @FilePath: /mx-server/ecosystem.config.js
+ * @Copyright
+ */
+
 const env = require('dotenv').config().parsed
 module.exports = {
   apps: [
     {
       name: 'MxSpace-server',
       script: 'dist/main.js',
-      instances: 1,
       autorestart: true,
+      instances: 'max',
+      exec_mode: 'cluster',
       watch: false,
-      max_memory_restart: env.APP_MAX_MEMORY || '150M',
+      // instances: 1,
+      // max_memory_restart: env.APP_MAX_MEMORY || '150M',
       env: {
         NODE_ENV: 'production',
         ...env,
