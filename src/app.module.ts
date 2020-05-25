@@ -1,7 +1,7 @@
 /*
  * @Author: Innei
  * @Date: 2020-05-12 15:52:01
- * @LastEditTime: 2020-05-22 11:21:29
+ * @LastEditTime: 2020-05-25 16:31:15
  * @LastEditors: Innei
  * @FilePath: /mx-server/src/app.module.ts
  * @MIT
@@ -28,6 +28,7 @@ import { ServeStaticModule } from '@nestjs/serve-static'
 import { join } from 'path'
 import { AnalyzeMiddleware } from './core/middlewares/analyze.middleware'
 import { SkipFaviconMiddleware } from './core/middlewares/favicon.middleware'
+import { AppController } from './app.controller'
 const providers: Provider<any>[] = [
   {
     provide: APP_PIPE,
@@ -63,6 +64,7 @@ if (process.env.NODE_ENV === 'production') {
     }),
   ],
   providers,
+  controllers: [AppController],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
