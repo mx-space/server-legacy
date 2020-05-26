@@ -1,3 +1,12 @@
+/*
+ * @Author: Innei
+ * @Date: 2020-04-18 19:04:13
+ * @LastEditTime: 2020-05-26 09:22:47
+ * @LastEditors: Innei
+ * @FilePath: /mx-server/libs/db/src/models/comment.model.ts
+ * @Copyright
+ */
+
 import { arrayProp, pre, prop, Ref } from '@typegoose/typegoose'
 import { BaseModel } from './base.model'
 import Post from './post.model'
@@ -5,7 +14,7 @@ import Note from './note.model'
 import Page from './page.model'
 import { getAvatar } from 'src/shared/utils'
 
-function autoPopulateSubs(next: Function) {
+function autoPopulateSubs(next: () => void) {
   this.populate({ options: { sort: { created: -1 } }, path: 'children' })
   next()
 }

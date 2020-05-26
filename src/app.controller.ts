@@ -1,13 +1,13 @@
 /*
  * @Author: Innei
  * @Date: 2020-04-30 12:21:51
- * @LastEditTime: 2020-05-25 16:32:01
+ * @LastEditTime: 2020-05-25 20:46:34
  * @LastEditors: Innei
  * @FilePath: /mx-server/src/app.controller.ts
  * @Copyright
  */
 
-import { Post, Req, Res, Controller } from '@nestjs/common'
+import { Post, Req, Res, Controller, Get } from '@nestjs/common'
 import { ReturnModelType } from '@typegoose/typegoose'
 import { Option } from '../libs/db/src/models/option.model'
 import { InjectModel } from 'nestjs-typegoose'
@@ -47,7 +47,6 @@ export class AppController {
       },
       {
         $inc: {
-          // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
           // @ts-ignore
           value: 1,
         },
@@ -59,5 +58,11 @@ export class AppController {
       .header('Access-Control-Allow-Origin', req.headers['origin'])
       .header('Access-Control-Allow-Credentials', true)
       .send('OK')
+  }
+
+  @Get('like_this')
+  async getLikeNumber() {
+    const doc = await this.optionModel.findOne({ name: 'like' }).lean()
+    return doc ? doc.value : 0
   }
 }
