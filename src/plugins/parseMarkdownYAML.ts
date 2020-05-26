@@ -93,7 +93,7 @@ interface ParsedModel {
     updated: Date
     date: Date
     categories: Array<string>
-    tags: Array<String>
+    tags: Array<string>
     slug: string
   }
   text: string

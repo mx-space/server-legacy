@@ -1,7 +1,7 @@
 /*
  * @Author: Innei
  * @Date: 2020-04-02 21:01:18
- * @LastEditTime: 2020-05-25 21:04:21
+ * @LastEditTime: 2020-05-26 09:25:18
  * @LastEditors: Innei
  * @FilePath: /mx-server/.eslintrc.js
  * @Copyright
@@ -34,5 +34,6 @@ module.exports = {
     '@typescript-eslint/ban-ts-ignore': 'off',
     '@typescript-eslint/ban-ts-comment': 'off',
     '@typescript-eslint/explicit-module-boundary-types': 'off',
+    '@typescript-eslint/ban-types': 'off',
   },
 }

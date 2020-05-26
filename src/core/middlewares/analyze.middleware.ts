@@ -1,7 +1,7 @@
 /*
  * @Author: Innei
  * @Date: 2020-05-10 15:22:08
- * @LastEditTime: 2020-05-22 11:27:32
+ * @LastEditTime: 2020-05-26 09:23:20
  * @LastEditors: Innei
  * @FilePath: /mx-server/src/core/middlewares/analyze.middleware.ts
  * @MIT
@@ -32,7 +32,7 @@ export class AnalyzeMiddleware implements NestMiddleware {
   async use(
     req: FastifyRequest<IncomingMessage>,
     res: ServerResponse,
-    next: Function,
+    next: () => void,
   ) {
     if (req.headers['Authorization'] || req.headers['authorization']) {
       return next()
