@@ -1,7 +1,7 @@
 /*
  * @Author: Innei
  * @Date: 2020-05-21 11:05:42
- * @LastEditTime: 2020-05-26 12:46:28
+ * @LastEditTime: 2020-05-26 17:36:56
  * @LastEditors: Innei
  * @FilePath: /mx-server/src/gateway/admin/events.gateway.ts
  * @MIT
@@ -55,7 +55,8 @@ export class EventsGateway extends BaseGateway
     }
   }
   async handleConnection(client: SocketIO.Socket) {
-    const token = client.handshake.query.token
+    const token =
+      client.handshake.query.token || client.handshake.headers['Authorization']
 
     if (!this.authToken(token)) {
       return this.authFailed(client)

@@ -121,6 +121,7 @@ export abstract class BaseCrud<
   @Delete(':id')
   @Auth()
   async delete(@Param() param: IdDto) {
-    return await this._service.deleteAsync({ _id: param.id })
+    await this._service.deleteAsync({ _id: param.id })
+    return 'OK'
   }
 }

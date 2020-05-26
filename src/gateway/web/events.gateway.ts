@@ -43,6 +43,7 @@ export class WebEventsGateway extends BaseGateway
     }
   }
   str = []
+  // TODO
   @SubscribeMessage(EventTypes.DANMAKU_CREATE)
   createNewDanmaku(@MessageBody() data: any) {
     this.str.push(data)

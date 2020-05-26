@@ -8,26 +8,23 @@
  */
 
 import {
-  Controller,
-  Get,
-  UseGuards,
-  Scope,
-  Post,
   Body,
+  Controller,
   Delete,
+  Get,
+  Post,
   Query,
+  Scope,
+  UseGuards,
 } from '@nestjs/common'
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger'
-import { Master } from '../core/decorators/guest.decorator'
-import { AuthService } from './auth.service'
-import { RolesGuard } from './roles.guard'
-import { Auth } from '../core/decorators/auth.decorator'
-import { InjectModel } from 'nestjs-typegoose'
-import { User } from '../../libs/db/src/models/user.model'
-import { ReturnModelType } from '@typegoose/typegoose'
 import { Transform } from 'class-transformer'
 import { IsDate, IsOptional } from 'class-validator'
+import { Auth } from '../core/decorators/auth.decorator'
+import { Master } from '../core/decorators/guest.decorator'
 import { IdDto } from '../shared/base/dto/id.dto'
+import { AuthService } from './auth.service'
+import { RolesGuard } from './roles.guard'
 
 export class TokenDto {
   @IsDate()
