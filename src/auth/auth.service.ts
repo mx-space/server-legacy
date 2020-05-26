@@ -1,9 +1,22 @@
+/*
+ * @Author: Innei
+ * @Date: 2020-04-30 12:21:51
+ * @LastEditTime: 2020-05-26 12:39:24
+ * @LastEditors: Innei
+ * @FilePath: /mx-server/src/auth/auth.service.ts
+ * @Copyright
+ */
+
 import { User, UserDocument } from '@libs/db/models/user.model'
 import { Injectable } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 import { ReturnModelType } from '@typegoose/typegoose'
+import { customAlphabet } from 'nanoid/async'
 import { InjectModel } from 'nestjs-typegoose'
 import { JwtPayload } from './interfaces/jwt-payload.interface'
+import { TokenDto } from './auth.controller'
+import { isDate } from 'lodash'
+import dayjs = require('dayjs')
 
 @Injectable()
 export class AuthService {
@@ -25,5 +38,62 @@ export class AuthService {
     const user = await this.userModel.findById(payload._id).select('+authCode')
 
     return user && user.authCode === payload.authCode ? user : null
+  }
+
+  async generateAccessToken() {
+    const ap = customAlphabet(
+      '1234567890' +
+        Array(26)
+          .fill(null)
+          .map((_, i) => String.fromCharCode(97 + i))
+          .join(''),
+      40,
+    )
+    return await ap()
+  }
+  async verifyCustomToken(token: string) {
+    const user = await this.userModel.findOne({}).lean().select('+apiToken')
+
+    const tokens = user.apiToken
+    if (!tokens || !Array.isArray(tokens)) {
+      return false
+    }
+    return tokens.some((doc) => {
+      if (doc.token === token) {
+        if (typeof doc.expired === 'undefined') {
+          return true
+        } else if (isDate(doc.expired)) {
+          const isExpired = dayjs(new Date()).isAfter(doc.expired)
+          return isExpired ? false : true
+        }
+      }
+      return false
+    })
+  }
+
+  async saveToken(model: Partial<TokenDto> & { token: string }) {
+    await this.userModel.updateOne(
+      {},
+      {
+        $push: {
+          apiToken: { created: new Date(), ...model },
+        },
+      },
+    )
+    return model
+  }
+
+  async deleteToken(id: string) {
+    await this.userModel.updateOne(
+      {},
+      {
+        $pull: {
+          apiToken: {
+            // @ts-ignore
+            _id: id,
+          },
+        },
+      },
+    )
   }
 }
