@@ -33,13 +33,18 @@ import {
 } from 'src/shared/notes/dto/note.dto'
 import { addConditionToSeeHideContent, yearCondition } from 'src/shared/utils'
 import { NotesService } from './notes.service'
+import { WebEventsGateway } from '../../gateway/web/events.gateway'
+import { EventTypes } from '../../gateway/events.types'
 
 @ApiTags('Note Routes')
 @Controller('notes')
 @UseInterceptors(PermissionInterceptor)
 @UseGuards(RolesGuard)
 export class NotesController {
-  constructor(private readonly noteService: NotesService) {}
+  constructor(
+    private readonly noteService: NotesService,
+    private readonly webgateway: WebEventsGateway,
+  ) {}
 
   @Get()
   @ApiOperation({ summary: '获取随记带分页器' })
@@ -174,6 +179,7 @@ export class NotesController {
   @Auth()
   async createNewNote(@Body() body: NoteDto) {
     const res = await this.noteService.createNew(body)
+    this.webgateway.broadcase(EventTypes.NOTE_CREATE, res)
     return res
   }
 
@@ -181,7 +187,9 @@ export class NotesController {
   @Auth()
   async modifyNote(@Body() body: NoteDto, @Param() params: IdDto) {
     const { id } = params
-    return await this.noteService.update({ _id: id }, body)
+    const doc = await this.noteService.update({ _id: id }, body)
+    this.webgateway.broadcase(EventTypes.NOTE_UPDATE, doc)
+    return doc
   }
 
   @Get('like/:id')
@@ -213,7 +221,9 @@ export class NotesController {
   @Delete(':id')
   @Auth()
   async deleteNote(@Param() params: IdDto) {
-    return await this.noteService.deleteByIdAsync(params.id)
+    const r = await this.noteService.deleteByIdAsync(params.id)
+    this.webgateway.broadcase(EventTypes.NOTE_DELETE, params.id)
+    return r
   }
 
   @ApiOperation({ summary: '根据 nid 查找' })

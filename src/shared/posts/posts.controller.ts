@@ -173,7 +173,7 @@ export class PostsController {
   async deletePost(@Param() params: IdDto) {
     const { id } = params
     await this.postService.deletePost(id)
-    this.webgateway.broadcase(EventTypes.POST_DELETE, { id })
+    this.webgateway.broadcase(EventTypes.POST_DELETE, id)
     return 'OK'
   }
 
