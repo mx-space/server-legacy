@@ -393,3 +393,5 @@ dist
 .undodir
 dump
 uploads/*
+
+admin/*
