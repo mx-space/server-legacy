@@ -64,13 +64,13 @@ export class EventsGateway extends BaseGateway
 
     this.wsClients.push(client)
     client.send(
-      this.messageFormat(EventTypes.GATEWAY_CONNECT, 'websock 已连接'),
+      this.messageFormat(EventTypes.GATEWAY_CONNECT, 'WebSocket 已连接'),
     )
   }
   handleDisconnect(client: SocketIO.Socket) {
     super.handleDisconnect(client)
     client.send(
-      this.messageFormat(EventTypes.GATEWAY_DISCONNECT, 'websock 断开'),
+      this.messageFormat(EventTypes.GATEWAY_DISCONNECT, 'WebSocket 断开'),
     )
   }
 }

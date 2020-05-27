@@ -1,7 +1,7 @@
 /*
  * @Author: Innei
  * @Date: 2020-05-21 18:59:01
- * @LastEditTime: 2020-05-23 20:53:25
+ * @LastEditTime: 2020-05-27 16:35:56
  * @LastEditors: Innei
  * @FilePath: /mx-server/src/gateway/web/events.gateway.ts
  * @Copyright
@@ -62,9 +62,15 @@ export class WebEventsGateway extends BaseGateway
   handleConnection(client: SocketIO.Socket) {
     this.wsClients.push(client)
     this.broadcase(EventTypes.VISITOR_ONLINE, this.sendOnlineNumber())
+    client.send(
+      this.messageFormat(EventTypes.GATEWAY_CONNECT, 'WebSocket 已连接'),
+    )
   }
   handleDisconnect(client: SocketIO.Socket) {
     super.handleDisconnect(client)
     this.broadcase(EventTypes.VISITOR_OFFLINE, this.sendOnlineNumber())
+    client.send(
+      this.messageFormat(EventTypes.GATEWAY_CONNECT, 'WebSocket 断开'),
+    )
   }
 }
