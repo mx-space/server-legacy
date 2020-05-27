@@ -24,5 +24,13 @@ export class BaseGateway {
         break
       }
     }
+    client.send(
+      this.messageFormat(EventTypes.GATEWAY_CONNECT, 'WebSocket 断开'),
+    )
+  }
+  handleConnect(client: SocketIO.Socket) {
+    client.send(
+      this.messageFormat(EventTypes.GATEWAY_CONNECT, 'WebSocket 已连接'),
+    )
   }
 }

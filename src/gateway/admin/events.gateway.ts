@@ -1,7 +1,7 @@
 /*
  * @Author: Innei
  * @Date: 2020-05-21 11:05:42
- * @LastEditTime: 2020-05-26 19:45:39
+ * @LastEditTime: 2020-05-27 16:37:51
  * @LastEditors: Innei
  * @FilePath: /mx-server/src/gateway/admin/events.gateway.ts
  * @MIT
@@ -63,14 +63,9 @@ export class EventsGateway extends BaseGateway
     }
 
     this.wsClients.push(client)
-    client.send(
-      this.messageFormat(EventTypes.GATEWAY_CONNECT, 'WebSocket 已连接'),
-    )
+    super.handleConnect(client)
   }
   handleDisconnect(client: SocketIO.Socket) {
     super.handleDisconnect(client)
-    client.send(
-      this.messageFormat(EventTypes.GATEWAY_DISCONNECT, 'WebSocket 断开'),
-    )
   }
 }

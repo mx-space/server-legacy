@@ -80,10 +80,14 @@ export class UploadsService {
     if (!existsSync(path)) {
       writeFileSync(path, data)
       // FIXME image service bug
-      new Promise(() => {
-        const imageService = new ImageService(this.model, this.configs)
-        imageService.syncToImageBed([{ path, name: hashFilename }])
-      })
+      // note: uploads not include avatar type
+      if (type !== FileType.AVATAR) {
+        new Promise(() => {
+          const imageService = new ImageService(this.model, this.configs)
+          imageService.syncToImageBed([{ path, name: hashFilename }])
+          // TODO image upload successful callback event to gateway
+        })
+      }
     }
     return { ext, mime, hashFilename, filename }
   }
