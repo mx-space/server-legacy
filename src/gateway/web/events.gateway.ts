@@ -14,24 +14,19 @@ import {
   OnGatewayDisconnect,
   SubscribeMessage,
   WebSocketGateway,
+  ConnectedSocket,
 } from '@nestjs/websockets'
-import { BaseGateway } from '../base.gateway'
-import { EventTypes } from '../events.types'
-import { Danmaku } from '../../../libs/db/src/models/danmaku.model'
-import { ReturnModelType } from '@typegoose/typegoose'
-import { InjectModel } from 'nestjs-typegoose'
 import { plainToClass } from 'class-transformer'
 import { validate } from 'class-validator'
-
+import { BaseGateway } from '../base.gateway'
+import { EventTypes } from '../events.types'
+import { DanmakuDto } from './dtos/danmaku.dto'
 @WebSocketGateway<GatewayMetadata>({
   namespace: 'web',
 })
 export class WebEventsGateway extends BaseGateway
   implements OnGatewayConnection, OnGatewayDisconnect {
-  constructor(
-    @InjectModel(Danmaku)
-    private readonly danmakuModel: ReturnModelType<typeof Danmaku>,
-  ) {
+  constructor() {
     super()
   }
 
@@ -42,20 +37,18 @@ export class WebEventsGateway extends BaseGateway
       timestamp: new Date().toISOString(),
     }
   }
-  str = []
-  // TODO
   @SubscribeMessage(EventTypes.DANMAKU_CREATE)
-  createNewDanmaku(@MessageBody() data: any) {
-    this.str.push(data)
-    const dto = plainToClass(Danmaku, data)
-    validate(dto).then((err) => {
-      if (err.length === 0) {
-        this.danmakuModel.create(data).then((r) => {
-          this.broadcase(EventTypes.DANMAKU_CREATE, this.str)
-        })
-      } else {
-        throw err
+  createNewDanmaku(
+    @MessageBody() data: DanmakuDto,
+    @ConnectedSocket() client: SocketIO.Socket,
+  ) {
+    const validator = plainToClass(DanmakuDto, data)
+    validate(validator).then((errors) => {
+      if (errors.length > 0) {
+        return client.send(errors)
       }
+      this.broadcase(EventTypes.DANMAKU_CREATE, data)
+      client.send([])
     })
   }
 
