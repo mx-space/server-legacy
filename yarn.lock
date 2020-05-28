@@ -622,9 +622,9 @@
   integrity sha1-xZYXd5t+WIigxyA5ppgOKP1llRg=
 
 "@nestjs/platform-fastify@^7.1.0":
-  version "7.1.0"
-  resolved "https://registry.npmjs.org/@nestjs/platform-fastify/-/platform-fastify-7.1.0.tgz#e491c7153593d4f658770d7a24608af009e9b125"
-  integrity sha512-XtZjqmPyjTgNGT8mSuScaRzIgyS0dwqQMIGybhaQ5oRkowchd70+351Ly1YlzXycP4xB/Hu8ijwhmTiy26xgjw==
+  version "7.1.1"
+  resolved "https://registry.yarnpkg.com/@nestjs/platform-fastify/-/platform-fastify-7.1.1.tgz#c857f68c28a5d25efa174c00ce601034ac8946b1"
+  integrity sha512-B8efqp3taq6N4hE0V9OW2ljtNQreJnlPasiZa99pQhd+CNe1jwT9YaYk4KgewthHfLlWNW3Rt7zdtmj8gj+qBQ==
   dependencies:
     fastify "2.14.1"
     fastify-cors "3.0.3"
