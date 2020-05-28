@@ -690,9 +690,9 @@
     tslib "2.0.0"
 
 "@nestjs/websockets@^7.1.0":
-  version "7.1.0"
-  resolved "https://registry.npmjs.org/@nestjs/websockets/-/websockets-7.1.0.tgz#d39e4893702299d19005907bfa79e5b5758edf59"
-  integrity sha512-Y9JVpwcmp5BYOTs2kUItj8WFZ7f/AJm0reMgbeRI9bJpJDpEQhYySNbZLH3a6Xn+Nrbqr+xea9y/HHMzMi4Ayg==
+  version "7.1.1"
+  resolved "https://registry.yarnpkg.com/@nestjs/websockets/-/websockets-7.1.1.tgz#ef3d837a3a5219451331e34e3bb1321e475c3495"
+  integrity sha512-/3ER9WWAA+RADYANqnbioXtuM1DsfZLzCHNuL+KMkgwD+xar4hcskgfDJx56EWSYqyyh20SMfOTDDRSF+MZe7Q==
   dependencies:
     iterare "1.2.0"
     tslib "2.0.0"
