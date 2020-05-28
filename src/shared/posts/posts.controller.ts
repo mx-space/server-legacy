@@ -4,6 +4,7 @@ import {
   Controller,
   Delete,
   Get,
+  NotFoundException,
   Param,
   Post,
   Put,
@@ -20,10 +21,10 @@ import { PermissionInterceptor } from 'src/core/interceptors/permission.intercep
 import { IdDto } from 'src/shared/base/dto/id.dto'
 import { SearchDto } from 'src/shared/base/dto/search.dto'
 import { addConditionToSeeHideContent, yearCondition } from 'src/shared/utils'
+import { EventTypes } from '../../gateway/events.types'
+import { WebEventsGateway } from '../../gateway/web/events.gateway'
 import { CategoryAndSlug, PostDto, PostQueryDto } from './dto'
 import { PostsService } from './posts.service'
-import { WebEventsGateway } from '../../gateway/web/events.gateway'
-import { EventTypes } from '../../gateway/events.types'
 
 @Controller('posts')
 @ApiTags('Post Routes')
@@ -61,7 +62,7 @@ export class PostsController {
 
     const categoryDocument = await this.postService.getCategoryBySlug(category)
     if (!categoryDocument) {
-      throw new BadRequestException('该分类未找到 (｡•́︿•̀｡)')
+      throw new NotFoundException('该分类未找到 (｡•́︿•̀｡)')
     }
     const postDocument = await this.postService
       .findOne({
@@ -72,7 +73,7 @@ export class PostsController {
       .populate('category')
 
     if (!postDocument) {
-      throw new BadRequestException('该文章未找到 (｡ŏ_ŏ)')
+      throw new NotFoundException('该文章未找到 (｡ŏ_ŏ)')
     }
 
     return postDocument
