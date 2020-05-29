@@ -79,7 +79,6 @@ export class NotesController {
     @Param() params: IdDto,
     @Master() isMaster: boolean,
     @Query() query: PasswordQueryDto,
-    @Headers('referer') referrer?: string,
   ) {
     const { id } = params
     const { password } = query
@@ -99,7 +98,7 @@ export class NotesController {
     ) {
       throw new ForbiddenException('不要偷看人家的小心思啦~')
     }
-    await this.noteService.shouldAddReadCount(referrer, current)
+    await this.noteService.shouldAddReadCount(true, current)
     const prev = await this.noteService
       .findOne({
         ...condition,
@@ -231,11 +230,10 @@ export class NotesController {
   async getNoteByNid(
     @Param() params: NidType,
     @Master() isMaster: boolean,
-    @Headers('referer') referrer: string,
     @Query() query: PasswordQueryDto,
   ) {
     const _id = await this.noteService.validNid(params.nid)
-    return await this.getOneNote({ id: _id }, isMaster, query, referrer)
+    return await this.getOneNote({ id: _id }, isMaster, query)
   }
 
   @ApiOperation({ summary: '根据 nid 修改' })

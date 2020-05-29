@@ -115,7 +115,15 @@ export class PostsController {
     })
     validCategory.count += 1
     await validCategory.save()
-    this.webgateway.broadcase(EventTypes.POST_CREATE, newPostDocument)
+    new Promise(async () => {
+      const category = await this.postService.getCategoryById(
+        newPostDocument.categoryId,
+      )
+      this.webgateway.broadcase(EventTypes.POST_CREATE, {
+        ...newPostDocument.toJSON(),
+        category,
+      })
+    })
     return newPostDocument
   }
 
