@@ -1,7 +1,7 @@
 /*
  * @Author: Innei
  * @Date: 2020-04-30 12:21:51
- * @LastEditTime: 2020-05-26 12:39:24
+ * @LastEditTime: 2020-05-30 14:14:15
  * @LastEditors: Innei
  * @FilePath: /mx-server/src/auth/auth.service.ts
  * @Copyright
@@ -15,7 +15,7 @@ import { customAlphabet } from 'nanoid/async'
 import { InjectModel } from 'nestjs-typegoose'
 import { JwtPayload } from './interfaces/jwt-payload.interface'
 import { TokenDto } from './auth.controller'
-import { isDate } from 'lodash'
+import { isDate, omit } from 'lodash'
 import dayjs = require('dayjs')
 
 @Injectable()
@@ -39,6 +39,21 @@ export class AuthService {
 
     return user && user.authCode === payload.authCode ? user : null
   }
+  private async getAccessTokens() {
+    return (await this.userModel.findOne().select('apiToken').lean()).apiToken
+  }
+  async getAllAccessToken() {
+    return (await this.getAccessTokens()).map((token) => ({
+      id: (token as any)._id,
+      ...omit(token, ['_id', '__v', 'token']),
+    }))
+  }
+
+  async getTokenSecret(id: string) {
+    const tokens = await this.getAccessTokens()
+    // note: _id is ObjectId not equal to string
+    return tokens.find((token) => String((token as any)._id) === id)
+  }
 
   async generateAccessToken() {
     const ap = customAlphabet(
@@ -51,6 +66,7 @@ export class AuthService {
     )
     return await ap()
   }
+
   async verifyCustomToken(token: string) {
     const user = await this.userModel.findOne({}).lean().select('+apiToken')
 
@@ -71,7 +87,7 @@ export class AuthService {
     })
   }
 
-  async saveToken(model: Partial<TokenDto> & { token: string }) {
+  async saveToken(model: TokenDto & { token: string }) {
     await this.userModel.updateOne(
       {},
       {

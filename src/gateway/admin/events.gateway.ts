@@ -1,7 +1,7 @@
 /*
  * @Author: Innei
  * @Date: 2020-05-21 11:05:42
- * @LastEditTime: 2020-05-27 16:37:51
+ * @LastEditTime: 2020-05-30 14:11:57
  * @LastEditors: Innei
  * @FilePath: /mx-server/src/gateway/admin/events.gateway.ts
  * @MIT
@@ -67,5 +67,19 @@ export class EventsGateway extends BaseGateway
   }
   handleDisconnect(client: SocketIO.Socket) {
     super.handleDisconnect(client)
+  }
+
+  handleTokenExpired(token: string) {
+    this.wsClients.some((client) => {
+      const _token =
+        client.handshake.query.token ||
+        client.handshake.headers['authorization']
+      if (token === _token) {
+        client.disconnect()
+        super.handleDisconnect(client)
+        return true
+      }
+      return false
+    })
   }
 }

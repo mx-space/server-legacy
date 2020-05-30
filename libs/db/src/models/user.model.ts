@@ -23,6 +23,9 @@ export class TokenModel {
 
   @prop()
   expired?: Date
+
+  @prop({ unique: true })
+  name: string
 }
 
 export class User extends BaseModel {
