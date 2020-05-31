@@ -30,7 +30,7 @@ export enum WeatherSet {
   'snow' = '雪',
 }
 
-class Count {
+export class Count {
   @prop({ default: 0 })
   read?: number
 
@@ -76,7 +76,6 @@ export default class Note extends BaseCommentIndexModel {
   @prop({ enum: Object.keys(WeatherSet) })
   weather?: string
 
-  // TODO bugs
   @prop({ type: Count, default: { read: 0, like: 0 } })
   count?: Count
 }

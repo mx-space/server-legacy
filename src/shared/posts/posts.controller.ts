@@ -75,14 +75,16 @@ export class PostsController {
     if (!postDocument) {
       throw new NotFoundException('该文章未找到 (｡ŏ_ŏ)')
     }
-
+    await this.postService.updateReadCount(postDocument)
     return postDocument
   }
 
   @Get(':id')
   @ApiOperation({ summary: '根据 ID 查找' })
   async getById(@Param() query: IdDto) {
-    return await this.postService.findPostById(query.id)
+    const doc = await this.postService.findPostById(query.id)
+    await this.postService.updateReadCount(doc)
+    return doc
   }
 
   @Post()
@@ -98,6 +100,7 @@ export class PostsController {
       summary,
       hide = false,
       options,
+      copyright,
     } = postDto
     const validCategory = await this.postService.findCategoryById(categoryId)
     if (!validCategory) {
@@ -112,6 +115,7 @@ export class PostsController {
       categoryId: validCategory._id,
       hide,
       options,
+      copyright,
     })
     validCategory.count += 1
     await validCategory.save()
@@ -130,7 +134,7 @@ export class PostsController {
   @Put(':id')
   @UseGuards(AuthGuard('jwt'))
   @ApiOperation({ summary: '修改一篇文章' })
-  async modifyPost(@Body() postDto: PostDto, @Param() params: IdDto) {
+  async modifyPost(@Body() post: PostDto, @Param() params: IdDto) {
     const { id } = params
     const postId = id
     const validPost = await this.postService.findPostById(postId)
@@ -138,7 +142,7 @@ export class PostsController {
       throw new BadRequestException('文章丢失了 (　ﾟдﾟ)')
     }
     // update category information
-    const { categoryId } = postDto
+    const { categoryId } = post
     if (categoryId !== (validPost.categoryId as any)) {
       const originCategory = await this.postService.findCategoryById(
         (validPost.categoryId as any) as string,
@@ -158,7 +162,7 @@ export class PostsController {
     }
     const updateDocument = await this.postService.update(
       { _id: postId },
-      postDto as any,
+      post as any,
       { omitUndefined: true },
     )
     // emit event

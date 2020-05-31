@@ -1,7 +1,7 @@
 /*
  * @Author: Innei
  * @Date: 2020-04-30 12:21:51
- * @LastEditTime: 2020-05-22 10:09:35
+ * @LastEditTime: 2020-05-31 13:18:19
  * @LastEditors: Innei
  * @FilePath: /mx-server/src/shared/posts/dto/index.ts
  * @MIT
@@ -66,6 +66,10 @@ export class PostDto {
   @IsOptional()
   @ApiProperty({ example: false })
   hide: boolean
+
+  @IsBoolean()
+  @IsOptional()
+  copyright?: boolean
 
   @IsOptional()
   @IsNotEmptyObject()

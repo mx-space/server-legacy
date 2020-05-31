@@ -1,3 +1,12 @@
+/*
+ * @Author: Innei
+ * @Date: 2020-05-06 22:00:44
+ * @LastEditTime: 2020-05-31 13:24:09
+ * @LastEditors: Innei
+ * @FilePath: /mx-server/src/shared/posts/posts.service.ts
+ * @Coding with Love
+ */
+
 import Category from '@libs/db/models/category.model'
 import Comment from '@libs/db/models/comment.model'
 import Post from '@libs/db/models/post.model'
@@ -22,9 +31,11 @@ export class PostsService extends BaseService<Post> {
   async getCategoryBySlug(slug: string): Promise<DocumentType<Category>> {
     return await this.categoryModel.findOne({ slug })
   }
+
   async getCategoryById(id: string | Ref<Category, any>) {
     return await this.categoryModel.findById(id)
   }
+
   async findPostById(id: string) {
     const doc = await super.findById(id).populate('category')
     if (!doc) {
@@ -54,5 +65,9 @@ export class PostsService extends BaseService<Post> {
       pid: id,
     })
     return r
+  }
+
+  async updateReadCount(doc: DocumentType<Post>) {
+    await doc.updateOne({ $inc: { 'count.read': 1 } })
   }
 }
