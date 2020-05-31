@@ -7,7 +7,17 @@ import {
 } from '@typegoose/typegoose'
 import * as uniqueValidator from 'mongoose-unique-validator'
 import * as mongooseLeanVirtuals from 'mongoose-lean-virtuals'
-
+@modelOptions({
+  schemaOptions: { _id: false },
+})
+class Image {
+  @prop()
+  width?: number
+  @prop()
+  height?: number
+  @prop()
+  type?: string
+}
 @plugin(mongooseLeanVirtuals)
 @plugin(uniqueValidator)
 @modelOptions({
@@ -40,4 +50,15 @@ export abstract class BaseCommentIndexModel extends BaseModel {
 
   @prop({ default: true })
   allowComment: boolean
+}
+
+export abstract class WriteBaseModel extends BaseCommentIndexModel {
+  @prop({ trim: true, index: true, required: true })
+  title: string
+
+  @prop({ trim: true })
+  text: string
+
+  @prop({ items: Image })
+  images?: Image[]
 }

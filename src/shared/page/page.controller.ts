@@ -1,3 +1,12 @@
+/*
+ * @Author: Innei
+ * @Date: 2020-05-17 16:17:04
+ * @LastEditTime: 2020-05-31 20:06:49
+ * @LastEditors: Innei
+ * @FilePath: /mx-server/src/shared/page/page.controller.ts
+ * @Coding with Love
+ */
+
 import Page from '@libs/db/models/page.model'
 import {
   Body,
@@ -54,7 +63,9 @@ export class PageController {
   @ApiBearerAuth()
   @UseGuards(AuthGuard('jwt'))
   async createPage(@Body() body: Page) {
-    return await this.service.createNew(body)
+    const doc = await this.service.createNew(body)
+    this.service.RecordImageDimensions(doc._id)
+    return doc
   }
 
   @Put(':id')
@@ -62,7 +73,9 @@ export class PageController {
   @UseGuards(AuthGuard('jwt'))
   async modifiedPage(@Body() body: Page, @Param() params: IdDto) {
     const { id } = params
-    return await this.service.updateById(id, body)
+    const res = await this.service.updateById(id, body)
+    this.service.RecordImageDimensions(id)
+    return res
   }
 
   @Delete(':id')

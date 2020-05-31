@@ -1,4 +1,13 @@
-import { Module } from '@nestjs/common'
+/*
+ * @Author: Innei
+ * @Date: 2020-05-21 11:05:42
+ * @LastEditTime: 2020-05-31 19:10:09
+ * @LastEditors: Innei
+ * @FilePath: /mx-server/src/shared/shared.module.ts
+ * @Coding with Love
+ */
+
+import { Module, HttpModule, forwardRef } from '@nestjs/common'
 import { CommentsController } from 'src/shared/comments/comments.controller'
 import { CommentsService } from 'src/shared/comments/comments.service'
 import { PageController } from 'src/shared/page/page.controller'
@@ -32,7 +41,18 @@ import { SaysService } from './says/says.service'
 import { UploadsModule } from './uploads/uploads.module'
 
 @Module({
-  imports: [UploadsModule, TasksModule, GatewayModule],
+  imports: [
+    UploadsModule,
+    TasksModule,
+    GatewayModule,
+    HttpModule.register({
+      timeout: 30000,
+      headers: {
+        'User-Agent':
+          'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36',
+      },
+    }),
+  ],
   providers: [
     OptionsService,
     AggregateService,

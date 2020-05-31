@@ -1,7 +1,9 @@
-import { BaseModel } from '@libs/db/models/base.model'
+import { BaseModel, WriteBaseModel } from '@libs/db/models/base.model'
 import {
   BadRequestException,
   InternalServerErrorException,
+  HttpService,
+  Logger,
 } from '@nestjs/common'
 import { DocumentType, ReturnModelType } from '@typegoose/typegoose'
 import { AnyParamConstructor } from '@typegoose/typegoose/lib/types'
@@ -19,6 +21,11 @@ import {
   UpdateQuery,
 } from 'mongoose'
 import { AnyType } from 'src/shared/base/interfaces'
+import { pickImagesFromMarkdown, getOnlineImageSize } from '../utils/pic'
+import { ISizeCalculationResult } from 'image-size/dist/types/interface'
+import { WriteStream } from 'fs'
+import { gatewayMessageFormat } from '../../gateway/base.gateway'
+import { EventTypes } from '../../gateway/events.types'
 
 export type enumOrderType = 'asc' | 'desc' | 'ascending' | 'descending' | 1 | -1
 export type OrderType<T> = {
@@ -339,5 +346,60 @@ export class BaseService<T extends BaseModel> {
     return res.nModified > 0
       ? { message: '修改成功啦~' }
       : { message: '没有内容被修改' }
+  }
+}
+export class WriteBaseService<T extends WriteBaseModel> extends BaseService<T> {
+  private logger: Logger
+  constructor(
+    private __model: ReturnModelType<AnyParamConstructor<T>>,
+    private readonly __http: HttpService,
+  ) {
+    super(__model)
+    this.logger = new Logger(WriteBaseService.name)
+  }
+
+  async RecordImageDimensions(id: string, socket?: SocketIO.Socket) {
+    const text = (await this.__model.findById(id).lean()).text
+    const images = pickImagesFromMarkdown(text)
+    const result = [] as ISizeCalculationResult[]
+    for await (const image of images) {
+      try {
+        this.logger.log('Get --> ' + image)
+        const size = await getOnlineImageSize(this.__http, image)
+        if (socket) {
+          socket.send(
+            gatewayMessageFormat(
+              EventTypes.IMAGE_FETCH,
+              'Get --> ' + image + JSON.stringify(size),
+            ),
+          )
+        }
+        result.push(size)
+      } catch (e) {
+        this.logger.error(e.message)
+        if (socket) {
+          socket.send(gatewayMessageFormat(EventTypes.IMAGE_FETCH, e.message))
+        }
+        result.push({
+          width: undefined,
+          height: undefined,
+          type: undefined,
+        })
+      }
+    }
+
+    await this.__model.updateOne(
+      { _id: id as any },
+      // @ts-ignore
+      { $set: { images: result } },
+    )
+  }
+
+  refreshImageSize(ws?: SocketIO.Socket) {
+    this.__model.find().then((res) => {
+      res.forEach((n) => {
+        this.RecordImageDimensions(n._id, ws)
+      })
+    })
   }
 }

@@ -1,7 +1,7 @@
 /*
  * @Author: Innei
  * @Date: 2020-05-21 11:05:42
- * @LastEditTime: 2020-05-30 14:11:57
+ * @LastEditTime: 2020-05-31 19:58:32
  * @LastEditors: Innei
  * @FilePath: /mx-server/src/gateway/admin/events.gateway.ts
  * @MIT
@@ -27,6 +27,7 @@ export class EventsGateway extends BaseGateway
   ) {
     super()
   }
+
   async authFailed(client: SocketIO.Socket) {
     client.send(this.messageFormat(EventTypes.AUTH_FAILED, '认证失败'))
     client.disconnect()

@@ -1,7 +1,7 @@
 /*
  * @Author: Innei
  * @Date: 2020-05-06 22:14:51
- * @LastEditTime: 2020-05-31 13:28:22
+ * @LastEditTime: 2020-05-31 16:31:08
  * @LastEditors: Innei
  * @FilePath: /mx-server/libs/db/src/models/post.model.ts
  * @Coding with Love
@@ -10,21 +10,15 @@
 import Category from '@libs/db/models/category.model'
 import { index, prop, Ref } from '@typegoose/typegoose'
 import { Schema } from 'mongoose'
-import { BaseCommentIndexModel } from './base.model'
+import { WriteBaseModel } from './base.model'
 import { Count } from './note.model'
 
 @index({ slug: 1 })
 @index({ modified: -1 })
 @index({ text: 'text' })
-export default class Post extends BaseCommentIndexModel {
-  @prop({ trim: true, index: true, required: true })
-  title!: string
-
+export default class Post extends WriteBaseModel {
   @prop({ trim: true, unique: true, required: true })
   slug!: string
-
-  @prop({ trim: true })
-  text?: string
 
   @prop()
   summary?: string

@@ -1,11 +1,8 @@
-import {
-  AutoIncrementID,
-  AutoIncrementIDOptions,
-} from '@typegoose/auto-increment'
+import { AutoIncrementID } from '@typegoose/auto-increment'
 import { index, plugin, prop } from '@typegoose/typegoose'
 import { hashSync } from 'bcrypt'
 import * as uniqueValidator from 'mongoose-unique-validator'
-import { BaseCommentIndexModel } from './base.model'
+import { WriteBaseModel } from './base.model'
 
 export enum MoodSet {
   'happy' = '开心',
@@ -46,15 +43,9 @@ export class Count {
 @index({ text: 'text' })
 @index({ modified: -1 })
 @index({ nid: -1 })
-export default class Note extends BaseCommentIndexModel {
+export default class Note extends WriteBaseModel {
   @prop({ required: false, unique: true })
   public nid: number
-
-  @prop({ trim: true, required: true })
-  title!: string
-
-  @prop({ trim: true })
-  text: string
 
   @prop({ default: false })
   hide: boolean

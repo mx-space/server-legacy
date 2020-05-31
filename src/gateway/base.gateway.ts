@@ -1,21 +1,25 @@
 import { WebSocketServer } from '@nestjs/websockets'
-import { Server } from 'http'
 import { EventTypes } from './events.types'
 
+export function gatewayMessageFormat(type: EventTypes, message: any) {
+  return {
+    type,
+    data: message,
+  }
+}
 export class BaseGateway {
   @WebSocketServer()
-  server: Server
+  server: SocketIO.Server
   wsClients: SocketIO.Socket[] = []
-  messageFormat(type: EventTypes, message: any) {
-    return {
-      type,
-      data: message,
+
+  async broadcase(event: EventTypes, message: any) {
+    // this.server.clients().send()
+    for (const c of this.wsClients) {
+      c.send(gatewayMessageFormat(event, message))
     }
   }
-  async broadcase(event: EventTypes, message: any) {
-    for (const c of this.wsClients) {
-      c.send(this.messageFormat(event, message))
-    }
+  get messageFormat() {
+    return gatewayMessageFormat
   }
   handleDisconnect(client: SocketIO.Socket) {
     for (let i = 0; i < this.wsClients.length; i++) {
@@ -25,12 +29,15 @@ export class BaseGateway {
       }
     }
     client.send(
-      this.messageFormat(EventTypes.GATEWAY_CONNECT, 'WebSocket 断开'),
+      gatewayMessageFormat(EventTypes.GATEWAY_CONNECT, 'WebSocket 断开'),
     )
   }
   handleConnect(client: SocketIO.Socket) {
     client.send(
-      this.messageFormat(EventTypes.GATEWAY_CONNECT, 'WebSocket 已连接'),
+      gatewayMessageFormat(EventTypes.GATEWAY_CONNECT, 'WebSocket 已连接'),
     )
+  }
+  findClientById(id: string) {
+    return this.wsClients.find((socket) => socket.id === id)
   }
 }

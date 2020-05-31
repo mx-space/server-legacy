@@ -127,6 +127,7 @@ export class PostsController {
         ...newPostDocument.toJSON(),
         category,
       })
+      this.postService.RecordImageDimensions(newPostDocument._id)
     })
     return newPostDocument
   }
@@ -167,6 +168,7 @@ export class PostsController {
     )
     // emit event
     new Promise(() => {
+      this.postService.RecordImageDimensions(postId)
       this.postService
         .findById(id)
         .lean()

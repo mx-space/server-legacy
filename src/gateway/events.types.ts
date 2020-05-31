@@ -31,4 +31,8 @@ export enum EventTypes {
   SAY_UPDATE = 'SAY_UPDATE',
 
   DANMAKU_CREATE = 'DANMAKU_CREATE',
+
+  // for admin
+  IMAGE_REFRESH = 'IMAGE_REFRESH',
+  IMAGE_FETCH = 'IMAGE_FETCH',
 }

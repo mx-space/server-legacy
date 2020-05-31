@@ -1,7 +1,7 @@
 /*
  * @Author: Innei
  * @Date: 2020-05-06 22:00:44
- * @LastEditTime: 2020-05-31 13:24:09
+ * @LastEditTime: 2020-05-31 18:13:48
  * @LastEditors: Innei
  * @FilePath: /mx-server/src/shared/posts/posts.service.ts
  * @Coding with Love
@@ -10,22 +10,24 @@
 import Category from '@libs/db/models/category.model'
 import Comment from '@libs/db/models/comment.model'
 import Post from '@libs/db/models/post.model'
-import { Injectable } from '@nestjs/common'
-import { DocumentType, ReturnModelType, Ref } from '@typegoose/typegoose'
+import { HttpService, Injectable } from '@nestjs/common'
+import { DocumentType, Ref, ReturnModelType } from '@typegoose/typegoose'
+import { ISizeCalculationResult } from 'image-size/dist/types/interface'
 import { InjectModel } from 'nestjs-typegoose'
 import { CannotFindException } from 'src/core/exceptions/cant-find.exception'
-import { BaseService } from 'src/shared/base/base.service'
-
+import { BaseService, WriteBaseService } from 'src/shared/base/base.service'
+import { getOnlineImageSize, pickImagesFromMarkdown } from '../utils/pic'
 @Injectable()
-export class PostsService extends BaseService<Post> {
+export class PostsService extends WriteBaseService<Post> {
   constructor(
     @InjectModel(Post) private readonly postModel: ReturnModelType<typeof Post>,
     @InjectModel(Category)
     private readonly categoryModel: ReturnModelType<typeof Category>,
     @InjectModel(Comment)
     private readonly commentModel: ReturnModelType<typeof Comment>,
+    private readonly http: HttpService,
   ) {
-    super(postModel)
+    super(postModel, http)
   }
 
   async getCategoryBySlug(slug: string): Promise<DocumentType<Category>> {

@@ -1,18 +1,19 @@
 import Note from '@libs/db/models/note.model'
-import { Injectable } from '@nestjs/common'
+import { Injectable, HttpService } from '@nestjs/common'
 import { DocumentType, ReturnModelType } from '@typegoose/typegoose'
 import { compareSync } from 'bcrypt'
 import { InjectModel } from 'nestjs-typegoose'
 import { CannotFindException } from 'src/core/exceptions/cant-find.exception'
 import { addConditionToSeeHideContent } from 'src/shared/utils'
-import { BaseService } from '../base/base.service'
+import { BaseService, WriteBaseService } from '../base/base.service'
 
 @Injectable()
-export class NotesService extends BaseService<Note> {
+export class NotesService extends WriteBaseService<Note> {
   constructor(
     @InjectModel(Note) private readonly noteModel: ReturnModelType<typeof Note>,
+    private readonly http: HttpService,
   ) {
-    super(noteModel)
+    super(noteModel, http)
   }
 
   async getLatestOne(isMaster: boolean) {

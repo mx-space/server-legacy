@@ -1,11 +1,29 @@
-import { Module } from '@nestjs/common'
+/*
+ * @Author: Innei
+ * @Date: 2020-04-30 12:21:51
+ * @LastEditTime: 2020-05-31 19:07:17
+ * @LastEditors: Innei
+ * @FilePath: /mx-server/src/gateway/gateway.module.ts
+ * @Coding with Love
+ */
+
+import { Module, HttpModule } from '@nestjs/common'
 import { AuthModule } from '../auth/auth.module'
 import { EventsGateway } from './admin/events.gateway'
 import { WebEventsGateway } from './web/events.gateway'
+import { PostsService } from '../shared/posts/posts.service'
+import { NotesService } from '../shared/notes/notes.service'
+import { PageService } from '../shared/page/page.service'
 
 @Module({
-  imports: [AuthModule],
-  providers: [EventsGateway, WebEventsGateway],
+  imports: [AuthModule, HttpModule],
+  providers: [
+    EventsGateway,
+    WebEventsGateway,
+    // PostsService,
+    // NotesService,
+    // PageService,
+  ],
   exports: [EventsGateway, WebEventsGateway],
 })
 export class GatewayModule {}
