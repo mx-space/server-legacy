@@ -13,6 +13,7 @@ import {
   Query,
   Req,
   UseGuards,
+  ForbiddenException,
 } from '@nestjs/common'
 import { ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger'
 import { DocumentType } from '@typegoose/typegoose'
@@ -114,6 +115,16 @@ export class CommentsController {
     const { ref } = query
 
     const id = params.id
+    if (
+      !(await this.commentService.allowComment(
+        id,
+        ref || CommentRefTypes.Post,
+      )) &&
+      !Master
+    ) {
+      throw new ForbiddenException('主人禁止了评论')
+    }
+
     const model = { ...body, ...ipLocation }
 
     const comment = await this.commentService.createComment(
@@ -153,6 +164,7 @@ export class CommentsController {
     }
 
     const { id } = params
+
     const parent = await this.commentService.findById(id).populate('ref')
     if (!parent) {
       throw new CannotFindException()

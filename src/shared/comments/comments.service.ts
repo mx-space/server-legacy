@@ -145,6 +145,12 @@ export class CommentsService extends BaseService<Comment> {
     return { message: '删除成功' }
   }
 
+  async allowComment(id: string, type: CommentRefTypes) {
+    const model = this.getModelByRefType(type)
+    const doc = await model.findById(id)
+    return doc.allowComment ?? true
+  }
+
   async getComments({ page, size, state } = { page: 1, size: 10, state: 0 }) {
     const skip = size * (page - 1)
 
