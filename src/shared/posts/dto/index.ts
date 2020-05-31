@@ -11,13 +11,13 @@ import { ApiProperty } from '@nestjs/swagger'
 import { Transform } from 'class-transformer'
 import {
   IsBoolean,
+  IsEnum,
   IsMongoId,
   IsNotEmpty,
   IsNotEmptyObject,
   IsOptional,
   IsString,
   MaxLength,
-  IsEnum,
   ValidateIf,
 } from 'class-validator'
 import { PagerDto } from '../../base/dto/pager.dto'

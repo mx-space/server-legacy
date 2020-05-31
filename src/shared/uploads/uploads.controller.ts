@@ -1,7 +1,7 @@
 import {
+  FileLocate,
   FileType,
   getEnumFromType,
-  FileLocate,
 } from '@libs/db/models/file.model'
 import {
   Controller,

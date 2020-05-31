@@ -1,17 +1,17 @@
+import Category from '@libs/db/models/category.model'
 import { FileType } from '@libs/db/models/file.model'
 import { Controller, Get, Query, UseGuards } from '@nestjs/common'
 import { ApiProperty, ApiTags } from '@nestjs/swagger'
+import { pick } from 'lodash'
 import { RolesGuard } from 'src/auth/roles.guard'
 import { ConfigsService } from 'src/configs/configs.service'
 import { Master } from 'src/core/decorators/guest.decorator'
 import MasterService from 'src/master/master.service'
 import { AggregateService } from 'src/shared/aggregate/aggregate.service'
-import { RandomTypeDto } from './dtos/random.dto'
-import { TopQueryDto } from './dtos/top.dto'
-import { TimelineQueryDto, TimelineType } from './dtos/timeline.dto'
-import { pick } from 'lodash'
-import Category from '@libs/db/models/category.model'
 import { yearCondition } from '../utils'
+import { RandomTypeDto } from './dtos/random.dto'
+import { TimelineQueryDto, TimelineType } from './dtos/timeline.dto'
+import { TopQueryDto } from './dtos/top.dto'
 @Controller('aggregate')
 @ApiTags('Aggregate Routes')
 @UseGuards(RolesGuard)

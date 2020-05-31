@@ -1,11 +1,11 @@
-import { File, FileType, FileLocate } from '@libs/db/models/file.model'
+import { File, FileLocate, FileType } from '@libs/db/models/file.model'
 import { Injectable } from '@nestjs/common'
 import { ReturnModelType } from '@typegoose/typegoose'
 import { shuffle } from 'lodash'
 import { InjectModel } from 'nestjs-typegoose'
+import { ConfigsService } from '../../configs/configs.service'
 import { UploadsService } from './uploads.service'
 import Pic = require('picgo')
-import { ConfigsService } from '../../configs/configs.service'
 @Injectable()
 export class ImageService {
   public rootPath = UploadsService.rootPath

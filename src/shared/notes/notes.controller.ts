@@ -32,9 +32,9 @@ import {
   PasswordQueryDto,
 } from 'src/shared/notes/dto/note.dto'
 import { addConditionToSeeHideContent, yearCondition } from 'src/shared/utils'
-import { NotesService } from './notes.service'
-import { WebEventsGateway } from '../../gateway/web/events.gateway'
 import { EventTypes } from '../../gateway/events.types'
+import { WebEventsGateway } from '../../gateway/web/events.gateway'
+import { NotesService } from './notes.service'
 
 @ApiTags('Note Routes')
 @Controller('notes')

@@ -8,13 +8,13 @@
  */
 
 import { Say } from '@libs/db/models/say.model'
-import { Controller, Post, Body, Delete, Param } from '@nestjs/common'
+import { Body, Controller, Delete, Param, Post } from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
 import { BaseCrud } from 'src/shared/base/base.controller'
 import { SaysService } from 'src/shared/says/says.service'
-import { WebEventsGateway } from '../../gateway/web/events.gateway'
-import { EventTypes } from '../../gateway/events.types'
 import { Auth } from '../../core/decorators/auth.decorator'
+import { EventTypes } from '../../gateway/events.types'
+import { WebEventsGateway } from '../../gateway/web/events.gateway'
 import { IdDto } from '../base/dto/id.dto'
 
 @Controller('says')

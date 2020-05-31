@@ -7,7 +7,7 @@
  * @Coding with Love
  */
 
-import { Module, HttpModule, forwardRef } from '@nestjs/common'
+import { HttpModule, Module } from '@nestjs/common'
 import { CommentsController } from 'src/shared/comments/comments.controller'
 import { CommentsService } from 'src/shared/comments/comments.service'
 import { PageController } from 'src/shared/page/page.controller'

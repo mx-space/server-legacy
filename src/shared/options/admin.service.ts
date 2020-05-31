@@ -4,23 +4,23 @@ import Post from '@libs/db/models/post.model'
 import { User } from '@libs/db/models/user.model'
 import {
   Injectable,
-  ValidationPipe,
   UnprocessableEntityException,
+  ValidationPipe,
 } from '@nestjs/common'
 import { ReturnModelType } from '@typegoose/typegoose'
 import { plainToClass } from 'class-transformer'
+import { ClassType } from 'class-transformer/ClassTransformer'
 import { validate } from 'class-validator'
 import { InjectModel } from 'nestjs-typegoose'
 import {
-  UrlDto,
+  BackupOptions,
   CommentOptions,
   ImageBedDto,
   MailOptionsDto,
   SEODto,
-  BackupOptions,
+  UrlDto,
 } from '../../configs/configs.dto'
-import { IConfig, ConfigsService } from '../../configs/configs.service'
-import { ClassType } from 'class-transformer/ClassTransformer'
+import { ConfigsService, IConfig } from '../../configs/configs.service'
 
 @Injectable()
 export class OptionsService {
