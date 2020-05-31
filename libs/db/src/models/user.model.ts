@@ -1,7 +1,7 @@
 /*
  * @Author: Innei
  * @Date: 2020-04-26 11:19:25
- * @LastEditTime: 2020-05-26 12:37:19
+ * @LastEditTime: 2020-05-31 12:31:17
  * @LastEditors: Innei
  * @FilePath: /mx-server/libs/db/src/models/user.model.ts
  * @Copyright

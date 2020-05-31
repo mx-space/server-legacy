@@ -19,12 +19,6 @@ export const getMonthStart = (today: Date) =>
     .set('millisecond', 0)
     .toDate()
 
-export function getMonthLength(date: Date) {
-  const d = new Date(date)
-
-  d.setMonth(d.getMonth() + 1)
-  d.setDate(1)
-
-  d.setDate(d.getDate() - 1)
-  return d.getDate()
+export function getMonthLength(month: number, year: number) {
+  return new Date(year, month, 0).getDate()
 }

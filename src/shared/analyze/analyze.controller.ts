@@ -161,7 +161,7 @@ export class AnalyzeController {
     // month fragment
     const month = now.getMonth() + 1
     const monthEveryDays = await Promise.all(
-      Array(getMonthLength(now))
+      Array(getMonthLength(month, now.getFullYear()))
         .fill(undefined)
         .map(async (v, i) => {
           const from = dayjs(now)

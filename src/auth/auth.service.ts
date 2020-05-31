@@ -1,16 +1,16 @@
 /*
  * @Author: Innei
  * @Date: 2020-04-30 12:21:51
- * @LastEditTime: 2020-05-30 14:14:15
+ * @LastEditTime: 2020-05-31 12:36:05
  * @LastEditors: Innei
  * @FilePath: /mx-server/src/auth/auth.service.ts
  * @Copyright
  */
 
-import { User, UserDocument } from '@libs/db/models/user.model'
+import { User, UserDocument, TokenModel } from '@libs/db/models/user.model'
 import { Injectable } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
-import { ReturnModelType } from '@typegoose/typegoose'
+import { ReturnModelType, DocumentType } from '@typegoose/typegoose'
 import { customAlphabet } from 'nanoid/async'
 import { InjectModel } from 'nestjs-typegoose'
 import { JwtPayload } from './interfaces/jwt-payload.interface'
@@ -39,12 +39,13 @@ export class AuthService {
 
     return user && user.authCode === payload.authCode ? user : null
   }
-  private async getAccessTokens() {
-    return (await this.userModel.findOne().select('apiToken').lean()).apiToken
+  private async getAccessTokens(): Promise<DocumentType<TokenModel>[]> {
+    return (await this.userModel.findOne().select('apiToken').lean())
+      .apiToken as any
   }
   async getAllAccessToken() {
     return (await this.getAccessTokens()).map((token) => ({
-      id: (token as any)._id,
+      id: token._id,
       ...omit(token, ['_id', '__v', 'token']),
     }))
   }
@@ -52,7 +53,7 @@ export class AuthService {
   async getTokenSecret(id: string) {
     const tokens = await this.getAccessTokens()
     // note: _id is ObjectId not equal to string
-    return tokens.find((token) => String((token as any)._id) === id)
+    return tokens.find((token) => String(token._id) === id)
   }
 
   async generateAccessToken() {
