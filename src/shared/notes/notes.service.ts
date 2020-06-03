@@ -6,12 +6,15 @@ import { InjectModel } from 'nestjs-typegoose'
 import { CannotFindException } from 'src/core/exceptions/cant-find.exception'
 import { addConditionToSeeHideContent } from 'src/shared/utils'
 import { WriteBaseService } from '../base/base.service'
+import { updateReadCount } from '../utils/text-base'
+import { RedisService } from 'nestjs-redis'
 
 @Injectable()
 export class NotesService extends WriteBaseService<Note> {
   constructor(
     @InjectModel(Note) private readonly noteModel: ReturnModelType<typeof Note>,
     private readonly http: HttpService,
+    private readonly redis: RedisService,
   ) {
     super(noteModel, http)
   }
@@ -47,20 +50,6 @@ export class NotesService extends WriteBaseService<Note> {
       latest,
       next,
     }
-  }
-
-  async shouldAddReadCount(
-    condition: boolean | any,
-    document: DocumentType<Note>,
-  ) {
-    if (condition) {
-      return await document.updateOne({
-        $inc: {
-          'count.read': 1,
-        },
-      })
-    }
-    return null
   }
 
   /**
@@ -101,5 +90,9 @@ export class NotesService extends WriteBaseService<Note> {
         'count.like': 1,
       },
     })
+  }
+
+  async shouldAddReadCount(doc: DocumentType<Note>, ip?: string) {
+    return await updateReadCount.call(this, doc, ip)
   }
 }

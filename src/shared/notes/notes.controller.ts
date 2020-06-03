@@ -4,7 +4,6 @@ import {
   Delete,
   ForbiddenException,
   Get,
-  Headers,
   Param,
   Post,
   Put,
@@ -32,6 +31,7 @@ import {
   PasswordQueryDto,
 } from 'src/shared/notes/dto/note.dto'
 import { addConditionToSeeHideContent, yearCondition } from 'src/shared/utils'
+import { IpLocation, IpRecord } from '../../core/decorators/ip.decorator'
 import { EventTypes } from '../../gateway/events.types'
 import { WebEventsGateway } from '../../gateway/web/events.gateway'
 import { NotesService } from './notes.service'
@@ -67,10 +67,10 @@ export class NotesController {
   @ApiOperation({ summary: '获取最新发布一篇随记' })
   async getLatestOne(
     @Master() isMaster: boolean,
-    @Headers('referer') referrer: string,
+    @IpLocation() location: IpRecord,
   ) {
     const { latest, next } = await this.noteService.getLatestOne(isMaster)
-    await this.noteService.shouldAddReadCount(referrer, latest)
+    this.noteService.shouldAddReadCount(latest, location.ip)
     return { data: latest.toObject(), next: next.toObject() }
   }
 
@@ -79,6 +79,7 @@ export class NotesController {
     @Param() params: IdDto,
     @Master() isMaster: boolean,
     @Query() query: PasswordQueryDto,
+    @IpLocation() location: IpRecord,
   ) {
     const { id } = params
     const { password } = query
@@ -98,7 +99,7 @@ export class NotesController {
     ) {
       throw new ForbiddenException('不要偷看人家的小心思啦~')
     }
-    await this.noteService.shouldAddReadCount(true, current)
+    this.noteService.shouldAddReadCount(current, location.ip)
     const prev = await this.noteService
       .findOne({
         ...condition,
@@ -233,9 +234,10 @@ export class NotesController {
     @Param() params: NidType,
     @Master() isMaster: boolean,
     @Query() query: PasswordQueryDto,
+    @IpLocation() location: IpRecord,
   ) {
     const _id = await this.noteService.validNid(params.nid)
-    return await this.getOneNote({ id: _id }, isMaster, query)
+    return await this.getOneNote({ id: _id }, isMaster, query, location)
   }
 
   @ApiOperation({ summary: '根据 nid 修改' })

@@ -11,6 +11,7 @@ import { Analyze } from '../../../db/src/models/analyze.model'
 import { ReturnModelType } from '@typegoose/typegoose'
 import { InjectModel } from 'nestjs-typegoose'
 import { RedisService } from 'nestjs-redis'
+import { RedisNames } from '../redis/redis.types'
 
 @Injectable()
 export class TasksService {
@@ -102,11 +103,18 @@ export class TasksService {
       },
     })
   }
-  @Cron(CronExpression.EVERY_DAY_AT_1AM, { name: 'reset_ua' })
+  @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT, { name: 'reset_ua' })
   async resetIPAccess() {
-    await this.redisCtx.getClient('access').set('ips', '[]')
+    await this.redisCtx.getClient(RedisNames.Access).set('ips', '[]')
   }
-
+  @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT, { name: 'reset_like_article' })
+  async resetLikedArticleRecord() {
+    const likeStore = this.redisCtx.getClient(RedisNames.Like)
+    const keys = await likeStore.keys('*mx_like*')
+    keys.forEach((key) => {
+      likeStore.del(key.split('_').pop())
+    })
+  }
   get nowStr() {
     const date = new Date()
     const year = date.getFullYear()

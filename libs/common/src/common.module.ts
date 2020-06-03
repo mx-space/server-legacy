@@ -4,6 +4,7 @@ import { ConfigModule } from '@nestjs/config'
 import { APP_INTERCEPTOR } from '@nestjs/core'
 import { TasksModule } from './tasks/tasks.module'
 import { RedisModule } from 'nestjs-redis'
+import { RedisNames } from './redis/redis.types'
 const providers: Provider<any>[] = []
 
 const CacheProvider = {
@@ -40,10 +41,16 @@ if (process.env.NODE_ENV === 'production') {
               max: 100, // maximum number of items in cache
             },
     }),
-    RedisModule.register({
-      name: 'access',
-      keyPrefix: 'access_',
-    }),
+    RedisModule.register([
+      {
+        name: RedisNames.Access,
+        keyPrefix: 'mx_access_',
+      },
+      {
+        name: RedisNames.Like,
+        keyPrefix: 'mx_like_',
+      },
+    ]),
     TasksModule,
   ],
   providers,

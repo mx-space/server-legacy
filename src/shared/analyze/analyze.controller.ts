@@ -14,6 +14,7 @@ import {
 } from '../utils/time'
 import { AnalyzeDto } from './analyze.dto'
 import { AnalyzeService } from './analyze.service'
+import { RedisNames } from '../../../libs/common/src/redis/redis.types'
 @Controller('analyze')
 @ApiTags('Analyze Routes')
 @Auth()
@@ -32,7 +33,7 @@ export class AnalyzeController {
       skip: (~~page - 1) * ~~size,
     })
     const total = await this.service.getCallTime()
-    const redis = this.redisService.getClient('access')
+    const redis = this.redisService.getClient(RedisNames.Access)
     const fromRedisIps = await redis.get('ips')
     const ips = fromRedisIps ? JSON.parse(fromRedisIps) : []
     return {

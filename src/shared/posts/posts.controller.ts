@@ -25,6 +25,7 @@ import { EventTypes } from '../../gateway/events.types'
 import { WebEventsGateway } from '../../gateway/web/events.gateway'
 import { CategoryAndSlug, PostDto, PostQueryDto } from './dto'
 import { PostsService } from './posts.service'
+import { IpLocation, IpRecord } from '../../core/decorators/ip.decorator'
 
 @Controller('posts')
 @ApiTags('Post Routes')
@@ -56,7 +57,10 @@ export class PostsController {
 
   @Get('/:category/:slug')
   @ApiOperation({ summary: '根据分类名和自定义别名获取' })
-  async getByCateAndSlug(@Param() params: CategoryAndSlug) {
+  async getByCateAndSlug(
+    @Param() params: CategoryAndSlug,
+    @IpLocation() location: IpRecord,
+  ) {
     const { category, slug } = params
     // search category
 
@@ -75,15 +79,15 @@ export class PostsController {
     if (!postDocument) {
       throw new NotFoundException('该文章未找到 (｡ŏ_ŏ)')
     }
-    await this.postService.updateReadCount(postDocument)
+    this.postService.updateReadCount(postDocument, location.ip)
     return postDocument
   }
 
   @Get(':id')
   @ApiOperation({ summary: '根据 ID 查找' })
-  async getById(@Param() query: IdDto) {
+  async getById(@Param() query: IdDto, @IpLocation() location: IpRecord) {
     const doc = await this.postService.findPostById(query.id)
-    await this.postService.updateReadCount(doc)
+    this.postService.updateReadCount(doc, location.ip)
     return doc
   }
 

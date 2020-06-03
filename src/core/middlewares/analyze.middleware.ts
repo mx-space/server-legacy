@@ -17,6 +17,7 @@ import { UAParser } from 'ua-parser-js'
 import { Analyze } from '../../../libs/db/src/models/analyze.model'
 import { Option } from '../../../libs/db/src/models/option.model'
 import { getIp } from '../../shared/utils/ip'
+import { RedisNames } from '../../../libs/common/src/redis/redis.types'
 @Injectable()
 export class AnalyzeMiddleware implements NestMiddleware {
   private parser: UAParser
@@ -67,7 +68,7 @@ export class AnalyzeMiddleware implements NestMiddleware {
         )
       }
       // ip access in redis
-      const client = this.redisCtx.getClient('access')
+      const client = this.redisCtx.getClient(RedisNames.Access)
       const fromRedisIps = await client.get('ips')
       const ips = fromRedisIps ? JSON.parse(fromRedisIps) : []
       if (!ips.includes(ip)) {
