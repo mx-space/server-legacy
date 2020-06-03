@@ -1,3 +1,12 @@
+/*
+ * @Author: Innei
+ * @Date: 2020-05-11 13:53:31
+ * @LastEditTime: 2020-06-03 10:34:25
+ * @LastEditors: Innei
+ * @FilePath: /mx-server/src/shared/utils/time.ts
+ * @Coding with Love
+ */
+
 import * as dayjs from 'dayjs'
 
 export const getTodayEarly = (today: Date) =>
@@ -13,7 +22,7 @@ export const getWeekStart = (today: Date) =>
 
 export const getMonthStart = (today: Date) =>
   dayjs(today)
-    .set('date', 0)
+    .set('date', 1)
     .set('hour', 0)
     .set('minute', 0)
     .set('millisecond', 0)
