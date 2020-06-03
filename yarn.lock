@@ -1518,7 +1518,7 @@ array-unique@^0.3.2:
   resolved "https://registry.npm.taobao.org/array-unique/download/array-unique-0.3.2.tgz#a894b75d4bc4f6cd679ef3244a9fd8f46ae2d428"
   integrity sha1-qJS3XUvE9s1nnvMkSp/Y9Gri1Cg=
 
-array.prototype.flat@^1.2.1:
+array.prototype.flat@1.2.3, array.prototype.flat@^1.2.1:
   version "1.2.3"
   resolved "https://registry.npm.taobao.org/array.prototype.flat/download/array.prototype.flat-1.2.3.tgz?cache=0&sync_timestamp=1576169758278&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Farray.prototype.flat%2Fdownload%2Farray.prototype.flat-1.2.3.tgz#0de82b426b0318dbfdb940089e38b043d37f6c7b"
   integrity sha1-DegrQmsDGNv9uUAInjiwQ9N/bHs=
@@ -6287,10 +6287,11 @@ mongodb@3.5.7:
     saslprep "^1.0.0"
 
 mongoose-lean-virtuals@^0.6.3:
-  version "0.6.3"
-  resolved "https://registry.npmjs.org/mongoose-lean-virtuals/-/mongoose-lean-virtuals-0.6.3.tgz#943c8da925a4e87722ae8685444b58d68d293ebd"
-  integrity sha512-OJp7degw7zZVkNluPYFb22P/y/J+gAts9VMRTKJ4K9i16Rqia6ALaLI0XPI0OU4Iem60GwHj7erAIsxzaSFz8Q==
+  version "0.6.5"
+  resolved "https://registry.yarnpkg.com/mongoose-lean-virtuals/-/mongoose-lean-virtuals-0.6.5.tgz#ab14e3190b9b0d277e05392719c0d8d29688eb9b"
+  integrity sha512-ox2gzUZR6IFgeKWn7h23WSdJG3kPlC2yCU6+K3bmmpPut8jzovLTNxa1jSj55Y979DNZk5Q2TZEZ5NwFr3EVQg==
   dependencies:
+    array.prototype.flat "1.2.3"
     mpath "0.5.x"
 
 mongoose-legacy-pluralize@1.0.2:
