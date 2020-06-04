@@ -6475,9 +6475,9 @@ mongodb@3.5.8:
     saslprep "^1.0.0"
 
 mongoose-lean-virtuals@^0.6.5:
-  version "0.6.5"
-  resolved "https://registry.npmjs.org/mongoose-lean-virtuals/-/mongoose-lean-virtuals-0.6.5.tgz#ab14e3190b9b0d277e05392719c0d8d29688eb9b"
-  integrity sha512-ox2gzUZR6IFgeKWn7h23WSdJG3kPlC2yCU6+K3bmmpPut8jzovLTNxa1jSj55Y979DNZk5Q2TZEZ5NwFr3EVQg==
+  version "0.6.6"
+  resolved "https://registry.yarnpkg.com/mongoose-lean-virtuals/-/mongoose-lean-virtuals-0.6.6.tgz#d7a8836cc41fd95b0858060800feed9dea39fd6d"
+  integrity sha512-E5tF1eh/1UMveCkpbKtglQupKh3t6hSIRIvSMqOAdU0sgikc9Ut0JXDWFEFxnc9bFsoJGGDvxge1POCc57HpmA==
   dependencies:
     array.prototype.flat "1.2.3"
     mpath "0.5.x"
