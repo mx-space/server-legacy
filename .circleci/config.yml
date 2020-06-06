@@ -16,9 +16,3 @@ workflows:
   build-and-test:
     jobs:
       - build-and-test
-      - node/test:
-          matrix:
-            parameters:
-              version:
-                - 13.11.0
-                - 12.16.0
