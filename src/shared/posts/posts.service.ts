@@ -16,7 +16,7 @@ import { RedisService } from 'nestjs-redis'
 import { InjectModel } from 'nestjs-typegoose'
 import { CannotFindException } from 'src/core/exceptions/cant-find.exception'
 import { WriteBaseService } from 'src/shared/base/base.service'
-import { updateReadCount } from '../utils/text-base'
+import { updateReadCount } from '../../utils/text-base'
 @Injectable()
 export class PostsService extends WriteBaseService<Post> {
   constructor(

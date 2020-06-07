@@ -3,7 +3,7 @@ import Post from '@libs/db/models/post.model'
 import { Injectable } from '@nestjs/common'
 import { ReturnModelType } from '@typegoose/typegoose'
 import { InjectModel } from 'nestjs-typegoose'
-import { addConditionToSeeHideContent } from 'src/shared/utils'
+import { addConditionToSeeHideContent } from 'src/utils'
 import { BaseService } from '../base/base.service'
 
 @Injectable()

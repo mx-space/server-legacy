@@ -8,7 +8,7 @@ import {
 } from '@nestjs/common'
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { IncomingMessage, ServerResponse } from 'http'
-import { getIp } from '../../shared/utils/ip'
+import { getIp } from '../../utils/ip'
 type myError = {
   readonly status: number
   readonly statusCode?: number

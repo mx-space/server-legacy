@@ -25,7 +25,7 @@ import { Master } from 'src/core/decorators/guest.decorator'
 import { IpLocation, IpRecord } from 'src/core/decorators/ip.decorator'
 import { LoginDto, UserDto, UserPatchDto } from 'src/master/dto/user.dto'
 import MasterService from 'src/master/master.service'
-import { getAvatar } from 'src/shared/utils'
+import { getAvatar } from 'src/utils'
 
 @Controller('master')
 @ApiTags('Master Routes')

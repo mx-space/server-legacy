@@ -1,8 +1,8 @@
 import type { DocumentType } from '@typegoose/typegoose'
 import * as fastJson from 'fast-json-stringify'
 import { RedisService } from 'nestjs-redis'
-import { RedisNames } from '../../../libs/common/src/redis/redis.types'
-import { WriteBaseModel } from '../../../libs/db/src/models/base.model'
+import { RedisNames } from '../../libs/common/src/redis/redis.types'
+import { WriteBaseModel } from '../../libs/db/src/models/base.model'
 /*
  * @Author: Innei
  * @Date: 2020-06-03 12:14:54

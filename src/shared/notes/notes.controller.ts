@@ -30,7 +30,7 @@ import {
   NoteQueryDto,
   PasswordQueryDto,
 } from 'src/shared/notes/dto/note.dto'
-import { addConditionToSeeHideContent, yearCondition } from 'src/shared/utils'
+import { addConditionToSeeHideContent, yearCondition } from 'src/utils'
 import { IpLocation, IpRecord } from '../../core/decorators/ip.decorator'
 import { EventTypes } from '../../gateway/events.types'
 import { WebEventsGateway } from '../../gateway/web/events.gateway'

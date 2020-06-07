@@ -1,7 +1,7 @@
 import { createParamDecorator, ExecutionContext } from '@nestjs/common'
 import { FastifyRequest } from 'fastify'
 import { IncomingMessage } from 'http'
-import { getIp } from '../../shared/utils/ip'
+import { getIp } from '../../utils/ip'
 
 export type IpRecord = {
   ip: string

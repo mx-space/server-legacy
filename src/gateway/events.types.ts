@@ -1,7 +1,7 @@
 /*
  * @Author: Innei
  * @Date: 2020-05-21 11:05:42
- * @LastEditTime: 2020-06-07 13:33:39
+ * @LastEditTime: 2020-06-07 15:15:08
  * @LastEditors: Innei
  * @FilePath: /mx-server/src/gateway/events.types.ts
  * @MIT
@@ -32,9 +32,14 @@ export enum EventTypes {
 
   DANMAKU_CREATE = 'DANMAKU_CREATE',
 
+  // util
+  CONTENT_REFRESH = 'CONTENT_REFRESH', // 内容更新或重置 页面需要重载
+
   // for admin
   IMAGE_REFRESH = 'IMAGE_REFRESH',
   IMAGE_FETCH = 'IMAGE_FETCH',
 
   ADMIN_NOTIFICATION = 'ADMIN_NOTIFICATION',
 }
+
+export type NotificationTypes = 'error' | 'warn' | 'success' | 'info'

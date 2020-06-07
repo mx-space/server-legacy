@@ -11,7 +11,7 @@ import {
   getMonthStart,
   getTodayEarly,
   getWeekStart,
-} from '../utils/time'
+} from '../../utils/time'
 import { AnalyzeDto } from './analyze.dto'
 import { AnalyzeService } from './analyze.service'
 import { RedisNames } from '../../../libs/common/src/redis/redis.types'

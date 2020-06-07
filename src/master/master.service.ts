@@ -5,7 +5,7 @@ import { compareSync } from 'bcrypt'
 import { nanoid } from 'nanoid'
 import { InjectModel } from 'nestjs-typegoose'
 import { AuthService } from 'src/auth/auth.service'
-import { getAvatar } from 'src/shared/utils'
+import { getAvatar } from 'src/utils'
 
 @Injectable()
 export default class MasterService {

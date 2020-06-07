@@ -1,3 +1,12 @@
+/*
+ * @Author: Innei
+ * @Date: 2020-04-30 12:21:51
+ * @LastEditTime: 2020-06-07 14:26:28
+ * @LastEditors: Innei
+ * @FilePath: /mx-server/src/utils/index.ts
+ * @Coding with Love
+ */
+
 export function addConditionToSeeHideContent(isMaster: boolean) {
   return isMaster
     ? {

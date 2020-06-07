@@ -4,9 +4,9 @@ import { DocumentType, ReturnModelType } from '@typegoose/typegoose'
 import { compareSync } from 'bcrypt'
 import { InjectModel } from 'nestjs-typegoose'
 import { CannotFindException } from 'src/core/exceptions/cant-find.exception'
-import { addConditionToSeeHideContent } from 'src/shared/utils'
+import { addConditionToSeeHideContent } from 'src/utils'
 import { WriteBaseService } from '../base/base.service'
-import { updateReadCount } from '../utils/text-base'
+import { updateReadCount } from '../../utils/text-base'
 import { RedisService } from 'nestjs-redis'
 
 @Injectable()

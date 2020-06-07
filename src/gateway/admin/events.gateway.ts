@@ -13,11 +13,11 @@ import {
   OnGatewayConnection,
   OnGatewayDisconnect,
   WebSocketGateway,
+  WsException,
 } from '@nestjs/websockets'
 import { AuthService } from '../../auth/auth.service'
 import { BaseGateway } from '../base.gateway'
-import { EventTypes } from '../events.types'
-import { UnprocessableEntityException } from '@nestjs/common'
+import { EventTypes, NotificationTypes } from '../events.types'
 
 @WebSocketGateway<GatewayMetadata>({ namespace: 'admin' })
 export class AdminEventsGateway extends BaseGateway
@@ -85,11 +85,24 @@ export class AdminEventsGateway extends BaseGateway
     })
   }
 
-  sendNotification({ message, id }: { message: any; id: string }) {
+  sendNotification({
+    payload,
+    id,
+    type,
+  }: {
+    payload?: {
+      type: NotificationTypes
+      message: string
+    }
+    id: string
+    type?: EventTypes
+  }) {
     const socket = super.findClientById(id)
     if (!socket) {
-      throw new UnprocessableEntityException('Socket 未找到, 无法发送消息')
+      throw new WsException('Socket 未找到, 无法发送消息')
     }
-    socket.send(super.messageFormat(EventTypes.ADMIN_NOTIFICATION, message))
+    socket.send(
+      super.messageFormat(type ?? EventTypes.ADMIN_NOTIFICATION, payload),
+    )
   }
 }

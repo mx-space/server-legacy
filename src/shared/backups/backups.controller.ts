@@ -12,11 +12,12 @@ import {
   Delete,
   Get,
   Param,
+  Patch,
   Post,
   Query,
   Res,
-  Patch,
   UnprocessableEntityException,
+  Scope,
 } from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
 import { FastifyReply } from 'fastify'
@@ -24,7 +25,7 @@ import { ServerResponse } from 'http'
 import { TasksService } from '../../../libs/common/src/tasks/tasks.service'
 import { Auth } from '../../core/decorators/auth.decorator'
 import { BackupsService } from './backups.service'
-@Controller('backups')
+@Controller({ path: 'backups', scope: Scope.REQUEST })
 @ApiTags('Backup Routes')
 @Auth()
 export class BackupsController {
@@ -58,11 +59,12 @@ export class BackupsController {
     return 'OK'
   }
   @Patch(':dirname')
-  async rollback(@Param('dirname') dirname: string) {
+  async rollback(@Param('dirname') dirname: string, @Query('sid') sid: string) {
     if (!dirname) {
       throw new UnprocessableEntityException('参数有误')
     }
-    this.service.rollbackTo(dirname)
+
+    this.service.rollbackTo(dirname, sid)
     return 'OK'
   }
 

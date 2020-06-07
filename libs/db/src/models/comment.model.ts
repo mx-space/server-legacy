@@ -12,7 +12,7 @@ import { BaseModel } from './base.model'
 import Post from './post.model'
 import Note from './note.model'
 import Page from './page.model'
-import { getAvatar } from 'src/shared/utils'
+import { getAvatar } from 'src/utils'
 import { Types } from 'mongoose'
 
 function autoPopulateSubs(next: () => void) {

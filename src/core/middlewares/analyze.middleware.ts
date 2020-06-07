@@ -16,7 +16,7 @@ import { InjectModel } from 'nestjs-typegoose'
 import { UAParser } from 'ua-parser-js'
 import { Analyze } from '../../../libs/db/src/models/analyze.model'
 import { Option } from '../../../libs/db/src/models/option.model'
-import { getIp } from '../../shared/utils/ip'
+import { getIp } from '../../utils/ip'
 import { RedisNames } from '../../../libs/common/src/redis/redis.types'
 @Injectable()
 export class AnalyzeMiddleware implements NestMiddleware {
