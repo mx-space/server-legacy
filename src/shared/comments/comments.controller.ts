@@ -30,7 +30,7 @@ import {
 import { Pager } from 'src/shared/comments/dto/pager.dto'
 import { StateDto } from 'src/shared/comments/dto/state.dto'
 import { Auth } from '../../core/decorators/auth.decorator'
-import { EventsGateway } from '../../gateway/admin/events.gateway'
+import { AdminEventsGateway } from '../../gateway/admin/events.gateway'
 import { EventTypes } from '../../gateway/events.types'
 import { ReplyMailType } from '../../plugins/mailer'
 import { IdDto } from '../base/dto/id.dto'
@@ -42,7 +42,7 @@ import { CommentsService } from './comments.service'
 export class CommentsController {
   constructor(
     private readonly commentService: CommentsService,
-    private readonly gateway: EventsGateway,
+    private readonly gateway: AdminEventsGateway,
   ) {}
 
   @Get()

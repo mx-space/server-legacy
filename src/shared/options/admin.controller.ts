@@ -13,7 +13,7 @@ import { IsNotEmpty, IsString } from 'class-validator'
 import { ConfigsService, IConfig } from 'src/configs/configs.service'
 import { OptionsService } from 'src/shared/options/admin.service'
 import { Auth } from '../../core/decorators/auth.decorator'
-import { EventsGateway } from '../../gateway/admin/events.gateway'
+import { AdminEventsGateway } from '../../gateway/admin/events.gateway'
 import { NotesService } from '../notes/notes.service'
 import { PageService } from '../page/page.service'
 import { PostsService } from '../posts/posts.service'
@@ -33,7 +33,7 @@ export class OptionsController {
     private readonly postService: PostsService,
     private readonly noteService: NotesService,
     private readonly pageService: PageService,
-    private readonly adminEventGateway: EventsGateway,
+    private readonly adminEventGateway: AdminEventsGateway,
   ) {}
 
   @Get()

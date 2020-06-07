@@ -13,6 +13,7 @@ import Post from './post.model'
 import Note from './note.model'
 import Page from './page.model'
 import { getAvatar } from 'src/shared/utils'
+import { Types } from 'mongoose'
 
 function autoPopulateSubs(next: () => void) {
   this.populate({ options: { sort: { created: -1 } }, path: 'children' })
@@ -64,7 +65,7 @@ export default class Comment extends BaseModel {
   @prop({ ref: 'Comment' })
   parent?: Ref<Comment>
 
-  @arrayProp({ ref: 'Comment' })
+  @prop({ ref: 'Comment', items: Types.ObjectId })
   children?: Ref<Comment>[]
 
   @prop({ default: 1 })

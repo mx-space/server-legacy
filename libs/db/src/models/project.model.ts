@@ -1,5 +1,14 @@
+/*
+ * @Author: Innei
+ * @Date: 2020-04-11 21:58:24
+ * @LastEditTime: 2020-06-07 14:21:53
+ * @LastEditors: Innei
+ * @FilePath: /mx-server/libs/db/src/models/project.model.ts
+ * @Coding with Love
+ */
+
 import { BaseModel } from '@libs/db/models/base.model'
-import { arrayProp, prop } from '@typegoose/typegoose'
+import { prop } from '@typegoose/typegoose'
 import { IsOptional, IsString, IsUrl, isURL } from 'class-validator'
 
 const validateURL = {
@@ -44,7 +53,7 @@ export class Project extends BaseModel {
 
   @IsUrl({ require_protocol: true }, { each: true })
   @IsOptional()
-  @arrayProp({
+  @prop({
     items: String,
     validate: validateURL,
   })

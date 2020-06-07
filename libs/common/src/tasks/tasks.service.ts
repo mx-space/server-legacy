@@ -1,16 +1,16 @@
 import { Injectable, Logger } from '@nestjs/common'
 import { Cron, CronExpression } from '@nestjs/schedule'
+import { ReturnModelType } from '@typegoose/typegoose'
 import { execSync } from 'child_process'
 import * as COS from 'cos-nodejs-sdk-v5'
 import { existsSync } from 'fs'
 import * as mkdirp from 'mkdirp'
-import { homedir } from 'os'
+import { RedisService } from 'nestjs-redis'
+import { InjectModel } from 'nestjs-typegoose'
 import { join } from 'path'
 import { ConfigsService } from '../../../../src/configs/configs.service'
+import { BackupsService } from '../../../../src/shared/backups/backups.service'
 import { Analyze } from '../../../db/src/models/analyze.model'
-import { ReturnModelType } from '@typegoose/typegoose'
-import { InjectModel } from 'nestjs-typegoose'
-import { RedisService } from 'nestjs-redis'
 import { RedisNames } from '../redis/redis.types'
 
 @Injectable()
@@ -33,7 +33,7 @@ export class TasksService {
     this.logger.log('--> 备份数据库中')
 
     const dateDir = this.nowStr
-    const backupDirPath = join(homedir(), '.mx-space/backup/' + dateDir)
+    const backupDirPath = join(BackupsService.backupPath, dateDir)
     mkdirp.sync(backupDirPath)
     try {
       execSync(

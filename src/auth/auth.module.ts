@@ -14,7 +14,7 @@ import { AuthService } from './auth.service'
 import { JwtStrategy } from './jwt.strategy'
 import { LocalStrategy } from './local.strategy'
 import { AuthController } from './auth.controller'
-import { EventsGateway } from '../gateway/admin/events.gateway'
+import { AdminEventsGateway } from '../gateway/admin/events.gateway'
 
 const jwtModule = JwtModule.registerAsync({
   useFactory() {
@@ -28,7 +28,7 @@ const jwtModule = JwtModule.registerAsync({
 })
 @Module({
   imports: [PassportModule, jwtModule],
-  providers: [AuthService, JwtStrategy, LocalStrategy, EventsGateway],
+  providers: [AuthService, JwtStrategy, LocalStrategy, AdminEventsGateway],
   controllers: [AuthController],
   exports: [JwtStrategy, LocalStrategy, AuthService, jwtModule],
 })

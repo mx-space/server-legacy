@@ -1,7 +1,7 @@
 /*
  * @Author: Innei
  * @Date: 2020-05-21 11:05:42
- * @LastEditTime: 2020-05-31 19:58:32
+ * @LastEditTime: 2020-06-07 13:38:48
  * @LastEditors: Innei
  * @FilePath: /mx-server/src/gateway/admin/events.gateway.ts
  * @MIT
@@ -17,9 +17,10 @@ import {
 import { AuthService } from '../../auth/auth.service'
 import { BaseGateway } from '../base.gateway'
 import { EventTypes } from '../events.types'
+import { UnprocessableEntityException } from '@nestjs/common'
 
 @WebSocketGateway<GatewayMetadata>({ namespace: 'admin' })
-export class EventsGateway extends BaseGateway
+export class AdminEventsGateway extends BaseGateway
   implements OnGatewayConnection, OnGatewayDisconnect {
   constructor(
     private readonly jwtService: JwtService,
@@ -82,5 +83,13 @@ export class EventsGateway extends BaseGateway
       }
       return false
     })
+  }
+
+  sendNotification({ message, id }: { message: any; id: string }) {
+    const socket = super.findClientById(id)
+    if (!socket) {
+      throw new UnprocessableEntityException('Socket 未找到, 无法发送消息')
+    }
+    socket.send(super.messageFormat(EventTypes.ADMIN_NOTIFICATION, message))
   }
 }

@@ -13,7 +13,7 @@ import { FilterQuery, Types } from 'mongoose'
 import { InjectModel } from 'nestjs-typegoose'
 import { CannotFindException } from 'src/core/exceptions/cant-find.exception'
 import { ConfigsService } from '../../configs/configs.service'
-import { EventsGateway } from '../../gateway/admin/events.gateway'
+import { AdminEventsGateway } from '../../gateway/admin/events.gateway'
 import { SpamCheck } from '../../plugins/antiSpam'
 import { Mailer, ReplyMailType } from '../../plugins/mailer'
 import { BaseService } from '../base/base.service'
@@ -34,7 +34,7 @@ export class CommentsService extends BaseService<Comment> {
     @InjectModel(User)
     private readonly userModel: ReturnModelType<typeof User>,
     private readonly configs: ConfigsService,
-    private readonly gateway: EventsGateway,
+    private readonly gateway: AdminEventsGateway,
   ) {
     super(commentModel)
   }

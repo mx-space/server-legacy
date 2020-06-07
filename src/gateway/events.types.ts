@@ -1,7 +1,7 @@
 /*
  * @Author: Innei
  * @Date: 2020-05-21 11:05:42
- * @LastEditTime: 2020-05-23 19:58:00
+ * @LastEditTime: 2020-06-07 13:33:39
  * @LastEditors: Innei
  * @FilePath: /mx-server/src/gateway/events.types.ts
  * @MIT
@@ -35,4 +35,6 @@ export enum EventTypes {
   // for admin
   IMAGE_REFRESH = 'IMAGE_REFRESH',
   IMAGE_FETCH = 'IMAGE_FETCH',
+
+  ADMIN_NOTIFICATION = 'ADMIN_NOTIFICATION',
 }

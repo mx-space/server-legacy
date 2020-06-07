@@ -9,7 +9,7 @@
 
 import { Module, HttpModule } from '@nestjs/common'
 import { AuthModule } from '../auth/auth.module'
-import { EventsGateway } from './admin/events.gateway'
+import { AdminEventsGateway } from './admin/events.gateway'
 import { WebEventsGateway } from './web/events.gateway'
 import { PostsService } from '../shared/posts/posts.service'
 import { NotesService } from '../shared/notes/notes.service'
@@ -18,12 +18,12 @@ import { PageService } from '../shared/page/page.service'
 @Module({
   imports: [AuthModule, HttpModule],
   providers: [
-    EventsGateway,
+    AdminEventsGateway,
     WebEventsGateway,
     // PostsService,
     // NotesService,
     // PageService,
   ],
-  exports: [EventsGateway, WebEventsGateway],
+  exports: [AdminEventsGateway, WebEventsGateway],
 })
 export class GatewayModule {}

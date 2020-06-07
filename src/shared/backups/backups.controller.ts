@@ -1,3 +1,12 @@
+/*
+ * @Author: Innei
+ * @Date: 2020-05-14 11:46:35
+ * @LastEditTime: 2020-06-07 13:44:39
+ * @LastEditors: Innei
+ * @FilePath: /mx-server/src/shared/backups/backups.controller.ts
+ * @Coding with Love
+ */
+
 import {
   Controller,
   Delete,
@@ -6,6 +15,8 @@ import {
   Post,
   Query,
   Res,
+  Patch,
+  UnprocessableEntityException,
 } from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
 import { FastifyReply } from 'fastify'
@@ -21,6 +32,12 @@ export class BackupsController {
     private readonly service: BackupsService,
     private readonly taskService: TasksService,
   ) {}
+
+  @Get('new')
+  createNewBackup() {
+    this.taskService.backupDB()
+    return 'OK'
+  }
 
   @Get()
   async getBackups() {
@@ -40,6 +57,15 @@ export class BackupsController {
     this.taskService.backupDB()
     return 'OK'
   }
+  @Patch(':dirname')
+  async rollback(@Param('dirname') dirname: string) {
+    if (!dirname) {
+      throw new UnprocessableEntityException('参数有误')
+    }
+    this.service.rollbackTo(dirname)
+    return 'OK'
+  }
+
   @Delete()
   async deleteBackup(@Query('files') files: string) {
     if (!files) {

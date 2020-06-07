@@ -31,7 +31,7 @@ import { Master } from '../core/decorators/guest.decorator'
 import { IdDto } from '../shared/base/dto/id.dto'
 import { AuthService } from './auth.service'
 import { RolesGuard } from './roles.guard'
-import { EventsGateway } from '../gateway/admin/events.gateway'
+import { AdminEventsGateway } from '../gateway/admin/events.gateway'
 
 export class TokenDto {
   @IsDate()
@@ -52,7 +52,7 @@ export class TokenDto {
 export class AuthController {
   constructor(
     private readonly authService: AuthService,
-    private readonly adminGateway: EventsGateway,
+    private readonly adminGateway: AdminEventsGateway,
   ) {}
 
   @Get()

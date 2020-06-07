@@ -15,4 +15,8 @@ describe('BackupsService', () => {
   it('should be defined', () => {
     expect(service).toBeDefined()
   })
+
+  it('should can rollback', () => {
+    expect(service.rollbackTo).toBeCalledWith()
+  })
 })
