@@ -9,7 +9,7 @@ jobs:
       - checkout
       - node/install-packages:
           cache-path: ~/project/node_modules
-          override-ci-command: npm install
+          override-ci-command: yarn install
       - run: npm run build
       - run: npm run lint
 workflows:
