@@ -72,7 +72,7 @@
     "fastify-multipart": "1.0.6",
     "fastify-session": "4.0.0",
     "fastify-swagger": "2.6.0",
-    "file-type": "14.6.0",
+    "file-type": "14.6.1",
     "get-folder-size": "2.0.1",
     "image-size": "0.8.3",
     "mongoose": "5.9.17",
