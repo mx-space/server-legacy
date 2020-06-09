@@ -59,7 +59,7 @@
     "@typegoose/auto-increment": "0.4.1",
     "@typegoose/typegoose": "7.2.0",
     "akismet": "2.0.5",
-    "bcrypt": "4.0.1",
+    "bcrypt": "5.0.0",
     "cache-manager": "3.3.0",
     "cache-manager-redis-store": "2.0.0",
     "class-transformer": "0.2.3",
