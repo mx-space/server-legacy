@@ -1,6 +1,15 @@
+/*
+ * @Author: Innei
+ * @Date: 2020-04-29 12:36:28
+ * @LastEditTime: 2020-06-07 15:33:12
+ * @LastEditors: Innei
+ * @FilePath: /mx-server/libs/db/src/models/link.model.ts
+ * @Coding with Love
+ */
+
 import { BaseModel } from './base.model'
 import { prop } from '@typegoose/typegoose'
-import { IsUrl, IsString, IsOptional, IsEnum } from 'class-validator'
+import { IsUrl, IsString, IsOptional, IsEnum, IsBoolean } from 'class-validator'
 import { ApiProperty } from '@nestjs/swagger'
 import { range } from 'lodash'
 
@@ -33,4 +42,9 @@ export class Link extends BaseModel {
   @ApiProperty({ enum: range(0, 1) })
   @prop({ default: LinkType.Friend })
   type?: LinkType
+
+  @IsOptional()
+  @IsBoolean()
+  @prop()
+  audit?: boolean
 }

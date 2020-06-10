@@ -1,7 +1,7 @@
 /*
  * @Author: Innei
  * @Date: 2020-05-21 11:05:42
- * @LastEditTime: 2020-05-31 19:10:09
+ * @LastEditTime: 2020-06-10 18:59:13
  * @LastEditors: Innei
  * @FilePath: /mx-server/src/shared/shared.module.ts
  * @Coding with Love
@@ -28,8 +28,6 @@ import { ImportController } from './import/import.controller'
 import { ImportService } from './import/import.service'
 import { LinksController } from './links/links.controller'
 import { LinksService } from './links/links.service'
-import { MenuController } from './menu/menu.controller'
-import { MenuService } from './menu/menu.service'
 import { NotesController } from './notes/notes.controller'
 import { NotesService } from './notes/notes.service'
 import { OptionsController } from './options/admin.controller'
@@ -58,7 +56,6 @@ import { UploadsModule } from './uploads/uploads.module'
     AggregateService,
     CategoriesService,
     CommentsService,
-    MenuService,
     NotesService,
     PageService,
     PostsService,
@@ -74,7 +71,6 @@ import { UploadsModule } from './uploads/uploads.module'
     AggregateController,
     CategoriesController,
     CommentsController,
-    MenuController,
     NotesController,
     PageController,
     PostsController,
