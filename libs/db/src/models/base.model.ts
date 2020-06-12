@@ -7,6 +7,7 @@ import {
 } from '@typegoose/typegoose'
 import * as uniqueValidator from 'mongoose-unique-validator'
 import * as mongooseLeanVirtuals from 'mongoose-lean-virtuals'
+import { IsString, IsNotEmpty } from 'class-validator'
 @modelOptions({
   schemaOptions: { _id: false },
 })
@@ -54,9 +55,12 @@ export abstract class BaseCommentIndexModel extends BaseModel {
 
 export abstract class WriteBaseModel extends BaseCommentIndexModel {
   @prop({ trim: true, index: true, required: true })
+  @IsString()
+  @IsNotEmpty()
   title: string
 
   @prop({ trim: true })
+  @IsString()
   text: string
 
   @prop({ items: Image })

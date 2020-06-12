@@ -1,7 +1,7 @@
 /*
  * @Author: Innei
  * @Date: 2020-05-17 16:17:04
- * @LastEditTime: 2020-05-31 20:06:49
+ * @LastEditTime: 2020-06-12 20:02:55
  * @LastEditors: Innei
  * @FilePath: /mx-server/src/shared/page/page.controller.ts
  * @Coding with Love
@@ -73,7 +73,7 @@ export class PageController {
   @UseGuards(AuthGuard('jwt'))
   async modifiedPage(@Body() body: Page, @Param() params: IdDto) {
     const { id } = params
-    const res = await this.service.updateById(id, body)
+    const res = await this.service.update({ _id: id }, body)
     this.service.RecordImageDimensions(id)
     return res
   }
