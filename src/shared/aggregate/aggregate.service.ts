@@ -146,4 +146,10 @@ export class AggregateService {
       ),
     }
   }
+
+  async getLastestNoteNid() {
+    return (
+      await this.noteModel.findOne().sort({ nid: -1 }).lean().select('nid')
+    ).nid
+  }
 }

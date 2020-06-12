@@ -1,6 +1,13 @@
 import Category from '@libs/db/models/category.model'
 import { FileType } from '@libs/db/models/file.model'
-import { Controller, Get, Query, UseGuards } from '@nestjs/common'
+import {
+  Controller,
+  Get,
+  Query,
+  UseGuards,
+  CacheKey,
+  CacheTTL,
+} from '@nestjs/common'
 import { ApiProperty, ApiTags } from '@nestjs/swagger'
 import { pick } from 'lodash'
 import { RolesGuard } from 'src/auth/roles.guard'
@@ -22,12 +29,15 @@ export class AggregateController {
     private readonly userService: MasterService,
   ) {}
   @Get()
+  @CacheKey('aggregate_catch')
+  @CacheTTL(300)
   async aggregate() {
     return {
       user: await this.userService.getMasterInfo(),
       seo: this.configs.seo,
       categories: await this.service.getAllCategory(),
       pageMeta: await this.service.getAllPages('title _id slug order'),
+      lastestNoteNid: await this.service.getLastestNoteNid(),
     }
   }
 
