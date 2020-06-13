@@ -204,7 +204,7 @@ export class CommentsService extends BaseService<Comment> {
           master: master.name,
           link: this.resolveUrlByType(refType, ref),
           time: parsedTime,
-          mail: ReplyMailType.Owner ? model.mail : master.mail,
+          mail: ReplyMailType.Owner === type ? model.mail : master.mail,
           ip: model.ip || '',
         },
       })
