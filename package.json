@@ -140,13 +140,18 @@
     "transform": {
       "^.+\\.(t|j)s$": "ts-jest"
     },
+    "globals": {
+      "ts-jest": {
+        "tsConfig": "tsconfig.jest.json"
+      }
+    },
     "collectCoverageFrom": [
       "**/*.(t|j)s"
     ],
     "coverageDirectory": "./coverage",
     "testEnvironment": "node",
     "roots": [
-      "<rootDir>/",
+      "<rootDir>/src",
       "<rootDir>/libs/"
     ],
     "moduleNameMapper": {
@@ -154,6 +159,11 @@
       "@libs/db": "<rootDir>/libs/db/src",
       "@libs/common/(.*)": "<rootDir>/libs/common/src/$1",
       "@libs/common": "<rootDir>/libs/common/src"
-    }
+    },
+    "moduleDirectories": [
+      ".",
+      "node_modules",
+      "src"
+    ]
   }
 }
