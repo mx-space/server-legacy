@@ -130,9 +130,11 @@ export class CommentsService extends BaseService<Comment> {
     }
     const { children, parent } = comment
     if (children && children.length > 0) {
-      children.map(async (id) => {
-        await this.deleteComments((id as any) as string)
-      })
+      await Promise.all(
+        children.map(async (id) => {
+          await this.deleteComments((id as any) as string)
+        }),
+      )
     }
     if (parent) {
       const parent = await this.commentModel.findById(comment.parent)

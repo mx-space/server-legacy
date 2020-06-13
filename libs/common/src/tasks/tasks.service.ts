@@ -80,7 +80,7 @@ export class TasksService {
           Key: `backup-${dateDir}.zip`,
           FilePath: backupFilePath,
         },
-        (err, data) => {
+        (err) => {
           if (!err) {
             this.logger.log('--> 上传成功')
           } else {

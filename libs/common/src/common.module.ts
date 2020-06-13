@@ -1,3 +1,12 @@
+/*
+ * @Author: Innei
+ * @Date: 2020-05-08 17:02:08
+ * @LastEditTime: 2020-06-13 09:55:52
+ * @LastEditors: Innei
+ * @FilePath: /mx-server/libs/common/src/common.module.ts
+ * @Coding with Love
+ */
+
 import { CacheInterceptor, CacheModule, Module, Provider } from '@nestjs/common'
 import * as redisStore from 'cache-manager-redis-store'
 import { ConfigModule } from '@nestjs/config'
@@ -49,6 +58,10 @@ if (process.env.NODE_ENV === 'production') {
       {
         name: RedisNames.Like,
         keyPrefix: 'mx_like_',
+      },
+      {
+        name: RedisNames.LoginRecord,
+        keyPrefix: 'mx_' + RedisNames.LoginRecord + '_',
       },
     ]),
     TasksModule,

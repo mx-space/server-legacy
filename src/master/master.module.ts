@@ -11,10 +11,11 @@ import { Global, Module } from '@nestjs/common'
 import { AuthModule } from 'src/auth/auth.module'
 import { MasterController } from './master.controller'
 import MasterService from './master.service'
+import { RedisModule } from 'nestjs-redis'
 
 @Global()
 @Module({
-  imports: [AuthModule],
+  imports: [AuthModule, RedisModule],
   providers: [MasterService],
   controllers: [MasterController],
   exports: [MasterService],
