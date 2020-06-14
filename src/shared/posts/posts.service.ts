@@ -12,11 +12,11 @@ import Comment from '@libs/db/models/comment.model'
 import Post from '@libs/db/models/post.model'
 import { HttpService, Injectable } from '@nestjs/common'
 import { DocumentType, Ref, ReturnModelType } from '@typegoose/typegoose'
+import { RedisService } from 'nestjs-redis'
 import { InjectModel } from 'nestjs-typegoose'
 import { CannotFindException } from 'src/core/exceptions/cant-find.exception'
 import { WriteBaseService } from 'src/shared/base/base.service'
-import { updateReadCount } from '../../utils/text-base'
-import { RedisService } from 'nestjs-redis'
+import { updateLikeCount, updateReadCount } from '../../utils/text-base'
 @Injectable()
 export class PostsService extends WriteBaseService<Post> {
   constructor(
@@ -72,5 +72,13 @@ export class PostsService extends WriteBaseService<Post> {
 
   async updateReadCount(doc: DocumentType<Post>, ip?: string) {
     return await updateReadCount.call(this, doc, ip)
+  }
+
+  async updateLikeCount(id: string, ip: string) {
+    const doc = await this.postModel.findById(id)
+    if (!doc) {
+      throw new CannotFindException()
+    }
+    return await updateLikeCount.call(this, doc, ip)
   }
 }

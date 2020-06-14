@@ -11,6 +11,7 @@ import {
   Query,
   UseGuards,
   UseInterceptors,
+  UnprocessableEntityException,
 } from '@nestjs/common'
 import { AuthGuard } from '@nestjs/passport'
 import { ApiOperation, ApiSecurity, ApiTags } from '@nestjs/swagger'
@@ -213,5 +214,18 @@ export class PostsController {
         populate: 'categoryId',
       },
     )
+  }
+  @Get('_thumbs-up')
+  async thumbsUpArticle(
+    @Query() query: IdDto,
+    @IpLocation() location: IpRecord,
+  ) {
+    const { ip } = location
+    const { id } = query
+    const res = await this.postService.updateLikeCount(id, ip)
+    if (!res) {
+      throw new UnprocessableEntityException('你已经支持过啦!')
+    }
+    return 'OK'
   }
 }
