@@ -200,9 +200,32 @@ export class AnalyzeController {
       months: monthEveryDays.flat(2),
     }
   }
+
+  @Get('like')
+  async getTodayLikedArticle() {
+    const client = this.redisService.getClient(RedisNames.Like)
+    const keys = await client.keys('*mx_like*')
+    return await Promise.all(
+      keys.map(async (key) => {
+        const id = key.split('_').pop()
+        const json = await client.get(id)
+        return {
+          [id]: (JSON.parse(json) as {
+            ip: string
+            created: string
+          }[]).sort(
+            (a, b) =>
+              new Date(a.created).getTime() - new Date(b.created).getTime(),
+          ),
+        }
+      }),
+    )
+  }
+
   @Delete()
-  async clearAnalyze() {
-    await this.service.clearAnalyzeRange()
+  async clearAnalyze(@Query() query: AnalyzeDto) {
+    const { from, to } = query
+    await this.service.clearAnalyzeRange({ from, to })
     return 'OK'
   }
 }

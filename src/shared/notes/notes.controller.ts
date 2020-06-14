@@ -199,11 +199,14 @@ export class NotesController {
     @Param() param: IdDto,
     @Req() req: FastifyReply<IncomingMessage> & { session: any },
     @Res() res: FastifyReply<ServerResponse>,
+    @IpLocation() location: IpRecord,
   ) {
-    if (!req.session.liked) {
+    const isLiked = !(await this.noteService.likeNote(param.id, location.ip))
+
+    if (!req.session.liked && !isLiked) {
       req.session.liked = [param.id]
     } else {
-      if ((req.session.liked as string[]).includes(param.id)) {
+      if (isLiked || (req.session.liked as string[]).includes(param.id)) {
         return res
           .status(422)
           .header('Access-Control-Allow-Origin', req.headers['origin'])
@@ -212,7 +215,6 @@ export class NotesController {
       }
       req.session.liked.push(param.id)
     }
-    await this.noteService.likeNote(param.id)
 
     res
       .header('Access-Control-Allow-Origin', req.headers['origin'])

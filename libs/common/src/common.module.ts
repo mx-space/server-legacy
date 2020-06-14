@@ -60,6 +60,10 @@ if (process.env.NODE_ENV === 'production') {
         keyPrefix: 'mx_like_',
       },
       {
+        name: RedisNames.Read,
+        keyPrefix: 'mx_read_',
+      },
+      {
         name: RedisNames.LoginRecord,
         keyPrefix: 'mx_' + RedisNames.LoginRecord + '_',
       },

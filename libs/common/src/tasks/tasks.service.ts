@@ -108,12 +108,21 @@ export class TasksService {
     await this.redisCtx.getClient(RedisNames.Access).set('ips', '[]')
   }
   @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT, { name: 'reset_like_article' })
-  async resetLikedArticleRecord() {
+  async resetLikedOrReadArticleRecord() {
     const likeStore = this.redisCtx.getClient(RedisNames.Like)
-    const keys = await likeStore.keys('*mx_like*')
-    keys.forEach((key) => {
-      likeStore.del(key.split('_').pop())
-    })
+    const readStore = this.redisCtx.getClient(RedisNames.Read)
+    {
+      const keys = await likeStore.keys('*mx_like*')
+      keys.forEach((key) => {
+        likeStore.del(key.split('_').pop())
+      })
+    }
+    {
+      const keys = await readStore.keys('*mx_read*')
+      keys.forEach((key) => {
+        readStore.del(key.split('_').pop())
+      })
+    }
   }
   get nowStr() {
     const date = new Date()

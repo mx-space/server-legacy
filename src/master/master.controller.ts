@@ -26,14 +26,6 @@ import { IpLocation, IpRecord } from 'src/core/decorators/ip.decorator'
 import { LoginDto, UserDto, UserPatchDto } from 'src/master/dto/user.dto'
 import MasterService from 'src/master/master.service'
 import { getAvatar } from 'src/utils'
-import { RedisService } from 'nestjs-redis'
-import { RedisNames } from '../../libs/common/src/redis/redis.types'
-import dayjs = require('dayjs')
-import * as fastJson from 'fast-json-stringify'
-interface LoginRecord {
-  date: string
-  ip: string
-}
 
 @Controller('master')
 @ApiTags('Master Routes')
@@ -41,7 +33,6 @@ export class MasterController {
   constructor(
     private readonly masterService: MasterService,
     private readonly authService: AuthService,
-    private readonly redisService: RedisService,
   ) {}
   @Get()
   @ApiOperation({ summary: '获取主人信息' })
@@ -71,30 +62,7 @@ export class MasterController {
     const footstep = await this.masterService.recordFootstep(ipLocation.ip)
     const { name, username, created, url, mail } = user
     const avatar = user.avatar ?? getAvatar(mail)
-    new Promise(async () => {
-      const redisClient = this.redisService.getClient(RedisNames.LoginRecord)
-      const dateFormat = dayjs().format('YYYY-MM-DD')
-      const value = JSON.parse(
-        (await redisClient.get(dateFormat)) || '[]',
-      ) as LoginRecord[]
-      const stringify = fastJson({
-        title: 'login-record schema',
-        type: 'array',
-        items: {
-          type: 'object',
-          properties: {
-            ip: { type: 'string' },
-            date: { type: 'string' },
-          },
-        },
-      })
-      await redisClient.set(
-        dateFormat,
-        stringify(
-          value.concat({ date: new Date().toISOString(), ip: ipLocation.ip }),
-        ),
-      )
-    })
+
     return {
       token: await this.authService.signToken(user._id),
       ...footstep,

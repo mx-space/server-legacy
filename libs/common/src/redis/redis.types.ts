@@ -9,6 +9,7 @@
 export enum RedisNames {
   Access = 'access',
   Like = 'like',
+  Read = 'read',
   LoginRecord = 'login_record',
 }
 export enum RedisItems {

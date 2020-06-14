@@ -1,3 +1,12 @@
+/*
+ * @Author: Innei
+ * @Date: 2020-05-05 20:24:42
+ * @LastEditTime: 2020-06-14 10:46:16
+ * @LastEditors: Innei
+ * @FilePath: /mx-server/src/shared/notes/notes.service.ts
+ * @Coding with Love
+ */
+
 import Note from '@libs/db/models/note.model'
 import { HttpService, Injectable } from '@nestjs/common'
 import { DocumentType, ReturnModelType } from '@typegoose/typegoose'
@@ -5,8 +14,8 @@ import { compareSync } from 'bcrypt'
 import { InjectModel } from 'nestjs-typegoose'
 import { CannotFindException } from 'src/core/exceptions/cant-find.exception'
 import { addConditionToSeeHideContent } from 'src/utils'
+import { updateReadCount, updateLikeCount } from '../../utils/text-base'
 import { WriteBaseService } from '../base/base.service'
-import { updateReadCount } from '../../utils/text-base'
 import { RedisService } from 'nestjs-redis'
 
 @Injectable()
@@ -80,16 +89,13 @@ export class NotesService extends WriteBaseService<Note> {
     return isValid
   }
 
-  async likeNote(id: string) {
+  async likeNote(id: string, ip: string) {
     const doc = await this.noteModel.findById(id)
     if (!doc) {
       throw new CannotFindException()
     }
-    return doc.updateOne({
-      $inc: {
-        'count.like': 1,
-      },
-    })
+
+    return await updateLikeCount.call(this, doc, ip)
   }
 
   async shouldAddReadCount(doc: DocumentType<Note>, ip?: string) {

@@ -6,9 +6,9 @@ import { WriteBaseModel } from '../../libs/db/src/models/base.model'
 /*
  * @Author: Innei
  * @Date: 2020-06-03 12:14:54
- * @LastEditTime: 2020-06-03 13:00:56
+ * @LastEditTime: 2020-06-14 11:04:40
  * @LastEditors: Innei
- * @FilePath: /mx-server/src/shared/utils/text-base.ts
+ * @FilePath: /mx-server/src/utils/text-base.ts
  * @Coding with Love
  */
 
@@ -32,14 +32,35 @@ export async function updateReadCount<
   T extends WriteBaseModel,
   U extends { redis: RedisService }
 >(this: U, doc: DocumentType<T>, ip?: string) {
-  const likeRedisStore = this.redis.getClient(RedisNames.Like)
+  const ReadRedisStore = this.redis.getClient(RedisNames.Read)
   const ips = JSON.parse(
-    (await likeRedisStore.get(doc._id)) || '[]',
+    (await ReadRedisStore.get(doc._id)) || '[]',
+  ) as string[]
+
+  if (ip && ((ips && ips.includes(ip)) || !ips.length)) {
+    await doc.updateOne({ $inc: { 'count.read': 1 } })
+    ips.push(ip)
+    await ReadRedisStore.set(doc._id, JSON.stringify(ips))
+  }
+}
+
+export async function updateLikeCount<
+  T extends WriteBaseModel,
+  U extends { redis: RedisService }
+>(this: U, doc: DocumentType<T>, ip?: string) {
+  const ReadRedisStore = this.redis.getClient(RedisNames.Like)
+  const records = JSON.parse(
+    (await ReadRedisStore.get(doc._id)) || '[]',
   ) as IpLikesMap[]
 
-  if (ip && ((ips && ips.some((r) => r.ip !== ip)) || !ips.length)) {
-    await doc.updateOne({ $inc: { 'count.read': 1 } })
-    ips.push({ created: new Date().toISOString(), ip: ip })
-    await likeRedisStore.set(doc._id, stringify(ips))
+  if (
+    ip &&
+    ((records && records.some((r) => r.ip !== ip)) || !records.length)
+  ) {
+    await doc.updateOne({ $inc: { 'count.like': 1 } })
+    records.push({ created: new Date().toISOString(), ip: ip })
+    await ReadRedisStore.set(doc._id, stringify(records))
+    return true
   }
+  return false
 }

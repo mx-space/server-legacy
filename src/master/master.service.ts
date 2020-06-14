@@ -1,17 +1,33 @@
 import { User } from '@libs/db/models/user.model'
-import { Injectable, UnprocessableEntityException } from '@nestjs/common'
+import {
+  Injectable,
+  UnprocessableEntityException,
+  Logger,
+} from '@nestjs/common'
 import { DocumentType, ReturnModelType } from '@typegoose/typegoose'
 import { compareSync } from 'bcrypt'
 import { nanoid } from 'nanoid'
 import { InjectModel } from 'nestjs-typegoose'
 import { AuthService } from 'src/auth/auth.service'
 import { getAvatar } from 'src/utils'
+import { RedisService } from 'nestjs-redis'
+import { RedisNames } from '../../libs/common/src/redis/redis.types'
+
+import * as fastJson from 'fast-json-stringify'
+import dayjs = require('dayjs')
+
+interface LoginRecord {
+  date: string
+  ip: string
+}
 
 @Injectable()
 export default class MasterService {
+  private Logger = new Logger(MasterService.name)
   constructor(
     @InjectModel(User) private readonly userModel: ReturnModelType<typeof User>,
     private readonly authService: AuthService,
+    private readonly redisService: RedisService,
   ) {}
 
   async getMasterInfo() {
@@ -82,7 +98,30 @@ export default class MasterService {
       lastLoginTime: new Date(),
       lastLoginIp: ip,
     })
-
+    // save to redis
+    new Promise(async () => {
+      const redisClient = this.redisService.getClient(RedisNames.LoginRecord)
+      const dateFormat = dayjs().format('YYYY-MM-DD')
+      const value = JSON.parse(
+        (await redisClient.get(dateFormat)) || '[]',
+      ) as LoginRecord[]
+      const stringify = fastJson({
+        title: 'login-record schema',
+        type: 'array',
+        items: {
+          type: 'object',
+          properties: {
+            ip: { type: 'string' },
+            date: { type: 'string' },
+          },
+        },
+      })
+      await redisClient.set(
+        dateFormat,
+        stringify(value.concat({ date: new Date().toISOString(), ip })),
+      )
+    })
+    this.Logger.warn('主人已登录, IP: ' + ip)
     return PrevFootstep
   }
 }
