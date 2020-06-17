@@ -124,7 +124,7 @@ export class PostsController {
     })
     validCategory.count += 1
     await validCategory.save()
-    new Promise(async () => {
+    new Promise(async (resolve) => {
       const category = await this.postService.getCategoryById(
         newPostDocument.categoryId,
       )
@@ -133,6 +133,7 @@ export class PostsController {
         category,
       })
       this.postService.RecordImageDimensions(newPostDocument._id)
+      resolve()
     })
     return newPostDocument
   }
@@ -172,7 +173,7 @@ export class PostsController {
       { omitUndefined: true },
     )
     // emit event
-    new Promise(() => {
+    new Promise((resolve) => {
       this.postService.RecordImageDimensions(postId)
       this.postService
         .findById(id)
@@ -180,6 +181,7 @@ export class PostsController {
         .then((doc) => {
           this.webgateway.broadcase(EventTypes.POST_UPDATE, doc)
         })
+      resolve()
     })
     return {
       ...updateDocument,

@@ -51,7 +51,7 @@ export class TasksService {
       )
       return
     }
-    new Promise(() => {
+    new Promise((reslove) => {
       const backupOptions = this.configs.get('backupOptions')
       if (
         !backupOptions.Bucket ||
@@ -88,6 +88,7 @@ export class TasksService {
           }
         },
       )
+      reslove('OK')
     })
   }
   @Cron(CronExpression.EVERY_1ST_DAY_OF_MONTH_AT_MIDNIGHT, {

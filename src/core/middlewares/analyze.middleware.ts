@@ -74,7 +74,7 @@ export class AnalyzeMiddleware implements NestMiddleware {
       if (!ips.includes(ip)) {
         await client.set('ips', JSON.stringify([...ips, ip]))
         // record uv to db
-        new Promise(async () => {
+        new Promise(async (resolve) => {
           const uvRecord = await this.options.findOne({ name: 'uv' })
           if (uvRecord) {
             await uvRecord.updateOne({
@@ -88,6 +88,7 @@ export class AnalyzeMiddleware implements NestMiddleware {
               value: 1,
             })
           }
+          resolve()
         })
       }
     } catch (e) {

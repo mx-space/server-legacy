@@ -99,7 +99,7 @@ export default class MasterService {
       lastLoginIp: ip,
     })
     // save to redis
-    new Promise(async () => {
+    new Promise(async (resolve) => {
       const redisClient = this.redisService.getClient(RedisNames.LoginRecord)
       const dateFormat = dayjs().format('YYYY-MM-DD')
       const value = JSON.parse(
@@ -120,6 +120,7 @@ export default class MasterService {
         dateFormat,
         stringify(value.concat({ date: new Date().toISOString(), ip })),
       )
+      resolve()
     })
     this.Logger.warn('主人已登录, IP: ' + ip)
     return PrevFootstep

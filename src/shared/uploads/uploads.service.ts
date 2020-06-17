@@ -82,9 +82,10 @@ export class UploadsService {
       // FIXME image service bug
       // note: uploads not include avatar type
       if (type !== FileType.AVATAR) {
-        new Promise(() => {
+        new Promise((resolve) => {
           const imageService = new ImageService(this.model, this.configs)
           imageService.syncToImageBed([{ path, name: hashFilename }])
+          resolve()
           // TODO image upload successful callback event to gateway
         })
       }
