@@ -2616,10 +2616,10 @@ core-util-is@1.0.2, core-util-is@^1.0.2, core-util-is@~1.0.0:
   resolved "https://registry.npm.taobao.org/core-util-is/download/core-util-is-1.0.2.tgz#b5fd54220aa2bc5ab57aab7140c940754503c1a7"
   integrity sha1-tf1UIgqivFq1eqtxQMlAdUUDwac=
 
-cos-nodejs-sdk-v5@2.6.0:
-  version "2.6.0"
-  resolved "https://registry.yarnpkg.com/cos-nodejs-sdk-v5/-/cos-nodejs-sdk-v5-2.6.0.tgz#79b544914e40a2f759926c4b9cf533c86fdd0ee6"
-  integrity sha512-V+nG/arG/GZzAdAVW7bbFOnu7eZl4DQZs5c8h4Jzt/4bByqesZApJuoFfRWMvdCfgApiFXlZLMHR8py88sdQxw==
+cos-nodejs-sdk-v5@2.6.2:
+  version "2.6.2"
+  resolved "https://registry.yarnpkg.com/cos-nodejs-sdk-v5/-/cos-nodejs-sdk-v5-2.6.2.tgz#840f7d8d63f5c48c532cb8d61b32fbb46a3071c5"
+  integrity sha512-HY4stJ1cjYrskJ3AnEefekxGlyprO3ZILEZTXULFIhnXnnl5nDBFHgEFUAKxDR4DjhIbEW88bmwOnZ7nuZbejw==
   dependencies:
     configstore "^3.1.2"
     mime-types "^2.1.24"
