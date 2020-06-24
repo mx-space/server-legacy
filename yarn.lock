@@ -3829,10 +3829,10 @@ fastify-formbody@3.2.0:
     fastify-plugin "^1.6.1"
     qs "^6.9.4"
 
-fastify-helmet@^3.0.2:
+fastify-helmet@3.0.2:
   version "3.0.2"
-  resolved "https://registry.npm.taobao.org/fastify-helmet/download/fastify-helmet-3.0.2.tgz#18513ad01535e3ea729c527a8d101f3edf03a800"
-  integrity sha1-GFE60BU14+pynFJ6jRAfPt8DqAA=
+  resolved "https://registry.yarnpkg.com/fastify-helmet/-/fastify-helmet-3.0.2.tgz#18513ad01535e3ea729c527a8d101f3edf03a800"
+  integrity sha512-z0ZQynqX2BY24bcWsZWqqZF6wd/fJvTXKxlDXqrSptOTLmKogcXTcxjqs4beWFHkSMdY4ceh/QVmmZccMC/y1A==
   dependencies:
     dns-prefetch-control "^0.2.0"
     dont-sniff-mimetype "^1.0.0"
