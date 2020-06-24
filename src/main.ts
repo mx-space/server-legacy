@@ -1,43 +1,30 @@
+/*
+ * @Author: Innei
+ * @Date: 2020-05-21 11:05:42
+ * @LastEditTime: 2020-06-24 20:07:45
+ * @LastEditors: Innei
+ * @FilePath: /mx-server/src/main.ts
+ * @Coding with Love
+ */
+
 import { NestFactory } from '@nestjs/core'
-import {
-  FastifyAdapter,
-  NestFastifyApplication,
-} from '@nestjs/platform-fastify'
+import { NestFastifyApplication } from '@nestjs/platform-fastify'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 import { AllExceptionsFilter } from 'src/core/filters/any-exception.filter'
 import { ResponseInterceptor } from 'src/core/interceptors/response.interceptors'
 import { AppModule } from './app.module'
-import * as FastifyMultipart from 'fastify-multipart'
+import { fastifyApp } from './core/adapt/fastify'
+import { isDev } from './utils'
+
 // import { ExtendsIoAdapter } from './core/gateway/extend.gateway'
 
 const PORT = parseInt(process.env.PORT) || 2333
 const APIVersion = 1
-const isDev = process.env.NODE_ENV === 'development'
 
 async function bootstrap() {
-  const fAdapt = new FastifyAdapter({ logger: isDev ? true : false })
-  fAdapt.register(FastifyMultipart, {
-    addToBody: true,
-    limits: {
-      fields: 10, // Max number of non-file fields
-      fileSize: 1024 * 1024 * 6, // limit size 6M
-      files: 5, // Max number of file fields
-    },
-  })
-  fAdapt.register(require('fastify-cookie'), {
-    secret: 'asdasdasdasdsadsaxsaxassdasdqwdasdxczardja', // for cookies signature
-    parseOptions: {}, // options for parsing cookies
-  })
-  fAdapt.register(require('fastify-session'), {
-    cookieName: 'mx-space',
-    secret: 'asdasdasdasdsadsaxsaxassdasdqwdasdxczardja',
-    cookie: { secure: false },
-    expires: 84000,
-  })
-
   const app = await NestFactory.create<NestFastifyApplication>(
     AppModule,
-    fAdapt,
+    fastifyApp,
   )
   // app.useWebSocketAdapter(new ExtendsIoAdapter(app))
   app.useGlobalFilters(new AllExceptionsFilter())

@@ -1,3 +1,12 @@
+/*
+ * @Author: Innei
+ * @Date: 2020-05-08 20:01:58
+ * @LastEditTime: 2020-06-21 22:45:39
+ * @LastEditors: Innei
+ * @FilePath: /mx-server/src/core/filters/any-exception.filter.ts
+ * @Coding with Love
+ */
+
 import {
   ArgumentsHost,
   Catch,
@@ -12,7 +21,7 @@ import { getIp } from '../../utils/ip'
 type myError = {
   readonly status: number
   readonly statusCode?: number
-  readonly msg: string
+
   readonly message?: string
 }
 
@@ -39,10 +48,10 @@ export class AllExceptionsFilter implements ExceptionFilter {
         'IP: ' +
           ip +
           `  错误信息: (${status})` +
-          (exception as any)?.response?.message ||
-          (exception as myError)?.message ||
-          (exception as myError).message ||
-          '',
+          ((exception as any)?.response?.message ||
+            (exception as myError)?.message ||
+            '') +
+          `path: ${request.req.url}`,
       )
     }
 

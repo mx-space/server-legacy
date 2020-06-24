@@ -55,3 +55,5 @@ export const yearCondition = (year?: number) => {
 export function hasChinese(str: string) {
   return escape(str).indexOf('%u') < 0 ? false : true
 }
+
+export const isDev = process.env.NODE_ENV === 'development'
