@@ -1,7 +1,7 @@
 /*
  * @Author: Innei
  * @Date: 2020-04-29 12:36:28
- * @LastEditTime: 2020-06-07 15:33:12
+ * @LastEditTime: 2020-07-06 20:14:35
  * @LastEditors: Innei
  * @FilePath: /mx-server/libs/db/src/models/link.model.ts
  * @Coding with Love
@@ -47,4 +47,8 @@ export class Link extends BaseModel {
   @IsBoolean()
   @prop()
   audit?: boolean
+
+  get hide() {
+    return !!this.audit
+  }
 }
