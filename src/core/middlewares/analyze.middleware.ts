@@ -1,7 +1,7 @@
 /*
  * @Author: Innei
  * @Date: 2020-05-10 15:22:08
- * @LastEditTime: 2020-05-26 09:23:20
+ * @LastEditTime: 2020-07-08 21:36:36
  * @LastEditors: Innei
  * @FilePath: /mx-server/src/core/middlewares/analyze.middleware.ts
  * @MIT
@@ -10,14 +10,14 @@
 import { Injectable, NestMiddleware } from '@nestjs/common'
 import { ReturnModelType } from '@typegoose/typegoose'
 import { FastifyRequest } from 'fastify'
-import { IncomingMessage, ServerResponse } from 'http'
+import { ServerResponse } from 'http'
 import { RedisService } from 'nestjs-redis'
 import { InjectModel } from 'nestjs-typegoose'
 import { UAParser } from 'ua-parser-js'
+import { RedisNames } from '../../../libs/common/src/redis/redis.types'
 import { Analyze } from '../../../libs/db/src/models/analyze.model'
 import { Option } from '../../../libs/db/src/models/option.model'
 import { getIp } from '../../utils/ip'
-import { RedisNames } from '../../../libs/common/src/redis/redis.types'
 @Injectable()
 export class AnalyzeMiddleware implements NestMiddleware {
   private parser: UAParser
@@ -30,11 +30,7 @@ export class AnalyzeMiddleware implements NestMiddleware {
   ) {
     this.parser = new UAParser()
   }
-  async use(
-    req: FastifyRequest<IncomingMessage>,
-    res: ServerResponse,
-    next: () => void,
-  ) {
+  async use(req: FastifyRequest, res: ServerResponse, next: () => void) {
     if (req.headers['Authorization'] || req.headers['authorization']) {
       return next()
     }

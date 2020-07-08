@@ -1,20 +1,20 @@
 /*
  * @Author: Innei
  * @Date: 2020-04-30 12:21:51
- * @LastEditTime: 2020-05-25 20:46:34
+ * @LastEditTime: 2020-07-08 21:34:24
  * @LastEditors: Innei
  * @FilePath: /mx-server/src/app.controller.ts
  * @Copyright
  */
 
-import { Post, Req, Res, Controller, Get } from '@nestjs/common'
-import { ReturnModelType } from '@typegoose/typegoose'
-import { Option } from '../libs/db/src/models/option.model'
-import { InjectModel } from 'nestjs-typegoose'
-import { getIp } from './utils/ip'
-import { FastifyReply } from 'fastify'
-import { IncomingMessage, ServerResponse } from 'http'
+import { Controller, Get, Post, Req, Res } from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
+import { ReturnModelType } from '@typegoose/typegoose'
+import { FastifyReply } from 'fastify'
+import { Http2SecureServer } from 'http2'
+import { InjectModel } from 'nestjs-typegoose'
+import { Option } from '../libs/db/src/models/option.model'
+import { getIp } from './utils/ip'
 
 @Controller()
 @ApiTags('Root Routes')
@@ -25,8 +25,8 @@ export class AppController {
   ) {}
   @Post('like_this')
   async likeThis(
-    @Req() req: FastifyReply<IncomingMessage> & { session: any },
-    @Res() res: FastifyReply<ServerResponse>,
+    @Req() req: FastifyReply<Http2SecureServer> & { session: any },
+    @Res() res: FastifyReply,
   ) {
     const ip = getIp(req as any)
     if (!req.session.like_this) {

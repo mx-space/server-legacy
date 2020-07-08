@@ -15,7 +15,6 @@ import {
 } from '@nestjs/common'
 import { ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger'
 import { FastifyReply } from 'fastify'
-import { IncomingMessage, ServerResponse } from 'http'
 import { RolesGuard } from 'src/auth/roles.guard'
 import { Auth } from 'src/core/decorators/auth.decorator'
 import { Master } from 'src/core/decorators/guest.decorator'
@@ -197,8 +196,8 @@ export class NotesController {
   @Get('like/:id')
   async likeNote(
     @Param() param: IdDto,
-    @Req() req: FastifyReply<IncomingMessage> & { session: any },
-    @Res() res: FastifyReply<ServerResponse>,
+    @Req() req: FastifyReply & { session: any },
+    @Res() res: FastifyReply,
     @IpLocation() location: IpRecord,
   ) {
     const isLiked = !(await this.noteService.likeNote(param.id, location.ip))
