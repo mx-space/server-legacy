@@ -102,6 +102,14 @@ export class CommentOptions {
   @IsOptional()
   @IsString()
   akismetApiKey?: string
+
+  @IsString({ each: true })
+  @IsOptional()
+  spamKeywords?: string[]
+
+  @IsString({ each: true })
+  @IsOptional()
+  blockIps?: string[]
 }
 
 export class BackupOptions {

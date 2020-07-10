@@ -52,39 +52,64 @@ export class CommentsService extends BaseService<Comment> {
     >
   }
   async checkSpam(doc: Partial<Comment>) {
-    const commentOptions = this.configs.get('commentOptions')
-    if (!commentOptions.antiSpam) {
-      return false
-    }
-    const master = await this.userModel.findOne().select('username')
-    if (doc.author === master.username) {
-      return false
-    }
-    if (!hasChinese(doc.text)) {
-      return true
-    }
-    if (!commentOptions.akismetApiKey) {
-      this.logger.warn('--> 反垃圾评论 api 填写错误')
-      return false
-    }
-    try {
-      const client = new SpamCheck({
-        apiKey: commentOptions.akismetApiKey,
-        blog: this.configs.get('url').webUrl,
-      })
-      const isSpam = await client.isSpam({
-        ip: doc.ip,
-        author: doc.author,
-        content: doc.text,
-        url: doc.url,
-      })
-      if (isSpam) {
+    const res = await (async () => {
+      const commentOptions = this.configs.get('commentOptions')
+      if (!commentOptions.antiSpam) {
+        return false
+      }
+      const master = await this.userModel.findOne().select('username')
+      if (doc.author === master.username) {
+        return false
+      }
+      if (commentOptions.blockIps) {
+        const isBlock = commentOptions.blockIps.some((ip) =>
+          new RegExp(ip, 'ig').test(doc.ip),
+        )
+        if (isBlock) {
+          return true
+        }
+      }
+      if (commentOptions.spamKeywords) {
+        const isBlock = commentOptions.spamKeywords.some((keyword) =>
+          new RegExp(keyword, 'ig').test(doc.text),
+        )
+
+        if (isBlock) {
+          return true
+        }
+      }
+      if (!hasChinese(doc.text)) {
         return true
       }
-      return false
-    } catch {
-      return false
+      if (!commentOptions.akismetApiKey) {
+        this.logger.warn('--> 反垃圾评论 api 填写错误')
+        return false
+      }
+      try {
+        const client = new SpamCheck({
+          apiKey: commentOptions.akismetApiKey,
+          blog: this.configs.get('url').webUrl,
+        })
+        const isSpam = await client.isSpam({
+          ip: doc.ip,
+          author: doc.author,
+          content: doc.text,
+          url: doc.url,
+        })
+        if (isSpam) {
+          return true
+        }
+        return false
+      } catch {
+        return false
+      }
+    })()
+    if (res) {
+      this.logger.warn(
+        '--> 检测到一条垃圾评论: ' + `author: ${doc.author} IP: ${doc.ip}`,
+      )
     }
+    return res
   }
   async createComment(
     id: string,
