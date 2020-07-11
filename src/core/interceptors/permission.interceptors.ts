@@ -1,7 +1,7 @@
 /*
  * @Author: Innei
  * @Date: 2020-04-30 12:21:51
- * @LastEditTime: 2020-07-06 20:35:05
+ * @LastEditTime: 2020-07-11 10:55:34
  * @LastEditors: Innei
  * @FilePath: /mx-server/src/core/interceptors/permission.interceptors.ts
  * @Coding with Love
@@ -44,7 +44,10 @@ export class PermissionInterceptor<T> implements NestInterceptor<T, AnyType> {
       map((data) => {
         // data.data is array, because pager structure is { page: {}, data: [{},...] }
         if (data && isObjectLike(data) && Array.isArray(data.data)) {
-          return data.data.filter((i) => i.hide !== true || req.isMaster)
+          return {
+            ...data,
+            data: data.data.filter((i) => i.hide !== true || req.isMaster),
+          }
         } else if (Array.isArray(data)) {
           return data.filter((i) => i.hide !== true || req.isMaster)
         }
