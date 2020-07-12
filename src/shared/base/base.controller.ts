@@ -91,13 +91,17 @@ export abstract class BaseCrud<
   @Get()
   async gets(@Query() pager: PagerDto) {
     const { size, page, select, state } = pager
-    // @ts-ignore
-    return await this._service.findWithPaginator(state ? { state } : {}, {
-      limit: size,
-      skip: (page - 1) * size,
-      sort: { created: -1 },
-      select,
-    })
+
+    return await this._service.findWithPaginator(
+      // @ts-ignore
+      state !== undefined ? { state } : {},
+      {
+        limit: size,
+        skip: (page - 1) * size,
+        sort: { created: -1 },
+        select,
+      },
+    )
   }
   @Get('all')
   async getAll() {

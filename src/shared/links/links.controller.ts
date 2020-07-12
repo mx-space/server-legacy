@@ -1,7 +1,7 @@
 /*
  * @Author: Innei
  * @Date: 2020-06-05 21:26:33
- * @LastEditTime: 2020-07-12 12:26:15
+ * @LastEditTime: 2020-07-12 13:46:23
  * @LastEditors: Innei
  * @FilePath: /mx-server/src/shared/links/links.controller.ts
  * @Coding with Love
@@ -15,6 +15,7 @@ import {
   Patch,
   Post,
   UnprocessableEntityException,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
@@ -22,22 +23,26 @@ import { BaseCrud } from '../base/base.controller'
 import { LinksService } from './links.service'
 import { PermissionInterceptor } from '../../core/interceptors/permission.interceptors'
 import { isMongoId } from 'class-validator'
+import { RolesGuard } from '../../auth/roles.guard'
+import { omit } from 'lodash'
 
 @Controller('links')
 @ApiTags('Link Routes')
 @UseInterceptors(PermissionInterceptor)
+@UseGuards(RolesGuard)
 export class LinksController extends BaseCrud<Link> {
   constructor(private readonly service: LinksService) {
     super(service)
   }
 
   @Post('audit')
-  async applyForLink(@Body() body: Link) {
+  async applyForLink(@Body() body: Link & { author: string }) {
     await this.service.createNew({
-      ...body,
+      ...omit(body, 'author'),
       type: LinkType.Friend,
       state: LinkState.Audit,
     })
+    this.service.sendEmail(body)
     return 'OK'
   }
 
