@@ -1,3 +1,12 @@
+/*
+ * @Author: Innei
+ * @Date: 2020-06-06 18:28:53
+ * @LastEditTime: 2020-07-12 11:06:06
+ * @LastEditors: Innei
+ * @FilePath: /mx-server/src/shared/base/dto/pager.dto.ts
+ * @Coding with Love
+ */
+
 import { ApiProperty } from '@nestjs/swagger'
 import { Transform } from 'class-transformer'
 import {
@@ -35,4 +44,9 @@ export class PagerDto {
   @IsInt()
   @ApiProperty({ example: 2020 })
   year?: number
+
+  @IsOptional()
+  @Transform((val) => parseInt(val))
+  @IsInt()
+  state?: number
 }

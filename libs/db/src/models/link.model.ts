@@ -18,6 +18,10 @@ export enum LinkType {
   Collection,
 }
 
+export enum LinkState {
+  Pass,
+  Audit,
+}
 export class Link extends BaseModel {
   @prop({ required: true, trim: true, unique: true })
   @IsString()
@@ -45,10 +49,10 @@ export class Link extends BaseModel {
 
   @IsOptional()
   @IsBoolean()
-  @prop()
-  audit?: boolean
+  @prop({ default: LinkState.Pass })
+  state: LinkState
 
   get hide() {
-    return !!this.audit
+    return this.state === LinkState.Audit
   }
 }

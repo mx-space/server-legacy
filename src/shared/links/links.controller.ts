@@ -1,18 +1,27 @@
 /*
  * @Author: Innei
  * @Date: 2020-06-05 21:26:33
- * @LastEditTime: 2020-07-06 20:28:09
+ * @LastEditTime: 2020-07-12 12:26:15
  * @LastEditors: Innei
  * @FilePath: /mx-server/src/shared/links/links.controller.ts
  * @Coding with Love
  */
 
-import { Link, LinkType } from '@libs/db/models/link.model'
-import { Body, Controller, Post, UseInterceptors } from '@nestjs/common'
+import { Link, LinkState, LinkType } from '@libs/db/models/link.model'
+import {
+  Body,
+  Controller,
+  Param,
+  Patch,
+  Post,
+  UnprocessableEntityException,
+  UseInterceptors,
+} from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
 import { BaseCrud } from '../base/base.controller'
 import { LinksService } from './links.service'
 import { PermissionInterceptor } from '../../core/interceptors/permission.interceptors'
+import { isMongoId } from 'class-validator'
 
 @Controller('links')
 @ApiTags('Link Routes')
@@ -27,8 +36,17 @@ export class LinksController extends BaseCrud<Link> {
     await this.service.createNew({
       ...body,
       type: LinkType.Friend,
-      audit: true,
+      state: LinkState.Audit,
     })
+    return 'OK'
+  }
+
+  @Patch('audit/:id')
+  async approveFriend(@Param('id') id: string) {
+    if (!isMongoId(id)) {
+      throw new UnprocessableEntityException('ID must be mongo ID')
+    }
+    await this.service.updateById(id, { state: LinkState.Pass })
     return 'OK'
   }
 }
