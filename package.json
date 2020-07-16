@@ -101,7 +101,7 @@
     "@types/lodash": "4.14.157",
     "@types/mongoose": "5.7.21",
     "@types/nanoid": "2.1.0",
-    "@types/node": "12.12.47",
+    "@types/node": "12.12.50",
     "@types/nodemailer": "6.4.0",
     "@types/pluralize": "0.0.29",
     "@types/socket.io": "2.1.8",
