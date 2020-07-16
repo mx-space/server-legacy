@@ -3897,15 +3897,15 @@ fastify-helmet@3.0.2:
     referrer-policy "^1.1.0"
     x-xss-protection "^1.1.0"
 
-fastify-multipart@1.0.6:
-  version "1.0.6"
-  resolved "https://registry.yarnpkg.com/fastify-multipart/-/fastify-multipart-1.0.6.tgz#cfa16e3509ccaa37e9a19b62ba2ed38d75300608"
-  integrity sha512-3qjTGMzMgfy4hEs3UtVBS26mjy8pJ4VTozrwBrdoXdVM9HHYLR9VbCQtQjdbsn4eVgWlXkQbocCNUrf8XFkvwg==
+fastify-multipart@2.0.3:
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/fastify-multipart/-/fastify-multipart-2.0.3.tgz#32b02a8d1914300a6256b87c62f353b797d378cf"
+  integrity sha512-+sOqq8zu6lV5WuRZogCxn5qKgjxuewRt+SKg9Fs0XZz0wJSX7i1zJvZ1oewrobvVeDfp5uDugv6G8jr3nfc15w==
   dependencies:
     busboy "^0.3.0"
     deepmerge "^4.0.0"
     end-of-stream "^1.4.1"
-    fastify-plugin "^1.5.0"
+    fastify-plugin "^2.0.0"
 
 fastify-plugin@^1.2.1, fastify-plugin@^1.4.0, fastify-plugin@^1.5.0, fastify-plugin@^1.6.0, fastify-plugin@^1.6.1:
   version "1.6.1"
@@ -3913,6 +3913,13 @@ fastify-plugin@^1.2.1, fastify-plugin@^1.4.0, fastify-plugin@^1.5.0, fastify-plu
   integrity sha1-Ei9aXutjDVXDAXExRanRiObV3Vs=
   dependencies:
     semver "^6.3.0"
+
+fastify-plugin@^2.0.0:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/fastify-plugin/-/fastify-plugin-2.0.1.tgz#e9f586bff057cd947175a580273aefdf7bdc62b8"
+  integrity sha512-spYlahs74ZHR/s+cPXukJLwx0B6khgnX05i2rZW5lc9dqoMI0txrNA9mGruulkerqd4FduzkZMTQJywSwkiVOw==
+  dependencies:
+    semver "^7.3.2"
 
 fastify-session@4.0.1:
   version "4.0.1"
