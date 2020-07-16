@@ -8,9 +8,10 @@
  */
 
 import { Option } from '@libs/db/models/option.model'
-import { Injectable } from '@nestjs/common'
+import { Injectable, UnprocessableEntityException } from '@nestjs/common'
 import { ReturnModelType } from '@typegoose/typegoose'
 import { InjectModel } from 'nestjs-typegoose'
+import { User } from '../../libs/db/src/models/user.model'
 import {
   BackupOptions,
   CommentOptions,
@@ -58,6 +59,8 @@ export class ConfigsService {
   constructor(
     @InjectModel(Option)
     private readonly optionModel: ReturnModelType<typeof Option>,
+    @InjectModel(User)
+    private readonly userModel: ReturnModelType<typeof User>,
   ) {
     this.configInit()
   }
@@ -109,5 +112,13 @@ export class ConfigsService {
     this.config[key] = newData
 
     return this.config[key]
+  }
+
+  public async getMaster() {
+    const master = await this.userModel.findOne()
+    if (!master) {
+      throw new UnprocessableEntityException('未初始化')
+    }
+    return master
   }
 }

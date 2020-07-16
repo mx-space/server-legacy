@@ -152,4 +152,68 @@ export class AggregateService {
       await this.noteModel.findOne().sort({ nid: -1 }).lean().select('nid')
     ).nid
   }
+  async buildRssStructure(): Promise<RSSProps> {
+    const data = await this.getRSSFeedContent()
+    const title = this.configs.get('seo').title
+    const author = (await this.configs.getMaster()).name
+    const url = this.configs.get('url').webUrl
+    return {
+      title,
+      author,
+      url,
+      data,
+    }
+  }
+  async getRSSFeedContent() {
+    const baseURL = this.configs.get('url').webUrl
+    const posts = await this.postModel
+      .find({ hide: false })
+      .limit(10)
+      .sort({ created: -1 })
+      .populate('category')
+    const notes = await this.noteModel
+      .find({
+        hide: false,
+        password: undefined,
+      })
+      .limit(10)
+      .sort({ created: -1 })
+    const postsRss: RSSProps['data'] = posts.map((post) => {
+      return {
+        title: post.title,
+        text: post.text,
+        created: post.created,
+        modified: post.modified,
+        link: new URL(
+          '/posts' + `/${(post.category as Category).slug}/${post.slug}`,
+          baseURL,
+        ).toString(),
+      }
+    })
+    const notesRss: RSSProps['data'] = notes.map((note) => {
+      return {
+        title: note.title,
+        text: note.text,
+        created: note.created,
+        modified: note.modified,
+        link: new URL('/notes/' + note.nid, baseURL).toString(),
+      }
+    })
+    return postsRss
+      .concat(notesRss)
+      .sort((a, b) => b.created.getTime() - a.created.getTime())
+      .slice(0, 10)
+  }
+}
+export interface RSSProps {
+  title: string
+  url: string
+  author: string
+  data: {
+    created: Date
+    modified: Date
+    link: string
+    title: string
+    text: string
+  }[]
 }

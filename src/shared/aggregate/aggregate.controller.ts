@@ -109,7 +109,15 @@ export class AggregateController {
   }
 
   @Get('sitemap')
+  @CacheKey('aggregate_sitemap_catch')
+  @CacheTTL(3600)
   async getSiteMapContent() {
     return await this.service.getSiteMapContent()
+  }
+
+  @Get('feed')
+  @CacheTTL(3600)
+  async getRSSFeed() {
+    return await this.service.buildRssStructure()
   }
 }
