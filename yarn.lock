@@ -3136,10 +3136,10 @@ dir-glob@2.0.0:
     arrify "^1.0.1"
     path-type "^3.0.0"
 
-dns-prefetch-control@^0.2.0:
-  version "0.2.0"
-  resolved "https://registry.npm.taobao.org/dns-prefetch-control/download/dns-prefetch-control-0.2.0.tgz#73988161841f3dcc81f47686d539a2c702c88624"
-  integrity sha1-c5iBYYQfPcyB9HaG1TmixwLIhiQ=
+dns-prefetch-control@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/dns-prefetch-control/-/dns-prefetch-control-0.3.0.tgz#3dbca48b5e967ee3f7d71ea910300e229c654f11"
+  integrity sha512-AOXv1PgYZEn8f2BarV9c2uJEOUE7cJr2jf1L6bnQMgMZUie4xZmgqzRnr3JdZ04er+32kw+LCNBgs8QIZi8I7g==
 
 doctrine@1.5.0:
   version "1.5.0"
@@ -3893,23 +3893,24 @@ fastify-formbody@3.2.0:
     fastify-plugin "^1.6.1"
     qs "^6.9.4"
 
-fastify-helmet@3.0.2:
-  version "3.0.2"
-  resolved "https://registry.yarnpkg.com/fastify-helmet/-/fastify-helmet-3.0.2.tgz#18513ad01535e3ea729c527a8d101f3edf03a800"
-  integrity sha512-z0ZQynqX2BY24bcWsZWqqZF6wd/fJvTXKxlDXqrSptOTLmKogcXTcxjqs4beWFHkSMdY4ceh/QVmmZccMC/y1A==
+fastify-helmet@4.0.2:
+  version "4.0.2"
+  resolved "https://registry.yarnpkg.com/fastify-helmet/-/fastify-helmet-4.0.2.tgz#4c11efe5a402c288062f40366f2c67240f1c0a5e"
+  integrity sha512-VXTQo5yzb3H68qlKoZ+Y84IEyyrXeyiFHnGj6K9kbZiXC+P0Aaj+OCvmH2Ls3Do827poYMa5JKITGP8mcFCe0g==
   dependencies:
-    dns-prefetch-control "^0.2.0"
+    dns-prefetch-control "^0.3.0"
     dont-sniff-mimetype "^1.0.0"
     expect-ct "^0.3.0"
-    fastify-plugin "^1.2.1"
-    feature-policy "^0.3.0"
+    fastify-plugin "^2.0.0"
+    feature-policy "^0.5.0"
     frameguard "^3.0.0"
-    helmet-crossdomain "^0.4.0"
+    helmet-crossdomain "^0.5.0"
     helmet-csp "^2.7.1"
     hide-powered-by "^1.0.0"
     hpkp "^2.0.0"
     hsts "^2.1.0"
     ienoopen "^1.0.0"
+    middie "^5.0.0"
     nocache "^2.0.0"
     referrer-policy "^1.1.0"
     x-xss-protection "^1.1.0"
@@ -3924,7 +3925,7 @@ fastify-multipart@2.0.3:
     end-of-stream "^1.4.1"
     fastify-plugin "^2.0.0"
 
-fastify-plugin@^1.2.1, fastify-plugin@^1.5.0, fastify-plugin@^1.6.0, fastify-plugin@^1.6.1:
+fastify-plugin@^1.5.0, fastify-plugin@^1.6.0, fastify-plugin@^1.6.1:
   version "1.6.1"
   resolved "https://registry.npm.taobao.org/fastify-plugin/download/fastify-plugin-1.6.1.tgz#122f5a5eeb630d55c301713145a9d188e6d5dd5b"
   integrity sha1-Ei9aXutjDVXDAXExRanRiObV3Vs=
@@ -4029,10 +4030,10 @@ fd-slicer@~1.1.0:
   dependencies:
     pend "~1.2.0"
 
-feature-policy@^0.3.0:
-  version "0.3.0"
-  resolved "https://registry.npm.taobao.org/feature-policy/download/feature-policy-0.3.0.tgz#7430e8e54a40da01156ca30aaec1a381ce536069"
-  integrity sha1-dDDo5UpA2gEVbKMKrsGjgc5TYGk=
+feature-policy@^0.5.0:
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/feature-policy/-/feature-policy-0.5.0.tgz#1c5ed3be9f91ef37d41ee2568e8ba26e6fa44fca"
+  integrity sha512-LYcPcOfDVKTcdc21n3eG4mEmUXQm0Qw3ke0UsoMXEkURokWp0vzT1VUw3Inm7CMTPRo6zPvl2iJNXCzlq9Dm1Q==
 
 figgy-pudding@^3.5.1:
   version "3.5.2"
@@ -4761,10 +4762,10 @@ hash.js@^1.0.0, hash.js@^1.0.3:
     inherits "^2.0.3"
     minimalistic-assert "^1.0.1"
 
-helmet-crossdomain@^0.4.0:
-  version "0.4.0"
-  resolved "https://registry.npm.taobao.org/helmet-crossdomain/download/helmet-crossdomain-0.4.0.tgz#5f1fe5a836d0325f1da0a78eaa5fd8429078894e"
-  integrity sha1-Xx/lqDbQMl8doKeOql/YQpB4iU4=
+helmet-crossdomain@^0.5.0:
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/helmet-crossdomain/-/helmet-crossdomain-0.5.0.tgz#b7ff4122f93cbebd500cc5c901e7690215d0f1ef"
+  integrity sha512-cKNYQ+iKXrbPjIXZG9NnTLQGFBH0DUlNWXtSsxQqzvJ0g/PyevYA7gamEItKp8VLVNDXbsXksFFahOieAIVEWA==
 
 helmet-csp@^2.7.1:
   version "2.10.0"
@@ -6495,6 +6496,15 @@ middie@^4.1.0:
     path-to-regexp "^4.0.0"
     reusify "^1.0.2"
 
+middie@^5.0.0:
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/middie/-/middie-5.1.0.tgz#c7b132c8569bc0cedac7dbb52a8a4338aef20fe2"
+  integrity sha512-pM9KMIedHAOHIw+wsJbze7QiPdEfPsd3iMhgStvYlpme6/dEpCVp0pTSDP5bXa1NvrPmjfWOpvp2RNbypH8DHQ==
+  dependencies:
+    fastify-plugin "^2.0.0"
+    path-to-regexp "^6.1.0"
+    reusify "^1.0.4"
+
 miller-rabin@^4.0.0:
   version "4.0.1"
   resolved "https://registry.npm.taobao.org/miller-rabin/download/miller-rabin-4.0.1.tgz#f080351c865b0dc562a8462966daa53543c78a4d"
@@ -7494,6 +7504,11 @@ path-to-regexp@^4.0.0:
   version "4.0.5"
   resolved "https://registry.npm.taobao.org/path-to-regexp/download/path-to-regexp-4.0.5.tgz#2d4fd140af9a369bf7b68f77a7fdc340490f4239"
   integrity sha1-LU/RQK+aNpv3to93p/3DQEkPQjk=
+
+path-to-regexp@^6.1.0:
+  version "6.1.0"
+  resolved "https://registry.yarnpkg.com/path-to-regexp/-/path-to-regexp-6.1.0.tgz#0b18f88b7a0ce0bfae6a25990c909ab86f512427"
+  integrity sha512-h9DqehX3zZZDCEm+xbfU0ZmwCGFCAAraPJWMXJ4+v32NjZJilVg3k1TcKsRgIb8IQ/izZSaydDc1OhJCZvs2Dw==
 
 path-type@^2.0.0:
   version "2.0.0"
