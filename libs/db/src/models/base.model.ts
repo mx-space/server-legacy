@@ -18,7 +18,11 @@ class Image {
   height?: number
   @prop()
   type?: string
+  @prop()
+  src: string
 }
+
+export type { Image as TextImageRecordType }
 @plugin(mongooseLeanVirtuals)
 @plugin(uniqueValidator)
 @modelOptions({
@@ -63,6 +67,6 @@ export abstract class WriteBaseModel extends BaseCommentIndexModel {
   @IsString()
   text: string
 
-  @prop({ items: Image })
+  @prop({ type: Image })
   images?: Image[]
 }

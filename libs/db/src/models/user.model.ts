@@ -71,6 +71,6 @@ export class User extends BaseModel {
   @prop({ select: true, required: true })
   authCode!: string
 
-  @prop({ items: TokenModel, select: false })
+  @prop({ type: TokenModel, select: false })
   apiToken?: TokenModel[]
 }

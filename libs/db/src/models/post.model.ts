@@ -23,11 +23,11 @@ export default class Post extends WriteBaseModel {
   @prop()
   summary?: string
 
-  @prop({ ref: 'Category', required: true })
+  @prop({ ref: () => Category, required: true })
   categoryId: Ref<Category>
 
   @prop({
-    ref: 'Category',
+    ref: () => Category,
     foreignField: '_id',
     localField: 'categoryId',
     justOne: true,
@@ -40,7 +40,7 @@ export default class Post extends WriteBaseModel {
   @prop({ default: true })
   copyright?: boolean
 
-  @prop({ type: Count })
+  @prop({ type: Count, default: { read: 0, like: 0 }, _id: false })
   count?: Count
 
   @prop({ type: Schema.Types.Mixed })

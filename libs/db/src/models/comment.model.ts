@@ -1,19 +1,19 @@
 /*
  * @Author: Innei
  * @Date: 2020-04-18 19:04:13
- * @LastEditTime: 2020-05-26 09:22:47
+ * @LastEditTime: 2020-07-19 14:11:54
  * @LastEditors: Innei
  * @FilePath: /mx-server/libs/db/src/models/comment.model.ts
  * @Copyright
  */
 
-import { arrayProp, pre, prop, Ref } from '@typegoose/typegoose'
+import { pre, prop, Ref } from '@typegoose/typegoose'
+import { Types } from 'mongoose'
+import { getAvatar } from 'src/utils'
 import { BaseModel } from './base.model'
-import Post from './post.model'
 import Note from './note.model'
 import Page from './page.model'
-import { getAvatar } from 'src/utils'
-import { Types } from 'mongoose'
+import Post from './post.model'
 
 function autoPopulateSubs(next: () => void) {
   this.populate({ options: { sort: { created: -1 } }, path: 'children' })
@@ -62,10 +62,10 @@ export default class Comment extends BaseModel {
   // @prop({ default: false })
   // hasParent?: boolean
   //
-  @prop({ ref: 'Comment' })
+  @prop({ ref: () => Comment })
   parent?: Ref<Comment>
 
-  @prop({ ref: 'Comment', items: Types.ObjectId })
+  @prop({ ref: () => Comment, type: Types.ObjectId })
   children?: Ref<Comment>[]
 
   @prop({ default: 1 })
@@ -79,7 +79,7 @@ export default class Comment extends BaseModel {
   agent?: string
 
   @prop({
-    ref: 'Post',
+    ref: () => Post,
     foreignField: '_id',
     localField: 'ref',
     justOne: true,
@@ -87,7 +87,7 @@ export default class Comment extends BaseModel {
   public post: Ref<Post>
 
   @prop({
-    ref: 'Note',
+    ref: () => Note,
     foreignField: '_id',
     localField: 'ref',
     justOne: true,
@@ -95,7 +95,7 @@ export default class Comment extends BaseModel {
   public note: Ref<Note>
 
   @prop({
-    ref: 'Page',
+    ref: () => Page,
     foreignField: '_id',
     localField: 'ref',
     justOne: true,

@@ -1,4 +1,8 @@
-import { BaseModel, WriteBaseModel } from '@libs/db/models/base.model'
+import {
+  BaseModel,
+  TextImageRecordType,
+  WriteBaseModel,
+} from '@libs/db/models/base.model'
 import {
   BadRequestException,
   HttpService,
@@ -358,24 +362,40 @@ export class WriteBaseService<T extends WriteBaseModel> extends BaseService<T> {
   }
 
   async RecordImageDimensions(id: string, socket?: SocketIO.Socket) {
-    const text = (await this.__model.findById(id).lean()).text
+    const document = await this.__model.findById(id).lean()
+    const { text } = document
+    const originImages: TextImageRecordType[] = document.images || []
     const images = pickImagesFromMarkdown(text)
-    const result = [] as ISizeCalculationResult[]
-    for await (const image of images) {
+    const result = [] as TextImageRecordType[]
+    // eslint-disable-next-line prefer-const
+    for await (let [i, src] of images.entries()) {
+      if (
+        originImages[i] &&
+        originImages[i].src === src &&
+        Object.values(originImages[i]).every(Boolean)
+      ) {
+        result.push(originImages[i])
+        continue
+      }
       try {
-        this.logger.log('Get --> ' + image)
-        const size = await getOnlineImageSize(this.__http, image)
+        const url = new URL(src)
+        if (url.host.match(/sinaimg.cn$/)) {
+          url.host = url.host.replace(/.*?.sinaimg.cn/, 'tva2.sinaimg.cn')
+          src = url.toString()
+        }
+        this.logger.log('Get --> ' + src)
+        const size = await getOnlineImageSize(this.__http, src)
         if (socket) {
           socket.send(
             gatewayMessageFormat(
               EventTypes.IMAGE_FETCH,
-              'Get --> ' + image + JSON.stringify(size),
+              'Get --> ' + src + JSON.stringify(size),
             ),
           )
         }
-        result.push(size)
+        result.push({ ...size, src: src })
       } catch (e) {
-        this.logger.error(e.message)
+        this.logger.error(`GET --> ${src} ${e.message}`)
         if (socket) {
           socket.send(gatewayMessageFormat(EventTypes.IMAGE_FETCH, e.message))
         }
@@ -383,6 +403,7 @@ export class WriteBaseService<T extends WriteBaseModel> extends BaseService<T> {
           width: undefined,
           height: undefined,
           type: undefined,
+          src: src,
         })
       }
     }

@@ -54,7 +54,7 @@ export class Project extends BaseModel {
   @IsUrl({ require_protocol: true }, { each: true })
   @IsOptional()
   @prop({
-    items: String,
+    type: String,
     validate: validateURL,
   })
   images?: string[]

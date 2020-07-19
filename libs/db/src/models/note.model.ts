@@ -67,6 +67,6 @@ export default class Note extends WriteBaseModel {
   @prop({ enum: Object.keys(WeatherSet) })
   weather?: string
 
-  @prop({ type: Count, default: { read: 0, like: 0 } })
+  @prop({ type: Count, default: { read: 0, like: 0 }, _id: false })
   count?: Count
 }
