@@ -730,15 +730,15 @@
   resolved "https://registry.npm.taobao.org/@tokenizer/token/download/@tokenizer/token-0.1.1.tgz#f0d92c12f87079ddfd1b29f614758b9696bc29e3"
   integrity sha1-8NksEvhwed39Gyn2FHWLlpa8KeM=
 
-"@typegoose/auto-increment@0.4.1":
-  version "0.4.1"
-  resolved "https://registry.yarnpkg.com/@typegoose/auto-increment/-/auto-increment-0.4.1.tgz#6e9c79fecc54af0bdfe2c363819e4e28c66a9049"
-  integrity sha512-ya+TkXUufhyRKFVt/UVVGSO+BnMB0/KQk9dOyKWoGKvSFGEJlGAaug4zABtbh3OyqoPaJ74OSoJTKJ+/r+wdoA==
+"@typegoose/auto-increment@0.5.0":
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/@typegoose/auto-increment/-/auto-increment-0.5.0.tgz#235f932e52e9ee9f547ca4687d8f72c1836c7780"
+  integrity sha512-ralkBoQ9mPSBcEikdSBUmjYENqZH7DBjS2joo7+rHgjLCBGQ8QDnirYogIggWxzisghlHfOjUzWyqIPjdfSLow==
   dependencies:
-    "@types/lodash" "^4.14.149"
-    lodash "^4.17.15"
-    loglevel "^1.6.7"
-    tslib "^1.11.1"
+    "@types/lodash" "^4.14.157"
+    lodash "^4.17.19"
+    loglevel "^1.6.8"
+    tslib "^2.0.0"
 
 "@typegoose/typegoose@7.3.0":
   version "7.3.0"
@@ -903,15 +903,10 @@
   dependencies:
     "@types/node" "*"
 
-"@types/lodash@4.14.157":
+"@types/lodash@4.14.157", "@types/lodash@^4.14.157":
   version "4.14.157"
   resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.157.tgz#fdac1c52448861dfde1a2e1515dbc46e54926dc8"
   integrity sha512-Ft5BNFmv2pHDgxV5JDsndOWTRJ+56zte0ZpYLowp03tW+K+t8u8YMOzAnpuqPgzX6WO1XpDIUm7u04M8vdDiVQ==
-
-"@types/lodash@^4.14.149":
-  version "4.14.155"
-  resolved "https://registry.npm.taobao.org/@types/lodash/download/@types/lodash-4.14.155.tgz#e2b4514f46a261fd11542e47519c20ebce7bc23a"
-  integrity sha1-4rRRT0aiYf0RVC5HUZwg6857wjo=
 
 "@types/mongodb@*":
   version "3.5.20"
@@ -6285,7 +6280,7 @@ log-update@^4.0.0:
     slice-ansi "^4.0.0"
     wrap-ansi "^6.2.0"
 
-loglevel@^1.6.7, loglevel@^1.6.8:
+loglevel@^1.6.8:
   version "1.6.8"
   resolved "https://registry.npm.taobao.org/loglevel/download/loglevel-1.6.8.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Floglevel%2Fdownload%2Floglevel-1.6.8.tgz#8a25fb75d092230ecd4457270d80b54e28011171"
   integrity sha1-iiX7ddCSIw7NRFcnDYC1TigBEXE=
@@ -9542,7 +9537,7 @@ tslib@2.0.0, tslib@>=1.9.0, tslib@^2.0.0:
   resolved "https://registry.npm.taobao.org/tslib/download/tslib-2.0.0.tgz#18d13fc2dce04051e20f074cc8387fd8089ce4f3"
   integrity sha1-GNE/wtzgQFHiDwdMyDh/2Aic5PM=
 
-tslib@^1.11.1, tslib@^1.8.1, tslib@^1.9.0:
+tslib@^1.8.1, tslib@^1.9.0:
   version "1.13.0"
   resolved "https://registry.npm.taobao.org/tslib/download/tslib-1.13.0.tgz#c881e13cc7015894ed914862d276436fa9a47043"
   integrity sha1-yIHhPMcBWJTtkUhi0nZDb6mkcEM=
