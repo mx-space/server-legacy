@@ -1408,10 +1408,10 @@ ajv@^6.1.0, ajv@^6.10.0, ajv@^6.10.2, ajv@^6.11.0, ajv@^6.12.0, ajv@^6.5.5:
     json-schema-traverse "^0.4.1"
     uri-js "^4.2.2"
 
-akismet@2.0.5:
-  version "2.0.5"
-  resolved "https://registry.yarnpkg.com/akismet/-/akismet-2.0.5.tgz#d7bed44d50371b47e3dc2073c8afa863b67de565"
-  integrity sha512-uIkoSN0pdBkhAUoOJlKFNDzE8tNy8SavhekiDBhGeV5hK31Iu6xEamMStC6n+QGzndilBJ8ANIyHuxjpxXoZnA==
+akismet@2.0.6:
+  version "2.0.6"
+  resolved "https://registry.yarnpkg.com/akismet/-/akismet-2.0.6.tgz#c36f627538a5bdb4f4c2a67d8cdcbaab91848d97"
+  integrity sha512-Gi9vZtTThab3Pb8xnNcruvi3Peu+fmUdN7KppIKxn9gdQZx1ASvZBFh/jh00E+CnFaiDx7VOIpy6cttyq8ZBIA==
   dependencies:
     request "2.x"
 
