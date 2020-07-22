@@ -98,7 +98,7 @@
     "@types/bcrypt": "3.0.0",
     "@types/ejs": "3.0.4",
     "@types/jest": "26.0.5",
-    "@types/lodash": "4.14.157",
+    "@types/lodash": "4.14.158",
     "@types/mongoose": "5.7.21",
     "@types/nanoid": "2.1.0",
     "@types/node": "12.12.47",
