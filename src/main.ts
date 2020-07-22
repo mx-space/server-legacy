@@ -1,7 +1,7 @@
 /*
  * @Author: Innei
  * @Date: 2020-05-21 11:05:42
- * @LastEditTime: 2020-06-24 20:07:45
+ * @LastEditTime: 2020-07-22 16:32:19
  * @LastEditors: Innei
  * @FilePath: /mx-server/src/main.ts
  * @Coding with Love
@@ -14,9 +14,8 @@ import { AllExceptionsFilter } from 'src/core/filters/any-exception.filter'
 import { ResponseInterceptor } from 'src/core/interceptors/response.interceptors'
 import { AppModule } from './app.module'
 import { fastifyApp } from './core/adapt/fastify'
+import { ExtendsIoAdapter } from './core/gateway/extend.gateway'
 import { isDev } from './utils'
-
-// import { ExtendsIoAdapter } from './core/gateway/extend.gateway'
 
 const PORT = parseInt(process.env.PORT) || 2333
 const APIVersion = 1
@@ -26,7 +25,7 @@ async function bootstrap() {
     AppModule,
     fastifyApp,
   )
-  // app.useWebSocketAdapter(new ExtendsIoAdapter(app))
+  app.useWebSocketAdapter(new ExtendsIoAdapter(app))
   app.useGlobalFilters(new AllExceptionsFilter())
   app.useGlobalInterceptors(new ResponseInterceptor())
   if (isDev) {
