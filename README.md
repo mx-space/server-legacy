@@ -10,3 +10,28 @@
 - Typegoose
 - WebSocket (Socket.IO)
 - Redis
+
+## 准备部署
+
+开始之前，你需要一台搭载 Ubuntu 18.04 的服务器以更快的构建程序。因为这里已经提供了适用于 Ubuntu 18.04 构建的打包后的应用。
+
+你只需要下载它：
+
+```
+wget -O mx-server.zip $(curl --silent "https://api.github.com/repos/mx-space/server/releases/latest" |
+grep '"tag_name":' |
+sed -E 's/.*"([^"]+)".*/https:\/\/github\.com\/mx-space\/server\/releases\/download\/\1\/release_ubuntu_amd64.zip/')
+mkdir -p mx-server
+unzip mx-server.zip -d ./mx-server
+cd ./mx-server
+mv release/* .
+mv release/.* .
+rmdir release
+
+```
+
+启动服务:
+
+```
+node index.js
+```
