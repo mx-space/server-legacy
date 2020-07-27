@@ -79,7 +79,7 @@
     "mongoose": "5.9.25",
     "mongoose-lean-virtuals": "0.6.8",
     "mongoose-unique-validator": "2.0.3",
-    "nanoid": "3.1.10",
+    "nanoid": "3.1.11",
     "nestjs-redis": "1.2.8",
     "nestjs-typegoose": "7.1.28",
     "nodemailer": "6.4.10",
