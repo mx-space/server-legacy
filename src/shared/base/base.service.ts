@@ -162,7 +162,7 @@ export class BaseService<T extends BaseModel> {
     const total = await this.countDocument(condition)
     const { skip = 0, limit = 10 } = options
     const page = skip / limit + 1
-    const totalPage = Math.ceil(total / limit)
+    const totalPage = Math.ceil(total / limit) || 1
     return {
       data: queryList,
       page: {
