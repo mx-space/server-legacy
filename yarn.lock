@@ -6787,10 +6787,10 @@ nestjs-redis@1.2.8:
     rxjs "^6.2.2"
     uuid "^3.3.2"
 
-nestjs-typegoose@7.1.29:
-  version "7.1.29"
-  resolved "https://registry.yarnpkg.com/nestjs-typegoose/-/nestjs-typegoose-7.1.29.tgz#d0436f5edc7df4f83c3a7f0a475c76d6d23756ca"
-  integrity sha512-D5h753Sv9sX9JZnZxR+wjY8SQKfBseF+g8EfzpqEguwwUj6pUYxx6HY4Lsz7tStdwxzXOyNRlWwCN3VT127wzw==
+nestjs-typegoose@7.1.30:
+  version "7.1.30"
+  resolved "https://registry.yarnpkg.com/nestjs-typegoose/-/nestjs-typegoose-7.1.30.tgz#a5159645450c11844d54360f65d8afb55bcfb44c"
+  integrity sha512-ZcBUR+qzxQI+Fvln43GwS9i/YsaKWeMcusgHNx+1i/Wfawx1QWVYAvneaGeEoNiCJ+eygDm9dfrgshRFrpK+kg==
   dependencies:
     is-class "^0.0.9"
     reflect-metadata "^0.1.13"
