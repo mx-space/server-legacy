@@ -3,11 +3,13 @@ import { Cron, CronExpression } from '@nestjs/schedule'
 import { ReturnModelType } from '@typegoose/typegoose'
 import { execSync } from 'child_process'
 import * as COS from 'cos-nodejs-sdk-v5'
-import { existsSync } from 'fs'
+import dayjs = require('dayjs')
+import { existsSync, readFileSync } from 'fs'
 import * as mkdirp from 'mkdirp'
 import { RedisService } from 'nestjs-redis'
 import { InjectModel } from 'nestjs-typegoose'
 import { join } from 'path'
+import { isDev } from 'src/utils'
 import { ConfigsService } from '../../../../src/configs/configs.service'
 import { BackupsService } from '../../../../src/shared/backups/backups.service'
 import { Analyze } from '../../../db/src/models/analyze.model'
@@ -22,36 +24,42 @@ export class TasksService {
     private readonly analyzeModel: ReturnModelType<typeof Analyze>,
     private readonly redisCtx: RedisService,
   ) {}
-  @Cron(CronExpression.EVERY_DAY_AT_10PM, { name: 'backup' })
-  backupDB() {
-    if (
-      !this.configs.get('backupOptions').enable ||
-      process.env.NODE_ENV === 'development'
-    ) {
+  @Cron(CronExpression.EVERY_DAY_AT_1AM, { name: 'backup' })
+  backupDB({ uploadCOS = true }: { uploadCOS?: boolean } = {}) {
+    if (!this.configs.get('backupOptions').enable) {
       return
     }
     this.logger.log('--> 备份数据库中')
 
     const dateDir = this.nowStr
+
     const backupDirPath = join(BackupsService.backupPath, dateDir)
     mkdirp.sync(backupDirPath)
     try {
       execSync(
-        'mongodump -h 127.0.0.1 -d mx-space -o ~/.mx-space/backup/' +
-          dateDir +
+        'mongodump -h 127.0.0.1 -d mx-space -o ' +
+          backupDirPath +
           ' >/dev/null 2>&1',
+        { encoding: 'utf-8' },
       )
       execSync('zip -r backup-' + dateDir + ' mx-space/* && rm -r mx-space', {
         cwd: backupDirPath,
+        encoding: 'utf-8',
       })
       this.logger.log('--> 备份成功')
-    } catch {
+    } catch (e) {
+      if (isDev) {
+        console.log(e)
+      }
       this.logger.error(
         '--> 备份失败, 请确保已安装 zip 或 mongo-tools, mongo-tools 的版本需要与 mongod 版本一致',
       )
       return
     }
     new Promise((reslove) => {
+      if (!uploadCOS) {
+        return reslove()
+      }
       const backupOptions = this.configs.get('backupOptions')
       if (
         !backupOptions.Bucket ||
@@ -90,6 +98,8 @@ export class TasksService {
       )
       reslove('OK')
     })
+
+    return readFileSync(join(backupDirPath, 'backup-' + dateDir + '.zip'))
   }
   @Cron(CronExpression.EVERY_1ST_DAY_OF_MONTH_AT_MIDNIGHT, {
     name: 'clear_access',
@@ -126,11 +136,6 @@ export class TasksService {
     }
   }
   get nowStr() {
-    const date = new Date()
-    const year = date.getFullYear()
-    const month = date.getMonth() + 1
-    const day = date.getDate()
-    const nowStr = `${year}-${month}-${day}`
-    return nowStr
+    return dayjs().format('YYYY-MM-DD-HH:mm:ss')
   }
 }

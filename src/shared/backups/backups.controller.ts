@@ -1,7 +1,7 @@
 /*
  * @Author: Innei
  * @Date: 2020-05-14 11:46:35
- * @LastEditTime: 2020-07-31 20:58:34
+ * @LastEditTime: 2020-07-31 21:28:05
  * @LastEditors: Innei
  * @FilePath: /mx-server/src/shared/backups/backups.controller.ts
  * @Coding with Love
@@ -20,9 +20,10 @@ import {
   Scope,
   UnprocessableEntityException,
 } from '@nestjs/common'
-import { ApiProperty, ApiTags } from '@nestjs/swagger'
+import { ApiProperty, ApiResponseProperty, ApiTags } from '@nestjs/swagger'
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { ApplyUpload } from 'src/core/decorators/file.decorator'
+import { Readable } from 'stream'
 import { TasksService } from '../../../libs/common/src/tasks/tasks.service'
 import { Auth } from '../../core/decorators/auth.decorator'
 import { UploadsService } from '../uploads/uploads.service'
@@ -39,9 +40,20 @@ export class BackupsController {
   ) {}
 
   @Get('new')
-  createNewBackup() {
-    this.taskService.backupDB()
-    return 'OK'
+  @ApiResponseProperty({ type: 'string', format: 'binary' })
+  createNewBackup(@Res() res: FastifyReply) {
+    const buffer = this.taskService.backupDB({ uploadCOS: false })
+    const stream = new Readable()
+
+    stream.push(buffer)
+    stream.push(null)
+    res
+      .header(
+        'Content-Disposition',
+        `attachment; filename="backup-${new Date().toISOString()}.zip"`,
+      )
+      .type('application/zip')
+      .send(stream)
   }
 
   @Get()
