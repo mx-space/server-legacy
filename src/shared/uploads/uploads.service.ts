@@ -10,7 +10,6 @@ import * as crypto from 'crypto'
 import { FastifyRequest } from 'fastify'
 import { fromBuffer } from 'file-type'
 import { existsSync, readFileSync, unlinkSync, writeFileSync } from 'fs'
-import { IncomingMessage } from 'http'
 import { imageSize } from 'image-size'
 import * as mkdirp from 'mkdirp'
 import { InjectModel } from 'nestjs-typegoose'
@@ -21,6 +20,7 @@ import { CannotFindException } from 'src/core/exceptions/cant-find.exception'
 import { Readable } from 'stream'
 import { ConfigsService } from '../../configs/configs.service'
 import { ImageService } from './image.service'
+
 // @Injectable({ scope: Scope.REQUEST })
 export class UploadsService {
   // TODO sync file between db and disk
@@ -39,14 +39,14 @@ export class UploadsService {
       : join(homedir(), '/.mx-space/uploads')
   public rootPath = UploadsService.rootPath
 
-  ValidImage(req: FastifyRequest<IncomingMessage>) {
+  ValidImage(req: FastifyRequest) {
     if (!req.isMultipart()) {
       throw new BadRequestException('仅供上传文件!')
     }
-    if (!req.body.file) {
+    if (!(req.body as any).file) {
       throw new BadRequestException('字段必须为 file')
     }
-    const fileInfo = req.body.file[0]
+    const fileInfo = (req.body as any).file[0]
     if (!fileInfo) {
       throw new BadRequestException('文件丢失了')
     }

@@ -14,13 +14,7 @@ import {
   NestInterceptor,
   UnauthorizedException,
 } from '@nestjs/common'
-import {
-  DefaultHeaders,
-  DefaultParams,
-  DefaultQuery,
-  FastifyRequest,
-} from 'fastify'
-import { IncomingMessage } from 'http'
+import { FastifyRequest } from 'fastify'
 import { isObjectLike } from 'lodash'
 import { Observable } from 'rxjs'
 import { map } from 'rxjs/operators'
@@ -30,15 +24,9 @@ import { AnyType } from 'src/shared/base/interfaces'
 export class PermissionInterceptor<T> implements NestInterceptor<T, AnyType> {
   intercept(context: ExecutionContext, next: CallHandler): Observable<AnyType> {
     const http = context.switchToHttp()
-    const req = http.getRequest<
-      FastifyRequest<IncomingMessage>
-    >() as FastifyRequest<
-      IncomingMessage,
-      DefaultQuery,
-      DefaultParams,
-      DefaultHeaders,
-      any
-    > & { isMaster: boolean }
+    const req = http.getRequest<FastifyRequest>() as FastifyRequest & {
+      isMaster: boolean
+    }
 
     return next.handle().pipe(
       map((data) => {

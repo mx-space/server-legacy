@@ -1,12 +1,20 @@
+/*
+ * @Author: Innei
+ * @Date: 2020-04-30 19:09:37
+ * @LastEditTime: 2020-07-08 21:35:06
+ * @LastEditors: Innei
+ * @FilePath: /mx-server/src/core/guards/spider.guard.ts
+ * @Coding with Love
+ */
+
 import {
-  Injectable,
   CanActivate,
   ExecutionContext,
   ForbiddenException,
+  Injectable,
 } from '@nestjs/common'
-import { Observable } from 'rxjs'
-import { IncomingMessage } from 'http'
 import { FastifyRequest } from 'fastify'
+import { Observable } from 'rxjs'
 
 @Injectable()
 export class SpiderGuard implements CanActivate {
@@ -14,7 +22,7 @@ export class SpiderGuard implements CanActivate {
     context: ExecutionContext,
   ): boolean | Promise<boolean> | Observable<boolean> {
     const http = context.switchToHttp()
-    const request = http.getRequest<FastifyRequest<IncomingMessage>>()
+    const request = http.getRequest<FastifyRequest>()
     const headers = request.headers
     // const { referer } = headers
     const ua: string = headers['user-agent'] || ''

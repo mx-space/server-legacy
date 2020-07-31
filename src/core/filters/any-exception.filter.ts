@@ -1,7 +1,7 @@
 /*
  * @Author: Innei
  * @Date: 2020-05-08 20:01:58
- * @LastEditTime: 2020-06-21 22:45:39
+ * @LastEditTime: 2020-07-08 21:34:46
  * @LastEditors: Innei
  * @FilePath: /mx-server/src/core/filters/any-exception.filter.ts
  * @Coding with Love
@@ -16,7 +16,6 @@ import {
   Logger,
 } from '@nestjs/common'
 import { FastifyReply, FastifyRequest } from 'fastify'
-import { IncomingMessage, ServerResponse } from 'http'
 import { getIp } from '../../utils/ip'
 type myError = {
   readonly status: number
@@ -31,8 +30,8 @@ export class AllExceptionsFilter implements ExceptionFilter {
   catch(exception: unknown, host: ArgumentsHost) {
     // super.catch(exception, host)
     const ctx = host.switchToHttp()
-    const response = ctx.getResponse<FastifyReply<ServerResponse>>()
-    const request = ctx.getRequest<FastifyRequest<IncomingMessage>>()
+    const response = ctx.getResponse<FastifyReply>()
+    const request = ctx.getRequest<FastifyRequest>()
 
     const status =
       exception instanceof HttpException
@@ -51,7 +50,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
           ((exception as any)?.response?.message ||
             (exception as myError)?.message ||
             '') +
-          `path: ${request.req.url}`,
+          `path: ${request.raw.url}`,
       )
     }
 
@@ -63,7 +62,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
         (exception as any)?.message ||
         '未知错误',
       timestamp: new Date().toISOString(),
-      path: request.req.url,
+      path: request.raw.url,
     })
   }
 }

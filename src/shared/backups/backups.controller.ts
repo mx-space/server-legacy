@@ -1,7 +1,7 @@
 /*
  * @Author: Innei
  * @Date: 2020-05-14 11:46:35
- * @LastEditTime: 2020-06-07 13:44:39
+ * @LastEditTime: 2020-07-08 21:37:16
  * @LastEditors: Innei
  * @FilePath: /mx-server/src/shared/backups/backups.controller.ts
  * @Coding with Love
@@ -16,12 +16,11 @@ import {
   Post,
   Query,
   Res,
-  UnprocessableEntityException,
   Scope,
+  UnprocessableEntityException,
 } from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
 import { FastifyReply } from 'fastify'
-import { ServerResponse } from 'http'
 import { TasksService } from '../../../libs/common/src/tasks/tasks.service'
 import { Auth } from '../../core/decorators/auth.decorator'
 import { BackupsService } from './backups.service'
@@ -48,7 +47,7 @@ export class BackupsController {
   @Get(':dirname')
   async downloadBackup(
     @Param('dirname') dirname: string,
-    @Res() res: FastifyReply<ServerResponse>,
+    @Res() res: FastifyReply,
   ) {
     res.send(this.service.getFileStream(dirname))
   }

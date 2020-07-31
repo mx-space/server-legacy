@@ -15,7 +15,6 @@ import {
 } from '@nestjs/common'
 import { ApiBody, ApiConsumes, ApiProperty, ApiTags } from '@nestjs/swagger'
 import { FastifyReply, FastifyRequest } from 'fastify'
-import { IncomingMessage, ServerResponse } from 'http'
 import { Auth } from 'src/core/decorators/auth.decorator'
 import { CannotFindException } from 'src/core/exceptions/cant-find.exception'
 import { UploadsService } from 'src/shared/uploads/uploads.service'
@@ -39,7 +38,7 @@ export class UploadsController {
   })
   @Auth()
   async uploadImage(
-    @Req() req: FastifyRequest<IncomingMessage>,
+    @Req() req: FastifyRequest,
     @Query() query: FileTypeQueryDto,
   ) {
     const { type = FileType.IMAGE } = query
@@ -52,7 +51,7 @@ export class UploadsController {
   async getImage(
     @Param('hashname') name: string,
     @Param('type') _type: string,
-    @Res() res: FastifyReply<ServerResponse>,
+    @Res() res: FastifyReply,
   ) {
     const type = getEnumFromType(_type.toUpperCase() as keyof typeof FileType)
     if (!(type in FileType)) {

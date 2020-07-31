@@ -15,7 +15,7 @@ import {
 } from '@nestjs/common'
 import { ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger'
 import { FastifyReply } from 'fastify'
-import { IncomingMessage, ServerResponse } from 'http'
+import { Session } from 'fastify-secure-session'
 import { RolesGuard } from 'src/auth/roles.guard'
 import { Auth } from 'src/core/decorators/auth.decorator'
 import { Master } from 'src/core/decorators/guest.decorator'
@@ -197,23 +197,23 @@ export class NotesController {
   @Get('like/:id')
   async likeNote(
     @Param() param: IdDto,
-    @Req() req: FastifyReply<IncomingMessage> & { session: any },
-    @Res() res: FastifyReply<ServerResponse>,
+    @Req() req: FastifyReply & { session: Session },
+    @Res() res: FastifyReply,
     @IpLocation() location: IpRecord,
   ) {
     const isLiked = !(await this.noteService.likeNote(param.id, location.ip))
-
-    if (!req.session.liked && !isLiked) {
-      req.session.liked = [param.id]
+    const liked = req.session.get('liked') as undefined | string[]
+    if (!liked && !isLiked) {
+      req.session.set('liked', [param.id])
     } else {
-      if (isLiked || (req.session.liked as string[]).includes(param.id)) {
+      if (isLiked || liked.includes(param.id)) {
         return res
           .status(422)
           .header('Access-Control-Allow-Origin', req.headers['origin'])
           .header('Access-Control-Allow-Credentials', true)
           .send({ message: '一天一次就够啦' })
       }
-      req.session.liked.push(param.id)
+      req.session.set('liked', liked.concat(param.id))
     }
 
     res

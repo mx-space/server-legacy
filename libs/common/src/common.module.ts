@@ -1,7 +1,7 @@
 /*
  * @Author: Innei
  * @Date: 2020-05-08 17:02:08
- * @LastEditTime: 2020-06-13 09:55:52
+ * @LastEditTime: 2020-07-31 17:50:30
  * @LastEditors: Innei
  * @FilePath: /mx-server/libs/common/src/common.module.ts
  * @Coding with Love
@@ -36,19 +36,13 @@ if (process.env.NODE_ENV === 'production') {
       isGlobal: true,
     }),
     CacheModule.registerAsync({
-      useFactory: () =>
-        ~~process.env.REDIS === 1
-          ? {
-              store: redisStore,
-              host: 'localhost',
-              port: 6379,
-              ttl: 30,
-              max: 300,
-            }
-          : {
-              ttl: 30, // seconds
-              max: 100, // maximum number of items in cache
-            },
+      useFactory: () => ({
+        store: redisStore,
+        host: 'localhost',
+        port: 6379,
+        ttl: 30,
+        max: 300,
+      }),
     }),
     RedisModule.register([
       {

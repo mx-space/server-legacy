@@ -1,7 +1,7 @@
 /*
  * @Author: Innei
  * @Date: 2020-05-21 11:05:42
- * @LastEditTime: 2020-07-22 16:32:19
+ * @LastEditTime: 2020-07-31 19:02:46
  * @LastEditors: Innei
  * @FilePath: /mx-server/src/main.ts
  * @Coding with Love
@@ -19,6 +19,7 @@ import { isDev } from './utils'
 
 const PORT = parseInt(process.env.PORT) || 2333
 const APIVersion = 1
+const Origin = process.env.ORIGIN || null
 
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
@@ -28,11 +29,13 @@ async function bootstrap() {
   app.useWebSocketAdapter(new ExtendsIoAdapter(app))
   app.useGlobalFilters(new AllExceptionsFilter())
   app.useGlobalInterceptors(new ResponseInterceptor())
-  if (isDev) {
+  if (isDev || 1 === parseInt(process.env.CORS as any)) {
     app.enableCors({ origin: true, credentials: true })
   } else {
-    if (1 === parseInt(process.env.CORS as any)) {
-      app.enableCors({ origin: true, credentials: true })
+    if (Origin) {
+      const hosts = Origin.split(',').map((host) => new RegExp(host, 'ig'))
+      // in production mode
+      app.enableCors({ origin: hosts, credentials: true })
     }
   }
   app.setGlobalPrefix(isDev ? '' : `api/v${APIVersion}`)

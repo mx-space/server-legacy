@@ -1,11 +1,11 @@
 import { Injectable, NestMiddleware } from '@nestjs/common'
 import { FastifyRequest } from 'fastify'
-import { IncomingMessage, ServerResponse } from 'http'
+import { ServerResponse } from 'http'
 
 /*
  * @Author: Innei
  * @Date: 2020-05-22 11:17:11
- * @LastEditTime: 2020-05-26 09:23:31
+ * @LastEditTime: 2020-07-08 21:36:43
  * @LastEditors: Innei
  * @FilePath: /mx-server/src/core/middlewares/favicon.middleware.ts
  * @MIT
@@ -13,7 +13,7 @@ import { IncomingMessage, ServerResponse } from 'http'
 @Injectable()
 export class SkipFaviconMiddleware implements NestMiddleware {
   async use(
-    req: FastifyRequest<IncomingMessage> & { url: string },
+    req: FastifyRequest & { url: string },
     res: ServerResponse,
     next: () => void,
   ) {
