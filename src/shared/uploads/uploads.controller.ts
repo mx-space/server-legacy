@@ -1,3 +1,12 @@
+/*
+ * @Author: Innei
+ * @Date: 2020-07-31 19:38:38
+ * @LastEditTime: 2020-07-31 19:59:08
+ * @LastEditors: Innei
+ * @FilePath: /mx-server/src/shared/uploads/uploads.controller.ts
+ * @Coding with Love
+ */
+
 import {
   FileLocate,
   FileType,
@@ -13,17 +22,14 @@ import {
   Req,
   Res,
 } from '@nestjs/common'
-import { ApiBody, ApiConsumes, ApiProperty, ApiTags } from '@nestjs/swagger'
+import { ApiTags } from '@nestjs/swagger'
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { Auth } from 'src/core/decorators/auth.decorator'
+import { ApplyUpload } from 'src/core/decorators/file.decorator'
 import { CannotFindException } from 'src/core/exceptions/cant-find.exception'
 import { UploadsService } from 'src/shared/uploads/uploads.service'
 import { IdDto } from '../base/dto/id.dto'
 import { FileTypeQueryDto } from './dto/filetype.dto'
-class FileUploadDto {
-  @ApiProperty({ type: 'string', format: 'binary' })
-  file: any
-}
 
 @Controller('uploads')
 @ApiTags('File Routes')
@@ -31,18 +37,14 @@ export class UploadsController {
   constructor(private readonly service: UploadsService) {}
 
   @Post('image')
-  @ApiConsumes('multipart/form-data')
-  @ApiBody({
-    description: 'Upload images',
-    type: FileUploadDto,
-  })
+  @ApplyUpload({ description: 'Upload images' })
   @Auth()
   async uploadImage(
     @Req() req: FastifyRequest,
     @Query() query: FileTypeQueryDto,
   ) {
     const { type = FileType.IMAGE } = query
-    const fileInfo = this.service.ValidImage(req)
+    const fileInfo = this.service.validImage(req)
     const data = await this.service.saveImage(fileInfo, type)
     return { ...data }
   }

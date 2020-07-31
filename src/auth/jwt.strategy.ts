@@ -1,3 +1,12 @@
+/*
+ * @Author: Innei
+ * @Date: 2020-04-30 12:21:51
+ * @LastEditTime: 2020-07-31 19:52:35
+ * @LastEditors: Innei
+ * @FilePath: /mx-server/src/auth/jwt.strategy.ts
+ * @Coding with Love
+ */
+
 import { Injectable, UnauthorizedException } from '@nestjs/common'
 import { PassportStrategy } from '@nestjs/passport'
 import { ExtractJwt, Strategy, StrategyOptions } from 'passport-jwt'

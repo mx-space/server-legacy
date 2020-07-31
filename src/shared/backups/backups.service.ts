@@ -1,21 +1,30 @@
 /*
  * @Author: Innei
  * @Date: 2020-05-14 11:46:26
- * @LastEditTime: 2020-06-07 14:59:04
+ * @LastEditTime: 2020-07-31 20:59:15
  * @LastEditors: Innei
  * @FilePath: /mx-server/src/shared/backups/backups.service.ts
  * @Coding with Love
  */
 
-import { Injectable, UnprocessableEntityException, Scope } from '@nestjs/common'
+import { Injectable, Scope, UnprocessableEntityException } from '@nestjs/common'
 import { execSync } from 'child_process'
-import { existsSync, readdirSync, readFileSync, rmdirSync, statSync } from 'fs'
+import {
+  existsSync,
+  readdirSync,
+  readFileSync,
+  rmdirSync,
+  statSync,
+  writeFileSync,
+} from 'fs'
+import * as mkdirp from 'mkdirp'
 import { homedir } from 'os'
 import { join, resolve } from 'path'
 import { Readable } from 'stream'
 import { AdminEventsGateway } from '../../gateway/admin/events.gateway'
-import { NotificationTypes, EventTypes } from '../../gateway/events.types'
+import { EventTypes, NotificationTypes } from '../../gateway/events.types'
 import getFolderSize = require('get-folder-size')
+
 @Injectable({ scope: Scope.REQUEST })
 export class BackupsService {
   constructor(private readonly adminGateway: AdminEventsGateway) {}
@@ -86,6 +95,32 @@ export class BackupsService {
     return stream
   }
 
+  saveTempBackupByUpload(buffer: Buffer) {
+    const tempDirPath = '/tmp/mx-space/backup'
+    const tempBackupPath = join(tempDirPath, 'backup.zip')
+    mkdirp.sync(tempDirPath)
+    writeFileSync(tempBackupPath, buffer)
+
+    try {
+      const cmd = `unzip backup.zip;
+        mongorestore -h ${
+          process.env.DB_URL || '127.0.0.1'
+        } -d mx-space ./mx-space --drop  >/dev/null 2>&1
+      `
+
+      execSync(cmd, {
+        cwd: tempDirPath,
+      })
+
+      this.adminGateway.broadcase(EventTypes.CONTENT_REFRESH, 'restore_done')
+    } catch (e) {
+      const logDir = '/tmp/mx-space/log'
+      mkdirp.sync(logDir)
+      writeFileSync(logDir, e, { encoding: 'utf-8', flag: 'a+' })
+    } finally {
+      rmdirSync(tempDirPath, { recursive: true })
+    }
+  }
   async rollbackTo(dirname: string, id: string) {
     const sendToSocket = (message: string, type: NotificationTypes = 'error') =>
       this.adminGateway.sendNotification({
@@ -122,9 +157,6 @@ export class BackupsService {
       } catch {}
     }
     sendToSocket('数据恢复成功', 'success')
-    this.adminGateway.sendNotification({
-      id,
-      type: EventTypes.CONTENT_REFRESH,
-    })
+    this.adminGateway.broadcase(EventTypes.CONTENT_REFRESH, 'restore_done')
   }
 }

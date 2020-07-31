@@ -17,6 +17,7 @@ import { homedir } from 'os'
 import { join } from 'path'
 import { plural } from 'pluralize'
 import { CannotFindException } from 'src/core/exceptions/cant-find.exception'
+import { isDev } from 'src/utils'
 import { Readable } from 'stream'
 import { ConfigsService } from '../../configs/configs.service'
 import { ImageService } from './image.service'
@@ -33,20 +34,31 @@ export class UploadsService {
     this.initDirectory()
   }
 
-  public static rootPath =
-    process.env.NODE_ENV === 'development'
-      ? join(__dirname, '../uploads')
-      : join(homedir(), '/.mx-space/uploads')
+  public static rootPath = isDev
+    ? join(__dirname, '../uploads')
+    : join(homedir(), '/.mx-space/uploads')
   public rootPath = UploadsService.rootPath
 
-  ValidImage(req: FastifyRequest) {
+  public validMultipartField(req: FastifyRequest) {
     if (!req.isMultipart()) {
       throw new BadRequestException('仅供上传文件!')
     }
     if (!(req.body as any).file) {
       throw new BadRequestException('字段必须为 file')
     }
-    const fileInfo = (req.body as any).file[0]
+    // @ts-ignore
+    return req.body.file as [
+      {
+        data: Buffer
+        filename: string
+        encoding: string
+        mimetype: string
+        limit: boolean
+      },
+    ]
+  }
+  validImage(req: FastifyRequest) {
+    const fileInfo = this.validMultipartField(req)[0]
     if (!fileInfo) {
       throw new BadRequestException('文件丢失了')
     }
