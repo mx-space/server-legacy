@@ -1,7 +1,7 @@
 /*
  * @Author: Innei
  * @Date: 2020-04-30 12:21:51
- * @LastEditTime: 2020-07-08 21:34:24
+ * @LastEditTime: 2020-07-31 17:44:59
  * @LastEditors: Innei
  * @FilePath: /mx-server/src/app.controller.ts
  * @Copyright
@@ -11,7 +11,7 @@ import { Controller, Get, Post, Req, Res } from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
 import { ReturnModelType } from '@typegoose/typegoose'
 import { FastifyReply } from 'fastify'
-import { Http2SecureServer } from 'http2'
+import { Session } from 'fastify-secure-session'
 import { InjectModel } from 'nestjs-typegoose'
 import { Option } from '../libs/db/src/models/option.model'
 import { getIp } from './utils/ip'
@@ -25,21 +25,23 @@ export class AppController {
   ) {}
   @Post('like_this')
   async likeThis(
-    @Req() req: FastifyReply<Http2SecureServer> & { session: any },
+    @Req()
+    req: FastifyReply & { session: Session },
     @Res() res: FastifyReply,
   ) {
     const ip = getIp(req as any)
-    if (!req.session.like_this) {
-      req.session.like_this = [ip]
+    if (!req.session.get('like_this')) {
+      req.session.set('like_this', [ip])
     } else {
-      if ((req.session.like_this as string[]).includes(ip)) {
+      const liked = req.session.get('like_this') as string[]
+      if (liked.includes(ip)) {
         return res
           .status(422)
           .header('Access-Control-Allow-Origin', req.headers['origin'])
           .header('Access-Control-Allow-Credentials', true)
           .send({ message: '一天一次就够啦' })
       }
-      req.session.like_this.push(ip)
+      req.session.set('like_this', liked.concat(ip))
     }
     await this.optionModel.updateOne(
       {
