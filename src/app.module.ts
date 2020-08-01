@@ -27,8 +27,9 @@ import { ConfigsModule } from './configs/configs.module'
 import { ServeStaticModule } from '@nestjs/serve-static'
 import { join } from 'path'
 import { AnalyzeMiddleware } from './core/middlewares/analyze.middleware'
-import { SkipFaviconMiddleware } from './core/middlewares/favicon.middleware'
+import { SkipBrowserDefaultRequestMiddleware } from './core/middlewares/favicon.middleware'
 import { AppController } from './app.controller'
+import { SecurityMiddleware } from './core/middlewares/security.middleware'
 const providers: Provider<any>[] = [
   {
     provide: APP_PIPE,
@@ -71,7 +72,7 @@ export class AppModule implements NestModule {
     consumer
       .apply(AnalyzeMiddleware)
       .forRoutes({ path: '(.*?)', method: RequestMethod.GET })
-      .apply(SkipFaviconMiddleware)
+      .apply(SkipBrowserDefaultRequestMiddleware, SecurityMiddleware)
       .forRoutes({ path: '(.*?)', method: RequestMethod.ALL })
   }
 }

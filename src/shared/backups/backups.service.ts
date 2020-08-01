@@ -1,13 +1,18 @@
 /*
  * @Author: Innei
  * @Date: 2020-05-14 11:46:26
- * @LastEditTime: 2020-07-31 20:59:15
+ * @LastEditTime: 2020-07-31 22:06:21
  * @LastEditors: Innei
  * @FilePath: /mx-server/src/shared/backups/backups.service.ts
  * @Coding with Love
  */
 
-import { Injectable, Scope, UnprocessableEntityException } from '@nestjs/common'
+import {
+  Injectable,
+  Logger,
+  Scope,
+  UnprocessableEntityException,
+} from '@nestjs/common'
 import { execSync } from 'child_process'
 import {
   existsSync,
@@ -27,6 +32,7 @@ import getFolderSize = require('get-folder-size')
 
 @Injectable({ scope: Scope.REQUEST })
 export class BackupsService {
+  private logger: Logger = new Logger(BackupsService.name)
   constructor(private readonly adminGateway: AdminEventsGateway) {}
   public static backupPath =
     process.env.NODE_ENV === 'production'
@@ -111,7 +117,7 @@ export class BackupsService {
       execSync(cmd, {
         cwd: tempDirPath,
       })
-
+      this.logger.debug('恢复成功')
       this.adminGateway.broadcase(EventTypes.CONTENT_REFRESH, 'restore_done')
     } catch (e) {
       const logDir = '/tmp/mx-space/log'
