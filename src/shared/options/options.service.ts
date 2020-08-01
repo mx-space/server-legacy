@@ -1,3 +1,12 @@
+/*
+ * @Author: Innei
+ * @Date: 2020-05-08 20:01:58
+ * @LastEditTime: 2020-08-01 19:00:22
+ * @LastEditors: Innei
+ * @FilePath: /mx-server/src/shared/options/options.service.ts
+ * @Coding with Love
+ */
+
 import Note from '@libs/db/models/note.model'
 import { Option } from '@libs/db/models/option.model'
 import Post from '@libs/db/models/post.model'

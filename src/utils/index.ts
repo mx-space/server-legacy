@@ -57,3 +57,7 @@ export function hasChinese(str: string) {
 }
 
 export const isDev = process.env.NODE_ENV === 'development'
+
+export const escapeShell = function (cmd: string) {
+  return '"' + cmd.replace(/(["\s'$`\\])/g, '\\$1') + '"'
+}

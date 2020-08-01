@@ -4,11 +4,12 @@ import { ReturnModelType } from '@typegoose/typegoose'
 import { execSync } from 'child_process'
 import * as COS from 'cos-nodejs-sdk-v5'
 import dayjs = require('dayjs')
-import { existsSync, readFileSync } from 'fs'
+import { existsSync, readFileSync, rmdirSync } from 'fs'
 import * as mkdirp from 'mkdirp'
 import { RedisService } from 'nestjs-redis'
 import { InjectModel } from 'nestjs-typegoose'
 import { join } from 'path'
+import { TEMP_DIR } from 'src/constants'
 import { isDev } from 'src/utils'
 import { ConfigsService } from '../../../../src/configs/configs.service'
 import { BackupsService } from '../../../../src/shared/backups/backups.service'
@@ -137,5 +138,14 @@ export class TasksService {
   }
   get nowStr() {
     return dayjs().format('YYYY-MM-DD-HH:mm:ss')
+  }
+
+  @Cron(CronExpression.EVERY_DAY_AT_3AM)
+  cleanTempDirectory() {
+    const tempDir = TEMP_DIR
+
+    rmdirSync(tempDir, { recursive: true })
+
+    mkdirp.sync(tempDir)
   }
 }

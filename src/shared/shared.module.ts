@@ -24,14 +24,14 @@ import { BackupsController } from './backups/backups.controller'
 import { BackupsService } from './backups/backups.service'
 import { CategoriesController } from './categories/categories.controller'
 import { CategoriesService } from './categories/categories.service'
-import { ImportController } from './import/import.controller'
-import { ImportService } from './import/import.service'
+import { HelperController } from './helper/helper.controller'
+import { HelperService } from './helper/helper.service'
 import { LinksController } from './links/links.controller'
 import { LinksService } from './links/links.service'
 import { NotesController } from './notes/notes.controller'
 import { NotesService } from './notes/notes.service'
-import { OptionsController } from './options/admin.controller'
-import { OptionsService } from './options/admin.service'
+import { OptionsController } from './options/options.controller'
+import { OptionsService } from './options/options.service'
 import { ProjectsController } from './projects/projects.controller'
 import { ProjectsService } from './projects/projects.service'
 import { SaysController } from './says/says.controller'
@@ -62,7 +62,7 @@ import { UploadsModule } from './uploads/uploads.module'
     ProjectsService,
     SaysService,
     LinksService,
-    ImportService,
+    HelperService,
     AnalyzeService,
     BackupsService,
   ],
@@ -77,7 +77,7 @@ import { UploadsModule } from './uploads/uploads.module'
     ProjectsController,
     SaysController,
     LinksController,
-    ImportController,
+    HelperController,
     AnalyzeController,
     BackupsController,
   ],
