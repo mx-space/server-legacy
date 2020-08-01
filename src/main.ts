@@ -1,7 +1,7 @@
 /*
  * @Author: Innei
  * @Date: 2020-05-21 11:05:42
- * @LastEditTime: 2020-07-31 19:02:46
+ * @LastEditTime: 2020-08-01 15:15:24
  * @LastEditors: Innei
  * @FilePath: /mx-server/src/main.ts
  * @Coding with Love
@@ -29,15 +29,14 @@ async function bootstrap() {
   app.useWebSocketAdapter(new ExtendsIoAdapter(app))
   app.useGlobalFilters(new AllExceptionsFilter())
   app.useGlobalInterceptors(new ResponseInterceptor())
-  if (isDev || 1 === parseInt(process.env.CORS as any)) {
-    app.enableCors({ origin: true, credentials: true })
-  } else {
-    if (Origin) {
-      const hosts = Origin.split(',').map((host) => new RegExp(host, 'ig'))
-      // in production mode
-      app.enableCors({ origin: hosts, credentials: true })
-    }
-  }
+
+  const hosts = Origin.split(',').map((host) => new RegExp(host, 'i'))
+
+  app.enableCors({
+    origin: hosts,
+    credentials: true,
+  })
+
   app.setGlobalPrefix(isDev ? '' : `api/v${APIVersion}`)
   if (isDev) {
     const options = new DocumentBuilder()
