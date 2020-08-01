@@ -11,7 +11,6 @@ import {
 } from '@nestjs/common'
 import { DocumentType, ReturnModelType } from '@typegoose/typegoose'
 import { AnyParamConstructor } from '@typegoose/typegoose/lib/types'
-import { ISizeCalculationResult } from 'image-size/dist/types/interface'
 import { FindAndModifyWriteOpResultObject, MongoError } from 'mongodb'
 import {
   DocumentQuery,

@@ -19,12 +19,12 @@ import {
 import { ApiProperty, ApiQuery, ApiTags } from '@nestjs/swagger'
 import { execSync } from 'child_process'
 import { FastifyReply } from 'fastify'
-import { join } from 'path'
+import { readFileSync } from 'fs'
 import { Readable } from 'nodemailer/lib/xoauth2'
+import { join } from 'path'
+import { Auth } from 'src/core/decorators/auth.decorator'
 import { ArticleType, DataListDto } from './dto/datatype.dto'
 import { HelperService, MarkdownYAMLProperty } from './helper.service'
-import { readFileSync } from 'fs'
-import { Auth } from 'src/core/decorators/auth.decorator'
 
 @Controller('helper')
 @ApiTags('Helper Routes')

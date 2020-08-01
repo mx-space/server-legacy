@@ -35,11 +35,7 @@ export class AggregateService {
   private findTop<
     U extends AnyParamConstructor<any>,
     T extends ReturnModelType<U>
-  >(
-    model: T,
-    condition = {},
-    size = 6,
-  ): DocumentQuery<DocumentType<T>[], DocumentType<T>, {}> {
+  >(model: T, condition = {}, size = 6) {
     return model
       .find(condition)
       .sort({ created: -1 })

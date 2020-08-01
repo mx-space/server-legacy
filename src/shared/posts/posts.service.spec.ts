@@ -7,9 +7,9 @@
  * @Coding with Love
  */
 import { Test, TestingModule } from '@nestjs/testing'
-import { PostsService } from './posts.service'
 import { RedisModule, RedisService } from 'nestjs-redis'
 import { RedisNames } from '../../../libs/common/src/redis/redis.types'
+import { PostsService } from './posts.service'
 
 describe('PostsService', () => {
   let service: PostsService

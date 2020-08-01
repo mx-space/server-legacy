@@ -11,12 +11,12 @@ import Note from '@libs/db/models/note.model'
 import { HttpService, Injectable } from '@nestjs/common'
 import { DocumentType, ReturnModelType } from '@typegoose/typegoose'
 import { compareSync } from 'bcrypt'
+import { RedisService } from 'nestjs-redis'
 import { InjectModel } from 'nestjs-typegoose'
 import { CannotFindException } from 'src/core/exceptions/cant-find.exception'
 import { addConditionToSeeHideContent } from 'src/utils'
-import { updateReadCount, updateLikeCount } from '../../utils/text-base'
+import { updateLikeCount, updateReadCount } from '../../utils/text-base'
 import { WriteBaseService } from '../base/base.service'
-import { RedisService } from 'nestjs-redis'
 
 @Injectable()
 export class NotesService extends WriteBaseService<Note> {

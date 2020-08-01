@@ -3,18 +3,18 @@ import { ApiTags } from '@nestjs/swagger'
 import { DocumentType } from '@typegoose/typegoose'
 import * as dayjs from 'dayjs'
 import { RedisService } from 'nestjs-redis'
+import { RedisNames } from '../../../libs/common/src/redis/redis.types'
 import { Analyze } from '../../../libs/db/src/models/analyze.model'
 import { Auth } from '../../core/decorators/auth.decorator'
-import { PagerDto } from '../base/dto/pager.dto'
 import {
   getMonthLength,
   getMonthStart,
   getTodayEarly,
   getWeekStart,
 } from '../../utils/time'
+import { PagerDto } from '../base/dto/pager.dto'
 import { AnalyzeDto } from './analyze.dto'
 import { AnalyzeService } from './analyze.service'
-import { RedisNames } from '../../../libs/common/src/redis/redis.types'
 @Controller('analyze')
 @ApiTags('Analyze Routes')
 @Auth()

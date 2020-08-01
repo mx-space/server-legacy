@@ -1,12 +1,12 @@
 import Category from '@libs/db/models/category.model'
 import { FileType } from '@libs/db/models/file.model'
 import {
+  CacheKey,
+  CacheTTL,
   Controller,
   Get,
   Query,
   UseGuards,
-  CacheKey,
-  CacheTTL,
 } from '@nestjs/common'
 import { ApiProperty, ApiTags } from '@nestjs/swagger'
 import { pick } from 'lodash'

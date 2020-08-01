@@ -16,8 +16,8 @@ import { ConfigsService } from '../../configs/configs.service'
 import { AdminEventsGateway } from '../../gateway/admin/events.gateway'
 import { SpamCheck } from '../../plugins/antiSpam'
 import { Mailer, ReplyMailType } from '../../plugins/mailer'
-import { BaseService } from '../base/base.service'
 import { hasChinese } from '../../utils'
+import { BaseService } from '../base/base.service'
 
 @Injectable()
 export class CommentsService extends BaseService<Comment> {
