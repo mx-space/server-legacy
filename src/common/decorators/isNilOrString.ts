@@ -10,7 +10,7 @@ import { isNil } from 'lodash'
 
 @ValidatorConstraint({ async: true })
 class IsNilOrStringConstraint implements ValidatorConstraintInterface {
-  validate(value: any, args: ValidationArguments) {
+  validate(value: any, _args: ValidationArguments) {
     return isNil(value) || isString(value)
   }
 }

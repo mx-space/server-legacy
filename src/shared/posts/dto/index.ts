@@ -1,3 +1,4 @@
+import Post from '@libs/db/models/post.model'
 /*
  * @Author: Innei
  * @Date: 2020-04-30 12:21:51
@@ -70,6 +71,11 @@ export class PostDto {
   @IsBoolean()
   @IsOptional()
   copyright?: boolean
+
+  @IsOptional()
+  @IsNotEmpty({ each: true })
+  @IsString({ each: true })
+  tags: string[]
 
   @IsOptional()
   @IsNotEmptyObject()

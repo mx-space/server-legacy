@@ -1,7 +1,7 @@
 /*
  * @Author: Innei
  * @Date: 2020-04-30 12:21:51
- * @LastEditTime: 2020-05-22 08:50:25
+ * @LastEditTime: 2020-08-02 13:09:10
  * @LastEditors: Innei
  * @FilePath: /mx-server/src/shared/categories/dto/category.dto.ts
  * @MIT
@@ -18,6 +18,7 @@ import {
   IsString,
 } from 'class-validator'
 import { uniq } from 'lodash'
+import { IsBooleanOrString } from 'src/common/decorators/isBooleanOrString'
 
 export enum CategoryType {
   Category,
@@ -48,6 +49,18 @@ export class SlugOrIdDto {
   query?: string
 }
 
+export class MultiQueryTagAndCategoryDto {
+  @IsOptional()
+  @Transform((val) => {
+    if (val === '1' || val === 'true') {
+      return true
+    } else {
+      return val
+    }
+  })
+  @IsBooleanOrString()
+  tag?: boolean | string
+}
 export class MultiCategoriesQueryDto {
   @IsOptional()
   @IsMongoId({

@@ -40,6 +40,9 @@ export default class Post extends WriteBaseModel {
   @prop({ default: true })
   copyright?: boolean
 
+  @prop()
+  tags?: string[]
+
   @prop({ type: Count, default: { read: 0, like: 0 }, _id: false })
   count?: Count
 
