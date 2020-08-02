@@ -10,7 +10,7 @@ import {
   Min,
 } from 'class-validator'
 import { Schema } from 'mongoose'
-import { IsNilOrString } from '../decorators/isNilOrString'
+import { IsNilOrString } from '../../../../src/common/decorators/isNilOrString'
 import { WriteBaseModel } from './base.model'
 
 export const pageType = ['md', 'html', 'frame']

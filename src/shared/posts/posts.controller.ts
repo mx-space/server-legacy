@@ -35,7 +35,7 @@ import { PostsService } from './posts.service'
 @ApiSecurity('bearer')
 export class PostsController {
   constructor(
-    private readonly postService: PostsService,
+    private readonly service: PostsService,
     private readonly webgateway: WebEventsGateway,
   ) {}
 
@@ -47,7 +47,7 @@ export class PostsController {
       ...addConditionToSeeHideContent(isMaster),
       ...yearCondition(year),
     }
-    return await this.postService.findWithPaginator(condition, {
+    return await this.service.findWithPaginator(condition, {
       limit: size,
       skip: (page - 1) * size,
       select,
@@ -65,11 +65,11 @@ export class PostsController {
     const { category, slug } = params
     // search category
 
-    const categoryDocument = await this.postService.getCategoryBySlug(category)
+    const categoryDocument = await this.service.getCategoryBySlug(category)
     if (!categoryDocument) {
       throw new NotFoundException('该分类未找到 (｡•́︿•̀｡)')
     }
-    const postDocument = await this.postService
+    const postDocument = await this.service
       .findOne({
         slug,
         categoryId: categoryDocument._id,
@@ -80,22 +80,22 @@ export class PostsController {
     if (!postDocument) {
       throw new NotFoundException('该文章未找到 (｡ŏ_ŏ)')
     }
-    this.postService.updateReadCount(postDocument, location.ip)
+    this.service.updateReadCount(postDocument, location.ip)
     return postDocument
   }
 
   @Get(':id')
   @ApiOperation({ summary: '根据 ID 查找' })
   async getById(@Param() query: IdDto, @IpLocation() location: IpRecord) {
-    const doc = await this.postService.findPostById(query.id)
-    this.postService.updateReadCount(doc, location.ip)
+    const doc = await this.service.findPostById(query.id)
+    this.service.updateReadCount(doc, location.ip)
     return doc
   }
 
   @Post()
   @UseGuards(AuthGuard('jwt'))
   @ApiOperation({ summary: '新建一篇文章' })
-  async createNew(@Body() postDto: PostDto) {
+  async createNew(@Body() body: PostDto) {
     const _id = Types.ObjectId()
     const {
       text,
@@ -105,34 +105,31 @@ export class PostsController {
       summary,
       hide = false,
       options,
+      tags,
       copyright,
-    } = postDto
-    const validCategory = await this.postService.findCategoryById(categoryId)
-    if (!validCategory) {
-      throw new BadRequestException('分类丢失了 ಠ_ಠ')
-    }
-    // create post document
-    const newPostDocument = await this.postService.createNew({
-      title,
+    } = body
+    const newPostDocument = await this.service.createNew({
       text,
+      title,
+      // @ts-ignore
+      slug,
+      // @ts-ignore
+      categoryId,
       summary,
-      slug: slug as string,
-      categoryId: validCategory._id,
       hide,
       options,
+      tags,
       copyright,
     })
-    validCategory.count += 1
-    await validCategory.save()
     new Promise(async (resolve) => {
-      const category = await this.postService.getCategoryById(
+      const category = await this.service.getCategoryById(
         newPostDocument.categoryId,
       )
       this.webgateway.broadcase(EventTypes.POST_CREATE, {
         ...newPostDocument.toJSON(),
         category,
       })
-      this.postService.RecordImageDimensions(newPostDocument._id)
+      this.service.RecordImageDimensions(newPostDocument._id)
       resolve()
     })
     return newPostDocument
@@ -141,41 +138,14 @@ export class PostsController {
   @Put(':id')
   @UseGuards(AuthGuard('jwt'))
   @ApiOperation({ summary: '修改一篇文章' })
-  async modifyPost(@Body() post: PostDto, @Param() params: IdDto) {
+  async modifyPost(@Body() body: PostDto, @Param() params: IdDto) {
     const { id } = params
-    const postId = id
-    const validPost = await this.postService.findPostById(postId)
-    if (!validPost) {
-      throw new BadRequestException('文章丢失了 (　ﾟдﾟ)')
-    }
-    // update category information
-    const { categoryId } = post
-    if (categoryId !== (validPost.categoryId as any)) {
-      const originCategory = await this.postService.findCategoryById(
-        (validPost.categoryId as any) as string,
-      )
-      const newCategory = await this.postService.findCategoryById(categoryId)
-      // if (originCategory) {
-      originCategory.count--
-      await originCategory.save()
-      // }
-      if (!newCategory) {
-        throw new BadRequestException('你还没有这个分类啦 (>﹏<)')
-      }
-      // if (newCategory) {
-      newCategory.count++
-      await newCategory.save()
-      // }
-    }
-    const updateDocument = await this.postService.update(
-      { _id: postId },
-      post as any,
-      { omitUndefined: true },
-    )
+
+    const updateDocument = await this.service.update({ _id: id }, body as any)
     // emit event
     new Promise((resolve) => {
-      this.postService.RecordImageDimensions(postId)
-      this.postService
+      this.service.RecordImageDimensions(id)
+      this.service
         .findById(id)
         .lean()
         .then((doc) => {
@@ -194,7 +164,7 @@ export class PostsController {
   @ApiOperation({ summary: '删除一篇文章' })
   async deletePost(@Param() params: IdDto) {
     const { id } = params
-    await this.postService.deletePost(id)
+    await this.service.deletePost(id)
     this.webgateway.broadcase(EventTypes.POST_DELETE, id)
     return 'OK'
   }
@@ -207,7 +177,7 @@ export class PostsController {
     const keywordArr = keyword
       .split(/\s+/)
       .map((item) => new RegExp(String(item), 'ig'))
-    return await this.postService.findWithPaginator(
+    return await this.service.findWithPaginator(
       { $or: [{ title: { $in: keywordArr } }, { text: { $in: keywordArr } }] },
       {
         limit: size,
@@ -224,7 +194,7 @@ export class PostsController {
   ) {
     const { ip } = location
     const { id } = query
-    const res = await this.postService.updateLikeCount(id, ip)
+    const res = await this.service.updateLikeCount(id, ip)
     if (!res) {
       throw new UnprocessableEntityException('你已经支持过啦!')
     }

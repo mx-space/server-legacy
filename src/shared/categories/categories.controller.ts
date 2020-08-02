@@ -1,7 +1,16 @@
 /*
  * @Author: Innei
  * @Date: 2020-04-30 12:21:51
- * @LastEditTime: 2020-05-22 09:31:29
+ * @LastEditTime: 2020-08-02 13:11:35
+ * @LastEditors: Innei
+ * @FilePath: /mx-server/src/shared/categories/categories.controller.ts
+ * @Coding with Love
+ */
+
+/*
+ * @Author: Innei
+ * @Date: 2020-04-30 12:21:51
+ * @LastEditTime: 2020-08-02 12:35:07
  * @LastEditors: Innei
  * @Description:
  * @FilePath: /mx-server/src/shared/categories/categories.controller.ts
@@ -22,7 +31,7 @@ import {
   UseGuards,
 } from '@nestjs/common'
 import { AuthGuard } from '@nestjs/passport'
-import { ApiSecurity, ApiTags } from '@nestjs/swagger'
+import { ApiQuery, ApiSecurity, ApiTags } from '@nestjs/swagger'
 import { Types } from 'mongoose'
 import { RolesGuard } from 'src/auth/roles.guard'
 import { Master } from 'src/core/decorators/guest.decorator'
@@ -32,6 +41,7 @@ import { CategoriesService } from 'src/shared/categories/categories.service'
 import {
   CategoryDto,
   MultiCategoriesQueryDto,
+  MultiQueryTagAndCategoryDto,
   SlugOrIdDto,
 } from 'src/shared/categories/dto/category.dto'
 import { CategoryType } from '../../../libs/db/src/models/category.model'
@@ -42,21 +52,9 @@ import { PostsService } from '../posts/posts.service'
 @UseGuards(RolesGuard)
 export class CategoriesController {
   constructor(
-    private readonly categoryService: CategoriesService,
+    private readonly service: CategoriesService,
     private readonly postService: PostsService,
-  ) {
-    // if there hasn't category
-    this.createDefaultCategory()
-  }
-
-  private async createDefaultCategory() {
-    if ((await this.categoryService.countDocument({})) === 0) {
-      return await this.createCategory({
-        name: '默认分类',
-        slug: 'default',
-      })
-    }
-  }
+  ) {}
 
   @Get()
   async getCategories(@Query() query: MultiCategoriesQueryDto) {
@@ -86,7 +84,7 @@ export class CategoriesController {
                   sort: { created: -1 },
                 },
               )
-              const category = await this.categoryService.findById(id).lean()
+              const category = await this.service.findById(id).lean()
 
               return {
                 category: { ...category, children: posts },
@@ -94,26 +92,33 @@ export class CategoriesController {
             }),
           )
     }
-    return await this.categoryService.find({})
+    return await this.service.find({})
   }
 
   @Get(':query')
+  @ApiQuery({
+    description: '混合查询 分类 和 标签云',
+    name: 'tag',
+    type: 'string',
+    required: false,
+  })
   async getCategoryById(
-    @Param() params: SlugOrIdDto,
+    @Param() { query }: SlugOrIdDto,
+    @Query() { tag }: MultiQueryTagAndCategoryDto,
     @Master() isMaster: boolean,
   ) {
-    const { query } = params
+    if (tag === true) {
+      return await this.service.findArticleWithTag(query)
+    }
+
     if (!query) {
       throw new BadRequestException()
     }
 
     const isId = Types.ObjectId.isValid(query)
     const res = isId
-      ? await this.categoryService.findById(query).sort({ created: -1 }).lean()
-      : await this.categoryService
-          .findOne({ slug: query })
-          .sort({ created: -1 })
-          .lean()
+      ? await this.service.findById(query).sort({ created: -1 }).lean()
+      : await this.service.findOne({ slug: query }).sort({ created: -1 }).lean()
 
     if (!res) {
       throw new CannotFindException()
@@ -121,7 +126,7 @@ export class CategoriesController {
     // FIXME category count if empty will be [] not null
     // the expect is [] or null
     const children =
-      (await this.categoryService.findCategoryPost(res._id, isMaster)) || []
+      (await this.service.findCategoryPost(res._id, isMaster)) || []
     return { data: { ...res, children } }
   }
 
@@ -129,18 +134,8 @@ export class CategoriesController {
   @UseGuards(AuthGuard('jwt'))
   @ApiSecurity('bearer')
   async createCategory(@Body() body: CategoryDto) {
-    const { type = CategoryType.Category, name } = body
-    const { slug = name } = body
-    try {
-      const category = await this.categoryService.createNew({
-        type,
-        slug,
-        name,
-      })
-      return category
-    } catch {
-      throw new UnprocessableEntityException('分类重复啦')
-    }
+    const { name, slug } = body
+    return this.service.createNew({ name, slug: slug ?? name })
   }
 
   @Put(':id')
@@ -149,7 +144,7 @@ export class CategoriesController {
   async modifyCategory(@Param() params: IdDto, @Body() body: CategoryDto) {
     const { type, slug, name } = body
     const { id } = params
-    const res = await this.categoryService.updateByIdAsync(id, {
+    const res = await this.service.updateByIdAsync(id, {
       slug,
       type,
       name,
@@ -162,21 +157,19 @@ export class CategoriesController {
   @ApiSecurity('bearer')
   async deleteCategory(@Param() params: IdDto) {
     const { id } = params
-    const category = await this.categoryService.findById(id)
+    const category = await this.service.findById(id)
     if (!category) {
       throw new CannotFindException()
     }
-    const postsInCategory = await this.categoryService.findPostsInCategory(
-      category._id,
-    )
+    const postsInCategory = await this.service.findPostsInCategory(category._id)
     if (postsInCategory.length > 0) {
       throw new UnprocessableEntityException('该分类中有其他文章, 无法被删除')
     }
-    const res = await this.categoryService.deleteOne({
+    const res = await this.service.deleteOne({
       _id: category._id,
     })
-    if ((await this.categoryService.countDocument({})) === 0) {
-      await this.createDefaultCategory()
+    if ((await this.service.countDocument({})) === 0) {
+      await this.service.createDefaultCategory()
     }
     return res
   }

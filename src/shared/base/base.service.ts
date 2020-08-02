@@ -339,6 +339,10 @@ export class BaseService<T extends BaseModel> {
     return this._model.updateOne(conditions as any, doc as any, options)
   }
 
+  public get updateOne() {
+    return this.update
+  }
+
   public async updateAsync(
     conditions: FilterQuery<T>,
     doc: UpdateQuery<T>,
