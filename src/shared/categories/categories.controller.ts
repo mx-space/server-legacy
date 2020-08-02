@@ -1,22 +1,3 @@
-/*
- * @Author: Innei
- * @Date: 2020-04-30 12:21:51
- * @LastEditTime: 2020-08-02 16:22:29
- * @LastEditors: Innei
- * @FilePath: /mx-server/src/shared/categories/categories.controller.ts
- * @Coding with Love
- */
-
-/*
- * @Author: Innei
- * @Date: 2020-04-30 12:21:51
- * @LastEditTime: 2020-08-02 12:35:07
- * @LastEditors: Innei
- * @Description:
- * @FilePath: /mx-server/src/shared/categories/categories.controller.ts
- * @MIT
- */
-
 import {
   BadRequestException,
   Body,

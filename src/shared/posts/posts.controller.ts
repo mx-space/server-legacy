@@ -1,5 +1,4 @@
 import {
-  BadRequestException,
   Body,
   Controller,
   Delete,
@@ -13,7 +12,6 @@ import {
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common'
-import { AuthGuard } from '@nestjs/passport'
 import { ApiOperation, ApiSecurity, ApiTags } from '@nestjs/swagger'
 import { Types } from 'mongoose'
 import { RolesGuard } from 'src/auth/roles.guard'

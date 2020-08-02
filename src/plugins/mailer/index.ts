@@ -1,14 +1,14 @@
 /*
  * @Author: Innei
  * @Date: 2020-05-01 19:35:56
- * @LastEditTime: 2020-07-12 14:13:38
+ * @LastEditTime: 2020-08-02 16:26:33
  * @LastEditors: Innei
  * @FilePath: /mx-server/src/plugins/mailer/index.ts
  * @Coding with Love
  */
 
-import { createTransport } from 'nodemailer'
 import { render } from 'ejs'
+import { createTransport } from 'nodemailer'
 import { renderGuestText } from './render/guest'
 import { renderOwnerText } from './render/owner'
 

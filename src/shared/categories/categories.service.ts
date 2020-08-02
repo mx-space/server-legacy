@@ -1,7 +1,7 @@
 import Category, { CategoryType } from '@libs/db/models/category.model'
 import Post from '@libs/db/models/post.model'
 import { Injectable, UnprocessableEntityException } from '@nestjs/common'
-import type { ReturnModelType, DocumentType } from '@typegoose/typegoose'
+import type { DocumentType, ReturnModelType } from '@typegoose/typegoose'
 import { InjectModel } from 'nestjs-typegoose'
 import { CannotFindException } from 'src/core/exceptions/cant-find.exception'
 import { addConditionToSeeHideContent } from 'src/utils'

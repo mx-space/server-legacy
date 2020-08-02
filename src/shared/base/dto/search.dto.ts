@@ -1,3 +1,12 @@
+/*
+ * @Author: Innei
+ * @Date: 2020-04-30 12:21:51
+ * @LastEditTime: 2020-08-02 16:27:30
+ * @LastEditors: Innei
+ * @FilePath: /mx-server/src/shared/base/dto/search.dto.ts
+ * @Coding with Love
+ */
+
 import { ApiProperty } from '@nestjs/swagger'
 import { Transform } from 'class-transformer'
 import { IsEnum, IsNotEmpty, IsOptional, IsString } from 'class-validator'

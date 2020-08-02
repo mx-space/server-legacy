@@ -1,4 +1,3 @@
-import Post from '@libs/db/models/post.model'
 /*
  * @Author: Innei
  * @Date: 2020-04-30 12:21:51
@@ -7,7 +6,6 @@ import Post from '@libs/db/models/post.model'
  * @FilePath: /mx-server/src/shared/posts/dto/index.ts
  * @MIT
  */
-
 import { ApiProperty } from '@nestjs/swagger'
 import { Transform } from 'class-transformer'
 import {

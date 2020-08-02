@@ -17,7 +17,7 @@ import {
   UnprocessableEntityException,
 } from '@nestjs/common'
 import { DocumentType, Ref, ReturnModelType } from '@typegoose/typegoose'
-import { merge, omit } from 'lodash'
+import { merge } from 'lodash'
 import { FilterQuery, MongooseUpdateQuery, QueryUpdateOptions } from 'mongoose'
 import { RedisService } from 'nestjs-redis'
 import { InjectModel } from 'nestjs-typegoose'

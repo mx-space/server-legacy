@@ -7,7 +7,6 @@ import { UnprocessableEntityException } from '@nestjs/common'
  * @FilePath: /mx-server/src/shared/categories/dto/category.dto.ts
  * @MIT
  */
-
 import { ApiProperty } from '@nestjs/swagger'
 import { Transform } from 'class-transformer'
 import {
