@@ -21,6 +21,7 @@ import { IdDto } from 'src/shared/base/dto/id.dto'
 import { CategoriesService } from 'src/shared/categories/categories.service'
 import {
   CategoryDto,
+  CategoryType,
   MultiCategoriesQueryDto,
   MultiQueryTagAndCategoryDto,
   SlugOrIdDto,
@@ -38,7 +39,7 @@ export class CategoriesController {
 
   @Get()
   async getCategories(@Query() query: MultiCategoriesQueryDto) {
-    const { ids, joint, type } = query // categories is category's mongo id
+    const { ids, joint, type = CategoryType.Category } = query // categories is category's mongo id
     if (ids) {
       // const categoryDocs = await this.categoryService.find({
       //   $and: [categories.map((id) => ({ _id: id }))],

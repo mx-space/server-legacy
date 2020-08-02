@@ -1,7 +1,7 @@
 /*
  * @Author: Innei
  * @Date: 2020-04-30 12:21:51
- * @LastEditTime: 2020-08-02 14:59:38
+ * @LastEditTime: 2020-08-02 21:41:56
  * @LastEditors: Innei
  * @FilePath: /mx-server/src/shared/posts/dto/index.ts
  * @MIT
@@ -9,6 +9,7 @@
 import { ApiProperty } from '@nestjs/swagger'
 import { Transform } from 'class-transformer'
 import {
+  ArrayUnique,
   IsBoolean,
   IsEnum,
   IsMongoId,
@@ -73,6 +74,7 @@ export class PostDto {
   @IsOptional()
   @IsNotEmpty({ each: true })
   @IsString({ each: true })
+  @ArrayUnique()
   tags: string[]
 
   @IsOptional()
