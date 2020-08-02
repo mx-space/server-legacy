@@ -64,6 +64,7 @@ export class HelperService {
       const hasCategory = categoryNameAndId.find((c) => name === c.name)
       // console.log(hasCategory)
       if (!hasCategory) {
+        // @ts-ignore
         const newCategoryDoc = await this.categoryModel.create({
           name,
           slug: name,

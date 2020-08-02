@@ -28,15 +28,20 @@ export class CategoriesService extends BaseService<Category> {
       })
     }
   }
-  async findCategoryPost(categoryId: string, isMaster = false) {
-    const condition = addConditionToSeeHideContent(isMaster)
+  async findCategoryPost(
+    categoryId: string,
+    shouldShowHide = false,
+    condition: any = {},
+  ) {
+    const extraCondition = addConditionToSeeHideContent(shouldShowHide)
 
     return await this.postModel
       .find({
         categoryId,
+        ...extraCondition,
         ...condition,
       })
-      .select('title created slug')
+      .select('title created slug _id')
       .sort({ created: -1 })
   }
 
@@ -46,10 +51,17 @@ export class CategoriesService extends BaseService<Category> {
     })
   }
 
-  async findArticleWithTag(tag: string): Promise<null | DocumentType<Post>[]> {
-    const posts = await this.postModel.find({
-      tags: tag,
-    })
+  async findArticleWithTag(
+    tag: string,
+    shouldShowHide = false,
+  ): Promise<null | DocumentType<Post>[]> {
+    const extraCondition = addConditionToSeeHideContent(shouldShowHide)
+    const posts = await this.postModel
+      .find({
+        tags: tag,
+        ...extraCondition,
+      })
+      .select('title created slug _id')
     if (!posts.length) {
       throw new CannotFindException()
     }

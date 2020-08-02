@@ -1,7 +1,7 @@
 /*
  * @Author: Innei
  * @Date: 2020-05-06 22:14:51
- * @LastEditTime: 2020-05-31 16:31:08
+ * @LastEditTime: 2020-08-02 15:43:15
  * @LastEditors: Innei
  * @FilePath: /mx-server/libs/db/src/models/post.model.ts
  * @Coding with Love
@@ -40,7 +40,15 @@ export default class Post extends WriteBaseModel {
   @prop({ default: true })
   copyright?: boolean
 
-  @prop()
+  @prop({
+    set: (val: string[]) => {
+      return val
+    },
+    get(val) {
+      return val
+    },
+    type: [String],
+  })
   tags?: string[]
 
   @prop({ type: Count, default: { read: 0, like: 0 }, _id: false })

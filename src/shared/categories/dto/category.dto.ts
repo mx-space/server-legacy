@@ -1,7 +1,8 @@
+import { UnprocessableEntityException } from '@nestjs/common'
 /*
  * @Author: Innei
  * @Date: 2020-04-30 12:21:51
- * @LastEditTime: 2020-08-02 13:09:10
+ * @LastEditTime: 2020-08-02 16:22:02
  * @LastEditors: Innei
  * @FilePath: /mx-server/src/shared/categories/dto/category.dto.ts
  * @MIT
@@ -75,4 +76,20 @@ export class MultiCategoriesQueryDto {
   @Transform((b) => Boolean(b))
   @ApiProperty({ enum: [1, 0] })
   joint?: boolean
+
+  @IsOptional()
+  @Transform((val: string) => {
+    if (typeof val !== 'string') {
+      throw new UnprocessableEntityException('type must be a string')
+    }
+    switch (val.toLowerCase()) {
+      case 'category':
+        return CategoryType.Category
+      case 'tag':
+        return CategoryType.Tag
+      default:
+        return CategoryType.Category
+    }
+  })
+  type: CategoryType
 }
