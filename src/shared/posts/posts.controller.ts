@@ -17,6 +17,7 @@ import { AuthGuard } from '@nestjs/passport'
 import { ApiOperation, ApiSecurity, ApiTags } from '@nestjs/swagger'
 import { Types } from 'mongoose'
 import { RolesGuard } from 'src/auth/roles.guard'
+import { Auth } from 'src/core/decorators/auth.decorator'
 import { Master } from 'src/core/decorators/guest.decorator'
 import { PermissionInterceptor } from 'src/core/interceptors/permission.interceptors'
 import { IdDto } from 'src/shared/base/dto/id.dto'
@@ -93,7 +94,7 @@ export class PostsController {
   }
 
   @Post()
-  @UseGuards(AuthGuard('jwt'))
+  @Auth()
   @ApiOperation({ summary: '新建一篇文章' })
   async createNew(@Body() body: PostDto) {
     const _id = Types.ObjectId()
@@ -136,7 +137,7 @@ export class PostsController {
   }
 
   @Put(':id')
-  @UseGuards(AuthGuard('jwt'))
+  @Auth()
   @ApiOperation({ summary: '修改一篇文章' })
   async modifyPost(@Body() body: PostDto, @Param() params: IdDto) {
     const { id } = params
@@ -160,7 +161,7 @@ export class PostsController {
   }
 
   @Delete(':id')
-  @UseGuards(AuthGuard('jwt'))
+  @Auth()
   @ApiOperation({ summary: '删除一篇文章' })
   async deletePost(@Param() params: IdDto) {
     const { id } = params

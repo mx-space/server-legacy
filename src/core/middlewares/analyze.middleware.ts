@@ -1,7 +1,7 @@
 /*
  * @Author: Innei
  * @Date: 2020-05-10 15:22:08
- * @LastEditTime: 2020-07-08 21:36:36
+ * @LastEditTime: 2020-08-02 15:10:42
  * @LastEditors: Innei
  * @FilePath: /mx-server/src/core/middlewares/analyze.middleware.ts
  * @MIT
@@ -40,6 +40,7 @@ export class AnalyzeMiddleware implements NestMiddleware {
       this.parser.setUA(req.headers['user-agent'])
 
       const ua = this.parser.getResult()
+      // @ts-ignore
       await this.model.create({
         ip,
         ua,

@@ -13,6 +13,7 @@ import { DocumentType, ReturnModelType } from '@typegoose/typegoose'
 import { AnyParamConstructor } from '@typegoose/typegoose/lib/types'
 import { FindAndModifyWriteOpResultObject, MongoError } from 'mongodb'
 import {
+  CreateQuery,
   DocumentQuery,
   FilterQuery,
   ModelPopulateOptions,
@@ -231,13 +232,13 @@ export class BaseService<T extends BaseModel> {
     return docsQuery as T
   }
 
-  /**
-   * @description 创建一条数据
-   * @param {Partial<T>} docs
-   * @returns {Promise<DocumentType<T>>}
-   */
-  async createNew(data: Partial<T>): Promise<DocumentType<T>> {
-    return await this._model.create(data)
+  async createNew(
+    data: Partial<Omit<CreateQuery<T>, 'created' | 'modified'>>,
+  ): Promise<DocumentType<T>> {
+    return await this._model.create(data as any)
+  }
+  get create() {
+    return this.createNew
   }
   /**
    * @description 删除指定数据

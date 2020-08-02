@@ -1,7 +1,7 @@
 /*
  * @Author: Innei
  * @Date: 2020-04-30 12:21:51
- * @LastEditTime: 2020-08-02 13:11:35
+ * @LastEditTime: 2020-08-02 16:22:29
  * @LastEditors: Innei
  * @FilePath: /mx-server/src/shared/categories/categories.controller.ts
  * @Coding with Love
@@ -44,7 +44,6 @@ import {
   MultiQueryTagAndCategoryDto,
   SlugOrIdDto,
 } from 'src/shared/categories/dto/category.dto'
-import { CategoryType } from '../../../libs/db/src/models/category.model'
 import { PostsService } from '../posts/posts.service'
 
 @Controller('categories')
@@ -58,7 +57,7 @@ export class CategoriesController {
 
   @Get()
   async getCategories(@Query() query: MultiCategoriesQueryDto) {
-    const { ids, joint } = query // categories is category's mongo id
+    const { ids, joint, type } = query // categories is category's mongo id
     if (ids) {
       // const categoryDocs = await this.categoryService.find({
       //   $and: [categories.map((id) => ({ _id: id }))],
@@ -92,7 +91,8 @@ export class CategoriesController {
             }),
           )
     }
-    return await this.service.find({})
+
+    return await this.service.find({ type })
   }
 
   @Get(':query')
@@ -107,12 +107,14 @@ export class CategoriesController {
     @Query() { tag }: MultiQueryTagAndCategoryDto,
     @Master() isMaster: boolean,
   ) {
-    if (tag === true) {
-      return await this.service.findArticleWithTag(query)
-    }
-
     if (!query) {
       throw new BadRequestException()
+    }
+    if (tag === true) {
+      return {
+        tag,
+        data: await this.service.findArticleWithTag(query, isMaster),
+      }
     }
 
     const isId = Types.ObjectId.isValid(query)
@@ -126,7 +128,11 @@ export class CategoriesController {
     // FIXME category count if empty will be [] not null
     // the expect is [] or null
     const children =
-      (await this.service.findCategoryPost(res._id, isMaster)) || []
+      (await this.service.findCategoryPost(
+        res._id,
+        isMaster,
+        tag ? { tags: tag } : {},
+      )) || []
     return { data: { ...res, children } }
   }
 

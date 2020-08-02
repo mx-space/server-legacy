@@ -2,7 +2,7 @@ import Post from '@libs/db/models/post.model'
 /*
  * @Author: Innei
  * @Date: 2020-04-30 12:21:51
- * @LastEditTime: 2020-05-31 13:18:19
+ * @LastEditTime: 2020-08-02 14:59:38
  * @LastEditors: Innei
  * @FilePath: /mx-server/src/shared/posts/dto/index.ts
  * @MIT
@@ -79,7 +79,6 @@ export class PostDto {
 
   @IsOptional()
   @IsNotEmptyObject()
-  @ApiProperty({ required: false, type: Object })
   options?: Record<any, any>
 }
 

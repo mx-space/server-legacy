@@ -1,7 +1,7 @@
 /*
  * @Author: Innei
  * @Date: 2020-05-06 22:00:44
- * @LastEditTime: 2020-08-02 14:50:03
+ * @LastEditTime: 2020-08-02 15:48:32
  * @LastEditors: Innei
  * @FilePath: /mx-server/src/shared/posts/posts.service.ts
  * @Coding with Love
@@ -17,8 +17,8 @@ import {
   UnprocessableEntityException,
 } from '@nestjs/common'
 import { DocumentType, Ref, ReturnModelType } from '@typegoose/typegoose'
-import { difference, differenceBy, merge } from 'lodash'
-import { FilterQuery, Query, QueryUpdateOptions } from 'mongoose'
+import { merge, omit } from 'lodash'
+import { FilterQuery, MongooseUpdateQuery, QueryUpdateOptions } from 'mongoose'
 import { RedisService } from 'nestjs-redis'
 import { InjectModel } from 'nestjs-typegoose'
 import { CannotFindException } from 'src/core/exceptions/cant-find.exception'
@@ -48,7 +48,22 @@ export class PostsService extends WriteBaseService<Post> {
     if (!validCategory) {
       throw new UnprocessableEntityException('分类丢失了 ಠ_ಠ')
     }
-    const newDocument = await super.createNew(projection)
+    const newDocument = await super.createNew({
+      // ...omit(projection, 'tags'),
+      ...projection,
+    })
+    // if (projection.tags?.length) {
+    //   newDocument.tags = []
+    //   console.log(...projection.tags)
+
+    //   newDocument.tags.push(...projection.tags)
+    //   // newDocument.updateOne({
+    //   //   $pullAll: {tags:},
+    //   //   $push: { tags: { $each: projection.tags } },
+    //   // } as MongooseUpdateQuery<Post>)
+
+    //   await newDocument.save()
+    // }
     // category
     validCategory.count += 1
     await validCategory.save()
@@ -126,8 +141,10 @@ export class PostsService extends WriteBaseService<Post> {
     })()
     // finally update document
     await document.updateOne({
-      tags,
-    })
+      $set: {
+        tags,
+      },
+    } as MongooseUpdateQuery<Post>)
   }
 
   // @ts-ignore
@@ -141,12 +158,14 @@ export class PostsService extends WriteBaseService<Post> {
       throw new BadRequestException('文章丢失了 (　ﾟдﾟ)')
     }
     // update category information
-    const { categoryId } = condition
+    const { categoryId } = projection
     if (categoryId !== (oldPost.categoryId as any)) {
       const originCategory = await this.findCategoryById(
         (oldPost.categoryId as any) as string,
       )
-      const newCategory = await this.findCategoryById(categoryId as string)
+      const newCategory = await this.findCategoryById(
+        (categoryId as any) as string,
+      )
 
       originCategory.count--
       await originCategory.save()
