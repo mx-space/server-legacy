@@ -105,13 +105,13 @@ export class TasksService {
   @Cron(CronExpression.EVERY_1ST_DAY_OF_MONTH_AT_MIDNIGHT, {
     name: 'clear_access',
   })
-  async clearAccessRecord() {
+  async cleanAccessRecord() {
     const now = new Date().getTime()
-    const rmBeforeDate = new Date(now - 7 * 60 * 60 * 24 * 1000)
+    const cleanDate = new Date(now - 7 * 60 * 60 * 24 * 1000)
 
     await this.analyzeModel.deleteMany({
-      timestamp: {
-        $lte: rmBeforeDate,
+      created: {
+        $lte: cleanDate,
       },
     })
   }
