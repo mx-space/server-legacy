@@ -93,26 +93,22 @@ export class AnalyzeService extends BaseService<Analyze> {
 
     return { callTime, uv }
   }
-  async clearAnalyzeRange(range?: { from?: Date; to?: Date }) {
-    if (range) {
-      const { from, to } = range
+  async cleanAnalyzeRange(range: { from?: Date; to?: Date }) {
+    const { from, to } = range
 
-      await this.model.deleteMany({
-        $and: [
-          {
-            created: {
-              $gte: from,
-            },
+    await this.model.deleteMany({
+      $and: [
+        {
+          created: {
+            $gte: from,
           },
-          {
-            created: {
-              $lte: to,
-            },
+        },
+        {
+          created: {
+            $lte: to,
           },
-        ],
-      })
-    } else {
-      await this.model.deleteMany({})
-    }
+        },
+      ],
+    })
   }
 }

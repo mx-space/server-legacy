@@ -224,8 +224,8 @@ export class AnalyzeController {
 
   @Delete()
   async clearAnalyze(@Query() query: AnalyzeDto) {
-    const { from, to } = query
-    await this.service.clearAnalyzeRange({ from, to })
+    const { from = new Date('2020-01-01'), to = new Date() } = query
+    await this.service.cleanAnalyzeRange({ from, to })
     return 'OK'
   }
 }
