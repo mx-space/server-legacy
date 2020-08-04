@@ -1,7 +1,8 @@
 import Category, { CategoryType } from '@libs/db/models/category.model'
 import Post from '@libs/db/models/post.model'
 import { Injectable, UnprocessableEntityException } from '@nestjs/common'
-import type { DocumentType, ReturnModelType } from '@typegoose/typegoose'
+import type { ReturnModelType } from '@typegoose/typegoose'
+import { omit } from 'lodash'
 import { InjectModel } from 'nestjs-typegoose'
 import { CannotFindException } from 'src/core/exceptions/cant-find.exception'
 import { addConditionToSeeHideContent } from 'src/utils'
@@ -54,18 +55,28 @@ export class CategoriesService extends BaseService<Category> {
   async findArticleWithTag(
     tag: string,
     shouldShowHide = false,
-  ): Promise<null | DocumentType<Post>[]> {
+  ): Promise<null | any[]> {
     const extraCondition = addConditionToSeeHideContent(shouldShowHide)
     const posts = await this.postModel
-      .find({
-        tags: tag,
-        ...extraCondition,
-      })
-      .select('title created slug _id')
+      .find(
+        {
+          tags: tag,
+          ...extraCondition,
+        },
+        undefined,
+        { lean: true },
+      )
+      .populate('category')
     if (!posts.length) {
       throw new CannotFindException()
     }
-    return posts
+    return posts.map(({ _id, title, slug, category, created }) => ({
+      _id,
+      title,
+      slug,
+      category: omit(category, ['count', '__v', 'created', 'modified']),
+      created,
+    }))
   }
   async updateTag({ name, increase }: { name: string; increase: number }) {
     // NOTE: - tag name can't same as category name

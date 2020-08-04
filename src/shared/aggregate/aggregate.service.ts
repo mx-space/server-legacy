@@ -1,4 +1,4 @@
-import Category from '@libs/db/models/category.model'
+import Category, { CategoryType } from '@libs/db/models/category.model'
 import Comment from '@libs/db/models/comment.model'
 import { FileType } from '@libs/db/models/file.model'
 import Note from '@libs/db/models/note.model'
@@ -80,7 +80,7 @@ export class AggregateService {
   }
 
   async getAllCategory() {
-    return await this.categoryModel.find().lean()
+    return await this.categoryModel.find({ type: CategoryType.Category }).lean()
   }
 
   async getAllPages(select: string) {

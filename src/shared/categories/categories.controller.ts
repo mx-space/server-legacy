@@ -81,7 +81,7 @@ export class CategoriesController {
   @ApiQuery({
     description: '混合查询 分类 和 标签云',
     name: 'tag',
-    type: 'string',
+    enum: ['true', 'false'],
     required: false,
   })
   async getCategoryById(
