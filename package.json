@@ -132,7 +132,7 @@
     "tsconfig-paths": "3.9.0",
     "typescript": "3.9.7",
     "webpack-cli": "3.3.12",
-    "webpack-node-externals": "2.5.0"
+    "webpack-node-externals": "2.5.1"
   },
   "jest": {
     "rootDir": "./",
