@@ -6730,10 +6730,10 @@ mongoose-unique-validator@2.0.3:
     lodash.foreach "^4.1.0"
     lodash.get "^4.0.2"
 
-mongoose@5.9.27:
-  version "5.9.27"
-  resolved "https://registry.yarnpkg.com/mongoose/-/mongoose-5.9.27.tgz#914cbc2a454520934fbbf2c0e366d9c7d8076b3b"
-  integrity sha512-N8zj4pj9J2xJ2BnQ4NiIHEtmjPldtbmbEZOMz4phLTQr3KFWPR0T0I6EzQxNioHwmDbHD4VFzbEd755oD2SJxA==
+mongoose@5.9.28:
+  version "5.9.28"
+  resolved "https://registry.yarnpkg.com/mongoose/-/mongoose-5.9.28.tgz#07064fbbc224d7fc4616ce82b7ada0e8df788e9c"
+  integrity sha512-A8lNRk4eCQDzk+DagSMYdH94LAYrbTK83LgrUlzqdig3YXvizW3DApJqOWQ5DdhuimvsfiD0Z5NTVzXl/rgi2w==
   dependencies:
     bson "^1.1.4"
     kareem "2.3.1"
