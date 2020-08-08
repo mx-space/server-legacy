@@ -1,7 +1,7 @@
 /*
  * @Author: Innei
  * @Date: 2020-04-30 12:21:51
- * @LastEditTime: 2020-07-31 17:44:59
+ * @LastEditTime: 2020-08-08 16:14:52
  * @LastEditors: Innei
  * @FilePath: /mx-server/src/app.controller.ts
  * @Copyright
@@ -23,6 +23,7 @@ export class AppController {
     @InjectModel(Option)
     private readonly optionModel: ReturnModelType<typeof Option>,
   ) {}
+
   @Post('like_this')
   async likeThis(
     @Req()
