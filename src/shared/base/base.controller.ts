@@ -104,7 +104,9 @@ export abstract class BaseCrud<
   @Put(':id')
   @Auth()
   async put(@Body() body: U, @Param() param: IdDto) {
-    return await this._service.updateAsync({ _id: param.id as any }, body)
+    return await this._service.updateAsync({ _id: param.id as any }, body, {
+      omitUndefined: false,
+    })
   }
 
   @Delete(':id')
