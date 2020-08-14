@@ -18,6 +18,7 @@ import { SpamCheck } from '../../plugins/antiSpam'
 import { Mailer, ReplyMailType } from '../../plugins/mailer'
 import { hasChinese } from '../../utils'
 import { BaseService } from '../base/base.service'
+import { merge } from 'lodash'
 
 @Injectable()
 export class CommentsService extends BaseService<Comment> {
@@ -203,10 +204,16 @@ export class CommentsService extends BaseService<Comment> {
     if (!enable || process.env.NODE_ENV === 'development') {
       return
     }
-    const mailerOptions = {
-      ...this.configs.get('mailOptions'),
-      name: this.configs.get('seo').title,
-    }
+    const mailerOptions = merge(
+      {
+        options: {
+          name: this.configs.get('seo').title,
+        },
+      },
+      {
+        ...this.configs.get('mailOptions'),
+      },
+    )
     this.userModel.findOne().then(async (master) => {
       const refType = model.refType
       const refModel = this.getModelByRefType(refType)

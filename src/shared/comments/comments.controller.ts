@@ -43,7 +43,11 @@ export class CommentsController {
   constructor(
     private readonly commentService: CommentsService,
     private readonly gateway: AdminEventsGateway,
-  ) {}
+  ) {
+    // this.commentService.findOne({}).then((res) => {
+    //   this.commentService.sendEmail(res, ReplyMailType.Owner)
+    // })
+  }
 
   @Get()
   @Auth()

@@ -107,7 +107,7 @@ export const renderOwnerText = `<div
       text-align: center;
     "
   >
-    <p><%= new Date().getFullYear() %> Copyright <%= master %></p>
+    <p style="text-align: center; font-size: 10px;"><%= new Date().getFullYear() %> Copyright <%= master %></p>
   </div>
 </div>
 `

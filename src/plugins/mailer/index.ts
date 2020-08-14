@@ -1,7 +1,7 @@
 /*
  * @Author: Innei
  * @Date: 2020-05-01 19:35:56
- * @LastEditTime: 2020-08-02 16:26:33
+ * @LastEditTime: 2020-08-14 09:09:37
  * @LastEditors: Innei
  * @FilePath: /mx-server/src/plugins/mailer/index.ts
  * @Coding with Love
@@ -44,7 +44,9 @@ export class Mailer {
       service: options?.service || 'qq',
       port: options?.port || 465,
       auth: { user, pass },
+      secure: true,
     })
+    this.options = options
   }
   private mailerOptions = {
     from: `"${this.options?.name || 'Mx Space'}" <${this.user}>`,
@@ -63,7 +65,7 @@ export class Mailer {
       await this.mailer.sendMail({
         ...this.mailerOptions,
         ...{
-          subject: `[${source.author}] 主人给你了新的回复呐`,
+          subject: `[${this.options?.name || 'Mx Space'}] 主人给你了新的回复呐`,
           to,
           html: this.render(renderGuestText, source),
         },
