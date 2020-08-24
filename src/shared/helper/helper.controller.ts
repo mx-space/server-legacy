@@ -1,8 +1,9 @@
+import { TasksService } from '@libs/common/tasks/tasks.service'
 import Category from '@libs/db/models/category.model'
 /*
  * @Author: Innei
  * @Date: 2020-05-06 22:14:51
- * @LastEditTime: 2020-08-01 21:30:01
+ * @LastEditTime: 2020-08-24 22:26:00
  * @LastEditors: Innei
  * @FilePath: /mx-server/src/shared/helper/helper.controller.ts
  * @Coding with Love
@@ -30,7 +31,10 @@ import { HelperService, MarkdownYAMLProperty } from './helper.service'
 @ApiTags('Helper Routes')
 @Auth()
 export class HelperController {
-  constructor(private readonly service: HelperService) {}
+  constructor(
+    private readonly service: HelperService,
+    private readonly task: TasksService,
+  ) {}
 
   @Post('markdown/import')
   @ApiProperty({ description: '导入 Markdown with YAML 数据' })
@@ -154,5 +158,10 @@ export class HelperController {
       )
       .type('application/zip')
       .send(stream)
+  }
+
+  @Get('baidu')
+  async pushToBaiduNow() {
+    return await this.task.pushToBaiduSearch()
   }
 }

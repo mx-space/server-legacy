@@ -1,9 +1,8 @@
-import { Injectable, Logger } from '@nestjs/common'
+import { HttpService, Injectable, Logger } from '@nestjs/common'
 import { Cron, CronExpression } from '@nestjs/schedule'
 import { ReturnModelType } from '@typegoose/typegoose'
 import { execSync } from 'child_process'
 import * as COS from 'cos-nodejs-sdk-v5'
-import dayjs = require('dayjs')
 import { existsSync, readFileSync, rmdirSync } from 'fs'
 import * as mkdirp from 'mkdirp'
 import { RedisService } from 'nestjs-redis'
@@ -15,6 +14,8 @@ import { ConfigsService } from '../../../../src/configs/configs.service'
 import { BackupsService } from '../../../../src/shared/backups/backups.service'
 import { Analyze } from '../../../db/src/models/analyze.model'
 import { RedisNames } from '../redis/redis.types'
+import dayjs = require('dayjs')
+import { ToolsService } from 'src/common/tools/tools.service'
 
 @Injectable()
 export class TasksService {
@@ -24,6 +25,8 @@ export class TasksService {
     @InjectModel(Analyze)
     private readonly analyzeModel: ReturnModelType<typeof Analyze>,
     private readonly redisCtx: RedisService,
+    private readonly tools: ToolsService,
+    private readonly http: HttpService,
   ) {}
   @Cron(CronExpression.EVERY_DAY_AT_1AM, { name: 'backup' })
   backupDB({ uploadCOS = true }: { uploadCOS?: boolean } = {}) {
@@ -147,5 +150,42 @@ export class TasksService {
     rmdirSync(tempDir, { recursive: true })
 
     mkdirp.sync(tempDir)
+  }
+
+  @Cron(CronExpression.EVERY_DAY_AT_3AM)
+  pushToBaiduSearch() {
+    return new Promise(async (resolve, reject) => {
+      const configs = this.configs.get('baiduSearchOptions')
+      if (configs.enable) {
+        const token = configs.token
+        if (!token) {
+          this.logger.error('[BaiduSearchPushTask] token 为空')
+          reject('token is empty')
+        }
+        const siteUrl = this.configs.get('url').webUrl
+
+        const pushUrls = await this.tools.getSiteMapContent()
+        const urls = pushUrls
+          .map((item) => {
+            return item.url
+          })
+          .join('\n')
+
+        const res = await this.http
+          .post(
+            `http://data.zz.baidu.com/urls?site=${siteUrl}&token=${token}`,
+            urls,
+            {
+              headers: {
+                'Content-Type': 'text/plain',
+              },
+            },
+          )
+          .toPromise()
+
+        resolve(res.data)
+      }
+      resolve(null)
+    })
   }
 }

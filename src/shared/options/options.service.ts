@@ -1,28 +1,23 @@
 /*
  * @Author: Innei
  * @Date: 2020-05-08 20:01:58
- * @LastEditTime: 2020-08-01 19:00:22
+ * @LastEditTime: 2020-08-24 22:07:29
  * @LastEditors: Innei
  * @FilePath: /mx-server/src/shared/options/options.service.ts
  * @Coding with Love
  */
 
-import Note from '@libs/db/models/note.model'
-import { Option } from '@libs/db/models/option.model'
-import Post from '@libs/db/models/post.model'
-import { User } from '@libs/db/models/user.model'
 import {
   Injectable,
   UnprocessableEntityException,
   ValidationPipe,
 } from '@nestjs/common'
-import { ReturnModelType } from '@typegoose/typegoose'
 import { plainToClass } from 'class-transformer'
 import { ClassType } from 'class-transformer/ClassTransformer'
 import { validate } from 'class-validator'
-import { InjectModel } from 'nestjs-typegoose'
 import {
   BackupOptions,
+  BaiduSearchOptions,
   CommentOptions,
   ImageBedDto,
   MailOptionsDto,
@@ -34,20 +29,14 @@ import { ConfigsService, IConfig } from '../../configs/configs.service'
 @Injectable()
 export class OptionsService {
   constructor(
-    @InjectModel(Option)
-    private readonly optionModel: ReturnModelType<typeof Option>,
-    @InjectModel(User) private readonly userModel: ReturnModelType<typeof User>,
-    @InjectModel(Post) private readonly postModel: ReturnModelType<typeof Post>,
-    @InjectModel(Note) private readonly nodeModel: ReturnModelType<typeof Note>,
+    // @InjectModel(Option)
+    // private readonly optionModel: ReturnModelType<typeof Option>,
+    // @InjectModel(User) private readonly userModel: ReturnModelType<typeof User>,
+    // @InjectModel(Post) private readonly postModel: ReturnModelType<typeof Post>,
+    // @InjectModel(Note) private readonly nodeModel: ReturnModelType<typeof Note>,
     private readonly configs: ConfigsService,
   ) {}
 
-  async getStat() {
-    const posts = await this.postModel.countDocuments()
-    const notes = await this.nodeModel.countDocuments()
-
-    return { posts, notes }
-  }
   validOptions = {
     whitelist: true,
   }
@@ -77,6 +66,11 @@ export class OptionsService {
       case 'backupOptions': {
         await this.validWithDto(BackupOptions, value)
         return this.configs.patch('backupOptions', value)
+      }
+      case 'baiduSearchOptions': {
+        await this.validWithDto(BaiduSearchOptions, value)
+
+        return this.configs.patch('baiduSearchOptions', value)
       }
       default: {
         throw new UnprocessableEntityException('设置不存在')

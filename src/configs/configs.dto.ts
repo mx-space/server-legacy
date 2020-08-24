@@ -133,3 +133,14 @@ export class BackupOptions {
   @IsOptional()
   Region: string
 }
+
+export class BaiduSearchOptions {
+  @IsOptional()
+  @IsBoolean()
+  enable?: boolean
+
+  @IsOptional()
+  @IsString()
+  @IsNotEmpty()
+  token?: string
+}

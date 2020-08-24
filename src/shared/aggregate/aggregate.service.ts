@@ -11,6 +11,7 @@ import { ReturnModelType } from '@typegoose/typegoose'
 import { AnyParamConstructor } from '@typegoose/typegoose/lib/types'
 import { pick, sample, sampleSize } from 'lodash'
 import { InjectModel } from 'nestjs-typegoose'
+import { ToolsService } from 'src/common/tools/tools.service'
 import { ConfigsService } from '../../configs/configs.service'
 import { ImageService } from '../uploads/image.service'
 import { RandomType } from './dtos/random.dto'
@@ -29,6 +30,7 @@ export class AggregateService {
     @InjectModel(Page) public readonly pageModel: ReturnModelType<typeof Page>,
     public readonly imageService: ImageService,
     private readonly configs: ConfigsService,
+    private readonly tools: ToolsService,
   ) {}
 
   private findTop<
@@ -79,12 +81,12 @@ export class AggregateService {
     return { notes, posts, projects, says }
   }
 
-  async getAllCategory() {
-    return await this.categoryModel.find({ type: CategoryType.Category }).lean()
+  get getAllCategory() {
+    return this.tools.getAllCategory
   }
 
-  async getAllPages(select: string) {
-    return await this.pageModel.find().select(select).sort({ order: -1 }).lean()
+  get getAllPages() {
+    return this.tools.getAllPages
   }
 
   async getRandomContent(type: RandomType, imageType: FileType, size: number) {
@@ -108,44 +110,12 @@ export class AggregateService {
         return await this.imageService.getRandomImages(size, imageType)
     }
   }
+
   async getSiteMapContent() {
-    const baseURL = this.configs.get('url').webUrl
-    const posts = (await this.postModel.find().populate('category')).map(
-      (doc) => {
-        return {
-          url: new URL(
-            `/posts/${(doc.category as Category).slug}/${doc.slug}`,
-            baseURL,
-          ),
-          published_at: doc.modified,
-        }
-      },
-    )
-    const notes = (await this.noteModel.find().lean()).map((doc) => {
-      return {
-        url: new URL(`/notes/${doc.nid}`, baseURL),
-        published_at: doc.modified,
-      }
-    })
-
-    const pages = (await this.pageModel.find().lean()).map((doc) => {
-      return {
-        url: new URL(`/${doc.slug}`, baseURL),
-        published_at: doc.modified,
-      }
-    })
-
-    return {
-      data: [...pages, ...notes, ...posts].sort(
-        (a, b) => -(a.published_at.getTime() - b.published_at.getTime()),
-      ),
-    }
+    return { data: await this.tools.getSiteMapContent() }
   }
-
-  async getLastestNoteNid() {
-    return (
-      await this.noteModel.findOne().sort({ nid: -1 }).lean().select('nid')
-    ).nid
+  get getLastestNoteNid() {
+    return this.tools.getLastestNoteNid
   }
   async buildRssStructure(): Promise<RSSProps> {
     const data = await this.getRSSFeedContent()

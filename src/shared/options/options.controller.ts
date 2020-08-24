@@ -1,15 +1,23 @@
 /*
  * @Author: Innei
  * @Date: 2020-05-08 20:01:58
- * @LastEditTime: 2020-05-31 19:21:46
+ * @LastEditTime: 2020-08-24 22:05:17
  * @LastEditors: Innei
- * @FilePath: /mx-server/src/shared/options/admin.controller.ts
+ * @FilePath: /mx-server/src/shared/options/options.controller.ts
  * @Coding with Love
  */
 
-import { Body, Controller, Get, Param, Patch, Query } from '@nestjs/common'
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Query,
+  UnprocessableEntityException,
+} from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
-import { IsNotEmpty, IsString } from 'class-validator'
+import { IsNotEmpty, IsObject, IsString } from 'class-validator'
 import { ConfigsService, IConfig } from 'src/configs/configs.service'
 import { OptionsService } from 'src/shared/options/options.service'
 import { Auth } from '../../core/decorators/auth.decorator'
@@ -42,7 +50,13 @@ export class OptionsController {
   }
 
   @Patch(':key')
-  async patch(@Param() params: ConfigKeyDto, @Body() body: { name: string }) {
+  async patch(
+    @Param() params: ConfigKeyDto,
+    @Body() body: Record<string, any>,
+  ) {
+    if (typeof body !== 'object') {
+      throw new UnprocessableEntityException('body must be object')
+    }
     return await this.adminService.patchAndValid(params.key, body)
   }
 

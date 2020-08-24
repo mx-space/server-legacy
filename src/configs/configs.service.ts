@@ -1,7 +1,7 @@
 /*
  * @Author: Innei
  * @Date: 2020-05-08 20:01:58
- * @LastEditTime: 2020-05-22 08:51:38
+ * @LastEditTime: 2020-08-24 21:58:59
  * @LastEditors: Innei
  * @FilePath: /mx-server/src/configs/configs.service.ts
  * @MIT
@@ -14,6 +14,7 @@ import { InjectModel } from 'nestjs-typegoose'
 import { User } from '../../libs/db/src/models/user.model'
 import {
   BackupOptions,
+  BaiduSearchOptions,
   CommentOptions,
   ImageBedDto,
   MailOptionsDto,
@@ -28,6 +29,7 @@ export interface IConfig {
   mailOptions: MailOptionsDto
   commentOptions: CommentOptions
   backupOptions: BackupOptions
+  baiduSearchOptions: BaiduSearchOptions
 }
 export enum IConfigKeys {
   seo,
@@ -54,6 +56,7 @@ export class ConfigsService {
     mailOptions: {} as MailOptionsDto,
     commentOptions: { antiSpam: false },
     backupOptions: { enable: false } as BackupOptions,
+    baiduSearchOptions: { enable: false },
   }
 
   constructor(

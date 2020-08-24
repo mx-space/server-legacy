@@ -1,7 +1,7 @@
 /*
  * @Author: Innei
  * @Date: 2020-05-12 15:52:01
- * @LastEditTime: 2020-05-25 16:31:15
+ * @LastEditTime: 2020-08-24 21:34:46
  * @LastEditors: Innei
  * @FilePath: /mx-server/src/app.module.ts
  * @MIT
@@ -30,6 +30,7 @@ import { AnalyzeMiddleware } from './core/middlewares/analyze.middleware'
 import { SkipBrowserDefaultRequestMiddleware } from './core/middlewares/favicon.middleware'
 import { AppController } from './app.controller'
 import { SecurityMiddleware } from './core/middlewares/security.middleware'
+import { ToolsModule } from './common/tools/tools.module'
 const providers: Provider<any>[] = [
   {
     provide: APP_PIPE,
@@ -63,6 +64,7 @@ if (process.env.NODE_ENV === 'production') {
       rootPath: join(__dirname, '..', 'admin'),
       renderPath: '/admin',
     }),
+    ToolsModule,
   ],
   providers,
   controllers: [AppController],
