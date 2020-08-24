@@ -3,7 +3,7 @@ import Category from '@libs/db/models/category.model'
 /*
  * @Author: Innei
  * @Date: 2020-05-06 22:14:51
- * @LastEditTime: 2020-08-24 22:26:00
+ * @LastEditTime: 2020-08-24 22:27:29
  * @LastEditors: Innei
  * @FilePath: /mx-server/src/shared/helper/helper.controller.ts
  * @Coding with Love
@@ -21,7 +21,7 @@ import { ApiProperty, ApiQuery, ApiTags } from '@nestjs/swagger'
 import { execSync } from 'child_process'
 import { FastifyReply } from 'fastify'
 import { readFileSync } from 'fs'
-import { Readable } from 'nodemailer/lib/xoauth2'
+import { Readable } from 'stream'
 import { join } from 'path'
 import { Auth } from 'src/core/decorators/auth.decorator'
 import { ArticleType, DataListDto } from './dto/datatype.dto'
