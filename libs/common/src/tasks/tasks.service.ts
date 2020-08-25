@@ -182,7 +182,7 @@ export class TasksService {
             },
           )
           .toPromise()
-
+        this.logger.log(`提交结果: ${res.data}`)
         resolve(res.data)
       }
       resolve(null)
