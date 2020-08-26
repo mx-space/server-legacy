@@ -119,7 +119,7 @@
     "jest": "26.4.2",
     "lint-staged": "10.2.13",
     "pino-colada": "2.1.0",
-    "prettier": "2.1.0",
+    "prettier": "2.1.1",
     "rimraf": "3.0.2",
     "rxjs": "6.6.2",
     "start-server-webpack-plugin": "2.2.5",
