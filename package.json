@@ -57,7 +57,7 @@
     "@nestjs/swagger": "4.6.0",
     "@nestjs/websockets": "7.4.2",
     "@typegoose/auto-increment": "0.5.0",
-    "@typegoose/typegoose": "7.3.3",
+    "@typegoose/typegoose": "7.3.4",
     "@types/mkdirp": "1.0.1",
     "akismet": "2.0.6",
     "bcrypt": "5.0.0",
