@@ -765,10 +765,10 @@
     loglevel "^1.6.8"
     tslib "^2.0.0"
 
-"@typegoose/typegoose@7.3.3":
-  version "7.3.3"
-  resolved "https://registry.yarnpkg.com/@typegoose/typegoose/-/typegoose-7.3.3.tgz#71f2bffc68cc21e5aaecf6e6b5fde20a62537de1"
-  integrity sha512-KfACHZvGXfYugXsHUersTrKV768p2bzo/6SxOl59eowxTwmqHXU9t8kpY8uXX2FxESDJsMykpUyUZkm+WrsK7Q==
+"@typegoose/typegoose@7.3.4":
+  version "7.3.4"
+  resolved "https://registry.yarnpkg.com/@typegoose/typegoose/-/typegoose-7.3.4.tgz#1ced16d19f9c4938abaec4b0351c0bfb562d4121"
+  integrity sha512-wXR78IoUl2PZcYw00lTclvvBP24dqGlagCJLjW371cXYDx9+KHFfwRp2AxuXw/d1mwshSYtO4AyRLTYBu8/5Nw==
   dependencies:
     lodash "^4.17.19"
     loglevel "^1.6.8"
