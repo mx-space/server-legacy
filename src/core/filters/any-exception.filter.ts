@@ -1,7 +1,7 @@
 /*
  * @Author: Innei
  * @Date: 2020-05-08 20:01:58
- * @LastEditTime: 2020-07-08 21:34:46
+ * @LastEditTime: 2020-08-27 19:29:23
  * @LastEditors: Innei
  * @FilePath: /mx-server/src/core/filters/any-exception.filter.ts
  * @Coding with Love
@@ -50,7 +50,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
           ((exception as any)?.response?.message ||
             (exception as myError)?.message ||
             '') +
-          `path: ${request.raw.url}`,
+          ` path: ${request.raw.url}`,
       )
     }
 
