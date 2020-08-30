@@ -19,7 +19,8 @@ import { Mailer, ReplyMailType } from '../../plugins/mailer'
 import { hasChinese } from '../../utils'
 import { BaseService } from '../base/base.service'
 import { merge } from 'lodash'
-
+// import BlockedKeywords from './block-keywords.json'
+import BlockedKeywords = require('./block-keywords.json')
 @Injectable()
 export class CommentsService extends BaseService<Comment> {
   private readonly logger: Logger = new Logger(CommentsService.name)
@@ -70,15 +71,19 @@ export class CommentsService extends BaseService<Comment> {
           return true
         }
       }
-      if (commentOptions.spamKeywords) {
-        const isBlock = commentOptions.spamKeywords.some((keyword) =>
-          new RegExp(keyword, 'ig').test(doc.text),
-        )
+
+      {
+        const customKeywords = commentOptions.spamKeywords || []
+        const isBlock = [
+          ...customKeywords,
+          ...BlockedKeywords,
+        ].some((keyword) => new RegExp(keyword, 'ig').test(doc.text))
 
         if (isBlock) {
           return true
         }
       }
+
       if (!hasChinese(doc.text)) {
         return true
       }
