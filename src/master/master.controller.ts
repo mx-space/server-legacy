@@ -1,3 +1,11 @@
+/*
+ * @Author: Innei
+ * @Date: 2020-05-21 11:05:42
+ * @LastEditTime: 2020-09-02 13:03:57
+ * @LastEditors: Innei
+ * @FilePath: /mx-server/src/master/master.controller.ts
+ * @Coding with Love
+ */
 import { User, UserDocument } from '@libs/db/models/user.model'
 import {
   Body,
@@ -11,12 +19,7 @@ import {
   UseGuards,
 } from '@nestjs/common'
 import { AuthGuard } from '@nestjs/passport'
-import {
-  ApiBearerAuth,
-  ApiOperation,
-  ApiSecurity,
-  ApiTags,
-} from '@nestjs/swagger'
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger'
 import { DocumentType } from '@typegoose/typegoose'
 import { AuthService } from 'src/auth/auth.service'
 import { RolesGuard } from 'src/auth/roles.guard'
@@ -78,7 +81,7 @@ export class MasterController {
 
   @Get('check_logged')
   @ApiOperation({ summary: '判断当前 Token 是否有效 ' })
-  @ApiSecurity('bearer')
+  @ApiBearerAuth()
   // @UseGuards(AuthGuard('jwt'))
   @UseGuards(RolesGuard)
   checkLogged(@Master() isMaster: boolean) {

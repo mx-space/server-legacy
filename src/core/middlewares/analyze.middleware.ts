@@ -1,7 +1,7 @@
 /*
  * @Author: Innei
  * @Date: 2020-05-10 15:22:08
- * @LastEditTime: 2020-08-02 15:10:42
+ * @LastEditTime: 2020-09-02 12:58:18
  * @LastEditors: Innei
  * @FilePath: /mx-server/src/core/middlewares/analyze.middleware.ts
  * @MIT
@@ -31,12 +31,18 @@ export class AnalyzeMiddleware implements NestMiddleware {
     this.parser = new UAParser()
   }
   async use(req: FastifyRequest, res: ServerResponse, next: () => void) {
+    const ip = getIp(req)
+    // if req from SSR server, like 127.0.0.1, skip
+    if (['127.0.0.1', 'localhost', '::-1'].includes(ip)) {
+      return next()
+    }
+
+    // if is login and is master, skip
     if (req.headers['Authorization'] || req.headers['authorization']) {
       return next()
     }
 
     try {
-      const ip = getIp(req)
       this.parser.setUA(req.headers['user-agent'])
 
       const ua = this.parser.getResult()
