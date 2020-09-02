@@ -61,7 +61,7 @@
     "@types/mkdirp": "1.0.1",
     "akismet": "2.0.6",
     "bcrypt": "5.0.0",
-    "cache-manager": "3.3.0",
+    "cache-manager": "3.4.0",
     "cache-manager-redis-store": "2.0.0",
     "class-transformer": "0.3.1",
     "class-validator": "0.12.2",
