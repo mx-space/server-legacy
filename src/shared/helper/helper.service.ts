@@ -217,10 +217,9 @@ export class HelperService {
     const res = `
 ---
 ${toYaml.trim()}
-
 ---
 
-${text}
+${text.trim()}
 `.trim()
 
     return res
