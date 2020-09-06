@@ -1,7 +1,7 @@
 /*
  * @Author: Innei
  * @Date: 2020-05-08 20:01:58
- * @LastEditTime: 2020-08-27 19:29:23
+ * @LastEditTime: 2020-09-06 11:20:09
  * @LastEditors: Innei
  * @FilePath: /mx-server/src/core/filters/any-exception.filter.ts
  * @Coding with Love
@@ -46,11 +46,11 @@ export class AllExceptionsFilter implements ExceptionFilter {
       this.logger.warn(
         'IP: ' +
           ip +
-          `  错误信息: (${status})` +
+          `  错误信息: (${status}) ` +
           ((exception as any)?.response?.message ||
             (exception as myError)?.message ||
             '') +
-          ` path: ${request.raw.url}`,
+          ` Path: ${decodeURI(request.raw.url)}`,
       )
     }
 
@@ -62,7 +62,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
         (exception as any)?.message ||
         '未知错误',
       timestamp: new Date().toISOString(),
-      path: request.raw.url,
+      path: decodeURI(request.raw.url),
     })
   }
 }
