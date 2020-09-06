@@ -121,7 +121,7 @@
     "pino-colada": "2.1.0",
     "prettier": "2.1.1",
     "rimraf": "3.0.2",
-    "rxjs": "6.6.2",
+    "rxjs": "6.6.3",
     "start-server-webpack-plugin": "2.2.5",
     "supertest": "4.0.2",
     "ts-jest": "26.2.0",
