@@ -1,7 +1,7 @@
 /*
  * @Author: Innei
  * @Date: 2020-05-21 11:05:42
- * @LastEditTime: 2020-08-01 15:15:24
+ * @LastEditTime: 2020-09-06 21:48:30
  * @LastEditors: Innei
  * @FilePath: /mx-server/src/main.ts
  * @Coding with Love
@@ -33,7 +33,11 @@ async function bootstrap() {
   const hosts = Origin.split(',').map((host) => new RegExp(host, 'i'))
 
   app.enableCors({
-    origin: hosts,
+    origin: (origin, callback) => {
+      const allow = hosts.some((host) => host.test(origin))
+
+      callback(null, allow)
+    },
     credentials: true,
   })
 

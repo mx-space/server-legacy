@@ -1,7 +1,7 @@
 /*
  * @Author: Innei
  * @Date: 2020-06-24 20:01:32
- * @LastEditTime: 2020-08-08 16:11:25
+ * @LastEditTime: 2020-09-06 21:48:22
  * @LastEditors: Innei
  * @FilePath: /mx-server/src/core/adapt/fastify.ts
  * @Coding with Love
@@ -30,4 +30,13 @@ fastifyApp.register((Session as any) as typeof _Session, {
   secret: 'asdasdasdasdsadsaxsaxassdasdqwdasdxczardja'.concat(SECRET),
   salt: SECRET.repeat(16).slice(0, 16) || 'mq9hDxBVDbspDR6n',
   cookie: { secure: false, maxAge: 84000 },
+})
+
+fastifyApp.getInstance().addHook('onRequest', (request, reply, done) => {
+  const origin = request.headers.origin
+  if (!origin) {
+    request.headers.origin = request.headers.host
+  }
+
+  done()
 })
