@@ -73,7 +73,7 @@
     "fastify-swagger": "3.3.0",
     "file-type": "15.0.0",
     "get-folder-size": "2.0.1",
-    "image-size": "0.8.3",
+    "image-size": "0.9.1",
     "js-yaml": "3.14.0",
     "mongoose": "5.10.3",
     "mongoose-lean-virtuals": "0.6.9",
