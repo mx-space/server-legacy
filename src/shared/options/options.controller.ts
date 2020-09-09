@@ -1,7 +1,7 @@
 /*
  * @Author: Innei
  * @Date: 2020-05-08 20:01:58
- * @LastEditTime: 2020-08-24 22:05:17
+ * @LastEditTime: 2020-09-09 13:39:46
  * @LastEditors: Innei
  * @FilePath: /mx-server/src/shared/options/options.controller.ts
  * @Coding with Love
@@ -17,8 +17,11 @@ import {
   UnprocessableEntityException,
 } from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
-import { IsNotEmpty, IsObject, IsString } from 'class-validator'
-import { ConfigsService, IConfig } from 'src/configs/configs.service'
+import { IsNotEmpty, IsString } from 'class-validator'
+import {
+  ConfigsService,
+  IConfig,
+} from 'src/common/global/configs/configs.service'
 import { OptionsService } from 'src/shared/options/options.service'
 import { Auth } from '../../core/decorators/auth.decorator'
 import { AdminEventsGateway } from '../../gateway/admin/events.gateway'

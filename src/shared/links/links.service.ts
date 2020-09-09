@@ -12,7 +12,7 @@ import { Injectable } from '@nestjs/common'
 import { ReturnModelType } from '@typegoose/typegoose'
 import { InjectModel } from 'nestjs-typegoose'
 import { User } from '../../../libs/db/src/models/user.model'
-import { ConfigsService } from '../../configs/configs.service'
+import { ConfigsService } from '../../common/global/configs/configs.service'
 import { Mailer } from '../../plugins/mailer'
 import { BaseService } from '../base/base.service'
 

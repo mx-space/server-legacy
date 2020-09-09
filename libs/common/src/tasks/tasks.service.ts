@@ -10,12 +10,12 @@ import { InjectModel } from 'nestjs-typegoose'
 import { join } from 'path'
 import { TEMP_DIR } from 'src/constants'
 import { isDev } from 'src/utils'
-import { ConfigsService } from '../../../../src/configs/configs.service'
+import { ConfigsService } from '../../../../src/common/global/configs/configs.service'
 import { BackupsService } from '../../../../src/shared/backups/backups.service'
 import { Analyze } from '../../../db/src/models/analyze.model'
 import { RedisNames } from '../redis/redis.types'
 import dayjs = require('dayjs')
-import { ToolsService } from 'src/common/tools/tools.service'
+import { ToolsService } from 'src/common/global/tools/tools.service'
 
 @Injectable()
 export class TasksService {

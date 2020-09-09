@@ -11,7 +11,7 @@ import {
 import { ApiProperty, ApiTags } from '@nestjs/swagger'
 import { pick } from 'lodash'
 import { RolesGuard } from 'src/auth/roles.guard'
-import { ConfigsService } from 'src/configs/configs.service'
+import { ConfigsService } from 'src/common/global/configs/configs.service'
 import { Master } from 'src/core/decorators/guest.decorator'
 import MasterService from 'src/master/master.service'
 import { AggregateService } from 'src/shared/aggregate/aggregate.service'

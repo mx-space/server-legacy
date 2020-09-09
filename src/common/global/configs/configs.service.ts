@@ -11,7 +11,7 @@ import { Option } from '@libs/db/models/option.model'
 import { Injectable, UnprocessableEntityException } from '@nestjs/common'
 import { ReturnModelType } from '@typegoose/typegoose'
 import { InjectModel } from 'nestjs-typegoose'
-import { User } from '../../libs/db/src/models/user.model'
+import { User } from '../../../../libs/db/src/models/user.model'
 import {
   BackupOptions,
   BaiduSearchOptions,

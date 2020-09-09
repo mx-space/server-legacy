@@ -1,7 +1,7 @@
 /*
  * @Author: Innei
  * @Date: 2020-05-12 15:52:01
- * @LastEditTime: 2020-08-24 21:34:46
+ * @LastEditTime: 2020-09-09 13:38:49
  * @LastEditors: Innei
  * @FilePath: /mx-server/src/app.module.ts
  * @MIT
@@ -10,27 +10,26 @@
 import { CommonModule } from '@libs/common'
 import { DbModule } from '@libs/db'
 import {
-  Module,
-  Provider,
-  ValidationPipe,
-  NestModule,
   MiddlewareConsumer,
+  Module,
+  NestModule,
+  Provider,
   RequestMethod,
+  ValidationPipe,
 } from '@nestjs/common'
-import { APP_PIPE, APP_GUARD } from '@nestjs/core'
-import { GatewayModule } from 'src/gateway/gateway.module'
-import { AuthModule } from './auth/auth.module'
-import { MasterModule } from './master/master.module'
-import { SharedModule } from './shared/shared.module'
-import { SpiderGuard } from 'src/core/guards/spider.guard'
-import { ConfigsModule } from './configs/configs.module'
+import { APP_GUARD, APP_PIPE } from '@nestjs/core'
 import { ServeStaticModule } from '@nestjs/serve-static'
 import { join } from 'path'
+import { SpiderGuard } from 'src/core/guards/spider.guard'
+import { GatewayModule } from 'src/gateway/gateway.module'
+import { AppController } from './app.controller'
+import { AuthModule } from './auth/auth.module'
+import { GlobalModule } from './common/global/global.module'
 import { AnalyzeMiddleware } from './core/middlewares/analyze.middleware'
 import { SkipBrowserDefaultRequestMiddleware } from './core/middlewares/favicon.middleware'
-import { AppController } from './app.controller'
 import { SecurityMiddleware } from './core/middlewares/security.middleware'
-import { ToolsModule } from './common/tools/tools.module'
+import { MasterModule } from './master/master.module'
+import { SharedModule } from './shared/shared.module'
 const providers: Provider<any>[] = [
   {
     provide: APP_PIPE,
@@ -59,12 +58,11 @@ if (process.env.NODE_ENV === 'production') {
     AuthModule,
     MasterModule,
     SharedModule,
-    ConfigsModule,
+    GlobalModule,
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'admin'),
       renderPath: '/admin',
     }),
-    ToolsModule,
   ],
   providers,
   controllers: [AppController],

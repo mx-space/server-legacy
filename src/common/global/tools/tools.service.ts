@@ -13,7 +13,7 @@ import Post from '@libs/db/models/post.model'
 import { Injectable } from '@nestjs/common'
 import { ReturnModelType } from '@typegoose/typegoose'
 import { InjectModel } from 'nestjs-typegoose'
-import { ConfigsService } from 'src/configs/configs.service'
+import { ConfigsService } from 'src/common/global/configs/configs.service'
 
 @Injectable()
 export class ToolsService {

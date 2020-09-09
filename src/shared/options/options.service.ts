@@ -23,8 +23,11 @@ import {
   MailOptionsDto,
   SEODto,
   UrlDto,
-} from '../../configs/configs.dto'
-import { ConfigsService, IConfig } from '../../configs/configs.service'
+} from '../../common/global/configs/configs.dto'
+import {
+  ConfigsService,
+  IConfig,
+} from '../../common/global/configs/configs.service'
 
 @Injectable()
 export class OptionsService {

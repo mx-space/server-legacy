@@ -19,7 +19,7 @@ import { plural } from 'pluralize'
 import { CannotFindException } from 'src/core/exceptions/cant-find.exception'
 import { isDev } from 'src/utils'
 import { Readable } from 'stream'
-import { ConfigsService } from '../../configs/configs.service'
+import { ConfigsService } from '../../common/global/configs/configs.service'
 import { ImageService } from './image.service'
 
 // @Injectable({ scope: Scope.REQUEST })
