@@ -24,7 +24,17 @@
   "compilerOptions": {
     "webpack": true,
     "plugins": [
-      "@nestjs/swagger/plugin"
+      "@nestjs/swagger/plugin",
+      {
+        "name": "@nestjs/graphql/plugin",
+        "options": {
+          "typeFileNameSuffix": [
+            ".input.ts",
+            ".args.ts",
+            ".schema.ts"
+          ]
+        }
+      }
     ]
   }
 }

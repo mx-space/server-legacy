@@ -1,0 +1,12 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type PostItemModel {
+  _id: ID!
+}
+
+type Query {
+  post(id: String!): PostItemModel!
+  posts: [PostItemModel!]!
+}

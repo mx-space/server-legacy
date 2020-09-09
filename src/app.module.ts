@@ -1,7 +1,7 @@
 /*
  * @Author: Innei
  * @Date: 2020-05-12 15:52:01
- * @LastEditTime: 2020-09-09 13:38:49
+ * @LastEditTime: 2020-09-09 14:59:43
  * @LastEditors: Innei
  * @FilePath: /mx-server/src/app.module.ts
  * @MIT
@@ -28,6 +28,7 @@ import { GlobalModule } from './common/global/global.module'
 import { AnalyzeMiddleware } from './core/middlewares/analyze.middleware'
 import { SkipBrowserDefaultRequestMiddleware } from './core/middlewares/favicon.middleware'
 import { SecurityMiddleware } from './core/middlewares/security.middleware'
+import { GraphModule } from './core/modules/graphql.module'
 import { MasterModule } from './master/master.module'
 import { SharedModule } from './shared/shared.module'
 const providers: Provider<any>[] = [
@@ -59,6 +60,7 @@ if (process.env.NODE_ENV === 'production') {
     MasterModule,
     SharedModule,
     GlobalModule,
+    GraphModule,
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'admin'),
       renderPath: '/admin',

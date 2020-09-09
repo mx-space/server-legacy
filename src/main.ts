@@ -1,14 +1,17 @@
 /*
  * @Author: Innei
  * @Date: 2020-05-21 11:05:42
- * @LastEditTime: 2020-09-06 21:48:30
+ * @LastEditTime: 2020-09-09 15:51:50
  * @LastEditors: Innei
  * @FilePath: /mx-server/src/main.ts
  * @Coding with Love
  */
 
 import { NestFactory } from '@nestjs/core'
-import { NestFastifyApplication } from '@nestjs/platform-fastify'
+import {
+  FastifyAdapter,
+  NestFastifyApplication,
+} from '@nestjs/platform-fastify'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 import { AllExceptionsFilter } from 'src/core/filters/any-exception.filter'
 import { ResponseInterceptor } from 'src/core/interceptors/response.interceptors'
@@ -26,6 +29,7 @@ async function bootstrap() {
     AppModule,
     fastifyApp,
   )
+
   app.useWebSocketAdapter(new ExtendsIoAdapter(app))
   app.useGlobalFilters(new AllExceptionsFilter())
   app.useGlobalInterceptors(new ResponseInterceptor())

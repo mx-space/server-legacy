@@ -24,7 +24,7 @@ import { addConditionToSeeHideContent, yearCondition } from 'src/utils'
 import { IpLocation, IpRecord } from '../../core/decorators/ip.decorator'
 import { EventTypes } from '../../gateway/events.types'
 import { WebEventsGateway } from '../../gateway/web/events.gateway'
-import { CategoryAndSlug, PostDto, PostQueryDto } from './dto'
+import { CategoryAndSlug, PostDto, PostPaginationQueryDto } from './dto'
 import { PostsService } from './posts.service'
 
 @Controller('posts')
@@ -40,7 +40,10 @@ export class PostsController {
 
   @Get()
   @ApiOperation({ summary: '获取全部文章带分页器' })
-  async getAll(@Master() isMaster?: boolean, @Query() query?: PostQueryDto) {
+  async getAll(
+    @Master() isMaster?: boolean,
+    @Query() query?: PostPaginationQueryDto,
+  ) {
     const { size, select, page, year, sortBy, sortOrder } = query
     const condition = {
       ...addConditionToSeeHideContent(isMaster),

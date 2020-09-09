@@ -1,9 +1,9 @@
 /*
  * @Author: Innei
  * @Date: 2020-05-08 20:01:58
- * @LastEditTime: 2020-08-24 21:58:59
+ * @LastEditTime: 2020-09-09 14:04:14
  * @LastEditors: Innei
- * @FilePath: /mx-server/src/configs/configs.service.ts
+ * @FilePath: /mx-server/src/common/global/configs/configs.service.ts
  * @MIT
  */
 
@@ -123,5 +123,9 @@ export class ConfigsService {
       throw new UnprocessableEntityException('未初始化')
     }
     return master
+  }
+
+  public get isDev() {
+    return process.env.NODE_ENV !== 'production'
   }
 }

@@ -1,13 +1,14 @@
 /*
  * @Author: Innei
  * @Date: 2020-04-30 12:21:51
- * @LastEditTime: 2020-08-02 21:41:56
+ * @LastEditTime: 2020-09-09 15:05:08
  * @LastEditors: Innei
  * @FilePath: /mx-server/src/shared/posts/dto/index.ts
  * @MIT
  */
 import { ApiProperty } from '@nestjs/swagger'
 import { Transform } from 'class-transformer'
+import { InputType, Field, ArgsType } from '@nestjs/graphql'
 import {
   ArrayUnique,
   IsBoolean,
@@ -82,15 +83,20 @@ export class PostDto {
   options?: Record<any, any>
 }
 
-export class PostQueryDto extends PagerDto {
+export class PostPaginationQueryDto extends PagerDto {
   @IsOptional()
   @IsEnum(['categoryId', 'title', 'created', 'modified'])
   @Transform((v) => (v === 'category' ? 'categoryId' : v))
+  @Field()
   sortBy?: string
 
   @IsOptional()
   @IsEnum([1, -1])
   @ValidateIf((o) => o.sortBy)
   @Transform((v) => ~~v)
+  @Field()
   sortOrder?: 1 | -1
 }
+
+@ArgsType()
+export class PostPaginationArgs extends PostPaginationQueryDto {}

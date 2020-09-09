@@ -1,7 +1,7 @@
 /*
  * @Author: Innei
  * @Date: 2020-05-21 11:05:42
- * @LastEditTime: 2020-06-10 18:59:13
+ * @LastEditTime: 2020-09-09 14:59:33
  * @LastEditors: Innei
  * @FilePath: /mx-server/src/shared/shared.module.ts
  * @Coding with Love
@@ -32,6 +32,7 @@ import { NotesController } from './notes/notes.controller'
 import { NotesService } from './notes/notes.service'
 import { OptionsController } from './options/options.controller'
 import { OptionsService } from './options/options.service'
+import { PostsResolver } from './posts/posts.resolver'
 import { ProjectsController } from './projects/projects.controller'
 import { ProjectsService } from './projects/projects.service'
 import { SaysController } from './says/says.controller'
@@ -65,7 +66,10 @@ import { UploadsModule } from './uploads/uploads.module'
     HelperService,
     AnalyzeService,
     BackupsService,
+
+    PostsResolver,
   ],
+
   controllers: [
     OptionsController,
     AggregateController,
