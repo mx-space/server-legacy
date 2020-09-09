@@ -160,7 +160,7 @@ export class TasksService {
         const token = configs.token
         if (!token) {
           this.logger.error('[BaiduSearchPushTask] token 为空')
-          reject('token is empty')
+          return reject('token is empty')
         }
         const siteUrl = this.configs.get('url').webUrl
 
@@ -183,9 +183,9 @@ export class TasksService {
           )
           .toPromise()
         this.logger.log(`提交结果: ${JSON.stringify(res.data)}`)
-        resolve(res.data)
+        return resolve(res.data)
       }
-      resolve(null)
+      return resolve(null)
     })
   }
 }
