@@ -91,7 +91,7 @@ export class AnalyzeMiddleware implements NestMiddleware {
               value: 1,
             })
           }
-          resolve()
+          resolve(null)
         })
       }
     } catch (e) {

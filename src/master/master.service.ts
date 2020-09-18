@@ -120,7 +120,7 @@ export default class MasterService {
         dateFormat,
         stringify(value.concat({ date: new Date().toISOString(), ip })),
       )
-      resolve()
+      resolve(null)
     })
     this.Logger.warn('主人已登录, IP: ' + ip)
     return PrevFootstep

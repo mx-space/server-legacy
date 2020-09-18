@@ -144,7 +144,7 @@ export class CommentsController {
         this.commentService.sendEmail(comment, ReplyMailType.Owner)
         this.gateway.broadcase(EventTypes.COMMENT_CREATE, comment)
       }
-      resolve()
+      resolve(null)
     })
 
     return comment

@@ -169,11 +169,13 @@ export class CommentsService extends BaseService<Comment> {
     }
     if (parent) {
       const parent = await this.commentModel.findById(comment.parent)
-      await parent.updateOne({
-        $pull: {
-          children: comment._id,
-        },
-      })
+      if (parent) {
+        await parent.updateOne({
+          $pull: {
+            children: comment._id,
+          },
+        })
+      }
     }
     return { message: '删除成功' }
   }

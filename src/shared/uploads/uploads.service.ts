@@ -97,7 +97,7 @@ export class UploadsService {
         new Promise((resolve) => {
           const imageService = new ImageService(this.model, this.configs)
           imageService.syncToImageBed([{ path, name: hashFilename }])
-          resolve()
+          resolve(null)
           // TODO image upload successful callback event to gateway
         })
       }

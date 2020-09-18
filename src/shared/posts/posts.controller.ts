@@ -129,7 +129,7 @@ export class PostsController {
         category,
       })
       this.service.RecordImageDimensions(newPostDocument._id)
-      resolve()
+      resolve(null)
     })
     return newPostDocument
   }
@@ -150,7 +150,7 @@ export class PostsController {
         .then((doc) => {
           this.webgateway.broadcase(EventTypes.POST_UPDATE, doc)
         })
-      resolve()
+      resolve(null)
     })
     return {
       ...updateDocument,
