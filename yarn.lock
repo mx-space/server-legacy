@@ -4168,6 +4168,27 @@ fastify@3.3.0:
     secure-json-parse "^2.0.0"
     tiny-lru "^7.0.0"
 
+fastify@3.4.1:
+  version "3.4.1"
+  resolved "https://registry.yarnpkg.com/fastify/-/fastify-3.4.1.tgz#7dce8f31f0c9f6f44f3e25403b1f4be75e1f87bd"
+  integrity sha512-a3I9hjet4XfWFSNYOEO209lERiMNIjpNm7gSuEzESeKAuX5BChJV9r09zWXEJqOLseBUTVCvakjookG7O8Zapw==
+  dependencies:
+    abstract-logging "^2.0.0"
+    ajv "^6.12.2"
+    avvio "^7.1.2"
+    fast-json-stringify "^2.2.1"
+    fastify-error "^0.2.0"
+    fastify-warning "^0.2.0"
+    find-my-way "^3.0.0"
+    flatstr "^1.0.12"
+    light-my-request "^4.0.2"
+    pino "^6.2.1"
+    proxy-addr "^2.0.5"
+    readable-stream "^3.4.0"
+    rfdc "^1.1.4"
+    secure-json-parse "^2.0.0"
+    tiny-lru "^7.0.0"
+
 fastq@^1.6.0, fastq@^1.6.1:
   version "1.8.0"
   resolved "https://registry.yarnpkg.com/fastq/-/fastq-1.8.0.tgz#550e1f9f59bbc65fe185cb6a9b4d95357107f481"
@@ -6238,7 +6259,7 @@ levn@~0.3.0:
     prelude-ls "~1.1.2"
     type-check "~0.3.2"
 
-light-my-request@4.0.2:
+light-my-request@4.0.2, light-my-request@^4.0.2:
   version "4.0.2"
   resolved "https://registry.yarnpkg.com/light-my-request/-/light-my-request-4.0.2.tgz#e80ebbbac512f0f45b9e54cb274b8f121248b924"
   integrity sha512-VaiiqR2NtdgYL8zQENPr7FBBVKCGioqa06HYnidj/GC+6jibyZrNCrk6FU8fqe9WWQDqwOtt0UCWLGe0GjyjgA==
