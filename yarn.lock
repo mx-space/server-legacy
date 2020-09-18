@@ -2857,10 +2857,10 @@ core-util-is@1.0.2, core-util-is@^1.0.2, core-util-is@~1.0.0:
   resolved "https://registry.yarnpkg.com/core-util-is/-/core-util-is-1.0.2.tgz#b5fd54220aa2bc5ab57aab7140c940754503c1a7"
   integrity sha1-tf1UIgqivFq1eqtxQMlAdUUDwac=
 
-cos-nodejs-sdk-v5@2.7.1:
-  version "2.7.1"
-  resolved "https://registry.yarnpkg.com/cos-nodejs-sdk-v5/-/cos-nodejs-sdk-v5-2.7.1.tgz#31e620eccc5858440668e8be68093e46626ca504"
-  integrity sha512-/KPSt5i4bc3jtsG+DUSzmVpWqXt2hF1FuhkV0lOhQQZymvFlCwfPiWWpd5S5ARFzKDDVb9OwTstiRdOqy/sYHQ==
+cos-nodejs-sdk-v5@2.7.2:
+  version "2.7.2"
+  resolved "https://registry.yarnpkg.com/cos-nodejs-sdk-v5/-/cos-nodejs-sdk-v5-2.7.2.tgz#f79e15f12ca285f0cabde7f7496423b439d1ec6c"
+  integrity sha512-ix3Nlks/JvR5i45SQB+Wnt7b3Rsgc9n8BaeadKuVt04ki0O0rYg3PWtUWNqLt1UdN/7iju/aGWL/xAMkw5kAlQ==
   dependencies:
     conf "^7.1.2"
     mime-types "^2.1.24"
