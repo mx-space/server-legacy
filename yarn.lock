@@ -812,10 +812,10 @@
     loglevel "^1.6.8"
     tslib "^2.0.0"
 
-"@typegoose/typegoose@7.4.0":
-  version "7.4.0"
-  resolved "https://registry.yarnpkg.com/@typegoose/typegoose/-/typegoose-7.4.0.tgz#b996f0e7a273feec8bc808251ef854ee77b9e412"
-  integrity sha512-HpKM+RwypP/N2U5fO6l7lLCMGw3Ft2xUpafJqlGeKIQki9myPufHayqiLOAzFlaYWD1LgIuFWDGJFKpXhgCzbA==
+"@typegoose/typegoose@7.4.1":
+  version "7.4.1"
+  resolved "https://registry.yarnpkg.com/@typegoose/typegoose/-/typegoose-7.4.1.tgz#a125d6bcf146b2353e62ed080b38a38d8ea4eb0d"
+  integrity sha512-T9yosI/AIgtr6cHFZ+jUv5gwlwYv2ciQJXlGV+G2khHUDqkOjDuN9aJVn/kBH5RJVmY2gTkxIgjDzgR0+kGs4Q==
   dependencies:
     lodash "^4.17.20"
     loglevel "^1.7.0"
