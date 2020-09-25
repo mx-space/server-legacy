@@ -123,7 +123,7 @@
     "rimraf": "3.0.2",
     "rxjs": "6.6.3",
     "start-server-webpack-plugin": "2.2.5",
-    "supertest": "4.0.2",
+    "supertest": "5.0.0",
     "ts-jest": "26.2.0",
     "ts-loader": "8.0.4",
     "ts-node": "9.0.0",
