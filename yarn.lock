@@ -4112,10 +4112,10 @@ fastify-plugin@^2.3.2:
   dependencies:
     semver "^7.3.2"
 
-fastify-secure-session@2.2.1:
-  version "2.2.1"
-  resolved "https://registry.yarnpkg.com/fastify-secure-session/-/fastify-secure-session-2.2.1.tgz#d9eb36aa8d0a3172d5115a15fb3e2b5f1e157285"
-  integrity sha512-X5D6M/ImYXP0/7V9YZEGJjg11uO66Jn/Yx06lCnxQdwylZhSfYYB6HQiio8iv+nM3DdLQfCi07N93IBZag/GeQ==
+fastify-secure-session@2.3.0:
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/fastify-secure-session/-/fastify-secure-session-2.3.0.tgz#37d52cb8212d84a231a6ff94ba7185a35818b76e"
+  integrity sha512-qJe2+tU7tbUxp4toec22vrxW9WTa6jdu62+5GROA6z2nc1uncYJBHnzwFtH/oiO1tYsW+9Ec8xfn4DJkG74myQ==
   dependencies:
     fastify-cookie "^4.0.2"
     fastify-plugin "^2.0.0"
