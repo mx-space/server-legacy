@@ -1,15 +1,17 @@
 /*
  * @Author: Innei
  * @Date: 2020-04-30 12:21:51
- * @LastEditTime: 2020-05-26 19:10:29
+ * @LastEditTime: 2020-09-27 22:52:03
  * @LastEditors: Innei
- * @FilePath: /mx-server/src/shared/says/says.controller.ts
+ * @FilePath: /server/src/shared/says/says.controller.ts
  * @Copyright
  */
 
 import { Say } from '@libs/db/models/say.model'
-import { Body, Controller, Delete, Param, Post } from '@nestjs/common'
+import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
+import { sample } from 'lodash'
+import { CannotFindException } from 'src/core/exceptions/cant-find.exception'
 import { BaseCrud } from 'src/shared/base/base.controller'
 import { SaysService } from 'src/shared/says/says.service'
 import { Auth } from '../../core/decorators/auth.decorator'
@@ -25,6 +27,15 @@ export class SaysController extends BaseCrud<Say> {
     private readonly webgateway: WebEventsGateway,
   ) {
     super(service)
+  }
+
+  @Get('random')
+  async getRandomOne() {
+    const res = await this.service.find({})
+    if (!res.length) {
+      throw new CannotFindException()
+    }
+    return sample(res)
   }
 
   @Post()
