@@ -48,7 +48,6 @@ export class NotesController {
 
   @Get()
   @ApiOperation({ summary: '获取随记带分页器' })
-  @Auth()
   async getNotes(@Master() isMaster: boolean, @Query() query: NoteQueryDto) {
     const { size, select, page, sortBy, sortOrder, year } = query
     const condition = {
