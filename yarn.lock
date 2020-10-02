@@ -4098,10 +4098,10 @@ fastify-formbody@5.0.0:
   dependencies:
     fastify-plugin "^2.3.2"
 
-fastify-multipart@3.1.0:
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/fastify-multipart/-/fastify-multipart-3.1.0.tgz#bb5b16b1f5d08bcd03d3ef054d117fea04bde615"
-  integrity sha512-5OiIFk46m1I8iewrrEZaNN7J/uXT8x2kiANGXgXYzPmXqARQNPR4oyuTUb6Fx/z9mXLKk32/I9EG8g1lJqP08w==
+fastify-multipart@3.2.0:
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/fastify-multipart/-/fastify-multipart-3.2.0.tgz#6b3076802296d331a19f102626912dd79d536211"
+  integrity sha512-jv+FNiFJF+F8XnlWPHq1VUQhVYbOJ1xWsqqD1cdToJg4MXxRN2D/owj1qwInhloyI6KTWpS1DTZ4tPXg4al+FA==
   dependencies:
     busboy "^0.3.1"
     deepmerge "^4.2.2"
