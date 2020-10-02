@@ -1,13 +1,13 @@
 /*
  * @Author: Innei
  * @Date: 2020-05-10 15:31:44
- * @LastEditTime: 2020-07-08 21:42:06
+ * @LastEditTime: 2020-10-02 16:16:19
  * @LastEditors: Innei
- * @FilePath: /mx-server/src/utils/ip.ts
+ * @FilePath: /server/src/utils/ip.ts
  * @Coding with Love
  */
 
-import { FastifyRequest } from 'fastify'
+import { FastifyRequest } from 'fastify/types/request'
 
 export const getIp = (request: FastifyRequest) => {
   // @ts-ignore

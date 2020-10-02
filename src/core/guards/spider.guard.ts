@@ -13,7 +13,7 @@ import {
   ForbiddenException,
   Injectable,
 } from '@nestjs/common'
-import { FastifyRequest } from 'fastify'
+import { FastifyRequest } from 'fastify/types/request'
 import { Observable } from 'rxjs'
 
 @Injectable()

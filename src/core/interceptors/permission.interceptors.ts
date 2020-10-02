@@ -14,7 +14,7 @@ import {
   NestInterceptor,
   UnauthorizedException,
 } from '@nestjs/common'
-import { FastifyRequest } from 'fastify'
+import { FastifyRequest } from 'fastify/types/request'
 import { isObjectLike } from 'lodash'
 import { Observable } from 'rxjs'
 import { map } from 'rxjs/operators'

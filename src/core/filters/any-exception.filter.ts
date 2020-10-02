@@ -15,7 +15,8 @@ import {
   HttpStatus,
   Logger,
 } from '@nestjs/common'
-import { FastifyReply, FastifyRequest } from 'fastify'
+import { FastifyRequest } from 'fastify/types/request'
+import { FastifyReply } from 'fastify/types/reply'
 import { getIp } from '../../utils/ip'
 type myError = {
   readonly status: number
