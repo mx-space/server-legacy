@@ -1,9 +1,9 @@
 /*
  * @Author: Innei
  * @Date: 2020-05-12 15:52:01
- * @LastEditTime: 2020-09-09 13:38:49
+ * @LastEditTime: 2020-10-08 14:06:10
  * @LastEditors: Innei
- * @FilePath: /mx-server/src/app.module.ts
+ * @FilePath: /server/src/app.module.ts
  * @MIT
  */
 
@@ -18,7 +18,6 @@ import {
   ValidationPipe,
 } from '@nestjs/common'
 import { APP_GUARD, APP_PIPE } from '@nestjs/core'
-import { ServeStaticModule } from '@nestjs/serve-static'
 import { join } from 'path'
 import { SpiderGuard } from 'src/core/guards/spider.guard'
 import { GatewayModule } from 'src/gateway/gateway.module'
@@ -59,10 +58,6 @@ if (process.env.NODE_ENV === 'production') {
     MasterModule,
     SharedModule,
     GlobalModule,
-    ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', 'admin'),
-      renderPath: '/admin',
-    }),
   ],
   providers,
   controllers: [AppController],
