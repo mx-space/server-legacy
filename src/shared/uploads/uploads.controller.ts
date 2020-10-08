@@ -1,9 +1,9 @@
 /*
  * @Author: Innei
  * @Date: 2020-07-31 19:38:38
- * @LastEditTime: 2020-10-02 16:18:18
+ * @LastEditTime: 2020-07-31 19:59:08
  * @LastEditors: Innei
- * @FilePath: /server/src/shared/uploads/uploads.controller.ts
+ * @FilePath: /mx-server/src/shared/uploads/uploads.controller.ts
  * @Coding with Love
  */
 
@@ -23,8 +23,7 @@ import {
   Res,
 } from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
-import { FastifyRequest } from 'fastify/types/request'
-import { FastifyReply } from 'fastify/types/reply'
+import { FastifyReply, FastifyRequest } from 'fastify'
 import { Auth } from 'src/core/decorators/auth.decorator'
 import { ApplyUpload } from 'src/core/decorators/file.decorator'
 import { CannotFindException } from 'src/core/exceptions/cant-find.exception'

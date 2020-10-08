@@ -7,7 +7,7 @@
  * @MIT
  */
 import { Injectable, NestMiddleware } from '@nestjs/common'
-import { FastifyRequest } from 'fastify/types/request'
+import { FastifyRequest } from 'fastify'
 import { ServerResponse } from 'http'
 
 @Injectable()

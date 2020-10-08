@@ -7,7 +7,7 @@ import {
 import { BadRequestException, NotFoundException } from '@nestjs/common'
 import { ReturnModelType } from '@typegoose/typegoose'
 import * as crypto from 'crypto'
-import { FastifyRequest } from 'fastify/types/request'
+import { FastifyRequest } from 'fastify'
 import { fromBuffer } from 'file-type'
 import { existsSync, readFileSync, unlinkSync, writeFileSync } from 'fs'
 import { imageSize } from 'image-size'
@@ -40,7 +40,6 @@ export class UploadsService {
   public rootPath = UploadsService.rootPath
 
   public validMultipartField(req: FastifyRequest) {
-    // @ts-ignore
     if (!req.isMultipart()) {
       throw new BadRequestException('仅供上传文件!')
     }

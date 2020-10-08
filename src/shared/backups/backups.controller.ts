@@ -21,8 +21,7 @@ import {
   UnprocessableEntityException,
 } from '@nestjs/common'
 import { ApiProperty, ApiResponseProperty, ApiTags } from '@nestjs/swagger'
-import { FastifyRequest } from 'fastify/types/request'
-import { FastifyReply } from 'fastify/types/reply'
+import { FastifyReply, FastifyRequest } from 'fastify'
 import { ApplyUpload } from 'src/core/decorators/file.decorator'
 import { Readable } from 'stream'
 import { TasksService } from '../../../libs/common/src/tasks/tasks.service'

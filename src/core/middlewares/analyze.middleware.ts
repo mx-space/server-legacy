@@ -9,7 +9,7 @@
 
 import { Injectable, NestMiddleware } from '@nestjs/common'
 import { ReturnModelType } from '@typegoose/typegoose'
-import { FastifyRequest } from 'fastify/types/request'
+import { FastifyRequest } from 'fastify'
 import { ServerResponse } from 'http'
 import { RedisService } from 'nestjs-redis'
 import { InjectModel } from 'nestjs-typegoose'
