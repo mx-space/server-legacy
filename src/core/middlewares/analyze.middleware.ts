@@ -1,9 +1,9 @@
 /*
  * @Author: Innei
  * @Date: 2020-05-10 15:22:08
- * @LastEditTime: 2020-09-02 12:58:18
+ * @LastEditTime: 2020-10-08 14:02:10
  * @LastEditors: Innei
- * @FilePath: /mx-server/src/core/middlewares/analyze.middleware.ts
+ * @FilePath: /server/src/core/middlewares/analyze.middleware.ts
  * @MIT
  */
 
@@ -32,6 +32,7 @@ export class AnalyzeMiddleware implements NestMiddleware {
   }
   async use(req: FastifyRequest, res: ServerResponse, next: () => void) {
     const ip = getIp(req)
+
     // if req from SSR server, like 127.0.0.1, skip
     if (['127.0.0.1', 'localhost', '::-1'].includes(ip)) {
       return next()
