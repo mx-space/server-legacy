@@ -6839,10 +6839,10 @@ mongodb@3.6.2:
   optionalDependencies:
     saslprep "^1.0.0"
 
-mongoose-lean-virtuals@0.6.9:
-  version "0.6.9"
-  resolved "https://registry.yarnpkg.com/mongoose-lean-virtuals/-/mongoose-lean-virtuals-0.6.9.tgz#becf54dc34479b094832e2e6b7bc51ed37b29f76"
-  integrity sha512-0waf+VBRig3U3ugP1/WgPrO8EEA4rClfH10G6dOAwiTVsfAZanrNun9ptOpyitWW8v/8sIqX6vDslib+qGRHKg==
+mongoose-lean-virtuals@0.7.1:
+  version "0.7.1"
+  resolved "https://registry.yarnpkg.com/mongoose-lean-virtuals/-/mongoose-lean-virtuals-0.7.1.tgz#5da621c0410b1fd0875ec093d24b2e288cf01927"
+  integrity sha512-aab8Z9Gaj+Qc8ayFP55T9wJbVUs/s0a7kEUhtNXDmOP1u9mPhuu00FjltZjABDeKPGEcq3SYXCZFF6XFasLCXw==
   dependencies:
     array.prototype.flat "1.2.3"
     mpath "0.5.x"
