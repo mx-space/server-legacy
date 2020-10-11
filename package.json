@@ -75,7 +75,7 @@
     "image-size": "0.9.1",
     "js-yaml": "3.14.0",
     "mongoose": "5.10.9",
-    "mongoose-lean-virtuals": "0.6.9",
+    "mongoose-lean-virtuals": "0.7.1",
     "mongoose-unique-validator": "2.0.3",
     "nanoid": "3.1.12",
     "nestjs-redis": "1.2.8",
