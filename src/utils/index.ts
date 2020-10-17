@@ -37,7 +37,7 @@ export function PickOne<T>(arr: Array<T>): T {
 const md5 = (text: string) =>
   require('crypto').createHash('md5').update(text).digest('hex')
 export function getAvatar(mail: string) {
-  return `https://www.gravatar.com/avatar/${md5(mail)}`
+  return `https://sdn.geekzu.org/avatar/${md5(mail)}`
 }
 
 export const yearCondition = (year?: number) => {
