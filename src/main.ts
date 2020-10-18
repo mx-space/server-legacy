@@ -1,9 +1,9 @@
 /*
  * @Author: Innei
  * @Date: 2020-05-21 11:05:42
- * @LastEditTime: 2020-09-06 21:48:30
+ * @LastEditTime: 2020-10-18 20:52:50
  * @LastEditors: Innei
- * @FilePath: /mx-server/src/main.ts
+ * @FilePath: /server/src/main.ts
  * @Coding with Love
  */
 
@@ -19,7 +19,7 @@ import { isDev } from './utils'
 
 const PORT = parseInt(process.env.PORT) || 2333
 const APIVersion = 1
-const Origin = process.env.ORIGIN || null
+const Origin = process.env.ORIGIN || ''
 
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
