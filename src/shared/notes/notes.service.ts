@@ -1,9 +1,9 @@
 /*
  * @Author: Innei
  * @Date: 2020-05-05 20:24:42
- * @LastEditTime: 2020-06-14 10:46:16
+ * @LastEditTime: 2020-10-21 19:14:07
  * @LastEditors: Innei
- * @FilePath: /mx-server/src/shared/notes/notes.service.ts
+ * @FilePath: /server/src/shared/notes/notes.service.ts
  * @Coding with Love
  */
 
@@ -26,6 +26,17 @@ export class NotesService extends WriteBaseService<Note> {
     private readonly redis: RedisService,
   ) {
     super(noteModel, http)
+
+    // create default note
+
+    this.noteModel.countDocuments({}).then((count) => {
+      if (!count) {
+        this.createNew({
+          title: '第一篇日记',
+          text: 'Hello World',
+        })
+      }
+    })
   }
 
   async getLatestOne(isMaster: boolean) {

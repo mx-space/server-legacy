@@ -1,9 +1,9 @@
 /*
  * @Author: Innei
  * @Date: 2020-04-30 12:21:51
- * @LastEditTime: 2020-05-23 20:45:51
+ * @LastEditTime: 2020-10-21 18:55:04
  * @LastEditors: Innei
- * @FilePath: /mx-server/src/master/master.module.ts
+ * @FilePath: /server/src/master/master.module.ts
  * @Copyright
  */
 
@@ -20,4 +20,19 @@ import { RedisModule } from 'nestjs-redis'
   controllers: [MasterController],
   exports: [MasterService],
 })
-export class MasterModule {}
+export class MasterModule {
+  constructor(private service: MasterService) {
+    service.hasMaster().then((res) => {
+      if (!res) {
+        service
+          .createMaster({
+            name: 'master',
+            username: 'master',
+            password: 'master',
+          })
+          // eslint-disable-next-line @typescript-eslint/no-empty-function
+          .catch((e) => {})
+      }
+    })
+  }
+}

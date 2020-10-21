@@ -1,9 +1,9 @@
 /*
  * @Author: Innei
  * @Date: 2020-04-30 12:21:51
- * @LastEditTime: 2020-06-07 14:26:28
+ * @LastEditTime: 2020-10-21 19:27:50
  * @LastEditors: Innei
- * @FilePath: /mx-server/src/utils/index.ts
+ * @FilePath: /server/src/utils/index.ts
  * @Coding with Love
  */
 
@@ -37,6 +37,9 @@ export function PickOne<T>(arr: Array<T>): T {
 const md5 = (text: string) =>
   require('crypto').createHash('md5').update(text).digest('hex')
 export function getAvatar(mail: string) {
+  if (!mail) {
+    return ''
+  }
   return `https://sdn.geekzu.org/avatar/${md5(mail)}`
 }
 

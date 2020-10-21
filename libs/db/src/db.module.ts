@@ -1,9 +1,9 @@
 /*
  * @Author: Innei
  * @Date: 2020-04-18 13:47:30
- * @LastEditTime: 2020-06-10 18:59:43
+ * @LastEditTime: 2020-10-21 19:32:05
  * @LastEditors: Innei
- * @FilePath: /mx-server/libs/db/src/db.module.ts
+ * @FilePath: /server/libs/db/src/db.module.ts
  * @MIT
  */
 

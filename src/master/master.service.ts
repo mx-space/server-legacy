@@ -38,14 +38,21 @@ export default class MasterService {
     const avatar = user.avatar ?? getAvatar(user.mail)
     return { ...user, avatar }
   }
-
-  async createMaster(model: User) {
-    const hasMaster = await this.userModel.countDocuments()
+  async hasMaster() {
+    return await this.userModel.countDocuments()
+  }
+  async createMaster(
+    model: Pick<User, 'username' | 'name' | 'password'> &
+      Partial<Pick<User, 'introduce' | 'avatar' | 'url'>>,
+  ) {
+    const hasMaster = await this.hasMaster()
     // 禁止注册两个以上账户
     if (hasMaster) {
       throw new UnprocessableEntityException('我已经有一个主人了哦')
     }
     const authCode = nanoid(10)
+
+    // @ts-ignore
     const res = await this.userModel.create({ ...model, authCode })
     const token = await this.authService.signToken(res._id)
     return { token, username: res.username, authCode: res.authCode }

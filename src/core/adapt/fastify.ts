@@ -1,9 +1,9 @@
 /*
  * @Author: Innei
  * @Date: 2020-06-24 20:01:32
- * @LastEditTime: 2020-09-06 21:48:22
+ * @LastEditTime: 2020-10-21 19:16:37
  * @LastEditors: Innei
- * @FilePath: /mx-server/src/core/adapt/fastify.ts
+ * @FilePath: /server/src/core/adapt/fastify.ts
  * @Coding with Love
  */
 import * as FastifyMultipart from 'fastify-multipart'
@@ -12,7 +12,7 @@ import { FastifyAdapter } from '@nestjs/platform-fastify'
 import { isDev } from '../../utils'
 import * as Session from 'fastify-secure-session'
 import type _Session from 'fastify-secure-session'
-const SECRET = process.env.SECRET || ''
+const SECRET = process.env.SECRET || 'dasfasdxzxczfs'
 export const fastifyApp = new FastifyAdapter({
   logger: isDev,
   trustProxy: true,
