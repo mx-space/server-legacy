@@ -1,9 +1,9 @@
 /*
  * @Author: Innei
  * @Date: 2020-05-06 22:14:51
- * @LastEditTime: 2020-08-02 15:43:15
+ * @LastEditTime: 2020-10-21 19:54:05
  * @LastEditors: Innei
- * @FilePath: /mx-server/libs/db/src/models/post.model.ts
+ * @FilePath: /server/libs/db/src/models/post.model.ts
  * @Coding with Love
  */
 
@@ -41,13 +41,7 @@ export default class Post extends WriteBaseModel {
   copyright?: boolean
 
   @prop({
-    set: (val: string[]) => {
-      return val
-    },
-    get(val) {
-      return val
-    },
-    type: [String],
+    type: String,
   })
   tags?: string[]
 
