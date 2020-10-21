@@ -35,3 +35,11 @@ rmdir release
 ```
 node index.js
 ```
+
+## 注意
+
+第一次使用会自动建立用户
+
+密码为: master
+
+可以进入后台管理之后自行修改.
