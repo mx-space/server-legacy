@@ -70,7 +70,7 @@
     "fastify-multipart": "3.1.0",
     "fastify-secure-session": "2.2.1",
     "fastify-swagger": "3.3.0",
-    "file-type": "15.0.1",
+    "file-type": "16.0.0",
     "get-folder-size": "2.0.1",
     "image-size": "0.9.2",
     "js-yaml": "3.14.0",
