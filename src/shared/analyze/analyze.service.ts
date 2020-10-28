@@ -15,7 +15,7 @@ export class AnalyzeService extends BaseService<Analyze> {
   ) {
     super(model)
   }
-  async getRangeAnalyzeIpCount(
+  async getRangeAnalyzeIpAndPvCount(
     from = new Date(new Date().getTime() - 1000 * 24 * 3600),
     to = new Date(),
   ) {
@@ -34,7 +34,10 @@ export class AnalyzeService extends BaseService<Analyze> {
       ],
     }
 
-    return (await this.model.find(condition).distinct('ip')).length
+    return {
+      ip: (await this.model.find(condition).distinct('ip').lean()).length,
+      pv: (await this.model.find(condition).lean()).length,
+    }
   }
 
   async getRangeAnalyzeData(
