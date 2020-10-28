@@ -7,12 +7,17 @@
  * @MIT
  */
 
-import { Injectable, NestMiddleware } from '@nestjs/common'
+import { HttpService, Injectable, NestMiddleware } from '@nestjs/common'
+import { Cron, CronExpression } from '@nestjs/schedule'
 import { ReturnModelType } from '@typegoose/typegoose'
 import { FastifyRequest } from 'fastify'
+import { readFileSync } from 'fs'
+import { writeFileSync } from 'fs'
 import { ServerResponse } from 'http'
 import { RedisService } from 'nestjs-redis'
 import { InjectModel } from 'nestjs-typegoose'
+import { join } from 'path'
+import { DATA_DIR } from 'src/constants'
 import { UAParser } from 'ua-parser-js'
 import { RedisNames } from '../../../libs/common/src/redis/redis.types'
 import { Analyze } from '../../../libs/db/src/models/analyze.model'
@@ -21,14 +26,20 @@ import { getIp } from '../../utils/ip'
 @Injectable()
 export class AnalyzeMiddleware implements NestMiddleware {
   private parser: UAParser
+  private botListData: RegExp[] = []
+  private localBotListDataFilePath = join(DATA_DIR, 'bot_list.json')
   constructor(
     @InjectModel(Analyze)
     private readonly model: ReturnModelType<typeof Analyze>,
     @InjectModel(Option)
     private readonly options: ReturnModelType<typeof Option>,
     private readonly redisCtx: RedisService,
+    private readonly http: HttpService,
   ) {
     this.parser = new UAParser()
+    this.botListData = this.getLocalBotList()
+
+    this.updateBotList()
   }
   async use(req: FastifyRequest, res: ServerResponse, next: () => void) {
     const ip = getIp(req)
@@ -40,6 +51,11 @@ export class AnalyzeMiddleware implements NestMiddleware {
 
     // if is login and is master, skip
     if (req.headers['Authorization'] || req.headers['authorization']) {
+      return next()
+    }
+
+    // if user agent is in bot list, skip
+    if (this.botListData.some((rg) => rg.test(req.headers['user-agent']))) {
       return next()
     }
 
@@ -100,5 +116,40 @@ export class AnalyzeMiddleware implements NestMiddleware {
     } finally {
       next()
     }
+  }
+
+  getLocalBotList() {
+    try {
+      return this.pickPattern2Regexp(
+        JSON.parse(
+          readFileSync(this.localBotListDataFilePath, {
+            encoding: 'utf-8',
+          }),
+        ),
+      )
+    } catch {
+      return []
+    }
+  }
+
+  @Cron(CronExpression.EVERY_WEEK)
+  async updateBotList() {
+    const { data: json } = await this.http
+      .get(
+        'https://cdn.jsdelivr.net/gh/atmire/COUNTER-Robots@master/COUNTER_Robots_list.json',
+      )
+      .toPromise()
+
+    writeFileSync(this.localBotListDataFilePath, JSON.stringify(json), {
+      encoding: 'utf-8',
+      flag: 'w+',
+    })
+    this.botListData = this.pickPattern2Regexp(json)
+
+    return json
+  }
+
+  pickPattern2Regexp(data: any): RegExp[] {
+    return data.map((item) => new RegExp(item.pattern))
   }
 }

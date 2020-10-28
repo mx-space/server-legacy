@@ -7,7 +7,7 @@
  * @Coding with Love
  */
 
-import { HttpModule, Module } from '@nestjs/common'
+import { Module } from '@nestjs/common'
 import { CommentsController } from 'src/shared/comments/comments.controller'
 import { CommentsService } from 'src/shared/comments/comments.service'
 import { PageController } from 'src/shared/page/page.controller'
@@ -39,18 +39,7 @@ import { SaysService } from './says/says.service'
 import { UploadsModule } from './uploads/uploads.module'
 
 @Module({
-  imports: [
-    UploadsModule,
-    TasksModule,
-    GatewayModule,
-    HttpModule.register({
-      timeout: 30000,
-      headers: {
-        'User-Agent':
-          'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36',
-      },
-    }),
-  ],
+  imports: [UploadsModule, TasksModule, GatewayModule],
   providers: [
     OptionsService,
     AggregateService,

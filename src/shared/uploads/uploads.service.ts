@@ -13,9 +13,9 @@ import { existsSync, readFileSync, unlinkSync, writeFileSync } from 'fs'
 import { imageSize } from 'image-size'
 import * as mkdirp from 'mkdirp'
 import { InjectModel } from 'nestjs-typegoose'
-import { homedir } from 'os'
 import { join } from 'path'
 import { plural } from 'pluralize'
+import { DATA_DIR } from 'src/constants'
 import { CannotFindException } from 'src/core/exceptions/cant-find.exception'
 import { isDev } from 'src/utils'
 import { Readable } from 'stream'
@@ -36,7 +36,7 @@ export class UploadsService {
 
   public static rootPath = isDev
     ? join(__dirname, '../uploads')
-    : join(homedir(), '/.mx-space/uploads')
+    : join(DATA_DIR, '/uploads')
   public rootPath = UploadsService.rootPath
 
   public validMultipartField(req: FastifyRequest) {

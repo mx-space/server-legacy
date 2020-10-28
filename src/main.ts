@@ -10,9 +10,11 @@
 import { NestFactory } from '@nestjs/core'
 import { NestFastifyApplication } from '@nestjs/platform-fastify'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
+import { mkdirSync } from 'fs'
 import { AllExceptionsFilter } from 'src/core/filters/any-exception.filter'
 import { ResponseInterceptor } from 'src/core/interceptors/response.interceptors'
 import { AppModule } from './app.module'
+import { DATA_DIR, TEMP_DIR } from './constants'
 import { fastifyApp } from './core/adapt/fastify'
 import { ExtendsIoAdapter } from './core/gateway/extend.gateway'
 import { isDev } from './utils'
@@ -21,6 +23,11 @@ const PORT = parseInt(process.env.PORT) || 2333
 const APIVersion = 1
 const Origin = process.env.ORIGIN || ''
 
+// ready for start server
+mkdirSync(DATA_DIR, { recursive: true })
+mkdirSync(TEMP_DIR, { recursive: true })
+
+// bootstrap server
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
     AppModule,

@@ -397,3 +397,4 @@ uploads/*
 admin/*
 tmp
 test*
+tmp/*

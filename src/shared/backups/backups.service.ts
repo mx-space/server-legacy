@@ -23,8 +23,8 @@ import {
   writeFileSync,
 } from 'fs'
 import * as mkdirp from 'mkdirp'
-import { homedir } from 'os'
 import { join, resolve } from 'path'
+import { DATA_DIR } from 'src/constants'
 import { Readable } from 'stream'
 import { AdminEventsGateway } from '../../gateway/admin/events.gateway'
 import { EventTypes, NotificationTypes } from '../../gateway/events.types'
@@ -36,7 +36,7 @@ export class BackupsService {
   constructor(private readonly adminGateway: AdminEventsGateway) {}
   public static backupPath =
     process.env.NODE_ENV === 'production'
-      ? join(homedir(), '.mx-space/backup/')
+      ? join(DATA_DIR, 'backup')
       : join(__dirname, '../tmp', 'backup')
 
   async getBackups() {

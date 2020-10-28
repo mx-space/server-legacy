@@ -15,5 +15,5 @@ export const HOME = homedir()
 export const TEMP_DIR = isDev ? join(__dirname, '../tmp') : '/tmp/mx-space'
 
 export const DATA_DIR = isDev
-  ? join(__dirname, '../tmp/data')
-  : join(HOME, 'mx-space')
+  ? join(__dirname, '../tmp')
+  : join(HOME, '.mx-space')
