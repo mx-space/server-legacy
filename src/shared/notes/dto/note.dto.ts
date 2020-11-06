@@ -1,6 +1,6 @@
 import { MoodSet, WeatherSet } from '@libs/db/models/note.model'
 import { ApiProperty } from '@nestjs/swagger'
-import { Transform } from 'class-transformer'
+import { Transform, Type } from 'class-transformer'
 import {
   IsBoolean,
   IsDefined,
@@ -14,6 +14,7 @@ import {
   Max,
   Min,
   ValidateIf,
+  ValidateNested,
 } from 'class-validator'
 import { PagerDto } from '../../base/dto/pager.dto'
 
@@ -48,6 +49,21 @@ export class NoteDto {
   @IsOptional()
   @IsNotEmptyObject()
   options?: Record<string, unknown>
+
+  @ValidateNested({ each: true })
+  @IsOptional()
+  @Type(() => NoteMusicDto)
+  music?: NoteMusicDto[]
+}
+
+export class NoteMusicDto {
+  @IsString()
+  @IsNotEmpty()
+  type: string
+
+  @IsString()
+  @IsNotEmpty()
+  id: string
 }
 export class ListQueryDto {
   @IsNumber()
