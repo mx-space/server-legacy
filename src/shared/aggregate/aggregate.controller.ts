@@ -31,13 +31,13 @@ export class AggregateController {
   @Get()
   @CacheKey('aggregate_catch')
   @CacheTTL(300)
-  async aggregate() {
+  async aggregate(@Master() isMaster: boolean) {
     return {
       user: await this.userService.getMasterInfo(),
       seo: this.configs.seo,
       categories: await this.service.getAllCategory(),
       pageMeta: await this.service.getAllPages('title _id slug order'),
-      lastestNoteNid: await this.service.getLastestNoteNid(),
+      lastestNoteNid: await this.service.getLastestNoteNid(isMaster),
     }
   }
 

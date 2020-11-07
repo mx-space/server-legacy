@@ -14,6 +14,7 @@ import { Injectable } from '@nestjs/common'
 import { ReturnModelType } from '@typegoose/typegoose'
 import { InjectModel } from 'nestjs-typegoose'
 import { ConfigsService } from 'src/common/global/configs/configs.service'
+import { addConditionToSeeHideContent } from 'src/utils'
 
 @Injectable()
 export class ToolsService {
@@ -59,9 +60,13 @@ export class ToolsService {
     )
   }
 
-  async getLastestNoteNid() {
+  async getLastestNoteNid(showHide?: boolean) {
     return (
-      await this.noteModel.findOne().sort({ nid: -1 }).lean().select('nid')
+      await this.noteModel
+        .findOne(addConditionToSeeHideContent(showHide))
+        .sort({ nid: -1 })
+        .lean()
+        .select('nid')
     ).nid
   }
 
