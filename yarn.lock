@@ -3866,16 +3866,16 @@ fastify-formbody@5.0.0:
   dependencies:
     fastify-plugin "^2.3.2"
 
-fastify-multipart@3.1.0:
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/fastify-multipart/-/fastify-multipart-3.1.0.tgz#bb5b16b1f5d08bcd03d3ef054d117fea04bde615"
-  integrity sha512-5OiIFk46m1I8iewrrEZaNN7J/uXT8x2kiANGXgXYzPmXqARQNPR4oyuTUb6Fx/z9mXLKk32/I9EG8g1lJqP08w==
+fastify-multipart@3.3.0:
+  version "3.3.0"
+  resolved "https://registry.yarnpkg.com/fastify-multipart/-/fastify-multipart-3.3.0.tgz#ad95e4a5c644e377a41d6167b46ba7e4b8f71bbc"
+  integrity sha512-iToiMsVcs6nt2iU9ypHw8QYwhpEIgSwHC+kqX88TrNZtfQ054zazY4h60r0carZ3ooZ9fZ4dPGgi3mIi/aelig==
   dependencies:
     busboy "^0.3.1"
     deepmerge "^4.2.2"
     end-of-stream "^1.4.4"
     fastify-error "^0.2.0"
-    fastify-plugin "^2.3.2"
+    fastify-plugin "^3.0.0"
     hexoid "^1.0.0"
     stream-wormhole "^1.1.0"
 
@@ -3899,6 +3899,11 @@ fastify-plugin@^2.3.2:
   integrity sha512-KjVwrTlbOGBLhF80tAYQ8qXQKvc1G7ETlFZbU4n19V1Xoo9BRNQgicv36y9AvPDcIn1hpeHDOdpPkMW02NOVIQ==
   dependencies:
     semver "^7.3.2"
+
+fastify-plugin@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/fastify-plugin/-/fastify-plugin-3.0.0.tgz#cf1b8c8098e3b5a7c8c30e6aeb06903370c054ca"
+  integrity sha512-ZdCvKEEd92DNLps5n0v231Bha8bkz1DjnPP/aEz37rz/q42Z5JVLmgnqR4DYuNn3NXAO3IDCPyRvgvxtJ4Ym4w==
 
 fastify-secure-session@2.2.1:
   version "2.2.1"
