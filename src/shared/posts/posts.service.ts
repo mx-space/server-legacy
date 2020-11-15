@@ -18,12 +18,11 @@ import {
 } from '@nestjs/common'
 import { DocumentType, Ref, ReturnModelType } from '@typegoose/typegoose'
 import { merge } from 'lodash'
-import { FilterQuery, MongooseUpdateQuery, QueryUpdateOptions } from 'mongoose'
+import { FilterQuery, QueryUpdateOptions } from 'mongoose'
 import { RedisService } from 'nestjs-redis'
 import { InjectModel } from 'nestjs-typegoose'
 import { CannotFindException } from 'src/core/exceptions/cant-find.exception'
 import { WriteBaseService } from 'src/shared/base/base.service'
-import { arrDifference } from 'src/utils'
 import { updateLikeCount, updateReadCount } from '../../utils/text-base'
 import { CategoriesService } from '../categories/categories.service'
 @Injectable()
@@ -52,29 +51,11 @@ export class PostsService extends WriteBaseService<Post> {
       // ...omit(projection, 'tags'),
       ...projection,
     })
-    // if (projection.tags?.length) {
-    //   newDocument.tags = []
-    //   console.log(...projection.tags)
 
-    //   newDocument.tags.push(...projection.tags)
-    //   // newDocument.updateOne({
-    //   //   $pullAll: {tags:},
-    //   //   $push: { tags: { $each: projection.tags } },
-    //   // } as MongooseUpdateQuery<Post>)
-
-    //   await newDocument.save()
-    // }
     // category
     validCategory.count += 1
     await validCategory.save()
-    // tags
-    if (projection.tags && projection.tags.length > 0) {
-      try {
-        for await (const tag of projection.tags) {
-          await this.categoryService.updateTag({ name: tag, increase: 1 })
-        }
-      } catch {}
-    }
+
     return newDocument
   }
   async getCategoryBySlug(slug: string): Promise<DocumentType<Category>> {
@@ -97,55 +78,55 @@ export class PostsService extends WriteBaseService<Post> {
     return await this.categoryService.findById(id)
   }
 
-  async updateTags(increase: number, tags: string[]) {
-    for await (const tag of tags) {
-      await this.categoryService.updateTag({ increase, name: tag })
-    }
-  }
-  async modifyTag(of: string | DocumentType<Post>, tags: string[] | null) {
-    const document = typeof of === 'string' ? await this.model.findById(of) : of
-    const isBeforeHasTags = document.tags && document.tags.length > 0
-    const isNowHasTags = tags && tags.length > 0
-    await (async () => {
-      // 0. if now hasn't any tags, but before has
+  // async updateTags(increase: number, tags: string[]) {
+  //   for await (const tag of tags) {
+  //     await this.categoryService.updateTag({ increase, name: tag })
+  //   }
+  // }
+  // async modifyTag(of: string | DocumentType<Post>, tags: string[] | null) {
+  //   const document = typeof of === 'string' ? await this.model.findById(of) : of
+  //   const isBeforeHasTags = document.tags && document.tags.length > 0
+  //   const isNowHasTags = tags && tags.length > 0
+  //   await (async () => {
+  //     // 0. if now hasn't any tags, but before has
 
-      if (!isNowHasTags && isBeforeHasTags) {
-        await this.updateTags(-1, document.tags)
-        return
-      }
+  //     if (!isNowHasTags && isBeforeHasTags) {
+  //       await this.updateTags(-1, document.tags)
+  //       return
+  //     }
 
-      // 1. if hasn't any tags before
+  //     // 1. if hasn't any tags before
 
-      if (!document.tags || document.tags.length === 0) {
-        await this.updateTags(1, tags)
-        return
-      }
+  //     if (!document.tags || document.tags.length === 0) {
+  //       await this.updateTags(1, tags)
+  //       return
+  //     }
 
-      // 2. both has
+  //     // 2. both has
 
-      if (isBeforeHasTags && isNowHasTags) {
-        // 3. difference
-        const differenceArray = arrDifference(document.tags, tags)
-        if (differenceArray.length) {
-          for await (const differenceTag of differenceArray) {
-            const isOld = document.tags.includes(differenceTag)
-            await this.categoryService.updateTag({
-              increase: isOld ? -1 : 1,
-              name: differenceTag,
-            })
-          }
+  //     if (isBeforeHasTags && isNowHasTags) {
+  //       // 3. difference
+  //       const differenceArray = arrDifference(document.tags, tags)
+  //       if (differenceArray.length) {
+  //         for await (const differenceTag of differenceArray) {
+  //           const isOld = document.tags.includes(differenceTag)
+  //           await this.categoryService.updateTag({
+  //             increase: isOld ? -1 : 1,
+  //             name: differenceTag,
+  //           })
+  //         }
 
-          return
-        }
-      }
-    })()
-    // finally update document
-    await document.updateOne({
-      $set: {
-        tags,
-      },
-    } as MongooseUpdateQuery<Post>)
-  }
+  //         return
+  //       }
+  //     }
+  //   })()
+  //   // finally update document
+  //   await document.updateOne({
+  //     $set: {
+  //       tags,
+  //     },
+  //   } as MongooseUpdateQuery<Post>)
+  // }
 
   // @ts-ignore
   async update(
@@ -178,7 +159,7 @@ export class PostsService extends WriteBaseService<Post> {
       await newCategory.save()
     }
     // tag
-    await this.modifyTag(oldPost, projection.tags)
+    // await this.modifyTag(oldPost, projection.tags)
     return super.update(
       { _id: condition._id },
       projection,
@@ -207,12 +188,12 @@ export class PostsService extends WriteBaseService<Post> {
       pid: id,
     })
     // update tag
-    const tags = r.tags
-    if (tags && tags.length > 0) {
-      for await (const tag of tags) {
-        await this.categoryService.updateTag({ name: tag, increase: -1 })
-      }
-    }
+    // const tags = r.tags
+    // if (tags && tags.length > 0) {
+    //   for await (const tag of tags) {
+    //     await this.categoryService.updateTag({ name: tag, increase: -1 })
+    //   }
+    // }
     return r
   }
 

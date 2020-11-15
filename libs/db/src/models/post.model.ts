@@ -7,7 +7,7 @@
  * @Coding with Love
  */
 
-import Category from '@libs/db/models/category.model'
+import Category from './category.model'
 import { index, prop, Ref } from '@typegoose/typegoose'
 import { Schema } from 'mongoose'
 import { WriteBaseModel } from './base.model'
@@ -16,7 +16,7 @@ import { Count } from './note.model'
 @index({ slug: 1 })
 @index({ modified: -1 })
 @index({ text: 'text' })
-export default class Post extends WriteBaseModel {
+export class Post extends WriteBaseModel {
   @prop({ trim: true, unique: true, required: true })
   slug!: string
 
@@ -51,3 +51,4 @@ export default class Post extends WriteBaseModel {
   @prop({ type: Schema.Types.Mixed })
   options?: Record<any, any>
 }
+export default Post

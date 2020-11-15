@@ -74,7 +74,9 @@ export class CategoriesController {
           )
     }
 
-    return await this.service.find({ type })
+    return type === CategoryType.Category
+      ? await this.service.find({ type })
+      : await this.service.getPostTagsSum()
   }
 
   @Get(':query')

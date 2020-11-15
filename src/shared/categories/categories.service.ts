@@ -78,37 +78,6 @@ export class CategoriesService extends BaseService<Category> {
       created,
     }))
   }
-  async updateTag({ name, increase }: { name: string; increase: number }) {
-    // NOTE: - tag name can't same as category name
-    // category name or slug and tag name or slug all unique
-
-    try {
-      await this.model.updateOne(
-        {
-          type: CategoryType.Tag,
-          name,
-          slug: name,
-        },
-        {
-          $inc: {
-            count: increase,
-          },
-        },
-        { upsert: true },
-      )
-      const newDocument = await this.model.findOne({
-        type: CategoryType.Tag,
-        name,
-      })
-      if (newDocument.count <= 0) {
-        await newDocument.remove()
-        return null
-      }
-      return newDocument
-    } catch {
-      throw new UnprocessableEntityException('分类或者标签重复了')
-    }
-  }
 
   async createNew({ name, slug }: { name: string; slug: string }) {
     try {
@@ -121,5 +90,23 @@ export class CategoriesService extends BaseService<Category> {
     } catch {
       throw new UnprocessableEntityException('分类或者标签重复了')
     }
+  }
+
+  async getPostTagsSum() {
+    const data = await this.postModel.aggregate([
+      { $project: { tags: 1 } },
+      {
+        $unwind: '$tags',
+      },
+      { $group: { _id: '$tags', count: { $sum: 1 } } },
+      {
+        $project: {
+          _id: 0,
+          name: '$_id',
+          count: 1,
+        },
+      },
+    ])
+    return data
   }
 }

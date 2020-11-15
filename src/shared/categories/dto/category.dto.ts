@@ -84,8 +84,6 @@ export class MultiCategoriesQueryDto {
     switch (val.toLowerCase()) {
       case 'category':
         return CategoryType.Category
-      case 'tag':
-        return CategoryType.Tag
       default:
         return CategoryType.Category
     }

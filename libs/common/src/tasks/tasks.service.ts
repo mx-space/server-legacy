@@ -62,7 +62,7 @@ export class TasksService {
     }
     new Promise((reslove) => {
       if (!uploadCOS) {
-        return reslove()
+        return reslove(null)
       }
       const backupOptions = this.configs.get('backupOptions')
       if (
