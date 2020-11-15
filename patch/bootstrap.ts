@@ -4,7 +4,7 @@ import Post from '../libs/db/src/models/post.model'
 import { getModelForClass, mongoose } from '@typegoose/typegoose'
 import { config } from 'dotenv'
 
-const env = config().parsed
+const env = config().parsed || {}
 
 mongoose.connect(
   (process.env.DB_URL || env.DB_URL || 'mongodb://localhost') + '/mx-space',
