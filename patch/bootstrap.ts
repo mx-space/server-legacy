@@ -3,6 +3,7 @@ import Note from '../libs/db/src/models/note.model'
 import Post from '../libs/db/src/models/post.model'
 import { getModelForClass, mongoose } from '@typegoose/typegoose'
 import { config } from 'dotenv'
+import { Analyze } from '../libs/db/src/models/analyze.model'
 
 const env = config().parsed || {}
 
@@ -20,12 +21,14 @@ mongoose.connect(
 const post = getModelForClass(Post)
 const note = getModelForClass(Note)
 const category = getModelForClass(Category)
+const analyze = getModelForClass(Analyze)
 const Config = {
   env,
   models: {
     post,
     note,
     category,
+    analyze,
   },
 }
 export async function bootstrap(cb: (config: typeof Config) => any) {
