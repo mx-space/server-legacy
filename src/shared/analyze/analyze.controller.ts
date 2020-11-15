@@ -4,7 +4,7 @@ import * as dayjs from 'dayjs'
 import { RedisService } from 'nestjs-redis'
 import { RedisNames } from '../../../libs/common/src/redis/redis.types'
 import { Auth } from '../../core/decorators/auth.decorator'
-import { getMonthLength, getTodayEarly, getWeekStart } from '../../utils/time'
+import { getTodayEarly, getWeekStart } from '../../utils/time'
 import { PagerDto } from '../base/dto/pager.dto'
 import { AnalyzeDto } from './analyze.dto'
 import { AnalyzeService } from './analyze.service'
@@ -60,102 +60,73 @@ export class AnalyzeController {
 
   @Get('fragment')
   async getFragment() {
+    const day = await this.service.getIpAndPvAggregate('day', true)
+
     const now = new Date()
-
-    // today fragment
     const nowHour = now.getHours()
-    const todayHours = await Promise.all(
-      Array(24)
-        .fill(undefined)
-        .map(async (v, i) => {
-          const from = dayjs(now)
-            .set('hour', i)
-            .set('minute', 0)
-            .set('second', 0)
-          const to = from.add(1, 'hour')
-          const { ip, pv } = await this.service.getRangeAnalyzeIpAndPvCount(
-            from.toDate(),
-            to.toDate(),
-          )
+    const dayData = Array(24)
+      .fill(undefined)
+      .map((v, i) => {
+        return [
+          {
+            hour: i === nowHour ? '现在' : i + '时',
+            key: 'ip',
+            value: day[i.toString().padStart(2, '0')]?.ip || 0,
+          },
+          {
+            hour: i === nowHour ? '现在' : i + '时',
+            key: 'pv',
+            value: day[i.toString().padStart(2, '0')]?.pv || 0,
+          },
+        ]
+      })
+    const all = (await this.service.getIpAndPvAggregate('all')) as any[]
 
-          return [
-            {
-              hour: i === nowHour ? '现在' : i + '时',
-              key: 'ip',
-              value: ip,
-            },
-            {
-              hour: i === nowHour ? '现在' : i + '时',
-              key: 'pv',
-              value: pv,
-            },
+    const weekData = all
+      .slice(0, 7)
+      .map((item) => {
+        const date =
+          '周' +
+          ['日', '一', '二', '三', '四', '五', '六'][
+            dayjs(item.date).get('day')
           ]
-        }),
-    )
+        return [
+          {
+            day: date,
+            key: 'ip',
+            value: item.ip,
+          },
+          {
+            day: date,
+            key: 'pv',
+            value: item.pv,
+          },
+        ]
+      })
+      .reverse()
 
-    // week fragment
-
-    const getWeekLabel = (index: number) =>
-      ['日', '一', '二', '三', '四', '五', '六'][index]
-    const todayDay = now.getDay()
-    const weeks = await Promise.all(
-      Array(7)
-        .fill(undefined)
-        .map(async (v, i) => {
-          const from = dayjs(now)
-            .set('day', i)
-            .set('hour', 0)
-            .set('minute', 0)
-            .set('second', 0)
-          const to = from.add(1, 'day')
-          const { ip, pv } = await this.service.getRangeAnalyzeIpAndPvCount(
-            from.toDate(),
-            to.toDate(),
-          )
-          const day = i === todayDay ? '今天' : '周' + getWeekLabel(i)
-          return [
-            {
-              day,
-              key: 'ip',
-              value: ip,
-            },
-            {
-              day,
-              key: 'pv',
-              value: pv,
-            },
-          ]
-        }),
-    )
-
-    // month fragment
-    const month = now.getMonth() + 1
-    const monthEveryDays = await Promise.all(
-      Array(getMonthLength(month, now.getFullYear()))
-        .fill(undefined)
-        .map(async (v, i) => {
-          const from = dayjs(now)
-            .set('hour', 0)
-            .set('date', i + 1)
-            .set('minute', 0)
-            .set('second', 0)
-          const to = from.add(1, 'day')
-          const { ip, pv } = await this.service.getRangeAnalyzeIpAndPvCount(
-            from.toDate(),
-            to.toDate(),
-          )
-          const date = `${month}-${i + 1}`
-          return [
-            { date, key: 'ip', value: ip },
-            { date, key: 'pv', value: pv },
-          ]
-        }),
-    )
+    const monthData = all
+      .slice(0, 30)
+      .map((item) => {
+        return [
+          {
+            date: item.date.split('-').slice(1, 3).join('-'),
+            key: 'ip',
+            value: item.ip,
+          },
+          {
+            date: item.date.split('-').slice(1, 3).join('-'),
+            key: 'pv',
+            value: item.pv,
+          },
+        ]
+      })
+      .reverse()
 
     return {
-      today: todayHours.flat(1),
-      weeks: weeks.flat(1),
-      months: monthEveryDays.flat(1),
+      today: dayData.flat(1),
+      weeks: weekData.flat(1),
+      months: monthData.flat(1),
     }
   }
 
