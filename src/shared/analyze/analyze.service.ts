@@ -19,7 +19,7 @@ export class AnalyzeService extends BaseService<Analyze> {
   }
 
   async getRangeAnalyzeData(
-    from = new Date(new Date().getTime() - 1000 * 24 * 3600),
+    from = new Date(new Date().getTime() - 1000 * 24 * 3600 * 3),
     to = new Date(),
     options?: {
       limit?: number
@@ -31,24 +31,25 @@ export class AnalyzeService extends BaseService<Analyze> {
     const condition = {
       $and: [
         {
-          created: {
+          timestamp: {
             $gte: from,
           },
         },
         {
-          created: {
+          timestamp: {
             $lte: to,
           },
         },
       ],
     }
+
     const data = withPaginator
       ? await this.findWithPaginator(condition, {
-          sort: { created: -1 },
+          sort: { timestamp: -1 },
           limit,
           skip,
         })
-      : await this.model.find(condition).sort({ created: -1 }).lean()
+      : await this.model.find(condition).sort({ timestamp: -1 }).lean()
 
     return data
   }
@@ -80,12 +81,12 @@ export class AnalyzeService extends BaseService<Analyze> {
     await this.model.deleteMany({
       $and: [
         {
-          created: {
+          timestamp: {
             $gte: from,
           },
         },
         {
-          created: {
+          timestamp: {
             $lte: to,
           },
         },
@@ -103,7 +104,7 @@ export class AnalyzeService extends BaseService<Analyze> {
     switch (type) {
       case 'day': {
         cond = {
-          created: {
+          timestamp: {
             $gte: beforeDawn.toDate(),
           },
         }
@@ -111,7 +112,7 @@ export class AnalyzeService extends BaseService<Analyze> {
       }
       case 'month': {
         cond = {
-          created: {
+          timestamp: {
             $gte: beforeDawn.set('day', -30).toDate(),
           },
         }
@@ -119,7 +120,7 @@ export class AnalyzeService extends BaseService<Analyze> {
       }
       case 'week': {
         cond = {
-          created: {
+          timestamp: {
             $gte: beforeDawn.set('day', -7).toDate(),
           },
         }
@@ -136,18 +137,18 @@ export class AnalyzeService extends BaseService<Analyze> {
       {
         $project: {
           _id: 1,
-          created: 1,
+          timestamp: 1,
           hour: {
             $dateToString: {
               format: '%H',
-              date: { $subtract: ['$created', 0] },
+              date: { $subtract: ['$timestamp', 0] },
               timezone: '+08:00',
             },
           },
           date: {
             $dateToString: {
               format: '%Y-%m-%d',
-              date: { $subtract: ['$created', 0] },
+              date: { $subtract: ['$timestamp', 0] },
               timezone: '+08:00',
             },
           },
@@ -181,19 +182,19 @@ export class AnalyzeService extends BaseService<Analyze> {
       {
         $project: {
           _id: 1,
-          created: 1,
+          timestamp: 1,
           ip: 1,
           hour: {
             $dateToString: {
               format: '%H',
-              date: { $subtract: ['$created', 0] },
+              date: { $subtract: ['$timestamp', 0] },
               timezone: '+08:00',
             },
           },
           date: {
             $dateToString: {
               format: '%Y-%m-%d',
-              date: { $subtract: ['$created', 0] },
+              date: { $subtract: ['$timestamp', 0] },
               timezone: '+08:00',
             },
           },

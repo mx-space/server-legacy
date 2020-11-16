@@ -187,6 +187,7 @@ export class NotesController {
   @Auth()
   async modifyNote(@Body() body: NoteDto, @Param() params: IdDto) {
     const { id } = params
+
     const doc = await this.noteService.update({ _id: id }, body)
     this.noteService.RecordImageDimensions(id)
     this.webgateway.broadcase(EventTypes.NOTE_UPDATE, doc)

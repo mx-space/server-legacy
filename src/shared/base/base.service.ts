@@ -426,4 +426,19 @@ export class WriteBaseService<T extends WriteBaseModel> extends BaseService<T> {
       })
     })
   }
+
+  // @ts-ignore
+  async update(
+    conditions: FilterQuery<T>,
+    doc: UpdateQuery<T>,
+    options: QueryUpdateOptions = { omitUndefined: true },
+  ): Promise<any> {
+    const res = await super.update(
+      conditions,
+      { ...doc, modified: new Date() },
+      options,
+    )
+
+    return res
+  }
 }

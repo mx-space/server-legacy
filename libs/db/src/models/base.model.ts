@@ -29,7 +29,7 @@ export type { Image as TextImageRecordType }
   schemaOptions: {
     timestamps: {
       createdAt: 'created',
-      updatedAt: 'modified',
+      updatedAt: false,
     },
     toJSON: {
       versionKey: false,
@@ -45,7 +45,6 @@ export type { Image as TextImageRecordType }
 @index({ created: -1 })
 export abstract class BaseModel {
   created!: Date
-  modified!: Date
 }
 
 export abstract class BaseCommentIndexModel extends BaseModel {
@@ -68,4 +67,7 @@ export abstract class WriteBaseModel extends BaseCommentIndexModel {
 
   @prop({ type: Image })
   images?: Image[]
+
+  @prop({ default: () => new Date() })
+  modified: Date
 }

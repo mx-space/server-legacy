@@ -82,7 +82,8 @@ export class AnalyzeMiddleware implements NestMiddleware {
           { name: 'apiCallTime' },
           {
             $inc: {
-              value: 1 as never, // why never ???
+              // @ts-ignore
+              value: 1,
             },
           },
         )
