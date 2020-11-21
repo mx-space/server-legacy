@@ -34,10 +34,10 @@ patch(async ({ models }) => {
       const mood = doc.mood
 
       if (weather) {
-        doc.weather = WeatherSet[weather]
+        doc.weather = WeatherSet[weather] ?? doc.weather
       }
       if (mood) {
-        doc.mood = MoodSet[mood]
+        doc.mood = MoodSet[mood] ?? doc.mood
       }
 
       await doc.save()
