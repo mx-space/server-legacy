@@ -1,4 +1,3 @@
-import { MoodSet, WeatherSet } from '@libs/db/models/note.model'
 import { ApiProperty } from '@nestjs/swagger'
 import { Transform, Type } from 'class-transformer'
 import {
@@ -18,29 +17,26 @@ import {
 } from 'class-validator'
 import { PagerDto } from '../../base/dto/pager.dto'
 
-export const Mood = Object.keys(MoodSet)
-export const Weather = Object.keys(WeatherSet)
 export class NoteDto {
-  @ApiProperty({ example: 'This is title' })
   @IsString()
   @Transform((title: string) => (title.length === 0 ? '无题' : title))
   title: string
-  @ApiProperty({ example: 'This is body' })
+
   @IsString()
   text: string
-  @ApiProperty({ enum: Mood })
+
   @IsOptional()
-  @IsEnum(Mood)
+  @IsString()
   mood?: string
-  @ApiProperty({ required: false, enum: Weather })
-  @IsEnum(Weather)
+
+  @IsString()
   @IsOptional()
   weather?: string
-  @ApiProperty({ example: false })
+
   @IsBoolean()
   @IsOptional()
   hide?: boolean
-  @ApiProperty()
+
   @IsString()
   @IsOptional()
   @IsNotEmpty()
