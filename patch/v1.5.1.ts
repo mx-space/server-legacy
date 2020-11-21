@@ -1,4 +1,4 @@
-import { bootstrap } from './bootstrap'
+import { patch } from './bootstrap'
 
 export enum MoodSet {
   'happy' = '开心',
@@ -23,7 +23,7 @@ export enum WeatherSet {
   'snow' = '雪',
 }
 
-bootstrap(async ({ models }) => {
+patch(async ({ models }) => {
   const Note = models.note
 
   const docs = await Note.find()

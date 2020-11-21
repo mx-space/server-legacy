@@ -1,5 +1,5 @@
-import { bootstrap } from './bootstrap'
+import { patch } from './bootstrap'
 
-bootstrap(async ({ models: { analyze } }) => {
+patch(async ({ models: { analyze } }) => {
   await analyze.updateMany({}, { $unset: { modified: '' } }).exec()
 })

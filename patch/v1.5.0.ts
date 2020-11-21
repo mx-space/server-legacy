@@ -1,6 +1,6 @@
-import { bootstrap } from './bootstrap'
+import { patch } from './bootstrap'
 
-bootstrap(async ({ db }) => {
+patch(async ({ db }) => {
   await Promise.all(
     ['comments', 'links', 'says', 'projects', 'categories'].map(
       async (collection) => {

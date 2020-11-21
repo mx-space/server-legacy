@@ -31,9 +31,11 @@ const Config = {
     analyze,
   },
 }
-export async function bootstrap(cb: (config: typeof Config) => any) {
+async function bootstrap(cb: (config: typeof Config) => any) {
   await cb.call(this, Config)
 
   mongoose.disconnect()
   process.exit()
 }
+
+export { bootstrap as patch }
