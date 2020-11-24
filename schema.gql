@@ -1,0 +1,176 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type ImageRecordModel {
+  height: Float!
+  width: Float!
+  src: String!
+  type: String
+}
+
+type PostItemCount {
+  like: Int
+  read: Int
+}
+
+type PagerModel {
+  total: Int!
+  size: Int!
+  currentPage: Int!
+  totalPage: Int!
+  hasNextPage: Boolean!
+  hasPrevPage: Boolean!
+}
+
+type CategoryItemModel {
+  _id: ID!
+  created: DateTime!
+  modified: DateTime!
+  type: CategoryType_!
+  children: [PostItemModel!]
+  name: String!
+  slug: String!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+enum CategoryType_ {
+  Category
+  Tag
+}
+
+type PostItemModel {
+  _id: ID!
+  created: String!
+  modified: String!
+  category: CategoryItemModel!
+  count: PostItemCount!
+  images: [ImageRecordModel!]
+  tags: [String!]
+  title: String!
+  slug: String!
+  text: String!
+  allowComment: Boolean!
+  categoryId: String!
+  commentsIndex: Float!
+  copyright: Boolean!
+  hide: Boolean!
+  summary: String
+}
+
+type PostPagerModel {
+  pager: PagerModel!
+  data: [PostItemModel!]!
+}
+
+type CategoryPagerModel {
+  data: [CategoryItemModel!]
+}
+
+type NoteItemCount {
+  read: Int
+  like: Int
+}
+
+type NoteItemModel {
+  _id: ID!
+  commentsIndex: Int
+  count: NoteItemCount!
+  images: [ImageRecordModel!]
+  nid: Int!
+  music: [NoteMusicModel!]
+  allowComment: Boolean!
+  created: String!
+  modified: String!
+  hide: Boolean!
+  mood: String
+  weather: String
+  text: String!
+  title: String!
+}
+
+type NoteItemAggregateModel {
+  data: NoteItemModel!
+  prev: NoteItemModel
+  next: NoteItemModel
+}
+
+type NotePagerModel {
+  data: [NoteItemModel!]!
+  pager: PagerModel!
+}
+
+type NoteMusicModel {
+  id: String!
+  type: String!
+}
+
+type PageItemModel {
+  _id: ID!
+  created: String!
+  modified: String!
+  title: String!
+  text: String!
+  images: [ImageRecordModel!]
+  commentsIndex: Int!
+  order: Int!
+  allowComment: Boolean!
+  slug: String!
+  subtitle: String
+}
+
+type PagePagerModel {
+  data: [PageItemModel!]
+  pager: PagerModel!
+}
+
+type User {
+  _id: ID
+  created: DateTime
+  modified: DateTime
+  token: String
+  name: String
+  username: String
+  url: String
+  mail: String
+  avatar: String
+  expiresIn: Float
+}
+
+type TopModel {
+  notes: [PostItemModel!]
+  posts: [PostItemModel!]
+}
+
+type TimelineModel {
+  notes: [NoteItemModel!]
+  posts: [PostItemModel!]
+}
+
+type Query {
+  getPostById(id: ID!): PostItemModel!
+  getPostBySlug(category: String!, slug: String!): PostItemModel!
+  getPostsWithPager(size: Int, page: Int, state: Int, sortOrder: SortOrder, year: Int, sortBy: String): PostPagerModel!
+  getCategories(ids: [String!], type: CategoryType, joint: Boolean): CategoryPagerModel!
+  getCategoryBySlug(id: String, tag: [Boolean!], slug: String): CategoryItemModel!
+  getNoteById(password: String, nid: Int, id: ID): NoteItemAggregateModel!
+  getLastestNote: NoteItemAggregateModel!
+  getNotesWithPager(size: Int, page: Int, state: Int, sortOrder: SortOrder, year: Int, sortBy: String): NotePagerModel!
+  getTimeline(sort: Int = 1, year: Float): TimelineModel!
+  getPages(size: Int, page: Int, state: Int, sortOrder: SortOrder, year: Int, sortBy: String): PagePagerModel!
+  getPage(id: String, slug: String): PageItemModel!
+}
+
+enum SortOrder {
+  DESC
+  ASC
+}
+
+enum CategoryType {
+  Category
+  Tag
+}

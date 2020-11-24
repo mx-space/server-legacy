@@ -35,7 +35,10 @@
       "entryFile": "main",
       "sourceRoot": "apps/graphql/src",
       "compilerOptions": {
-        "tsConfigPath": "apps/graphql/tsconfig.app.json"
+        "tsConfigPath": "apps/graphql/tsconfig.app.json",
+        "plugins": [
+          "@nestjs/graphql/plugin"
+        ]
       }
     }
   },

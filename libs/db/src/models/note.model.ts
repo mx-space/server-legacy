@@ -18,7 +18,7 @@ export class Count {
     _id: false,
   },
 })
-class NoteMusic {
+export class NoteMusic {
   @prop({ required: true })
   type: string
   @prop({ required: true })
