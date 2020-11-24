@@ -9,8 +9,8 @@
 import { UseGuards } from '@nestjs/common'
 import { Args, Query, Resolver } from '@nestjs/graphql'
 import { RolesGQLGuard } from 'apps/server/src/auth/roles.guard'
-import { MasterGQL } from 'apps/server/src/core/decorators/guest.decorator'
-import { CannotFindException } from 'apps/server/src/core/exceptions/cant-find.exception'
+import { MasterGQL } from 'libs/core/decorators/guest.decorator'
+import { CannotFindException } from 'libs/core/exceptions/cant-find.exception'
 import { IdInputArgsDtoOptional } from '../../graphql/args/id.input'
 import { CategoryItemModel } from '../../graphql/models/category.model'
 

@@ -18,12 +18,9 @@ import {
 import { ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger'
 import { DocumentType } from '@typegoose/typegoose'
 import { RolesGuard } from 'apps/server/src/auth/roles.guard'
-import { Master } from 'apps/server/src/core/decorators/guest.decorator'
-import {
-  IpLocation,
-  IpRecord,
-} from 'apps/server/src/core/decorators/ip.decorator'
-import { CannotFindException } from 'apps/server/src/core/exceptions/cant-find.exception'
+import { Master } from 'libs/core/decorators/guest.decorator'
+import { IpLocation, IpRecord } from 'libs/core/decorators/ip.decorator'
+import { CannotFindException } from 'libs/core/exceptions/cant-find.exception'
 import { PagerDto } from 'apps/server/src/shared/base/dto/pager.dto'
 import {
   CommentDto,
@@ -32,7 +29,7 @@ import {
 } from 'apps/server/src/shared/comments/dto/comment.dto'
 import { Pager } from 'apps/server/src/shared/comments/dto/pager.dto'
 import { StateDto } from 'apps/server/src/shared/comments/dto/state.dto'
-import { Auth } from '../../core/decorators/auth.decorator'
+import { Auth } from '../../../../../libs/core/decorators/auth.decorator'
 import { AdminEventsGateway } from '../../gateway/admin/events.gateway'
 import { EventTypes } from '../../gateway/events.types'
 import { ReplyMailType } from '../../plugins/mailer'

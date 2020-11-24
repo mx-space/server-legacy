@@ -23,7 +23,7 @@ import { FastifyReply } from 'fastify'
 import { readFileSync } from 'fs'
 import { Readable } from 'stream'
 import { join } from 'path'
-import { Auth } from 'apps/server/src/core/decorators/auth.decorator'
+import { Auth } from 'libs/core/decorators/auth.decorator'
 import { ArticleType, DataListDto } from './dto/datatype.dto'
 import { HelperService, MarkdownYAMLProperty } from './helper.service'
 

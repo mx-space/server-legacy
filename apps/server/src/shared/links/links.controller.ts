@@ -22,7 +22,7 @@ import { ApiTags } from '@nestjs/swagger'
 import { isMongoId } from 'class-validator'
 import { omit } from 'lodash'
 import { RolesGuard } from '../../auth/roles.guard'
-import { PermissionInterceptor } from '../../core/interceptors/permission.interceptors'
+import { PermissionInterceptor } from '../../../../../libs/core/interceptors/permission.interceptors'
 import { BaseCrud } from '../base/base.controller'
 import { LinksService } from './links.service'
 

@@ -23,7 +23,7 @@ import {
   IConfig,
 } from 'apps/server/src/common/global/configs/configs.service'
 import { OptionsService } from 'apps/server/src/shared/options/options.service'
-import { Auth } from '../../core/decorators/auth.decorator'
+import { Auth } from '../../../../../libs/core/decorators/auth.decorator'
 import { AdminEventsGateway } from '../../gateway/admin/events.gateway'
 import { NotesService } from '../notes/notes.service'
 import { PageService } from '../page/page.service'

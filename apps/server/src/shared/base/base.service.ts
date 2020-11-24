@@ -28,7 +28,10 @@ import {
 import { AnyType } from 'apps/server/src/shared/base/interfaces'
 import { gatewayMessageFormat } from '../../gateway/base.gateway'
 import { EventTypes } from '../../gateway/events.types'
-import { getOnlineImageSize, pickImagesFromMarkdown } from '../../utils/pic'
+import {
+  getOnlineImageSize,
+  pickImagesFromMarkdown,
+} from '../../../../../libs/utils/pic'
 
 export type enumOrderType = 'asc' | 'desc' | 'ascending' | 'descending' | 1 | -1
 export type OrderType<T> = {

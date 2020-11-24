@@ -14,7 +14,7 @@ import { DocumentType } from '@typegoose/typegoose'
 import { BaseService } from '../base/base.service'
 import Post from '@libs/db/models/post.model'
 import { InjectModel } from 'nestjs-typegoose'
-import { CannotFindException } from 'apps/server/src/core/exceptions/cant-find.exception'
+import { CannotFindException } from 'libs/core/exceptions/cant-find.exception'
 
 @Injectable()
 export class PostsService extends BaseService<Post> {

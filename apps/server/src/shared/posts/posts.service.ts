@@ -21,9 +21,12 @@ import { merge } from 'lodash'
 import { FilterQuery, QueryUpdateOptions } from 'mongoose'
 import { RedisService } from 'nestjs-redis'
 import { InjectModel } from 'nestjs-typegoose'
-import { CannotFindException } from 'apps/server/src/core/exceptions/cant-find.exception'
+import { CannotFindException } from 'libs/core/exceptions/cant-find.exception'
 import { WriteBaseService } from 'apps/server/src/shared/base/base.service'
-import { updateLikeCount, updateReadCount } from '../../utils/text-base'
+import {
+  updateLikeCount,
+  updateReadCount,
+} from '../../../../../libs/utils/text-base'
 import { CategoriesService } from '../categories/categories.service'
 @Injectable()
 export class PostsService extends WriteBaseService<Post> {

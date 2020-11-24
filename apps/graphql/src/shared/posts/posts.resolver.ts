@@ -9,12 +9,9 @@
 import { NotFoundException, UseGuards, UseInterceptors } from '@nestjs/common'
 import { Args, Query, Resolver } from '@nestjs/graphql'
 import { RolesGQLGuard } from 'apps/server/src/auth/roles.guard'
-import { MasterGQL } from 'apps/server/src/core/decorators/guest.decorator'
-import { PermissionGQLInterceptor } from 'apps/server/src/core/interceptors/permission.interceptors'
-import {
-  addConditionToSeeHideContent,
-  yearCondition,
-} from 'apps/server/src/utils'
+import { MasterGQL } from 'libs/core/decorators/guest.decorator'
+import { PermissionGQLInterceptor } from 'libs/core/interceptors/permission.interceptors'
+import { addConditionToSeeHideContent, yearCondition } from 'libs/utils'
 import { IdInputArgsDto, PagerArgsDto } from '../../graphql/args/id.input'
 import { PostItemModel, PostPagerModel } from '../../graphql/models/post.model'
 import { SlugTitleInput } from './posts.input'

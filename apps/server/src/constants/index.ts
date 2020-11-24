@@ -8,7 +8,7 @@
  */
 import { homedir } from 'os'
 import { join } from 'path'
-import { isDev } from 'apps/server/src/utils'
+import { isDev } from 'libs/utils'
 
 export const HOME = homedir()
 

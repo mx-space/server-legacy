@@ -1,6 +1,6 @@
 import { Logger } from '@nestjs/common'
 import { NestFactory } from '@nestjs/core'
-import { isDev } from 'apps/server/src/utils'
+import { isDev } from 'libs/utils'
 import { GraphqlModule } from './graphql.module'
 import {
   FastifyAdapter,

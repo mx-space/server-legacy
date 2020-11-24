@@ -23,19 +23,16 @@ import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger'
 import { DocumentType } from '@typegoose/typegoose'
 import { AuthService } from 'apps/server/src/auth/auth.service'
 import { RolesGuard } from 'apps/server/src/auth/roles.guard'
-import { CurrentUser } from 'apps/server/src/core/decorators/current-user.decorator'
-import { Master } from 'apps/server/src/core/decorators/guest.decorator'
-import {
-  IpLocation,
-  IpRecord,
-} from 'apps/server/src/core/decorators/ip.decorator'
+import { CurrentUser } from 'libs/core/decorators/current-user.decorator'
+import { Master } from 'libs/core/decorators/guest.decorator'
+import { IpLocation, IpRecord } from 'libs/core/decorators/ip.decorator'
 import {
   LoginDto,
   UserDto,
   UserPatchDto,
 } from 'apps/server/src/master/dto/user.dto'
 import MasterService from 'apps/server/src/master/master.service'
-import { getAvatar } from 'apps/server/src/utils'
+import { getAvatar } from 'libs/utils'
 
 @Controller('master')
 @ApiTags('Master Routes')
