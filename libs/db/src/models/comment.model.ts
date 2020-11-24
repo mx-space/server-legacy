@@ -8,8 +8,9 @@
  */
 
 import { pre, prop, Ref } from '@typegoose/typegoose'
+import { getAvatar } from 'apps/server/src/utils'
 import { Types } from 'mongoose'
-import { getAvatar } from 'src/utils'
+
 import { BaseModel } from './base.model'
 import Note from './note.model'
 import Page from './page.model'

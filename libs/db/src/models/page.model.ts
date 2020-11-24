@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger'
 import { prop } from '@typegoose/typegoose'
+import { IsNilOrString } from 'apps/server/src/common/decorators/isNilOrString'
 import {
   IsEnum,
   IsInt,
@@ -10,7 +11,7 @@ import {
   Min,
 } from 'class-validator'
 import { Schema } from 'mongoose'
-import { IsNilOrString } from '../../../../src/common/decorators/isNilOrString'
+
 import { WriteBaseModel } from './base.model'
 
 export const pageType = ['md', 'html', 'frame']

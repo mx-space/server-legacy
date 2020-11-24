@@ -11,8 +11,22 @@ const env = require('dotenv').config().parsed
 module.exports = {
   apps: [
     {
-      name: 'MxSpace-server',
-      script: 'dist/main.js',
+      name: 'mx-space-server',
+      script: 'dist/apps/server/main.js',
+      autorestart: true,
+      instances: 'max',
+      exec_mode: 'cluster',
+      watch: false,
+      // instances: 1,
+      // max_memory_restart: env.APP_MAX_MEMORY || '150M',
+      env: {
+        NODE_ENV: 'production',
+        ...env,
+      },
+    },
+    {
+      name: 'mx-space-graphql',
+      script: 'dist/apps/graphql/main.js',
       autorestart: true,
       instances: 'max',
       exec_mode: 'cluster',
