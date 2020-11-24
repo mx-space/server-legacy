@@ -11,13 +11,13 @@ import { NestFactory } from '@nestjs/core'
 import { NestFastifyApplication } from '@nestjs/platform-fastify'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 import { mkdirSync } from 'fs'
-import { AllExceptionsFilter } from 'apps/server/src/core/filters/any-exception.filter'
-import { ResponseInterceptor } from 'apps/server/src/core/interceptors/response.interceptors'
+import { AllExceptionsFilter } from 'libs/core/filters/any-exception.filter'
+import { ResponseInterceptor } from 'libs/core/interceptors/response.interceptors'
 import { AppModule } from './app.module'
 import { DATA_DIR, TEMP_DIR } from './constants'
-import { fastifyApp } from './core/adapt/fastify'
-import { ExtendsIoAdapter } from './core/gateway/extend.gateway'
-import { isDev } from './utils'
+import { fastifyApp } from '../../../libs/core/adapt/fastify'
+import { ExtendsIoAdapter } from '../../../libs/core/gateway/extend.gateway'
+import { isDev } from '../../../libs/utils'
 
 const PORT = parseInt(process.env.PORT) || 2333
 const APIVersion = 1

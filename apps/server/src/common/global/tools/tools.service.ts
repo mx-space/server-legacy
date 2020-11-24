@@ -14,7 +14,7 @@ import { Injectable } from '@nestjs/common'
 import { ReturnModelType } from '@typegoose/typegoose'
 import { InjectModel } from 'nestjs-typegoose'
 import { ConfigsService } from 'apps/server/src/common/global/configs/configs.service'
-import { addConditionToSeeHideContent } from 'apps/server/src/utils'
+import { addConditionToSeeHideContent } from 'libs/utils'
 
 @Injectable()
 export class ToolsService {

@@ -3,7 +3,7 @@ import { Module } from '@nestjs/common'
 import { GraphQLModule } from '@nestjs/graphql'
 import { ConfigsModule } from 'apps/server/src/common/global/configs/configs.module'
 import { GlobalModule } from 'apps/server/src/common/global/global.module'
-import { isDev } from 'apps/server/src/utils'
+import { isDev } from 'libs/utils'
 
 import { SharedModule } from './shared/shared.module'
 

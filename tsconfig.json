@@ -27,6 +27,12 @@
       ],
       "@libs/common/*": [
         "libs/common/src/*"
+      ],
+      "@libs/core/*": [
+        "libs/core/*"
+      ],
+      "@libs/utils/*": [
+        "libs/utils/*"
       ]
     }
   },

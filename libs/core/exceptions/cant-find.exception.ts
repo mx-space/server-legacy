@@ -1,5 +1,5 @@
 import { NotFoundException } from '@nestjs/common'
-import { PickOne } from 'apps/server/src/utils'
+import { PickOne } from 'libs/utils'
 
 export const NotFoundMessage = [
   '真不巧, 内容走丢了 o(╥﹏╥)o',
