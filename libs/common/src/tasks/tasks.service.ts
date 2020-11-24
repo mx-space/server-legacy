@@ -8,14 +8,15 @@ import * as mkdirp from 'mkdirp'
 import { RedisService } from 'nestjs-redis'
 import { InjectModel } from 'nestjs-typegoose'
 import { join } from 'path'
-import { TEMP_DIR } from 'src/constants'
-import { isDev } from 'src/utils'
-import { ConfigsService } from '../../../../src/common/global/configs/configs.service'
-import { BackupsService } from '../../../../src/shared/backups/backups.service'
+import { TEMP_DIR } from 'apps/server/src/constants'
+import { isDev } from 'apps/server/src/utils'
+
 import { Analyze } from '../../../db/src/models/analyze.model'
 import { RedisNames } from '../redis/redis.types'
 import dayjs = require('dayjs')
-import { ToolsService } from 'src/common/global/tools/tools.service'
+import { ToolsService } from 'apps/server/src/common/global/tools/tools.service'
+import { ConfigsService } from 'apps/server/src/common/global'
+import { BackupsService } from 'apps/server/src/shared/backups/backups.service'
 
 @Injectable()
 export class TasksService {
