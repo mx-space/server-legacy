@@ -29,10 +29,8 @@ export class PageItemModel
 
   subtitle?: string
 
-  //@ts-ignore
-  created: string
-  // @ts-ignore
-  modified: string
+  created: Date
+  modified: Date
 }
 
 @ObjectType()

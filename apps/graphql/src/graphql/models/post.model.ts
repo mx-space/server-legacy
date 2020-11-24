@@ -50,10 +50,8 @@ export class PostItemModel extends BaseGLModel implements Post {
   @Field(() => [String], { nullable: true })
   public readonly tags: string[]
 
-  //@ts-ignore
-  created: string
-  // @ts-ignore
-  modified: string
+  created: Date
+  modified: Date
 }
 
 @ObjectType()
