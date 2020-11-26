@@ -16,10 +16,10 @@ import {
 import { Args, Query, Resolver } from '@nestjs/graphql'
 import { DocumentType } from '@typegoose/typegoose'
 import { RolesGQLGuard } from 'apps/server/src/auth/roles.guard'
-import { MasterGQL } from 'libs/core/decorators/guest.decorator'
-import { CannotFindException } from 'libs/core/exceptions/cant-find.exception'
-import { PermissionGQLInterceptor } from 'libs/core/interceptors/permission.interceptors'
-import { addConditionToSeeHideContent, yearCondition } from 'libs/utils'
+import { MasterGQL } from 'shared/core/decorators/guest.decorator'
+import { CannotFindException } from 'shared/core/exceptions/cant-find.exception'
+import { PermissionGQLInterceptor } from 'shared/core/interceptors/permission.interceptors'
+import { addConditionToSeeHideContent, yearCondition } from 'shared/utils'
 import { PagerArgsDto } from '../../graphql/args/id.input'
 import {
   NoteItemAggregateModel,

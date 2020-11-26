@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common'
 import { DocumentType, ReturnModelType } from '@typegoose/typegoose'
 import { AnyParamConstructor } from '@typegoose/typegoose/lib/types'
-import { CannotFindException } from 'libs/core/exceptions/cant-find.exception'
+import { CannotFindException } from 'shared/core/exceptions/cant-find.exception'
 import { FindAndModifyWriteOpResultObject, MongoError } from 'mongodb'
 import {
   CreateQuery,

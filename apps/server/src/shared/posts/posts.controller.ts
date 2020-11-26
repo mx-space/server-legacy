@@ -15,16 +15,16 @@ import {
 import { ApiOperation, ApiSecurity, ApiTags } from '@nestjs/swagger'
 import { Types } from 'mongoose'
 import { RolesGuard } from 'apps/server/src/auth/roles.guard'
-import { Auth } from 'libs/core/decorators/auth.decorator'
-import { Master } from 'libs/core/decorators/guest.decorator'
-import { PermissionInterceptor } from 'libs/core/interceptors/permission.interceptors'
+import { Auth } from 'shared/core/decorators/auth.decorator'
+import { Master } from 'shared/core/decorators/guest.decorator'
+import { PermissionInterceptor } from 'shared/core/interceptors/permission.interceptors'
 import { IdDto } from 'apps/server/src/shared/base/dto/id.dto'
 import { SearchDto } from 'apps/server/src/shared/base/dto/search.dto'
-import { addConditionToSeeHideContent, yearCondition } from 'libs/utils'
+import { addConditionToSeeHideContent, yearCondition } from 'shared/utils'
 import {
   IpLocation,
   IpRecord,
-} from '../../../../../libs/core/decorators/ip.decorator'
+} from '../../../../../shared/core/decorators/ip.decorator'
 import { EventTypes } from '../../gateway/events.types'
 import { WebEventsGateway } from '../../gateway/web/events.gateway'
 import { CategoryAndSlug, PostDto, PostQueryDto } from './dto'

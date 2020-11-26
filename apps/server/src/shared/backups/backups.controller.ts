@@ -22,10 +22,10 @@ import {
   UnprocessableEntityException,
 } from '@nestjs/common'
 import { ApiProperty, ApiResponseProperty, ApiTags } from '@nestjs/swagger'
-import { ApplyUpload } from 'libs/core/decorators/file.decorator'
+import { ApplyUpload } from 'shared/core/decorators/file.decorator'
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { Readable } from 'stream'
-import { Auth } from '../../../../../libs/core/decorators/auth.decorator'
+import { Auth } from '../../../../../shared/core/decorators/auth.decorator'
 import { UploadsService } from '../uploads/uploads.service'
 import { BackupsService } from './backups.service'
 

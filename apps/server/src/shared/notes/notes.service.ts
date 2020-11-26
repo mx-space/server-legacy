@@ -13,12 +13,12 @@ import { DocumentType, ReturnModelType } from '@typegoose/typegoose'
 import { compareSync } from 'bcrypt'
 import { RedisService } from 'nestjs-redis'
 import { InjectModel } from 'nestjs-typegoose'
-import { CannotFindException } from 'libs/core/exceptions/cant-find.exception'
-import { addConditionToSeeHideContent } from 'libs/utils'
+import { CannotFindException } from 'shared/core/exceptions/cant-find.exception'
+import { addConditionToSeeHideContent } from 'shared/utils'
 import {
   updateLikeCount,
   updateReadCount,
-} from '../../../../../libs/utils/text-base'
+} from '../../../../../shared/utils/text-base'
 import { WriteBaseService } from '../base/base.service'
 
 @Injectable()

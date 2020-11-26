@@ -28,11 +28,11 @@
       "@libs/common/*": [
         "libs/common/src/*"
       ],
-      "@libs/core/*": [
-        "libs/core/*"
+      "core/*": [
+        "shared/core/*"
       ],
-      "@libs/utils/*": [
-        "libs/utils/*"
+      "utils/*": [
+        "shared/utils/*"
       ]
     }
   },

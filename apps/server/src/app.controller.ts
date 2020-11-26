@@ -14,7 +14,7 @@ import { FastifyReply } from 'fastify'
 import { Session } from 'fastify-secure-session'
 import { InjectModel } from 'nestjs-typegoose'
 import { Option } from '@libs/db/models/option.model'
-import { getIp } from '../../../libs/utils/ip'
+import { getIp } from '../../../shared/utils/ip'
 
 @Controller()
 @ApiTags('Root Routes')

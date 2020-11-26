@@ -9,7 +9,7 @@ import { RedisService } from 'nestjs-redis'
 import { InjectModel } from 'nestjs-typegoose'
 import { join } from 'path'
 import { TEMP_DIR } from 'apps/server/src/constants'
-import { isDev } from 'libs/utils'
+import { isDev } from 'shared/utils'
 
 import { Analyze } from '../../../db/src/models/analyze.model'
 import { RedisNames } from '../redis/redis.types'

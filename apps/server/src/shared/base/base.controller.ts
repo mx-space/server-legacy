@@ -1,6 +1,6 @@
 import { BaseModel } from '@libs/db/models/base.model'
 import { Body, Delete, Get, Param, Post, Put, Query } from '@nestjs/common'
-import { Auth } from 'libs/core/decorators/auth.decorator'
+import { Auth } from 'shared/core/decorators/auth.decorator'
 import { BaseService } from './base.service'
 import { IdDto } from './dto/id.dto'
 import { PagerDto } from './dto/pager.dto'

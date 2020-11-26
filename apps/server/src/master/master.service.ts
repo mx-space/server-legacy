@@ -9,7 +9,7 @@ import { compareSync } from 'bcrypt'
 import { nanoid } from 'nanoid'
 import { InjectModel } from 'nestjs-typegoose'
 import { AuthService } from 'apps/server/src/auth/auth.service'
-import { getAvatar } from 'libs/utils'
+import { getAvatar } from 'shared/utils'
 import { RedisService } from 'nestjs-redis'
 
 import * as fastJson from 'fast-json-stringify'

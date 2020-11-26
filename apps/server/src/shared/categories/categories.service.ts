@@ -4,8 +4,8 @@ import { Injectable, UnprocessableEntityException } from '@nestjs/common'
 import type { ReturnModelType } from '@typegoose/typegoose'
 import { omit } from 'lodash'
 import { InjectModel } from 'nestjs-typegoose'
-import { CannotFindException } from 'libs/core/exceptions/cant-find.exception'
-import { addConditionToSeeHideContent } from 'libs/utils'
+import { CannotFindException } from 'shared/core/exceptions/cant-find.exception'
+import { addConditionToSeeHideContent } from 'shared/utils'
 import { BaseService } from '../base/base.service'
 
 @Injectable()

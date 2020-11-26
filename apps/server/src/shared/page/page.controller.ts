@@ -20,7 +20,7 @@ import {
 } from '@nestjs/common'
 import { AuthGuard } from '@nestjs/passport'
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
-import { CannotFindException } from 'libs/core/exceptions/cant-find.exception'
+import { CannotFindException } from 'shared/core/exceptions/cant-find.exception'
 import { IdDto } from 'apps/server/src/shared/base/dto/id.dto'
 import { PageService } from './page.service'
 

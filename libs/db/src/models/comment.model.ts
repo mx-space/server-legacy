@@ -8,7 +8,7 @@
  */
 
 import { pre, prop, Ref } from '@typegoose/typegoose'
-import { getAvatar } from 'libs/utils'
+import { getAvatar } from 'shared/utils'
 import { Types } from 'mongoose'
 
 import { BaseModel } from './base.model'

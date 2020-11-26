@@ -26,8 +26,8 @@ import {
   IsString,
   isMongoId,
 } from 'class-validator'
-import { Auth } from '../../../../libs/core/decorators/auth.decorator'
-import { Master } from '../../../../libs/core/decorators/guest.decorator'
+import { Auth } from '../../../../shared/core/decorators/auth.decorator'
+import { Master } from '../../../../shared/core/decorators/guest.decorator'
 import { IdDto } from '../shared/base/dto/id.dto'
 import { AuthService } from './auth.service'
 import { RolesGuard } from './roles.guard'
