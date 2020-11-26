@@ -9,3 +9,7 @@
 
 - fix: 文章修改时间被评论影响
 - refactor: analyze 字段修改
+
+**v1.6.0**
+
+- feat: GraphQL support
