@@ -1495,10 +1495,10 @@
     path-to-regexp "3.2.0"
     tslib "2.0.3"
 
-"@nestjs/platform-socket.io@7.5.4":
-  version "7.5.4"
-  resolved "https://registry.yarnpkg.com/@nestjs/platform-socket.io/-/platform-socket.io-7.5.4.tgz#276278902a6f22f60d866669402f8b64de133d39"
-  integrity sha512-JwxrDccRxfAp3pS0P3kroOEEa83WQHJ2QvK8OQqK/7bqqOva6ZsW2VSv0S+0HoVtTrKKkRek3oBKY62GODUNnA==
+"@nestjs/platform-socket.io@7.5.5":
+  version "7.5.5"
+  resolved "https://registry.yarnpkg.com/@nestjs/platform-socket.io/-/platform-socket.io-7.5.5.tgz#575b4ea1d12926604f8ab196ad05a4df9b75fe04"
+  integrity sha512-nlXhapj2tzDqEScO/CgkhIAhpUUbzAmZXVsqpH9OtDPVd5fMC1vzDF0cgsF9G9GCY5HCuvUnXglNOUlZE8WViQ==
   dependencies:
     socket.io "2.3.0"
     tslib "2.0.3"
@@ -1548,10 +1548,10 @@
     optional "0.1.4"
     tslib "2.0.1"
 
-"@nestjs/websockets@7.5.4":
-  version "7.5.4"
-  resolved "https://registry.yarnpkg.com/@nestjs/websockets/-/websockets-7.5.4.tgz#0766023fed806d6aa8f72a414ef512b4afd3433b"
-  integrity sha512-1cyt6OjWz2VEknBGzW/2Ols+xJ+SH75JqvcsbQHwNQeEyNDyPnmPIO02o2VgTEZHxZgV94GDa3+14FrWcxU//A==
+"@nestjs/websockets@7.5.5":
+  version "7.5.5"
+  resolved "https://registry.yarnpkg.com/@nestjs/websockets/-/websockets-7.5.5.tgz#18452ce2346e76e46d664c9bff60db9b2375e36b"
+  integrity sha512-2l7hw0BhxUVw/VY3MXnLoeWtxjMEywBUc4+LwBnUYQGf0NcjY41pBg771zbp1xRhCQhxoxFE8+JTIQNzhfrmnA==
   dependencies:
     iterare "1.2.1"
     tslib "2.0.3"
