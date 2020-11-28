@@ -124,10 +124,12 @@ export class AnalyzeController {
       })
       .reverse()
 
+    const paths = await this.service.getRangeOfTopPathVisitor()
     return {
       today: dayData.flat(1),
       weeks: weekData.flat(1),
       months: monthData.flat(1),
+      paths: paths.slice(50),
     }
   }
 

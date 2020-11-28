@@ -242,4 +242,45 @@ export class AnalyzeService extends BaseService<Analyze> {
     }
     return arr
   }
+
+  async getRangeOfTopPathVisitor(from?: Date, to?: Date): Promise<any[]> {
+    from = from ?? new Date(new Date().getTime() - 1000 * 24 * 3600 * 7)
+    to = to ?? new Date()
+
+    const pipeline = [
+      {
+        $match: {
+          timestamp: {
+            $gte: from,
+            $lte: to,
+          },
+        },
+      },
+      {
+        $group: {
+          _id: '$path',
+          count: {
+            $sum: 1,
+          },
+        },
+      },
+
+      {
+        $sort: {
+          count: -1,
+        },
+      },
+      {
+        $project: {
+          _id: 0,
+          path: '$_id',
+          count: 1,
+        },
+      },
+    ]
+
+    const res = await this.model.aggregate(pipeline).exec()
+
+    return res
+  }
 }
