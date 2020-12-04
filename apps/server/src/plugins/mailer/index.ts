@@ -7,6 +7,7 @@
  * @Coding with Love
  */
 
+import { Link } from '@libs/db/models/link.model'
 import { render } from 'ejs'
 import { createTransport } from 'nodemailer'
 import { renderGuestText } from './render/guest'
@@ -52,7 +53,31 @@ export class Mailer {
     from: `"${this.options?.name || 'Mx Space'}" <${this.user}>`,
   }
 
-  async send({
+  /**
+   * Notification Link Apply (send to master)
+   *
+   */
+  async sendLinkApplyEmail({
+    to,
+    model,
+    authorName,
+  }: {
+    authorName: string
+    to: string
+    model: Link
+  }) {
+    await this.mailer.sendMail({
+      ...this.mailerOptions,
+      to,
+      subject: `[${this.options?.name || 'Mx Space'}] 新的朋友 ${authorName}`,
+      text: `来自 ${model.name} 的友链请求: 
+        站点标题: ${model.name}
+        站点网站: ${model.url}
+        站点描述: ${model.description}
+      `,
+    })
+  }
+  async sendCommentNotificationMail({
     to,
     source,
     type,

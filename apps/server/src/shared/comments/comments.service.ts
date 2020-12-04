@@ -235,7 +235,7 @@ export class CommentsService extends BaseService<Comment> {
         mailerOptions.user,
         mailerOptions.pass,
         mailerOptions.options,
-      ).send({
+      ).sendCommentNotificationMail({
         to: type === ReplyMailType.Owner ? master.mail : parent.mail,
         type,
         source: {

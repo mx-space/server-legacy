@@ -11,20 +11,26 @@ import { Link, LinkState, LinkType } from '@libs/db/models/link.model'
 import {
   Body,
   Controller,
+  Get,
   Param,
   Patch,
   Post,
+  Query,
   UnprocessableEntityException,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
-import { isMongoId } from 'class-validator'
-import { omit } from 'lodash'
-import { RolesGuard } from '../../auth/roles.guard'
+import { isMongoId, IsString } from 'class-validator'
 import { PermissionInterceptor } from '../../../../../shared/core/interceptors/permission.interceptors'
+import { RolesGuard } from '../../auth/roles.guard'
 import { BaseCrud } from '../base/base.controller'
 import { LinksService } from './links.service'
+
+class LinkQueryDto {
+  @IsString()
+  author: string
+}
 
 @Controller('links')
 @ApiTags('Link Routes')
@@ -35,14 +41,16 @@ export class LinksController extends BaseCrud<Link> {
     super(service)
   }
 
+  @Get('state')
+  async getLinkCount() {
+    return await this.service.getCount()
+  }
+
   @Post('audit')
-  async applyForLink(@Body() body: Link & { author: string }) {
-    await this.service.createNew({
-      ...omit(body, 'author'),
-      type: LinkType.Friend,
-      state: LinkState.Audit,
-    })
-    this.service.sendEmail(body)
+  async applyForLink(@Body() body: Link, @Query() query: LinkQueryDto) {
+    await this.service.applyForLink(body)
+    this.service.sendEmail(query.author, body)
+
     return 'OK'
   }
 
