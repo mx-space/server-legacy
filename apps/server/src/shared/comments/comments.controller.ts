@@ -18,9 +18,6 @@ import {
 import { ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger'
 import { DocumentType } from '@typegoose/typegoose'
 import { RolesGuard } from 'apps/server/src/auth/roles.guard'
-import { Master } from 'shared/core/decorators/guest.decorator'
-import { IpLocation, IpRecord } from 'shared/core/decorators/ip.decorator'
-import { CannotFindException } from 'shared/core/exceptions/cant-find.exception'
 import { PagerDto } from 'apps/server/src/shared/base/dto/pager.dto'
 import {
   CommentDto,
@@ -29,9 +26,12 @@ import {
 } from 'apps/server/src/shared/comments/dto/comment.dto'
 import { Pager } from 'apps/server/src/shared/comments/dto/pager.dto'
 import { StateDto } from 'apps/server/src/shared/comments/dto/state.dto'
+import { Master } from 'shared/core/decorators/guest.decorator'
+import { IpLocation, IpRecord } from 'shared/core/decorators/ip.decorator'
+import { CannotFindException } from 'shared/core/exceptions/cant-find.exception'
 import { Auth } from '../../../../../shared/core/decorators/auth.decorator'
-import { AdminEventsGateway } from '../../gateway/admin/events.gateway'
 import { EventTypes } from '../../gateway/events.types'
+import { SharedGateway } from '../../gateway/shared/events.gateway'
 import { ReplyMailType } from '../../plugins/mailer'
 import { IdDto } from '../base/dto/id.dto'
 import { CommentsService } from './comments.service'
@@ -42,7 +42,7 @@ import { CommentsService } from './comments.service'
 export class CommentsController {
   constructor(
     private readonly commentService: CommentsService,
-    private readonly gateway: AdminEventsGateway,
+    private readonly gateway: SharedGateway,
   ) {
     // this.commentService.findOne({}).then((res) => {
     //   this.commentService.sendEmail(res, ReplyMailType.Owner)
