@@ -44,13 +44,11 @@ export class AllExceptionsFilter implements ExceptionFilter {
     } else {
       const ip = getIp(request)
       this.logger.warn(
-        'IP: ' +
-          ip +
-          `  错误信息: (${status}) ` +
-          ((exception as any)?.response?.message ||
-            (exception as myError)?.message ||
-            '') +
-          ` Path: ${decodeURI(request.raw.url)}`,
+        `IP: ${ip} 错误信息: (${status}) ${
+          (exception as any)?.response?.message ||
+          (exception as myError)?.message ||
+          ''
+        } Path: ${decodeURI(request.raw.url)}`,
       )
     }
 

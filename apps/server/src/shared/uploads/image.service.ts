@@ -54,22 +54,21 @@ export class ImageService {
     const res = []
     for await (const file of files) {
       await this.pic.upload([file.path])
-      res.concat(
-        this.pic.output.map(async (pic) => {
-          if (!pic.imgUrl) {
-            return console.error('图片上传失败')
-          }
-          const imageUrl = pic.imgUrl
-          await this.model.updateOne(
-            { name: file.name },
-            {
-              locate: FileLocate.Online,
-              url: imageUrl,
-            },
-          )
-          return imageUrl
-        }),
-      )
+
+      this.pic.output.map(async (pic) => {
+        if (!pic.imgUrl) {
+          return console.error('图片上传失败')
+        }
+        const imageUrl = pic.imgUrl
+        await this.model.updateOne(
+          { name: file.name },
+          {
+            locate: FileLocate.Online,
+            url: imageUrl,
+          },
+        )
+        return imageUrl
+      })
     }
     return res
   }

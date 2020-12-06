@@ -44,8 +44,12 @@ export class HelperService {
     }
     const { date, updated } = meta
     return {
-      created: new Date(date) || new Date(),
-      modified: new Date(updated) || new Date(date) || new Date(),
+      created: date ? new Date(date) : new Date(),
+      modified: updated
+        ? new Date(updated)
+        : date
+        ? new Date(date)
+        : new Date(),
     }
   }
 
