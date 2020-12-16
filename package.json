@@ -79,7 +79,7 @@
     "graphql": "15.4.0",
     "graphql-tools": "7.0.2",
     "image-size": "0.9.3",
-    "js-yaml": "3.14.0",
+    "js-yaml": "3.14.1",
     "mongoose": "5.10.19",
     "mongoose-lean-virtuals": "0.7.5",
     "mongoose-unique-validator": "2.0.3",
