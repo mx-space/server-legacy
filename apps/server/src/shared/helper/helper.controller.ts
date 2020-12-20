@@ -69,7 +69,7 @@ export class HelperController {
     const convertor = <
       T extends {
         text: string
-        created: Date
+        created?: Date
         modified: Date
         title: string
         slug?: string

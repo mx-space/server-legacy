@@ -44,7 +44,7 @@ export type { Image as TextImageRecordType }
 })
 @index({ created: -1 })
 export abstract class BaseModel {
-  created!: Date
+  created?: Date
 }
 
 export abstract class BaseCommentIndexModel extends BaseModel {

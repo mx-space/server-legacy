@@ -22,6 +22,7 @@ import { User } from './models/user.model'
 import { Say } from './models/say.model'
 import { Link } from './models/link.model'
 import { Analyze } from './models/analyze.model'
+import { Recently } from './models/recently.model'
 
 const models = TypegooseModule.forFeature([
   Analyze,
@@ -34,6 +35,7 @@ const models = TypegooseModule.forFeature([
   Page,
   Post,
   Project,
+  Recently,
   Say,
   User,
 ])

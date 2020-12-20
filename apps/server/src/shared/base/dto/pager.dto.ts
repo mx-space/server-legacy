@@ -8,7 +8,8 @@
  */
 
 import { ApiProperty } from '@nestjs/swagger'
-import { Transform } from 'class-transformer'
+import { Default } from 'apps/server/src/common/vaildator-decorators/default'
+import { Expose, Transform } from 'class-transformer'
 import {
   IsInt,
   IsNotEmpty,
@@ -19,16 +20,18 @@ import {
 } from 'class-validator'
 
 export class PagerDto {
-  @Transform((val) => parseInt(val))
   @Min(1)
   @Max(50)
   @IsInt()
+  @Expose()
+  @Transform((val) => (val ? parseInt(val) : 10), { toClassOnly: true })
   @ApiProperty({ example: 10 })
   size: number
 
-  @Transform((val) => parseInt(val))
+  @Transform((val) => (val ? parseInt(val) : 1), { toClassOnly: true })
   @Min(1)
   @IsInt()
+  @Expose()
   @ApiProperty({ example: 1 })
   page: number
 

@@ -38,6 +38,8 @@ import { ProjectsService } from './projects/projects.service'
 import { SaysController } from './says/says.controller'
 import { SaysService } from './says/says.service'
 import { UploadsModule } from './uploads/uploads.module'
+import { RecentlyController } from './recently/recently.controller'
+import { RecentlyService } from './recently/recently.service'
 
 @Module({
   imports: [UploadsModule, TasksModule, GatewayModule],
@@ -55,6 +57,7 @@ import { UploadsModule } from './uploads/uploads.module'
     HelperService,
     AnalyzeService,
     BackupsService,
+    RecentlyService,
   ],
   controllers: [
     OptionsController,
@@ -70,6 +73,7 @@ import { UploadsModule } from './uploads/uploads.module'
     HelperController,
     AnalyzeController,
     BackupsController,
+    RecentlyController,
   ],
 })
 export class SharedModule {}
