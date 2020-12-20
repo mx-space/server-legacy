@@ -8,14 +8,16 @@
  */
 
 import { FastifyRequest } from 'fastify'
+import { IncomingMessage } from 'http'
 
-export const getIp = (request: FastifyRequest) => {
+export const getIp = (request: FastifyRequest | IncomingMessage) => {
+  const _ = request as any
   // @ts-ignore
   let ip: string =
-    request.headers['x-forwarded-for'] ||
-    request.ip ||
-    request.raw.connection.remoteAddress ||
-    request.raw.socket.remoteAddress ||
+    _.headers['x-forwarded-for'] ||
+    _.ip ||
+    _.raw.connection.remoteAddress ||
+    _.raw.socket.remoteAddress ||
     undefined
   if (ip && ip.split(',').length > 0) {
     ip = ip.split(',')[0]

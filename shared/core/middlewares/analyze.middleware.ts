@@ -7,21 +7,20 @@
  * @MIT
  */
 
-import { HttpService, Injectable, NestMiddleware } from '@nestjs/common'
-import { Cron, CronExpression } from '@nestjs/schedule'
-import { ReturnModelType } from '@typegoose/typegoose'
-import { FastifyRequest } from 'fastify'
-import { readFileSync } from 'fs'
-import { writeFileSync } from 'fs'
-import { ServerResponse } from 'http'
-import { RedisService } from 'nestjs-redis'
-import { InjectModel } from 'nestjs-typegoose'
-import { join } from 'path'
-import { DATA_DIR } from 'apps/server/src/constants'
-import { UAParser } from 'ua-parser-js'
 import { RedisNames } from '@libs/common/redis/redis.types'
 import { Analyze } from '@libs/db/models/analyze.model'
 import { Option } from '@libs/db/models/option.model'
+import { HttpService, Injectable, NestMiddleware } from '@nestjs/common'
+import { Cron, CronExpression } from '@nestjs/schedule'
+import { ReturnModelType } from '@typegoose/typegoose'
+import { DATA_DIR } from 'apps/server/src/constants'
+import { readFileSync, writeFileSync } from 'fs'
+import { IncomingMessage, ServerResponse } from 'http'
+import { RedisService } from 'nestjs-redis'
+import { InjectModel } from 'nestjs-typegoose'
+import { join } from 'path'
+import { UAParser } from 'ua-parser-js'
+import { parse } from 'url'
 import { getIp } from '../../utils/ip'
 @Injectable()
 export class AnalyzeMiddleware implements NestMiddleware {
@@ -41,7 +40,7 @@ export class AnalyzeMiddleware implements NestMiddleware {
 
     this.updateBotList()
   }
-  async use(req: FastifyRequest, res: ServerResponse, next: () => void) {
+  async use(req: IncomingMessage, res: ServerResponse, next: () => void) {
     const ip = getIp(req)
 
     // if req from SSR server, like 127.0.0.1, skip
@@ -67,7 +66,7 @@ export class AnalyzeMiddleware implements NestMiddleware {
       await this.model.create({
         ip,
         ua,
-        path: (req as any).url,
+        path: parse(req.url).pathname,
       })
       const apiCallTimeRecord = await this.options.findOne({
         name: 'apiCallTime',

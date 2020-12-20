@@ -1,5 +1,5 @@
 import { modelOptions, prop } from '@typegoose/typegoose'
-import { SchemaTypes, Types } from 'mongoose'
+import { SchemaTypes } from 'mongoose'
 import { BaseModel } from './base.model'
 
 @modelOptions({
