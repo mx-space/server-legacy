@@ -10,6 +10,7 @@ import {
   Query,
   UnprocessableEntityException,
 } from '@nestjs/common'
+import { Auth } from 'core/decorators/auth.decorator'
 import { PagerDto } from '../base/dto/pager.dto'
 import { RecentlyDto } from './recently.dto'
 import { RecentlyService } from './recently.service'
@@ -33,6 +34,7 @@ export class RecentlyController {
   }
 
   @Post('/')
+  @Auth()
   @HttpCode(HttpStatus.CREATED)
   async create(@Body() body: RecentlyDto) {
     await this.service.create(body)
@@ -40,6 +42,7 @@ export class RecentlyController {
   }
 
   @Delete('/:id')
+  @Auth()
   @HttpCode(HttpStatus.NO_CONTENT)
   async del(@Param() id: string) {
     const res = await this.service.delete(id)
