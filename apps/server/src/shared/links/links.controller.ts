@@ -22,6 +22,7 @@ import {
 } from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
 import { isMongoId, IsString } from 'class-validator'
+import { Auth } from 'core/decorators/auth.decorator'
 import { PermissionInterceptor } from '../../../../../shared/core/interceptors/permission.interceptors'
 import { RolesGuard } from '../../auth/roles.guard'
 import { BaseCrud } from '../base/base.controller'
@@ -42,6 +43,7 @@ export class LinksController extends BaseCrud<Link> {
   }
 
   @Get('state')
+  @Auth()
   async getLinkCount() {
     return await this.service.getCount()
   }
@@ -55,6 +57,7 @@ export class LinksController extends BaseCrud<Link> {
   }
 
   @Patch('audit/:id')
+  @Auth()
   async approveFriend(@Param('id') id: string) {
     if (!isMongoId(id)) {
       throw new UnprocessableEntityException('ID must be mongo ID')
