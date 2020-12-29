@@ -18,7 +18,7 @@ import {
   IsString,
 } from 'class-validator'
 import { uniq } from 'lodash'
-import { IsBooleanOrString } from 'apps/server/src/common/vaildator-decorators/isBooleanOrString'
+import { IsBooleanOrString } from 'apps/server/src/common/validator-decorators/isBooleanOrString'
 
 export enum CategoryType {
   Category,

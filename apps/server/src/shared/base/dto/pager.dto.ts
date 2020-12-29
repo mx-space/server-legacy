@@ -8,7 +8,6 @@
  */
 
 import { ApiProperty } from '@nestjs/swagger'
-import { Default } from 'apps/server/src/common/vaildator-decorators/default'
 import { Expose, Transform } from 'class-transformer'
 import {
   IsInt,

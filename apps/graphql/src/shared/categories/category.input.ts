@@ -1,6 +1,6 @@
 import { UnprocessableEntityException } from '@nestjs/common'
 import { ArgsType, Field, ObjectType, registerEnumType } from '@nestjs/graphql'
-import { IsBooleanOrString } from 'apps/server/src/common/vaildator-decorators/isBooleanOrString'
+import { IsBooleanOrString } from 'apps/server/src/common/validator-decorators/isBooleanOrString'
 /*
  * @Author: Innei
  * @Date: 2020-04-30 12:21:51
