@@ -1722,10 +1722,10 @@
     loglevel "^1.7.0"
     tslib "^2.0.3"
 
-"@typegoose/typegoose@7.4.5":
-  version "7.4.5"
-  resolved "https://registry.yarnpkg.com/@typegoose/typegoose/-/typegoose-7.4.5.tgz#19ff469b559c9d68aa1793ef837ea60040bd892c"
-  integrity sha512-OfLKMMMzdbLMALZVbD8P24LkHICw2idSBOagKFzW185rdEqZf1a2/PO0eqybQ5bGqEKe8kFs+ln7zFg5zzu8+A==
+"@typegoose/typegoose@7.4.6":
+  version "7.4.6"
+  resolved "https://registry.yarnpkg.com/@typegoose/typegoose/-/typegoose-7.4.6.tgz#d831677f6a3a5d1f531867e303672463d4ec5464"
+  integrity sha512-M2AECNtr4pGByjPG2tEhe2292qX9DJUCX4aP74glMoQQ/YOkCBbwVXokF/ZxnNUwH+5hIAfmTp5xCpDYNtkXWQ==
   dependencies:
     lodash "^4.17.20"
     loglevel "^1.7.0"
@@ -11578,7 +11578,7 @@ uuid@8.3.1:
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-8.3.1.tgz#2ba2e6ca000da60fce5a196954ab241131e05a31"
   integrity sha512-FOmRr+FmWEIG8uhZv6C2bTgEVXsHk08kE7mPlrBbEe+c3r9pjceVPgupIfNIhc4yx55H69OXANrUaSuu9eInKg==
 
-uuid@8.3.2:
+uuid@8.3.2, uuid@^8.0.0, uuid@^8.3.0:
   version "8.3.2"
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-8.3.2.tgz#80d5b5ced271bb9af6c445f21a1a04c606cefbe2"
   integrity sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==
@@ -11587,11 +11587,6 @@ uuid@^3.1.0, uuid@^3.3.2:
   version "3.4.0"
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.4.0.tgz#b23e4358afa8a202fe7a100af1f5f883f02007ee"
   integrity sha512-HjSDRw6gZE5JMggctHBcjVak08+KEVhSIiDzFnT9S9aegmp85S/bReBVTb4QTFaRNptJ9kuYaNhnbNEOkbKb/A==
-
-uuid@^8.0.0, uuid@^8.3.0:
-  version "8.3.2"
-  resolved "https://registry.yarnpkg.com/uuid/-/uuid-8.3.2.tgz#80d5b5ced271bb9af6c445f21a1a04c606cefbe2"
-  integrity sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==
 
 v8-compile-cache@^2.0.3:
   version "2.1.1"
