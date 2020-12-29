@@ -1,7 +1,7 @@
 import { modelOptions, prop } from '@typegoose/typegoose'
 import { SchemaTypes } from 'mongoose'
 import { BaseModel } from './base.model'
-
+import { UAParser } from 'ua-parser-js'
 @modelOptions({
   schemaOptions: {
     timestamps: {
@@ -15,7 +15,7 @@ export class Analyze extends BaseModel {
   ip?: string
 
   @prop({ type: SchemaTypes.Mixed })
-  ua: IUAParser.IResult
+  ua: UAParser
 
   @prop()
   path?: string
