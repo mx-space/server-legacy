@@ -68,7 +68,7 @@
     "cache-manager-redis-store": "2.0.0",
     "class-transformer": "0.3.1",
     "class-validator": "0.12.2",
-    "cos-nodejs-sdk-v5": "2.8.4",
+    "cos-nodejs-sdk-v5": "2.8.5",
     "dayjs": "1.9.8",
     "ejs": "3.1.5",
     "fastify-multipart": "3.3.1",
