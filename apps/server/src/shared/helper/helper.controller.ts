@@ -62,6 +62,9 @@ export class HelperController {
   async exportArticleToMarkdown(
     @Res() reply: FastifyReply,
     @Query('slug') slug: string,
+    @Query('yaml') yaml?: boolean,
+    // 是否在第一行显示 文章标题
+    @Query('show_title') showTitle?: boolean,
   ) {
     const allArticles = await this.service.extractAllArticle()
     const { notes, pages, posts } = allArticles
@@ -87,7 +90,11 @@ export class HelperController {
       }
       return {
         meta,
-        text: this.service.markdownBuilder({ meta, text: item.text }),
+        text: this.service.markdownBuilder(
+          { meta, text: item.text },
+          yaml,
+          showTitle,
+        ),
       }
     }
     // posts
@@ -158,6 +165,12 @@ export class HelperController {
       )
       .type('application/zip')
       .send(stream)
+
+    try {
+      execSync('rm markdown.zip notes.zip pages.zip posts.zip', {
+        cwd: workdir,
+      })
+    } catch {}
   }
 
   @Get('baidu')

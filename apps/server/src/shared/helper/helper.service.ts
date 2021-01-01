@@ -206,11 +206,18 @@ export class HelperService {
     }
   }
 
-  markdownBuilder(property: MarkdownYAMLProperty) {
+  markdownBuilder(
+    property: MarkdownYAMLProperty,
+    includeYAMLHeader?: boolean,
+    showHeader?: boolean,
+  ) {
     const {
       meta: { created, modified, title },
       text,
     } = property
+    if (!includeYAMLHeader) {
+      return `${showHeader ? `# ${title}\n\n` : ''}${text.trim()}`
+    }
     const header = {
       date: created,
       updated: modified,
@@ -223,6 +230,7 @@ export class HelperService {
 ${toYaml.trim()}
 ---
 
+${showHeader ? `# ${title}\n\n` : ''}
 ${text.trim()}
 `.trim()
 
