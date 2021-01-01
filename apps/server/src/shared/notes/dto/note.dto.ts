@@ -20,9 +20,12 @@ import { PagerDto } from '../../base/dto/pager.dto'
 export class NoteDto {
   @IsString()
   @Transform((title: string) => (title.length === 0 ? '无题' : title))
+  @IsOptional()
   title: string
 
   @IsString()
+  @IsOptional()
+  @IsNotEmpty()
   text: string
 
   @IsOptional()

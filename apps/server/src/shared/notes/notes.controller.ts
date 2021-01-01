@@ -14,13 +14,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common'
 import { ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger'
-import { FastifyReply } from 'fastify'
-import { Session } from 'fastify-secure-session'
 import { RolesGuard } from 'apps/server/src/auth/roles.guard'
-import { Auth } from 'shared/core/decorators/auth.decorator'
-import { Master } from 'shared/core/decorators/guest.decorator'
-import { CannotFindException } from 'shared/core/exceptions/cant-find.exception'
-import { PermissionInterceptor } from 'shared/core/interceptors/permission.interceptors'
 import { IdDto } from 'apps/server/src/shared/base/dto/id.dto'
 import { SearchDto } from 'apps/server/src/shared/base/dto/search.dto'
 import {
@@ -30,6 +24,12 @@ import {
   NoteQueryDto,
   PasswordQueryDto,
 } from 'apps/server/src/shared/notes/dto/note.dto'
+import { FastifyReply } from 'fastify'
+import { Session } from 'fastify-secure-session'
+import { Auth } from 'shared/core/decorators/auth.decorator'
+import { Master } from 'shared/core/decorators/guest.decorator'
+import { CannotFindException } from 'shared/core/exceptions/cant-find.exception'
+import { PermissionInterceptor } from 'shared/core/interceptors/permission.interceptors'
 import { addConditionToSeeHideContent, yearCondition } from 'shared/utils'
 import {
   IpLocation,
