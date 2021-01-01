@@ -33,6 +33,10 @@ export class NoteDto {
   @IsOptional()
   weather?: string
 
+  @IsOptional()
+  @IsBoolean()
+  hasMemory?: boolean
+
   @IsBoolean()
   @IsOptional()
   hide?: boolean

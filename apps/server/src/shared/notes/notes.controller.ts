@@ -50,7 +50,7 @@ export class NotesController {
   ) {}
 
   @Get()
-  @ApiOperation({ summary: '获取随记带分页器' })
+  @ApiOperation({ summary: '获取记录带分页器' })
   async getNotes(@Master() isMaster: boolean, @Query() query: NoteQueryDto) {
     const { size, select, page, sortBy, sortOrder, year } = query
     const condition = {
@@ -66,7 +66,7 @@ export class NotesController {
   }
 
   @Get('latest')
-  @ApiOperation({ summary: '获取最新发布一篇随记' })
+  @ApiOperation({ summary: '获取最新发布一篇记录' })
   async getLatestOne(
     @Master() isMaster: boolean,
     @IpLocation() location: IpRecord,
@@ -82,6 +82,7 @@ export class NotesController {
     @Master() isMaster: boolean,
     @Query() query: PasswordQueryDto,
     @IpLocation() location: IpRecord,
+    @Query('single') isSingle?: boolean,
   ) {
     const { id } = params
     const { password } = query
@@ -100,6 +101,9 @@ export class NotesController {
       !isMaster
     ) {
       throw new ForbiddenException('不要偷看人家的小心思啦~')
+    }
+    if (isSingle) {
+      return current
     }
     this.noteService.shouldAddReadCount(current, location.ip)
     const prev = await this.noteService
@@ -125,7 +129,7 @@ export class NotesController {
 
   @Get('/list/:id')
   @ApiParam({ name: 'id', example: '5e6f71c5c052ca214fba877a', type: 'string' })
-  @ApiOperation({ summary: '以一篇随记为基准的中间 10 篇随记' })
+  @ApiOperation({ summary: '以一篇记录为基准的中间 10 篇记录' })
   async getNoteList(
     @Query() query: ListQueryDto,
     @Param() params: IdDto,

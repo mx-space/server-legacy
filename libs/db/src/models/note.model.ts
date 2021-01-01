@@ -1,6 +1,7 @@
 import { AutoIncrementID } from '@typegoose/auto-increment'
 import { index, modelOptions, plugin, prop } from '@typegoose/typegoose'
 import { hashSync } from 'bcrypt'
+import { Query } from 'mongoose'
 import * as uniqueValidator from 'mongoose-unique-validator'
 import { WriteBaseModel } from './base.model'
 
@@ -54,6 +55,9 @@ export default class Note extends WriteBaseModel {
 
   @prop()
   weather?: string
+
+  @prop()
+  hasMemory?: boolean
 
   @prop({ type: Count, default: { read: 0, like: 0 }, _id: false })
   count?: Count

@@ -138,7 +138,7 @@ export class HelperService {
     for await (const item of data) {
       if (!item.meta) {
         models.push({
-          title: '未命名随记',
+          title: '未命名记录',
           text: item.text,
           ...this.genDate(item),
         } as Note)

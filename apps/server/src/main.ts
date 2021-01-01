@@ -69,5 +69,11 @@ async function bootstrap() {
       console.log(`http://localhost:${PORT}/api-docs`)
     }
   })
+
+  if (module.hot) {
+    module.hot.accept()
+    module.hot.dispose(() => app.close())
+  }
 }
 bootstrap()
+declare const module: any
