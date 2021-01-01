@@ -41,21 +41,21 @@ export class AggregateController {
     }
   }
 
-  @Get('top')
+  @Get('/top')
   @ApiProperty({ description: '获取最新发布的内容' })
   async top(@Query() query: TopQueryDto, @Master() isMaster: boolean) {
     const { size } = query
     return await this.service.topActivity(size, isMaster)
   }
 
-  @Get('random')
+  @Get('/random')
   async getRandomImage(@Query() query: RandomTypeDto) {
     const { type, imageType = FileType.IMAGE, size = 1 } = query
 
     return await this.service.getRandomContent(type, imageType, size)
   }
 
-  @Get('timeline')
+  @Get('/timeline')
   async getTimeline(@Query() query: TimelineQueryDto) {
     const { sort = 1, type, year } = query
     const data = {} as any
@@ -88,7 +88,7 @@ export class AggregateController {
           ...yearCondition(year),
         })
         .sort({ created: sort })
-        .select('_id nid title weather mood created')
+        .select('_id nid title weather mood created hasMemory')
         .lean()
     switch (type) {
       case TimelineType.Post: {
