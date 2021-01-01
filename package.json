@@ -29,8 +29,8 @@
   "scripts": {
     "clean": "rimraf dist",
     "build:all": "rimraf dist && nest build && nest build graphql",
-    "build:server": "rimraf dist/server nest build",
-    "build": "build:server",
+    "build:server": "rimraf dist/server && nest build",
+    "build": "yarn build:server",
     "build:gql": "rimraf dist/graphql nest build graphql",
     "format": "prettier --write \"apps/**/*.ts\" \"libs/**/*.ts\"",
     "start": "cross-env NODE_ENV=development nest start -w | pino-colada",
