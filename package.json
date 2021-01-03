@@ -73,7 +73,7 @@
     "class-transformer": "0.3.1",
     "class-validator": "0.12.2",
     "cos-nodejs-sdk-v5": "2.8.5",
-    "dayjs": "1.9.8",
+    "dayjs": "1.10.1",
     "ejs": "3.1.5",
     "fastify-multipart": "3.3.1",
     "fastify-secure-session": "2.3.0",
