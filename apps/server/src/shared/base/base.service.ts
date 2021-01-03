@@ -11,6 +11,8 @@ import {
 } from '@nestjs/common'
 import { DocumentType, ReturnModelType } from '@typegoose/typegoose'
 import { AnyParamConstructor } from '@typegoose/typegoose/lib/types'
+import { AnyType } from 'apps/server/src/shared/base/interfaces'
+import { imageSize } from 'image-size'
 import { FindAndModifyWriteOpResultObject, MongoError } from 'mongodb'
 import {
   CreateQuery,
@@ -25,13 +27,13 @@ import {
   Types,
   UpdateQuery,
 } from 'mongoose'
-import { AnyType } from 'apps/server/src/shared/base/interfaces'
-import { gatewayMessageFormat } from '../../gateway/base.gateway'
-import { EventTypes } from '../../gateway/events.types'
 import {
-  getOnlineImageSize,
+  getAverageRGB,
   pickImagesFromMarkdown,
 } from '../../../../../shared/utils/pic'
+import { ConfigsService } from '../../common/global'
+import { gatewayMessageFormat } from '../../gateway/base.gateway'
+import { EventTypes } from '../../gateway/events.types'
 
 export type enumOrderType = 'asc' | 'desc' | 'ascending' | 'descending' | 1 | -1
 export type OrderType<T> = {
@@ -358,11 +360,13 @@ export class BaseService<T extends BaseModel> {
       : { message: '没有内容被修改' }
   }
 }
+
 export class WriteBaseService<T extends WriteBaseModel> extends BaseService<T> {
   private logger: Logger
   constructor(
     private __model: ReturnModelType<AnyParamConstructor<T>>,
     private readonly __http: HttpService,
+    private readonly __configs: ConfigsService,
   ) {
     super(__model)
     this.logger = new Logger(WriteBaseService.name)
@@ -374,6 +378,10 @@ export class WriteBaseService<T extends WriteBaseModel> extends BaseService<T> {
     const originImages: TextImageRecordType[] = document.images || []
     const images = pickImagesFromMarkdown(text)
     const result = [] as TextImageRecordType[]
+
+    const { images: oldImages } = await this.__model.findById(id).lean()
+    const oldImagesMap = new Map(oldImages?.map((image) => [image.src, image]))
+
     // eslint-disable-next-line prefer-const
     for await (let [i, src] of images.entries()) {
       if (
@@ -391,7 +399,11 @@ export class WriteBaseService<T extends WriteBaseModel> extends BaseService<T> {
           src = url.toString()
         }
         this.logger.log('Get --> ' + src)
-        const size = await getOnlineImageSize(this.__http, src)
+        const { size, accent } = await this.getOnlineImageSizeAndMeta(src)
+        const filename = src.split('/').pop()
+        this.logger.debug(
+          `[${filename}]: height: ${size.height}, width: ${size.width}, accent: ${accent}`,
+        )
         if (socket) {
           socket.send(
             gatewayMessageFormat(
@@ -400,18 +412,23 @@ export class WriteBaseService<T extends WriteBaseModel> extends BaseService<T> {
             ),
           )
         }
-        result.push({ ...size, src: src })
+        result.push({ ...size, accent, src: src })
       } catch (e) {
         this.logger.error(`GET --> ${src} ${e.message}`)
         if (socket) {
           socket.send(gatewayMessageFormat(EventTypes.IMAGE_FETCH, e.message))
         }
-        result.push({
-          width: undefined,
-          height: undefined,
-          type: undefined,
-          src: src,
-        })
+        const oldRecord = oldImagesMap.get(src)
+        if (oldRecord) {
+          result.push(oldRecord)
+        } else
+          result.push({
+            width: undefined,
+            height: undefined,
+            type: undefined,
+            accent: undefined,
+            src,
+          })
       }
     }
 
@@ -428,6 +445,27 @@ export class WriteBaseService<T extends WriteBaseModel> extends BaseService<T> {
         this.RecordImageDimensions(n._id, ws)
       })
     })
+  }
+
+  getOnlineImageSizeAndMeta = async (image: string) => {
+    const { data } = await this.__http
+      .get(image, {
+        responseType: 'arraybuffer',
+        headers: {
+          'user-agent':
+            'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_1_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36',
+          referer: this.__configs.get('url').webUrl,
+        },
+      })
+      .toPromise()
+
+    const buffer = Buffer.from(data)
+    const size = imageSize(buffer)
+
+    // get accent color
+    const accent = await getAverageRGB(buffer, size)
+
+    return { size, accent }
   }
 
   // @ts-ignore

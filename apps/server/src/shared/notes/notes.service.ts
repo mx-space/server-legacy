@@ -19,6 +19,7 @@ import {
   updateLikeCount,
   updateReadCount,
 } from '../../../../../shared/utils/text-base'
+import { ConfigsService } from '../../common/global'
 import { WriteBaseService } from '../base/base.service'
 
 @Injectable()
@@ -27,8 +28,9 @@ export class NotesService extends WriteBaseService<Note> {
     @InjectModel(Note) private readonly noteModel: ReturnModelType<typeof Note>,
     private readonly http: HttpService,
     private readonly redis: RedisService,
+    private readonly configs: ConfigsService,
   ) {
-    super(noteModel, http)
+    super(noteModel, http, configs)
 
     // create default note
 

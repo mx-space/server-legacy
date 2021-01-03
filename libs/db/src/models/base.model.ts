@@ -14,10 +14,16 @@ import { IsString, IsNotEmpty } from 'class-validator'
 class Image {
   @prop()
   width?: number
+
   @prop()
   height?: number
+
+  @prop()
+  accent?: string
+
   @prop()
   type?: string
+
   @prop()
   src: string
 }

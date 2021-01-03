@@ -28,6 +28,7 @@ import { AdminEventsGateway } from '../../gateway/admin/events.gateway'
 import { NotesService } from '../notes/notes.service'
 import { PageService } from '../page/page.service'
 import { PostsService } from '../posts/posts.service'
+import { isDev } from 'utils/index'
 class ConfigKeyDto {
   @IsString()
   @IsNotEmpty()
@@ -66,7 +67,7 @@ export class OptionsController {
   @Get('refresh_images')
   async refreshImagesAllMarkdown(@Query('socket_id') socketId: string) {
     const socket = this.adminEventGateway.findClientById(socketId)
-    if (!socket) {
+    if (!socket && !isDev) {
       return
     }
 

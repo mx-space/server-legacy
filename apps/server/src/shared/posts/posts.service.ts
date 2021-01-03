@@ -28,6 +28,7 @@ import {
   updateReadCount,
 } from '../../../../../shared/utils/text-base'
 import { CategoriesService } from '../categories/categories.service'
+import { ConfigsService } from '../../common/global'
 @Injectable()
 export class PostsService extends WriteBaseService<Post> {
   constructor(
@@ -38,8 +39,9 @@ export class PostsService extends WriteBaseService<Post> {
     private readonly commentModel: ReturnModelType<typeof Comment>,
     private readonly http: HttpService,
     private readonly redis: RedisService,
+    private readonly configs: ConfigsService,
   ) {
-    super(model, http)
+    super(model, http, configs)
   }
 
   async createNew(projection: Partial<Post>) {
