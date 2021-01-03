@@ -39,6 +39,12 @@ export class CommentsService extends BaseService<Comment> {
     private readonly gateway: AdminEventsGateway,
   ) {
     super(commentModel)
+
+    // this.commentModel.findOne().then((doc) => {
+    //   console.log(doc)
+
+    //   this.sendEmail(doc, ReplyMailType.Owner, true)
+    // })
   }
 
   getModelByRefType(type: CommentRefTypes) {
@@ -206,9 +212,13 @@ export class CommentsService extends BaseService<Comment> {
     return queryList
   }
 
-  async sendEmail(model: DocumentType<Comment>, type: ReplyMailType) {
+  async sendEmail(
+    model: DocumentType<Comment>,
+    type: ReplyMailType,
+    debug?: true,
+  ) {
     const enable = this.configs.get('mailOptions').enable
-    if (!enable || process.env.NODE_ENV === 'development') {
+    if (!enable || (process.env.NODE_ENV === 'development' && !debug)) {
       return
     }
     const mailerOptions = merge(

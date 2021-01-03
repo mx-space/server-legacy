@@ -46,6 +46,9 @@ export class Mailer {
       port: parseInt(options.port) || 465,
       auth: { user, pass },
       secure: true,
+      tls: {
+        rejectUnauthorized: false,
+      },
     })
     this.options = options
   }
