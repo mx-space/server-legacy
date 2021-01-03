@@ -36,14 +36,14 @@ export class Mailer {
     private pass: string,
     private options?: {
       name?: string
-      port?: number
-      host?: string
-      service?: string
+      port: number
+      host: string
     },
   ) {
     this.mailer = createTransport({
-      service: options?.service || 'qq',
-      port: options?.port || 465,
+      host: options.host,
+      // @ts-ignore
+      port: parseInt(options.port) || 465,
       auth: { user, pass },
       secure: true,
     })

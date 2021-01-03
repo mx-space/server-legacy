@@ -398,3 +398,4 @@ admin/*
 tmp
 test*
 tmp/*
+email-test.js

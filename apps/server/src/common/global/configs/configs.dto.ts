@@ -1,13 +1,16 @@
 import { ApiProperty } from '@nestjs/swagger'
+import { Transform, Type } from 'class-transformer'
 import {
   IsBoolean,
   IsEmail,
   IsEnum,
+  IsInt,
   IsNotEmpty,
   IsObject,
   IsOptional,
   IsString,
   IsUrl,
+  ValidateNested,
 } from 'class-validator'
 
 export class SEODto {
@@ -54,7 +57,13 @@ export class UrlDto {
   @ApiProperty({ example: 'http://127.0.0.1:8080' })
   wsUrl: string
 }
-
+class MailOption {
+  @IsInt()
+  @Transform((val) => parseInt(val))
+  port: number
+  @IsUrl({ require_protocol: false })
+  host: string
+}
 export class ImageBedDto {
   @IsEnum(['github']) // TODO
   @IsOptional()
@@ -84,14 +93,11 @@ export class MailOptionsDto {
   @IsNotEmpty()
   @IsOptional()
   pass: string
-  @IsObject()
+
+  @ValidateNested()
+  @Type(() => MailOption)
   @IsOptional()
-  options?: {
-    name?: string
-    port?: number
-    host?: string
-    service?: string
-  }
+  options?: MailOption
 }
 
 export class CommentOptions {
