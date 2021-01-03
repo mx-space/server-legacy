@@ -196,9 +196,9 @@ export class NotesController {
     const { id } = params
 
     const doc = await this.noteService.update({ _id: id }, body)
-    this.noteService.RecordImageDimensions(id)
 
     new Promise(async (reslove) => {
+      this.noteService.RecordImageDimensions(id)
       const doc = await this.noteService.findById(id)
       this.webgateway.broadcase(EventTypes.NOTE_UPDATE, doc)
       reslove(null)
