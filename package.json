@@ -105,7 +105,7 @@
     "@nestjs/testing": "7.4.4",
     "@types/bcrypt": "3.0.0",
     "@types/ejs": "3.0.5",
-    "@types/jest": "26.0.19",
+    "@types/jest": "26.0.20",
     "@types/js-yaml": "3.12.5",
     "@types/lodash": "4.14.167",
     "@types/mongoose": "5.10.3",
