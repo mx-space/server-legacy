@@ -396,11 +396,6 @@ export class WriteBaseService<T extends WriteBaseModel> extends BaseService<T> {
         continue
       }
       try {
-        const url = new URL(src)
-        if (url.host.match(/sinaimg.cn$/)) {
-          url.host = url.host.replace(/.*?.sinaimg.cn/, 'tva2.sinaimg.cn')
-          src = url.toString()
-        }
         this.logger.log('Get --> ' + src)
         const { size, accent } = await this.getOnlineImageSizeAndMeta(src)
         const filename = src.split('/').pop()
