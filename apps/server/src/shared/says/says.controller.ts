@@ -42,7 +42,7 @@ export class SaysController extends BaseCrud<Say> {
   @Auth()
   async post(@Body() body: Partial<Say>) {
     const r = await super.post(body)
-    this.webgateway.broadcase(EventTypes.SAY_CREATE, r)
+    this.webgateway.broadcast(EventTypes.SAY_CREATE, r)
     return r
   }
 
@@ -50,7 +50,7 @@ export class SaysController extends BaseCrud<Say> {
   @Auth()
   async delete(@Param() params: IdDto) {
     await super.delete(params)
-    this.webgateway.broadcase(EventTypes.SAY_DELETE, params.id)
+    this.webgateway.broadcast(EventTypes.SAY_DELETE, params.id)
     return 'OK'
   }
 }

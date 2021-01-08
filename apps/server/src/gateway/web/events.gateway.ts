@@ -48,18 +48,18 @@ export class WebEventsGateway
       if (errors.length > 0) {
         return client.send(errors)
       }
-      this.broadcase(EventTypes.DANMAKU_CREATE, data)
+      this.broadcast(EventTypes.DANMAKU_CREATE, data)
       client.send([])
     })
   }
 
   handleConnection(client: SocketIO.Socket) {
     this.wsClients.push(client)
-    this.broadcase(EventTypes.VISITOR_ONLINE, this.sendOnlineNumber())
+    this.broadcast(EventTypes.VISITOR_ONLINE, this.sendOnlineNumber())
     super.handleConnect(client)
   }
   handleDisconnect(client: SocketIO.Socket) {
     super.handleDisconnect(client)
-    this.broadcase(EventTypes.VISITOR_OFFLINE, this.sendOnlineNumber())
+    this.broadcast(EventTypes.VISITOR_OFFLINE, this.sendOnlineNumber())
   }
 }

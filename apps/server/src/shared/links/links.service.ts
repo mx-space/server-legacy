@@ -38,7 +38,7 @@ export class LinksService extends BaseService<Link> {
         state: LinkState.Audit,
       })
 
-      Promise.resolve(this.adminGateway.broadcase(EventTypes.LINK_APPLY, doc))
+      Promise.resolve(this.adminGateway.broadcast(EventTypes.LINK_APPLY, doc))
     } catch {
       throw new UnprocessableEntityException('请不要重复申请友链哦')
     }

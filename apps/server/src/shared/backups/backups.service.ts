@@ -118,7 +118,7 @@ export class BackupsService {
         cwd: tempDirPath,
       })
       this.logger.debug('恢复成功')
-      this.adminGateway.broadcase(EventTypes.CONTENT_REFRESH, 'restore_done')
+      this.adminGateway.broadcast(EventTypes.CONTENT_REFRESH, 'restore_done')
     } catch (e) {
       const logDir = '/tmp/mx-space/log'
       mkdirp.sync(logDir)
@@ -163,6 +163,6 @@ export class BackupsService {
       } catch {}
     }
     sendToSocket('数据恢复成功', 'success')
-    this.adminGateway.broadcase(EventTypes.CONTENT_REFRESH, 'restore_done')
+    this.adminGateway.broadcast(EventTypes.CONTENT_REFRESH, 'restore_done')
   }
 }

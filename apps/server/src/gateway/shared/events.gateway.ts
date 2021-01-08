@@ -11,7 +11,7 @@ export class SharedGateway {
   ) {}
 
   async broadcase(event: EventTypes, data: any) {
-    await this.admin.broadcase(event, data)
-    await this.web.broadcase(event, data)
+    await this.admin.broadcast(event, data)
+    await this.web.broadcast(event, data)
   }
 }

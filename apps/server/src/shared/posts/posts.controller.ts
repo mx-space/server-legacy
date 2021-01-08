@@ -127,7 +127,7 @@ export class PostsController {
       const category = await this.service.getCategoryById(
         newPostDocument.categoryId,
       )
-      this.webgateway.broadcase(EventTypes.POST_CREATE, {
+      this.webgateway.broadcast(EventTypes.POST_CREATE, {
         ...newPostDocument.toJSON(),
         category,
       })
@@ -151,7 +151,7 @@ export class PostsController {
         .findById(id)
         .lean()
         .then((doc) => {
-          this.webgateway.broadcase(EventTypes.POST_UPDATE, doc)
+          this.webgateway.broadcast(EventTypes.POST_UPDATE, doc)
         })
       resolve(null)
     })
@@ -167,7 +167,7 @@ export class PostsController {
   async deletePost(@Param() params: IdDto) {
     const { id } = params
     await this.service.deletePost(id)
-    this.webgateway.broadcase(EventTypes.POST_DELETE, id)
+    this.webgateway.broadcast(EventTypes.POST_DELETE, id)
     return 'OK'
   }
 

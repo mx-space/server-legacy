@@ -12,7 +12,7 @@ export class BaseGateway {
   server: SocketIO.Server
   wsClients: SocketIO.Socket[] = []
 
-  async broadcase(event: EventTypes, message: any) {
+  async broadcast(event: EventTypes, message: any) {
     // this.server.clients().send()
     for (const c of this.wsClients) {
       c.send(gatewayMessageFormat(event, message))

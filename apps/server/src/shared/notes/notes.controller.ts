@@ -186,7 +186,7 @@ export class NotesController {
   async createNewNote(@Body() body: NoteDto) {
     const res = await this.noteService.createNew(body)
     this.noteService.RecordImageDimensions(res._id)
-    this.webgateway.broadcase(EventTypes.NOTE_CREATE, res)
+    this.webgateway.broadcast(EventTypes.NOTE_CREATE, res)
     return res
   }
 
@@ -200,7 +200,7 @@ export class NotesController {
     new Promise(async (reslove) => {
       this.noteService.RecordImageDimensions(id)
       const doc = await this.noteService.findById(id)
-      this.webgateway.broadcase(EventTypes.NOTE_UPDATE, doc)
+      this.webgateway.broadcast(EventTypes.NOTE_UPDATE, doc)
       reslove(null)
     })
     return doc
@@ -238,7 +238,7 @@ export class NotesController {
   @Auth()
   async deleteNote(@Param() params: IdDto) {
     const r = await this.noteService.deleteByIdAsync(params.id)
-    this.webgateway.broadcase(EventTypes.NOTE_DELETE, params.id)
+    this.webgateway.broadcast(EventTypes.NOTE_DELETE, params.id)
     return r
   }
 
