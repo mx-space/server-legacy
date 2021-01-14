@@ -32,14 +32,7 @@ export interface IConfig {
   backupOptions: BackupOptions
   baiduSearchOptions: BaiduSearchOptions
 }
-export enum IConfigKeys {
-  seo,
-  url,
-  imageBed,
-  mailOptions,
-  commentOptions,
-  backupOptions,
-}
+export type IConfigKeys = keyof IConfig
 @Injectable()
 export class ConfigsService {
   private config: IConfig = {

@@ -1,9 +1,9 @@
 /*
  * @Author: Innei
  * @Date: 2020-05-08 20:01:58
- * @LastEditTime: 2020-09-09 13:39:46
+ * @LastEditTime: 2021-01-14 13:39:03
  * @LastEditors: Innei
- * @FilePath: /mx-server/src/shared/options/options.controller.ts
+ * @FilePath: /server/apps/server/src/shared/options/options.controller.ts
  * @Coding with Love
  */
 
@@ -21,6 +21,7 @@ import { IsNotEmpty, IsString } from 'class-validator'
 import {
   ConfigsService,
   IConfig,
+  IConfigKeys,
 } from 'apps/server/src/common/global/configs/configs.service'
 import { OptionsService } from 'apps/server/src/shared/options/options.service'
 import { Auth } from '../../../../../shared/core/decorators/auth.decorator'
@@ -51,6 +52,20 @@ export class OptionsController {
   @Get()
   getOption() {
     return this.configs.getConfig()
+  }
+
+  @Get(':key')
+  getOptionKey(@Param('key') key: keyof IConfig) {
+    if (typeof key !== 'string' && !key) {
+      throw new UnprocessableEntityException(
+        'key must be IConfigKeys, got ' + key,
+      )
+    }
+    const value = this.configs.get(key)
+    if (!value) {
+      throw new UnprocessableEntityException('key is not exists.')
+    }
+    return { data: value }
   }
 
   @Patch(':key')
