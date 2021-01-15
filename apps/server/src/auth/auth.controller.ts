@@ -36,7 +36,7 @@ import { AdminEventsGateway } from '../gateway/admin/events.gateway'
 export class TokenDto {
   @IsDate()
   @IsOptional()
-  @Transform((v) => new Date(v))
+  @Transform(({ value: v }) => new Date(v))
   expired?: Date
 
   @IsString()

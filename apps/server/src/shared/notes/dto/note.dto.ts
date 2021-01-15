@@ -19,7 +19,7 @@ import { PagerDto } from '../../base/dto/pager.dto'
 
 export class NoteDto {
   @IsString()
-  @Transform((title: string) => (title.length === 0 ? '无题' : title))
+  @Transform(({ value: title }) => (title.length === 0 ? '无题' : title))
   @IsOptional()
   title: string
 
@@ -72,7 +72,7 @@ export class ListQueryDto {
   @IsNumber()
   @Max(20)
   @Min(1)
-  @Transform((number) => parseInt(number))
+  @Transform(({ value: v }) => parseInt(v))
   @IsOptional()
   @ApiProperty()
   size: number
@@ -83,7 +83,7 @@ export class NidType {
   @Min(1)
   @IsDefined()
   @ApiProperty()
-  @Transform((val) => parseInt(val))
+  @Transform(({ value: val }) => parseInt(val))
   nid: number
 }
 
@@ -101,6 +101,6 @@ export class NoteQueryDto extends PagerDto {
   @IsOptional()
   @IsEnum([1, -1])
   @ValidateIf((o) => o.sortBy)
-  @Transform((v) => ~~v)
+  @Transform(({ value: v }) => ~~v)
   sortOrder?: 1 | -1
 }

@@ -1,3 +1,11 @@
+/*
+ * @Author: Innei
+ * @Date: 2020-11-24 16:20:37
+ * @LastEditTime: 2021-01-15 13:58:30
+ * @LastEditors: Innei
+ * @FilePath: /server/apps/server/src/shared/helper/dto/datatype.dto.ts
+ * @Mark: Coding with Love
+ */
 import { Transform, Type } from 'class-transformer'
 import {
   IsDate,
@@ -11,11 +19,11 @@ export class MetaDto {
   @IsString()
   title: string
 
-  @Transform((d) => new Date(d))
+  @Transform(({ value: v }) => new Date(v))
   @IsDate()
   date: Date
 
-  @Transform((d) => new Date(d))
+  @Transform(({ value: v }) => new Date(v))
   @IsDate()
   @IsOptional()
   updated?: Date

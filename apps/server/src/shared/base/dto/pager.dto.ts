@@ -23,11 +23,15 @@ export class PagerDto {
   @Max(50)
   @IsInt()
   @Expose()
-  @Transform((val) => (val ? parseInt(val) : 10), { toClassOnly: true })
+  @Transform(({ value: val }) => (val ? parseInt(val) : 10), {
+    toClassOnly: true,
+  })
   @ApiProperty({ example: 10 })
   size: number
 
-  @Transform((val) => (val ? parseInt(val) : 1), { toClassOnly: true })
+  @Transform(({ value: val }) => (val ? parseInt(val) : 1), {
+    toClassOnly: true,
+  })
   @Min(1)
   @IsInt()
   @Expose()
@@ -41,14 +45,14 @@ export class PagerDto {
   select?: string
 
   @IsOptional()
-  @Transform((val) => parseInt(val))
+  @Transform(({ value: val }) => parseInt(val))
   @Min(1)
   @IsInt()
   @ApiProperty({ example: 2020 })
   year?: number
 
   @IsOptional()
-  @Transform((val) => parseInt(val))
+  @Transform(({ value: val }) => parseInt(val))
   @IsInt()
   state?: number
 }

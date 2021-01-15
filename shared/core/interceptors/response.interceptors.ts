@@ -30,7 +30,7 @@ export class ResponseInterceptor<T> implements NestInterceptor<T, Response<T>> {
       .pipe(
         map((data) =>
           typeof data === 'object' && data !== null
-            ? { ok: 1, timestamp: new Date(), ...reorganize(data) }
+            ? { ok: 1, ...reorganize(data) }
             : data,
         ),
       )

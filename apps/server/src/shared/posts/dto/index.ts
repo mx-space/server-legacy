@@ -1,9 +1,9 @@
 /*
  * @Author: Innei
  * @Date: 2020-04-30 12:21:51
- * @LastEditTime: 2020-08-02 21:41:56
+ * @LastEditTime: 2021-01-15 13:54:16
  * @LastEditors: Innei
- * @FilePath: /mx-server/src/shared/posts/dto/index.ts
+ * @FilePath: /server/apps/server/src/shared/posts/dto/index.ts
  * @MIT
  */
 import { ApiProperty } from '@nestjs/swagger'
@@ -29,7 +29,7 @@ export class CategoryAndSlug {
 
   @IsString()
   @ApiProperty({ example: 'why-winserver' })
-  @Transform((v) => decodeURI(v))
+  @Transform(({ value: v }) => decodeURI(v.value))
   readonly slug: string
 }
 
@@ -85,12 +85,14 @@ export class PostDto {
 export class PostQueryDto extends PagerDto {
   @IsOptional()
   @IsEnum(['categoryId', 'title', 'created', 'modified'])
-  @Transform((v) => (v === 'category' ? 'categoryId' : v))
+  @Transform(({ value: v }) =>
+    v.value === 'category' ? 'categoryId' : v.value,
+  )
   sortBy?: string
 
   @IsOptional()
   @IsEnum([1, -1])
   @ValidateIf((o) => o.sortBy)
-  @Transform((v) => ~~v)
+  @Transform(({ value: v }) => ~~v)
   sortOrder?: 1 | -1
 }

@@ -2,9 +2,9 @@ import { UnprocessableEntityException } from '@nestjs/common'
 /*
  * @Author: Innei
  * @Date: 2020-04-30 12:21:51
- * @LastEditTime: 2020-08-02 16:22:02
+ * @LastEditTime: 2021-01-15 13:59:11
  * @LastEditors: Innei
- * @FilePath: /mx-server/src/shared/categories/dto/category.dto.ts
+ * @FilePath: /server/apps/server/src/shared/categories/dto/category.dto.ts
  * @MIT
  */
 import { ApiProperty } from '@nestjs/swagger'
@@ -51,7 +51,7 @@ export class SlugOrIdDto {
 
 export class MultiQueryTagAndCategoryDto {
   @IsOptional()
-  @Transform((val) => {
+  @Transform(({ value: val }) => {
     if (val === '1' || val === 'true') {
       return true
     } else {
@@ -67,7 +67,7 @@ export class MultiCategoriesQueryDto {
     each: true,
     message: '多分类查询使用逗号分隔, 应为 mongoID',
   })
-  @Transform((str) => uniq(str.split(',')))
+  @Transform(({ value: v }) => uniq(v.split(',')))
   ids?: Array<string>
 
   @IsOptional()
@@ -77,11 +77,11 @@ export class MultiCategoriesQueryDto {
   joint?: boolean
 
   @IsOptional()
-  @Transform((val: string) => {
-    if (typeof val !== 'string') {
+  @Transform(({ value: v }: { value: string }) => {
+    if (typeof v !== 'string') {
       throw new UnprocessableEntityException('type must be a string')
     }
-    switch (val.toLowerCase()) {
+    switch (v.toLowerCase()) {
       case 'category':
         return CategoryType.Category
       case 'tag':

@@ -24,7 +24,7 @@ export class SearchDto extends PagerDto {
   @IsOptional()
   orderBy: string
 
-  @Transform((val) => parseInt(val))
+  @Transform(({ value: val }) => parseInt(val))
   @IsEnum([1, -1])
   @IsOptional()
   @ApiProperty({ description: '倒序|正序', enum: [1, -1], required: false })

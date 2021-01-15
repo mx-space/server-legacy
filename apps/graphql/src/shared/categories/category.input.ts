@@ -53,7 +53,7 @@ export class SlugArgsDto {
 @ArgsType()
 export class MultiQueryTagAndCategoryDto {
   @IsOptional()
-  @Transform((val) => {
+  @Transform(({ value: val }) => {
     if (val === '1' || val === 'true') {
       return true
     } else {

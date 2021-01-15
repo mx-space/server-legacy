@@ -17,13 +17,13 @@ export enum TimelineType {
 }
 
 export class TimelineQueryDto {
-  @Transform((val) => Number(val))
+  @Transform(({ value: val }) => Number(val))
   @IsEnum([1, -1])
   @IsOptional()
   @ApiProperty({ enum: [-1, 1] })
   sort?: -1 | 1
 
-  @Transform((val) => Number(val))
+  @Transform(({ value: val }) => Number(val))
   @IsInt()
   @IsOptional()
   year?: number
@@ -31,6 +31,6 @@ export class TimelineQueryDto {
   @IsEnum(TimelineType)
   @IsOptional()
   @ApiProperty({ enum: [0, 1] })
-  @Transform((v) => ~~v)
+  @Transform(({ value: v }) => ~~v)
   type?: TimelineType
 }

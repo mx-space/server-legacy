@@ -1,9 +1,9 @@
 /*
  * @Author: Innei
  * @Date: 2020-05-08 20:01:58
- * @LastEditTime: 2020-08-24 22:07:29
+ * @LastEditTime: 2021-01-15 14:12:43
  * @LastEditors: Innei
- * @FilePath: /mx-server/src/shared/options/options.service.ts
+ * @FilePath: /server/apps/server/src/shared/options/options.service.ts
  * @Coding with Love
  */
 
@@ -12,9 +12,8 @@ import {
   UnprocessableEntityException,
   ValidationPipe,
 } from '@nestjs/common'
-import { plainToClass } from 'class-transformer'
-import { ClassType } from 'class-transformer/ClassTransformer'
-import { validate } from 'class-validator'
+import { ClassConstructor, plainToClass } from 'class-transformer'
+import { validateSync, ValidatorOptions } from 'class-validator'
 import {
   BackupOptions,
   BaiduSearchOptions,
@@ -40,38 +39,39 @@ export class OptionsService {
     private readonly configs: ConfigsService,
   ) {}
 
-  validOptions = {
+  validOptions: ValidatorOptions = {
     whitelist: true,
+    forbidNonWhitelisted: true,
   }
   validate = new ValidationPipe(this.validOptions)
-  async patchAndValid(key: keyof IConfig, value: any) {
+  patchAndValid(key: keyof IConfig, value: any) {
     switch (key) {
       case 'url': {
-        await this.validWithDto(UrlDto, value)
+        this.validWithDto(UrlDto, value)
         return this.configs.patch('url', value)
       }
       case 'commentOptions': {
-        await this.validWithDto(CommentOptions, value)
+        this.validWithDto(CommentOptions, value)
         return this.configs.patch('commentOptions', value)
       }
       case 'imageBed': {
-        await this.validWithDto(ImageBedDto, value)
+        this.validWithDto(ImageBedDto, value)
         return this.configs.patch('imageBed', value)
       }
       case 'mailOptions': {
-        await this.validWithDto(MailOptionsDto, value)
+        this.validWithDto(MailOptionsDto, value)
         return this.configs.patch('mailOptions', value)
       }
       case 'seo': {
-        await this.validWithDto(SEODto, value)
+        this.validWithDto(SEODto, value)
         return this.configs.patch('seo', value)
       }
       case 'backupOptions': {
-        await this.validWithDto(BackupOptions, value)
+        this.validWithDto(BackupOptions, value)
         return this.configs.patch('backupOptions', value)
       }
       case 'baiduSearchOptions': {
-        await this.validWithDto(BaiduSearchOptions, value)
+        this.validWithDto(BaiduSearchOptions, value)
 
         return this.configs.patch('baiduSearchOptions', value)
       }
@@ -81,9 +81,9 @@ export class OptionsService {
     }
   }
 
-  private async validWithDto<T>(dto: ClassType<T>, value: any) {
+  private validWithDto<T extends object>(dto: ClassConstructor<T>, value: any) {
     const validModel = plainToClass(dto, value)
-    const errors = await validate(validModel, this.validOptions)
+    const errors = validateSync(validModel, this.validOptions)
     if (errors.length > 0) {
       const error = this.validate.createExceptionFactory()(errors as any[])
       throw error

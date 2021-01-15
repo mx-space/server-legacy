@@ -1,9 +1,9 @@
 /*
  * @Author: Innei
  * @Date: 2020-10-01 15:45:04
- * @LastEditTime: 2020-10-02 14:21:19
+ * @LastEditTime: 2021-01-15 13:56:00
  * @LastEditors: Innei
- * @FilePath: /mx-server-next/src/graphql/args/id.input.ts
+ * @FilePath: /server/apps/graphql/src/graphql/args/id.input.ts
  * @Mark: Coding with Love
  */
 import { ArgsType, Field, ID, Int, registerEnumType } from '@nestjs/graphql'
@@ -54,13 +54,13 @@ export class PagerArgsDto {
 
   @IsOptional()
   @IsEnum(['categoryId', 'title', 'created', 'modified'])
-  @Transform((v) => (v === 'category' ? 'categoryId' : v))
+  @Transform(({ value: v }) => (v === 'category' ? 'categoryId' : v))
   sortBy?: string
 
   @IsOptional()
   @IsEnum([1, -1])
   @ValidateIf((o) => o.sortBy)
-  @Transform((v) => ~~v)
+  @Transform(({ value: v }) => ~~v)
   @Field(() => SortOrder)
   sortOrder?: SortOrder
 

@@ -1,7 +1,7 @@
 /*
  * @Author: Innei
  * @Date: 2020-05-08 20:01:58
- * @LastEditTime: 2021-01-14 13:39:03
+ * @LastEditTime: 2021-01-15 14:08:36
  * @LastEditors: Innei
  * @FilePath: /server/apps/server/src/shared/options/options.controller.ts
  * @Coding with Love
@@ -69,14 +69,11 @@ export class OptionsController {
   }
 
   @Patch(':key')
-  async patch(
-    @Param() params: ConfigKeyDto,
-    @Body() body: Record<string, any>,
-  ) {
+  patch(@Param() params: ConfigKeyDto, @Body() body: Record<string, any>) {
     if (typeof body !== 'object') {
       throw new UnprocessableEntityException('body must be object')
     }
-    return await this.adminService.patchAndValid(params.key, body)
+    return this.adminService.patchAndValid(params.key, body)
   }
 
   @Get('refresh_images')

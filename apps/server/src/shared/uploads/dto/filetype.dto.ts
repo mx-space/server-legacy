@@ -4,7 +4,7 @@ import { Transform } from 'class-transformer'
 import { IsEnum, IsOptional } from 'class-validator'
 
 export class FileTypeQueryDto {
-  @Transform((val) => Number(val))
+  @Transform(({ value: val }) => Number(val))
   @IsOptional()
   @IsEnum(FileType)
   @ApiProperty({ enum: Object.keys(FileType) })

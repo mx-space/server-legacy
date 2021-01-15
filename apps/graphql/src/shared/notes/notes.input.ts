@@ -16,7 +16,7 @@ export class NidOrIdArgsDto {
   @Field(() => Int)
   @Min(1)
   @IsOptional()
-  @Transform((v) => ~~v)
+  @Transform(({ value: v }) => ~~v)
   nid?: number
 
   @Field(() => ID)

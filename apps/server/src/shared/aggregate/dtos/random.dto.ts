@@ -13,7 +13,7 @@ export enum RandomType {
 }
 
 export class RandomTypeDto {
-  @Transform((val) => Number(val))
+  @Transform(({ value: val }) => Number(val))
   @IsEnum(RandomType)
   @ApiProperty({
     enum: range(4),
@@ -21,7 +21,7 @@ export class RandomTypeDto {
   })
   type: RandomType
 
-  @Transform((val) => Number(val))
+  @Transform(({ value: val }) => Number(val))
   @IsOptional()
   @IsEnum(FileType)
   @ApiProperty({
@@ -30,7 +30,7 @@ export class RandomTypeDto {
   })
   imageType?: FileType
 
-  @Transform((val) => Number(val))
+  @Transform(({ value: val }) => Number(val))
   @Min(1)
   @Max(10)
   @IsInt()
