@@ -8,7 +8,7 @@
  */
 import Category from '@libs/db/models/category.model'
 import { Args, Query, Resolver } from '@nestjs/graphql'
-import { ConfigsService } from 'apps/server/src/common/global'
+import { ConfigsService } from 'shared/global'
 import { yearCondition } from 'shared/utils'
 import { pick } from 'lodash'
 import { TimelineModel } from '../../graphql/models/aggregate.model'

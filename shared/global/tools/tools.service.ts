@@ -1,9 +1,9 @@
 /*
  * @Author: Innei
  * @Date: 2020-08-24 21:35:20
- * @LastEditTime: 2020-08-24 21:44:37
+ * @LastEditTime: 2021-01-15 14:32:35
  * @LastEditors: Innei
- * @FilePath: /mx-server/src/common/tools/tools.service.ts
+ * @FilePath: /server/shared/global/tools/tools.service.ts
  * @Coding with Love
  */
 import Category, { CategoryType } from '@libs/db/models/category.model'
@@ -13,7 +13,7 @@ import Post from '@libs/db/models/post.model'
 import { Injectable } from '@nestjs/common'
 import { ReturnModelType } from '@typegoose/typegoose'
 import { InjectModel } from 'nestjs-typegoose'
-import { ConfigsService } from 'apps/server/src/common/global/configs/configs.service'
+import { ConfigsService } from 'shared/global/configs/configs.service'
 import { addConditionToSeeHideContent } from 'shared/utils'
 
 @Injectable()

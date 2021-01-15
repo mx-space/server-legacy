@@ -19,7 +19,7 @@ import {
   updateLikeCount,
   updateReadCount,
 } from '../../../../../shared/utils/text-base'
-import { ConfigsService } from '../../common/global'
+import { ConfigsService } from '../../../../../shared/global'
 import { WriteBaseService } from '../base/base.service'
 
 @Injectable()

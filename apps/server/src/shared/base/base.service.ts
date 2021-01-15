@@ -31,7 +31,7 @@ import {
   getAverageRGB,
   pickImagesFromMarkdown,
 } from '../../../../../shared/utils/pic'
-import { ConfigsService } from '../../common/global'
+import { ConfigsService } from '../../../../../shared/global'
 import { gatewayMessageFormat } from '../../gateway/base.gateway'
 import { EventTypes } from '../../gateway/events.types'
 

@@ -11,7 +11,7 @@ import Page from '@libs/db/models/page.model'
 import { HttpService, Injectable } from '@nestjs/common'
 import { ReturnModelType } from '@typegoose/typegoose'
 import { InjectModel } from 'nestjs-typegoose'
-import { ConfigsService } from '../../common/global'
+import { ConfigsService } from '../../../../../shared/global'
 import { WriteBaseService } from '../base/base.service'
 
 @Injectable()

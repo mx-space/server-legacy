@@ -22,7 +22,7 @@ import {
   ConfigsService,
   IConfig,
   IConfigKeys,
-} from 'apps/server/src/common/global/configs/configs.service'
+} from 'shared/global/configs/configs.service'
 import { OptionsService } from 'apps/server/src/shared/options/options.service'
 import { Auth } from '../../../../../shared/core/decorators/auth.decorator'
 import { AdminEventsGateway } from '../../gateway/admin/events.gateway'

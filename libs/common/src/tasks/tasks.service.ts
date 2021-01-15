@@ -14,8 +14,8 @@ import { isDev } from 'shared/utils'
 import { Analyze } from '../../../db/src/models/analyze.model'
 import { RedisNames } from '../redis/redis.types'
 import dayjs = require('dayjs')
-import { ToolsService } from 'apps/server/src/common/global/tools/tools.service'
-import { ConfigsService } from 'apps/server/src/common/global'
+import { ToolsService } from 'shared/global/tools/tools.service'
+import { ConfigsService } from 'shared/global'
 import { BackupsService } from 'apps/server/src/shared/backups/backups.service'
 
 @Injectable()

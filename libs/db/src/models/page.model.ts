@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger'
 import { prop } from '@typegoose/typegoose'
-import { IsNilOrString } from 'apps/server/src/common/validator-decorators/isNilOrString'
+import { IsNilOrString } from 'utils/validator-decorators/isNilOrString'
 import {
   IsEnum,
   IsInt,

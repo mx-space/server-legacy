@@ -9,8 +9,8 @@
 import { DbModule } from '@libs/db'
 import { Module } from '@nestjs/common'
 import { GraphQLModule } from '@nestjs/graphql'
-import { ConfigsModule } from 'apps/server/src/common/global/configs/configs.module'
-import { GlobalModule } from 'apps/server/src/common/global/global.module'
+import { ConfigsModule } from 'shared/global/configs/configs.module'
+import { GlobalModule } from 'shared/global/global.module'
 import { isDev } from 'shared/utils'
 import { RootController } from './root.controller'
 

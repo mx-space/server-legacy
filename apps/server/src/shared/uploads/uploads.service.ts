@@ -19,7 +19,7 @@ import { DATA_DIR } from 'apps/server/src/constants'
 import { CannotFindException } from 'shared/core/exceptions/cant-find.exception'
 import { isDev } from 'shared/utils'
 import { Readable } from 'stream'
-import { ConfigsService } from '../../common/global/configs/configs.service'
+import { ConfigsService } from '../../../../../shared/global/configs/configs.service'
 import { ImageService } from './image.service'
 
 // @Injectable({ scope: Scope.REQUEST })

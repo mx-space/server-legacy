@@ -28,7 +28,7 @@ import {
   updateReadCount,
 } from '../../../../../shared/utils/text-base'
 import { CategoriesService } from '../categories/categories.service'
-import { ConfigsService } from '../../common/global'
+import { ConfigsService } from '../../../../../shared/global'
 @Injectable()
 export class PostsService extends WriteBaseService<Post> {
   constructor(

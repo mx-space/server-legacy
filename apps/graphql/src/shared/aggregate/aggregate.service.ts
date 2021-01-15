@@ -16,7 +16,7 @@ import { Say } from '@libs/db/models/say.model'
 import { Injectable } from '@nestjs/common'
 import { ReturnModelType } from '@typegoose/typegoose'
 import { AnyParamConstructor } from '@typegoose/typegoose/lib/types'
-import { ConfigsService, ToolsService } from 'apps/server/src/common/global'
+import { ConfigsService, ToolsService } from 'shared/global'
 import { pick } from 'lodash'
 import { InjectModel } from 'nestjs-typegoose'
 
