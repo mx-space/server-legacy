@@ -1,9 +1,9 @@
 /*
  * @Author: Innei
  * @Date: 2020-05-21 11:05:42
- * @LastEditTime: 2020-10-18 20:52:50
+ * @LastEditTime: 2021-01-15 13:48:12
  * @LastEditors: Innei
- * @FilePath: /server/src/main.ts
+ * @FilePath: /server/apps/server/src/main.ts
  * @Coding with Love
  */
 
@@ -18,6 +18,7 @@ import { DATA_DIR, TEMP_DIR } from './constants'
 import { fastifyApp } from '../../../shared/core/adapt/fastify'
 import { ExtendsIoAdapter } from '../../../shared/core/gateway/extend.gateway'
 import { isDev } from '../../../shared/utils'
+import { Logger } from '@nestjs/common'
 
 const PORT = parseInt(process.env.PORT) || 2333
 const APIVersion = 1
@@ -66,7 +67,7 @@ async function bootstrap() {
 
   await app.listen(PORT, '0.0.0.0', () => {
     if (isDev) {
-      console.log(`http://localhost:${PORT}/api-docs`)
+      Logger.debug(`http://localhost:${PORT}/api-docs`)
     }
   })
 

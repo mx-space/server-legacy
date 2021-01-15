@@ -1,9 +1,9 @@
 /*
  * @Author: Innei
  * @Date: 2020-04-30 12:21:51
- * @LastEditTime: 2020-08-08 16:14:52
+ * @LastEditTime: 2021-01-15 13:43:39
  * @LastEditors: Innei
- * @FilePath: /mx-server/src/app.controller.ts
+ * @FilePath: /server/apps/server/src/app.controller.ts
  * @Copyright
  */
 
@@ -23,6 +23,11 @@ export class AppController {
     @InjectModel(Option)
     private readonly optionModel: ReturnModelType<typeof Option>,
   ) {}
+
+  @Get('ping')
+  async sayHello() {
+    return 'pong'
+  }
 
   @Post('like_this')
   async likeThis(
