@@ -71,6 +71,7 @@ export class PostsController {
     if (!categoryDocument) {
       throw new NotFoundException('该分类未找到 (｡•́︿•̀｡)')
     }
+
     const postDocument = await this.service
       .findOne({
         slug,

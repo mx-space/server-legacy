@@ -1,9 +1,9 @@
 /*
  * @Author: Innei
  * @Date: 2020-05-12 15:52:01
- * @LastEditTime: 2020-10-08 14:06:10
+ * @LastEditTime: 2021-01-15 14:54:28
  * @LastEditors: Innei
- * @FilePath: /server/src/app.module.ts
+ * @FilePath: /server/apps/server/src/app.module.ts
  * @MIT
  */
 
@@ -18,15 +18,14 @@ import {
   ValidationPipe,
 } from '@nestjs/common'
 import { APP_GUARD, APP_PIPE } from '@nestjs/core'
-import { join } from 'path'
-import { SpiderGuard } from 'shared/core/guards/spider.guard'
 import { GatewayModule } from 'apps/server/src/gateway/gateway.module'
-import { AppController } from './app.controller'
-import { AuthModule } from './auth/auth.module'
-import { GlobalModule } from '../../../shared/global/global.module'
+import { SpiderGuard } from 'shared/core/guards/spider.guard'
 import { AnalyzeMiddleware } from '../../../shared/core/middlewares/analyze.middleware'
 import { SkipBrowserDefaultRequestMiddleware } from '../../../shared/core/middlewares/favicon.middleware'
 import { SecurityMiddleware } from '../../../shared/core/middlewares/security.middleware'
+import { GlobalModule } from '../../../shared/global/global.module'
+import { AppController } from './app.controller'
+import { AuthModule } from './auth/auth.module'
 import { MasterModule } from './master/master.module'
 import { SharedModule } from './shared/shared.module'
 const providers: Provider<any>[] = [

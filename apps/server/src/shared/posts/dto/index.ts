@@ -1,7 +1,7 @@
 /*
  * @Author: Innei
  * @Date: 2020-04-30 12:21:51
- * @LastEditTime: 2021-01-15 13:54:16
+ * @LastEditTime: 2021-01-15 15:05:52
  * @LastEditors: Innei
  * @FilePath: /server/apps/server/src/shared/posts/dto/index.ts
  * @MIT
@@ -29,7 +29,7 @@ export class CategoryAndSlug {
 
   @IsString()
   @ApiProperty({ example: 'why-winserver' })
-  @Transform(({ value: v }) => decodeURI(v.value))
+  @Transform(({ value: v }) => decodeURI(v))
   readonly slug: string
 }
 
@@ -85,9 +85,7 @@ export class PostDto {
 export class PostQueryDto extends PagerDto {
   @IsOptional()
   @IsEnum(['categoryId', 'title', 'created', 'modified'])
-  @Transform(({ value: v }) =>
-    v.value === 'category' ? 'categoryId' : v.value,
-  )
+  @Transform(({ value: v }) => (v === 'category' ? 'categoryId' : v))
   sortBy?: string
 
   @IsOptional()
