@@ -104,10 +104,6 @@ export class CommentOptions {
   @IsBoolean()
   @IsOptional()
   antiSpam: boolean
-  @IsNotEmpty()
-  @IsOptional()
-  @IsString()
-  akismetApiKey?: string
 
   @IsString({ each: true })
   @IsOptional()

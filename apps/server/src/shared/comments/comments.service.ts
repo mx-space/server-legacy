@@ -14,7 +14,6 @@ import { InjectModel } from 'nestjs-typegoose'
 import { CannotFindException } from 'shared/core/exceptions/cant-find.exception'
 import { ConfigsService } from '../../common/global/configs/configs.service'
 import { AdminEventsGateway } from '../../gateway/admin/events.gateway'
-import { SpamCheck } from '../../plugins/antiSpam'
 import { Mailer, ReplyMailType } from '../../plugins/mailer'
 import { hasChinese } from '../../../../../shared/utils'
 import { BaseService } from '../base/base.service'
@@ -78,42 +77,17 @@ export class CommentsService extends BaseService<Comment> {
         }
       }
 
-      {
-        const customKeywords = commentOptions.spamKeywords || []
-        const isBlock = [
-          ...customKeywords,
-          ...BlockedKeywords,
-        ].some((keyword) => new RegExp(keyword, 'ig').test(doc.text))
+      const customKeywords = commentOptions.spamKeywords || []
+      const isBlock = [...customKeywords, ...BlockedKeywords].some((keyword) =>
+        new RegExp(keyword, 'ig').test(doc.text),
+      )
 
-        if (isBlock) {
-          return true
-        }
+      if (isBlock) {
+        return true
       }
 
       if (!hasChinese(doc.text)) {
         return true
-      }
-      if (!commentOptions.akismetApiKey) {
-        this.logger.warn('--> 反垃圾评论 api 填写错误')
-        return false
-      }
-      try {
-        const client = new SpamCheck({
-          apiKey: commentOptions.akismetApiKey,
-          blog: this.configs.get('url').webUrl,
-        })
-        const isSpam = await client.isSpam({
-          ip: doc.ip,
-          author: doc.author,
-          content: doc.text,
-          url: doc.url,
-        })
-        if (isSpam) {
-          return true
-        }
-        return false
-      } catch {
-        return false
       }
     })()
     if (res) {

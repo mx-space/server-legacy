@@ -2721,13 +2721,6 @@ ajv@^6.12.4:
     json-schema-traverse "^0.4.1"
     uri-js "^4.2.2"
 
-akismet@2.0.6:
-  version "2.0.6"
-  resolved "https://registry.yarnpkg.com/akismet/-/akismet-2.0.6.tgz#c36f627538a5bdb4f4c2a67d8cdcbaab91848d97"
-  integrity sha512-Gi9vZtTThab3Pb8xnNcruvi3Peu+fmUdN7KppIKxn9gdQZx1ASvZBFh/jh00E+CnFaiDx7VOIpy6cttyq8ZBIA==
-  dependencies:
-    request "2.x"
-
 ansi-colors@4.1.1, ansi-colors@^4.1.1:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/ansi-colors/-/ansi-colors-4.1.1.tgz#cbb9ae256bf750af1eab344f229aa27fe94ba348"
@@ -10000,7 +9993,7 @@ request-promise-native@^1.0.5, request-promise-native@^1.0.8:
     stealthy-require "^1.1.1"
     tough-cookie "^2.3.3"
 
-request@2.x, request@^2.87.0, request@^2.88.2:
+request@^2.87.0, request@^2.88.2:
   version "2.88.2"
   resolved "https://registry.yarnpkg.com/request/-/request-2.88.2.tgz#d73c918731cb5a87da047e207234146f664d12b3"
   integrity sha512-MsvtOrfG9ZcrOwAW+Qi+F6HbD0CWXEh9ou77uOb7FM2WPhwT7smM833PzanhJLsgXjN89Ir6V2PczXNnMpwKhw==
