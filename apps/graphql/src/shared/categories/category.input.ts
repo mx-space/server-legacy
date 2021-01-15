@@ -4,9 +4,9 @@ import { IsBooleanOrString } from 'apps/server/src/common/validator-decorators/i
 /*
  * @Author: Innei
  * @Date: 2020-04-30 12:21:51
- * @LastEditTime: 2020-10-02 14:22:13
+ * @LastEditTime: 2021-01-15 14:27:12
  * @LastEditors: Innei
- * @FilePath: /mx-server-next/src/shared/categories/dto/category.input.ts
+ * @FilePath: /server/apps/graphql/src/shared/categories/category.input.ts
  * @MIT
  */
 import { Transform } from 'class-transformer'
@@ -71,7 +71,7 @@ export class MultiCategoriesArgsDto {
     each: true,
     message: '多分类查询使用逗号分隔, 应为 mongoID',
   })
-  @Transform((str) => uniq(str.split(',')))
+  @Transform(({ value: v }) => uniq(v.split(',')))
   @Field(() => [String], { nullable: true })
   ids?: Array<string>
 
@@ -81,7 +81,7 @@ export class MultiCategoriesArgsDto {
   joint?: boolean
 
   @IsOptional()
-  @Transform((val: string) => {
+  @Transform(({ value: val }: { value: string }) => {
     if (typeof val !== 'string') {
       throw new UnprocessableEntityException('type must be a string')
     }
