@@ -59,7 +59,7 @@
     "@nestjs/platform-fastify": "7.6.5",
     "@nestjs/platform-socket.io": "7.6.5",
     "@nestjs/schedule": "0.4.1",
-    "@nestjs/swagger": "4.7.10",
+    "@nestjs/swagger": "4.7.11",
     "@nestjs/websockets": "7.6.5",
     "@typegoose/auto-increment": "0.6.0",
     "@typegoose/typegoose": "7.4.7",
