@@ -29,6 +29,10 @@ export enum ReplyMailType {
   Guest,
 }
 
+export enum LinkApplyEmailType {
+  ToMaster,
+  ToCandidate,
+}
 export class Mailer {
   private mailer: ReturnType<typeof createTransport>
   constructor(
@@ -64,20 +68,28 @@ export class Mailer {
     to,
     model,
     authorName,
+    template,
   }: {
-    authorName: string
+    authorName?: string
     to: string
     model: Link
+    template: LinkApplyEmailType
   }) {
     await this.mailer.sendMail({
       ...this.mailerOptions,
       to,
-      subject: `[${this.options?.name || 'Mx Space'}] 新的朋友 ${authorName}`,
-      text: `来自 ${model.name} 的友链请求: 
+      subject:
+        template === LinkApplyEmailType.ToMaster
+          ? `[${this.options?.name || 'Mx Space'}] 新的朋友 ${authorName}`
+          : `嘿!~, 主人已通过你的友链申请!~`,
+      text:
+        template === LinkApplyEmailType.ToMaster
+          ? `来自 ${model.name} 的友链请求: 
         站点标题: ${model.name}
         站点网站: ${model.url}
         站点描述: ${model.description}
-      `,
+      `
+          : `你的友链申请: ${model.name}, ${model.url} 已通过`,
     })
   }
   async sendCommentNotificationMail({

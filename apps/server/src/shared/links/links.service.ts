@@ -1,9 +1,9 @@
 /*
  * @Author: Innei
  * @Date: 2020-04-30 12:21:51
- * @LastEditTime: 2020-07-12 14:18:04
+ * @LastEditTime: 2021-01-17 21:13:47
  * @LastEditors: Innei
- * @FilePath: /mx-server/src/shared/links/links.service.ts
+ * @FilePath: /server/apps/server/src/shared/links/links.service.ts
  * @Coding with Love
  */
 
@@ -13,11 +13,12 @@ import { ReturnModelType } from '@typegoose/typegoose'
 import { InjectModel } from 'nestjs-typegoose'
 import { User } from '@libs/db/models/user.model'
 import { ConfigsService } from '../../../../../shared/global/configs/configs.service'
-import { Mailer } from '../../plugins/mailer'
+import { LinkApplyEmailType, Mailer } from '../../plugins/mailer'
 import { BaseService } from '../base/base.service'
 import { merge } from 'lodash'
 import { AdminEventsGateway } from '../../gateway/admin/events.gateway'
 import { EventTypes } from '../../gateway/events.types'
+import { isMongoId } from 'class-validator'
 
 @Injectable()
 export class LinksService extends BaseService<Link> {
@@ -44,7 +45,48 @@ export class LinksService extends BaseService<Link> {
     }
   }
 
-  async sendEmail(authorName: string, model: Link) {
+  async approveLink(id: string) {
+    if (!isMongoId(id)) {
+      throw new UnprocessableEntityException('ID must be object id, got ' + id)
+    }
+    const doc = await this.model
+      .findOneAndUpdate(
+        { _id: id },
+        {
+          $set: { state: LinkState.Pass },
+        },
+      )
+      .lean()
+
+    return doc
+  }
+
+  async sendToCandidate(model: Link) {
+    if (!model.email) {
+      return
+    }
+    const enable = this.configs.get('mailOptions').enable
+    if (!enable || process.env.NODE_ENV === 'development') {
+      console.log(`
+      TO: ${model.email}
+      你的友链已通过
+        站点标题: ${model.name}
+        站点网站: ${model.url}
+        站点描述: ${model.description}`)
+      return
+    }
+
+    await new Mailer(
+      this.mailerOptions.user,
+      this.mailerOptions.pass,
+      this.mailerOptions.options,
+    ).sendLinkApplyEmail({
+      model,
+      to: model.email,
+      template: LinkApplyEmailType.ToCandidate,
+    })
+  }
+  async sendToMaster(authorName: string, model: Link) {
     const enable = this.configs.get('mailOptions').enable
     if (!enable || process.env.NODE_ENV === 'development') {
       console.log(`来自 ${authorName} 的友链请求:
@@ -55,16 +97,7 @@ export class LinksService extends BaseService<Link> {
     }
 
     const master = await this.userModel.findOne()
-    const mailerOptions = merge(
-      {
-        options: {
-          name: this.configs.get('seo').title,
-        },
-      },
-      {
-        ...this.configs.get('mailOptions'),
-      },
-    )
+    const mailerOptions = this.mailerOptions
 
     await new Mailer(
       mailerOptions.user,
@@ -74,7 +107,21 @@ export class LinksService extends BaseService<Link> {
       authorName,
       model,
       to: master.mail,
+      template: LinkApplyEmailType.ToMaster,
     })
+  }
+
+  private get mailerOptions() {
+    return merge(
+      {
+        options: {
+          name: this.configs.get('seo').title,
+        },
+      },
+      {
+        ...this.configs.get('mailOptions'),
+      },
+    )
   }
 
   async getCount() {
