@@ -62,7 +62,7 @@
     "@nestjs/swagger": "4.7.11",
     "@nestjs/websockets": "7.6.5",
     "@typegoose/auto-increment": "0.6.0",
-    "@typegoose/typegoose": "7.4.7",
+    "@typegoose/typegoose": "7.4.8",
     "@types/mkdirp": "1.0.1",
     "apollo-server-fastify": "3.0.0-alpha.3",
     "bcrypt": "5.0.0",
