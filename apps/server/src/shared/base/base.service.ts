@@ -384,7 +384,7 @@ export class WriteBaseService<T extends WriteBaseModel> extends BaseService<T> {
 
     // eslint-disable-next-line prefer-const
     for await (let [i, src] of images.entries()) {
-      const keys = new Set(Object.keys(originImages[i]))
+      const keys = new Set(Object.keys(originImages[i] || {}))
       if (
         originImages[i] &&
         originImages[i].src === src &&
