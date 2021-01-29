@@ -1,7 +1,7 @@
 /*
  * @Author: Innei
  * @Date: 2020-05-21 11:05:42
- * @LastEditTime: 2021-01-15 13:48:12
+ * @LastEditTime: 2021-01-29 15:04:49
  * @LastEditors: Innei
  * @FilePath: /server/apps/server/src/main.ts
  * @Coding with Love
@@ -69,6 +69,7 @@ async function bootstrap() {
     if (isDev) {
       Logger.debug(`http://localhost:${PORT}/api-docs`)
     }
+    Logger.log('Server is up.')
   })
 
   if (module.hot) {
