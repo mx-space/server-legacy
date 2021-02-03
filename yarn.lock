@@ -1403,10 +1403,10 @@
     cli-color "1.4.0"
     uuid "3.3.2"
 
-"@nestjs/common@7.6.9":
-  version "7.6.9"
-  resolved "https://registry.yarnpkg.com/@nestjs/common/-/common-7.6.9.tgz#ce8c1dae23360468cb4af88631174b1756e59d57"
-  integrity sha512-6PU5JB6RbRTo3rdq+RFayoIVUcORg7G040RYvKv0JqEZIkTUIFV9rcob8ZeK9NjOWV8ozgiPkQZGJHPHVlpo5A==
+"@nestjs/common@7.6.10":
+  version "7.6.10"
+  resolved "https://registry.yarnpkg.com/@nestjs/common/-/common-7.6.10.tgz#097ff13ea4ee46483ac67b75d7ff664e4a93049d"
+  integrity sha512-2r7diLaEaoGZV/nna+IdTHmcI9FOoSOUGrcH9byzeHzekoR8s9D1XiYXzYQYNa3iVyheO87XwGdjklW9sYP+aw==
   dependencies:
     axios "0.21.1"
     iterare "1.2.1"
@@ -1425,10 +1425,10 @@
     lodash.set "4.3.2"
     uuid "8.3.2"
 
-"@nestjs/core@7.6.9":
-  version "7.6.9"
-  resolved "https://registry.yarnpkg.com/@nestjs/core/-/core-7.6.9.tgz#78732bd8ef14e84678dfd1ad14770c292b632ee1"
-  integrity sha512-ihuSN4gFNvY5cdcDEoRiH0sQx985tIvc49I4+zxG4IFORtmGKP5O5dfNfc+HrpHKk0Nv1tjZdt2F1YqgBQr8iw==
+"@nestjs/core@7.6.10":
+  version "7.6.10"
+  resolved "https://registry.yarnpkg.com/@nestjs/core/-/core-7.6.10.tgz#871484b22384015828981e2faebbb320bcfdd102"
+  integrity sha512-2Cyodn+wNHDwrnFL5jd2lLZUiTHyoxCmY6H1uazrkUoFtSf4A3ufn3bq45jytfhFyJSzr2ja6H/TqYX3cG3lAg==
   dependencies:
     "@nuxtjs/opencollective" "0.3.2"
     fast-safe-stringify "2.0.7"
@@ -1492,10 +1492,10 @@
   resolved "https://registry.yarnpkg.com/@nestjs/passport/-/passport-7.1.5.tgz#b32fc0492008d73ebae4327fbc0012a738a83664"
   integrity sha512-Hu9hPxTdBZA0C4GrWTsSflzwsJ99oAk9jqAwpcszdFNqfjMjkPGuCM9QsVZbBP2bE8fxrVrPsNOILS6puY8e/A==
 
-"@nestjs/platform-fastify@7.6.9":
-  version "7.6.9"
-  resolved "https://registry.yarnpkg.com/@nestjs/platform-fastify/-/platform-fastify-7.6.9.tgz#7b3cc88d99fbeca4698ec740f2c33b88dc11a3a5"
-  integrity sha512-/vfhDWMc7z8FkcL0uJcRhzh5DS58u2mHdEaIxIYpoQUPoAn07pq4w+ImT5bHOu0SGSthwdK1yfohKSVwCdzsdQ==
+"@nestjs/platform-fastify@7.6.10":
+  version "7.6.10"
+  resolved "https://registry.yarnpkg.com/@nestjs/platform-fastify/-/platform-fastify-7.6.10.tgz#989d1a2f5b357e8ba5474992b74e152d4d12f0af"
+  integrity sha512-afz/RdzG0GbzVgzLe++Wh7JoHsKGDrAycuEqd/g4S2DokP34KpSALxK2SVIr6J5RGjOATfp++iPZJjrzO+/5oA==
   dependencies:
     fastify "3.11.0"
     fastify-cors "5.2.0"
@@ -1505,10 +1505,10 @@
     path-to-regexp "3.2.0"
     tslib "2.1.0"
 
-"@nestjs/platform-socket.io@7.6.9":
-  version "7.6.9"
-  resolved "https://registry.yarnpkg.com/@nestjs/platform-socket.io/-/platform-socket.io-7.6.9.tgz#bc35ea16cd2dbcd1142b1017b82922b7943c0747"
-  integrity sha512-FXfPKmTIDCTEdKow0Xz1fUx5rpUURccGDCKT4bC8NSA8YIj4WSv5vEYUD4HlXkmUFjz15Iosi5brwFEH5Gcogw==
+"@nestjs/platform-socket.io@7.6.10":
+  version "7.6.10"
+  resolved "https://registry.yarnpkg.com/@nestjs/platform-socket.io/-/platform-socket.io-7.6.10.tgz#575555eb5bd71882c6b51e597bdfcc82f077eef3"
+  integrity sha512-QeP5tA82BOk3DYL2ppxstXWSBHv5F5blEAUiTZcGDNCZI6cPcsY11vzD2JZJucPkOqItUTcEXIlbXvtf8JIQ1g==
   dependencies:
     socket.io "2.4.1"
     tslib "2.1.0"
@@ -1558,10 +1558,10 @@
     optional "0.1.4"
     tslib "2.0.1"
 
-"@nestjs/websockets@7.6.9":
-  version "7.6.9"
-  resolved "https://registry.yarnpkg.com/@nestjs/websockets/-/websockets-7.6.9.tgz#558a496a294328379c08666d1aff6d09fd778f7d"
-  integrity sha512-D8QN2alXS+603Q0iGnd8FUsXqZzGz0FQunEldpXPPw3/S9PPwOE0rDAtNDJpNTNtxoP2tHTbpsRRU7ioDyNVnQ==
+"@nestjs/websockets@7.6.10":
+  version "7.6.10"
+  resolved "https://registry.yarnpkg.com/@nestjs/websockets/-/websockets-7.6.10.tgz#f46eb214208e86d8a4ba6a586be8446fe7d30422"
+  integrity sha512-9RBex/7DKf4rU/54R36JXhKE942Mwkr4lusr6QT8ksbw4LHcdU7I+W+5jI+wiXFIkUQfSaTFmFWJnphR5qA7ew==
   dependencies:
     iterare "1.2.1"
     tslib "2.1.0"
