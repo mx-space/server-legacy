@@ -2,7 +2,7 @@ import { BaseModel } from '@libs/db/models/base.model'
 import { Body, Delete, Get, Param, Post, Put, Query } from '@nestjs/common'
 import { Auth } from 'shared/core/decorators/auth.decorator'
 import { BaseService } from './base.service'
-import { IdDto } from './dto/id.dto'
+import { MongoIdDto } from './dto/id.dto'
 import { PagerDto } from './dto/pager.dto'
 
 // export function BaseCrudFactory<
@@ -70,7 +70,7 @@ export abstract class BaseCrud<
   constructor(private readonly _service: BaseService<T>) {}
 
   @Get(':id')
-  async get(@Param() param: IdDto) {
+  async get(@Param() param: MongoIdDto) {
     const { id } = param
     return await this._service.findByIdAsync(id)
   }
@@ -103,7 +103,7 @@ export abstract class BaseCrud<
 
   @Put(':id')
   @Auth()
-  async put(@Body() body: U, @Param() param: IdDto) {
+  async put(@Body() body: U, @Param() param: MongoIdDto) {
     return await this._service.updateAsync({ _id: param.id as any }, body, {
       omitUndefined: false,
     })
@@ -111,7 +111,7 @@ export abstract class BaseCrud<
 
   @Delete(':id')
   @Auth()
-  async delete(@Param() param: IdDto) {
+  async delete(@Param() param: MongoIdDto) {
     await this._service.deleteAsync({ _id: param.id })
     return 'OK'
   }

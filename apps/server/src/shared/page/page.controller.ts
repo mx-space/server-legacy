@@ -21,7 +21,7 @@ import {
 import { AuthGuard } from '@nestjs/passport'
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
 import { CannotFindException } from 'shared/core/exceptions/cant-find.exception'
-import { IdDto } from 'apps/server/src/shared/base/dto/id.dto'
+import { MongoIdDto } from 'apps/server/src/shared/base/dto/id.dto'
 import { PageService } from './page.service'
 
 @ApiTags('Page Routes')
@@ -39,7 +39,7 @@ export class PageController {
   }
 
   @Get(':id')
-  async getPageById(@Param() params: IdDto) {
+  async getPageById(@Param() params: MongoIdDto) {
     const page = this.service.findById(params.id)
     if (!page) {
       throw new CannotFindException()
@@ -71,7 +71,7 @@ export class PageController {
   @Put(':id')
   @ApiBearerAuth()
   @UseGuards(AuthGuard('jwt'))
-  async modifiedPage(@Body() body: Page, @Param() params: IdDto) {
+  async modifiedPage(@Body() body: Page, @Param() params: MongoIdDto) {
     const { id } = params
     const res = await this.service.update({ _id: id }, body)
     this.service.RecordImageDimensions(id)
@@ -81,7 +81,7 @@ export class PageController {
   @Delete(':id')
   @ApiBearerAuth()
   @UseGuards(AuthGuard('jwt'))
-  async deletePage(@Param() params: IdDto) {
+  async deletePage(@Param() params: MongoIdDto) {
     return await this.service.deleteOneAsync({
       _id: params.id,
     })

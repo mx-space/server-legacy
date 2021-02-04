@@ -17,7 +17,7 @@ import { SaysService } from 'apps/server/src/shared/says/says.service'
 import { Auth } from '../../../../../shared/core/decorators/auth.decorator'
 import { EventTypes } from '../../gateway/events.types'
 import { WebEventsGateway } from '../../gateway/web/events.gateway'
-import { IdDto } from '../base/dto/id.dto'
+import { MongoIdDto } from '../base/dto/id.dto'
 
 @Controller('says')
 @ApiTags('Says Routes')
@@ -48,7 +48,7 @@ export class SaysController extends BaseCrud<Say> {
 
   @Delete(':id')
   @Auth()
-  async delete(@Param() params: IdDto) {
+  async delete(@Param() params: MongoIdDto) {
     await super.delete(params)
     this.webgateway.broadcast(EventTypes.SAY_DELETE, params.id)
     return 'OK'

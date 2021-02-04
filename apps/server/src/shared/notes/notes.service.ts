@@ -1,9 +1,9 @@
 /*
  * @Author: Innei
  * @Date: 2020-05-05 20:24:42
- * @LastEditTime: 2020-10-21 19:14:07
+ * @LastEditTime: 2021-02-04 15:15:11
  * @LastEditors: Innei
- * @FilePath: /server/src/shared/notes/notes.service.ts
+ * @FilePath: /server/apps/server/src/shared/notes/notes.service.ts
  * @Coding with Love
  */
 
@@ -21,6 +21,7 @@ import {
 } from '../../../../../shared/utils/text-base'
 import { ConfigsService } from '../../../../../shared/global'
 import { WriteBaseService } from '../base/base.service'
+import { Types } from 'mongoose'
 
 @Injectable()
 export class NotesService extends WriteBaseService<Note> {
@@ -105,8 +106,13 @@ export class NotesService extends WriteBaseService<Note> {
     return isValid
   }
 
-  async likeNote(id: string, ip: string) {
-    const doc = await this.noteModel.findById(id)
+  async likeNote(id: string | number, ip: string) {
+    const isMongoId = Types.ObjectId.isValid(id)
+    const doc = isMongoId
+      ? await this.noteModel.findById(id)
+      : await this.noteModel.findOne({
+          nid: id as number,
+        })
     if (!doc) {
       throw new CannotFindException()
     }

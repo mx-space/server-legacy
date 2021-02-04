@@ -18,7 +18,7 @@ import { RolesGuard } from 'apps/server/src/auth/roles.guard'
 import { Auth } from 'shared/core/decorators/auth.decorator'
 import { Master } from 'shared/core/decorators/guest.decorator'
 import { PermissionInterceptor } from 'shared/core/interceptors/permission.interceptors'
-import { IdDto } from 'apps/server/src/shared/base/dto/id.dto'
+import { MongoIdDto } from 'apps/server/src/shared/base/dto/id.dto'
 import { SearchDto } from 'apps/server/src/shared/base/dto/search.dto'
 import { addConditionToSeeHideContent, yearCondition } from 'shared/utils'
 import {
@@ -89,7 +89,7 @@ export class PostsController {
 
   @Get(':id')
   @ApiOperation({ summary: '根据 ID 查找' })
-  async getById(@Param() query: IdDto, @IpLocation() location: IpRecord) {
+  async getById(@Param() query: MongoIdDto, @IpLocation() location: IpRecord) {
     const doc = await this.service.findPostById(query.id)
     this.service.updateReadCount(doc, location.ip)
     return doc
@@ -141,7 +141,7 @@ export class PostsController {
   @Put(':id')
   @Auth()
   @ApiOperation({ summary: '修改一篇文章' })
-  async modifyPost(@Body() body: PostDto, @Param() params: IdDto) {
+  async modifyPost(@Body() body: PostDto, @Param() params: MongoIdDto) {
     const { id } = params
 
     const updateDocument = await this.service.update({ _id: id }, body as any)
@@ -165,7 +165,7 @@ export class PostsController {
   @Delete(':id')
   @Auth()
   @ApiOperation({ summary: '删除一篇文章' })
-  async deletePost(@Param() params: IdDto) {
+  async deletePost(@Param() params: MongoIdDto) {
     const { id } = params
     await this.service.deletePost(id)
     this.webgateway.broadcast(EventTypes.POST_DELETE, id)
@@ -192,7 +192,7 @@ export class PostsController {
   }
   @Get('_thumbs-up')
   async thumbsUpArticle(
-    @Query() query: IdDto,
+    @Query() query: MongoIdDto,
     @IpLocation() location: IpRecord,
   ) {
     const { ip } = location

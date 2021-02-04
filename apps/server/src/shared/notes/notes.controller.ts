@@ -15,7 +15,10 @@ import {
 } from '@nestjs/common'
 import { ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger'
 import { RolesGuard } from 'apps/server/src/auth/roles.guard'
-import { IdDto } from 'apps/server/src/shared/base/dto/id.dto'
+import {
+  IntIdOrMongoIdDto,
+  MongoIdDto,
+} from 'apps/server/src/shared/base/dto/id.dto'
 import { SearchDto } from 'apps/server/src/shared/base/dto/search.dto'
 import {
   ListQueryDto,
@@ -78,7 +81,7 @@ export class NotesController {
 
   @Get(':id')
   async getOneNote(
-    @Param() params: IdDto,
+    @Param() params: MongoIdDto,
     @Master() isMaster: boolean,
     @Query() query: PasswordQueryDto,
     @IpLocation() location: IpRecord,
@@ -132,7 +135,7 @@ export class NotesController {
   @ApiOperation({ summary: '以一篇记录为基准的中间 10 篇记录' })
   async getNoteList(
     @Query() query: ListQueryDto,
-    @Param() params: IdDto,
+    @Param() params: MongoIdDto,
     @Master() isMaster: boolean,
   ) {
     const { size = 10 } = query
@@ -192,7 +195,7 @@ export class NotesController {
 
   @Put(':id')
   @Auth()
-  async modifyNote(@Body() body: NoteDto, @Param() params: IdDto) {
+  async modifyNote(@Body() body: NoteDto, @Param() params: MongoIdDto) {
     const { id } = params
 
     const doc = await this.noteService.update({ _id: id }, body)
@@ -208,24 +211,28 @@ export class NotesController {
 
   @Get('like/:id')
   async likeNote(
-    @Param() param: IdDto,
+    @Param() param: IntIdOrMongoIdDto,
     @Req() req: FastifyReply & { session: Session },
     @Res() res: FastifyReply,
     @IpLocation() location: IpRecord,
   ) {
     const isLiked = !(await this.noteService.likeNote(param.id, location.ip))
+    if (typeof param.id === 'number') {
+      const { _id } = await this.noteService.findOne({ nid: param.id })
+      param.id = _id
+    }
     const liked = req.session.get('liked') as undefined | string[]
     if (!liked && !isLiked) {
       req.session.set('liked', [param.id])
     } else {
-      if (isLiked || liked.includes(param.id)) {
+      if (isLiked || liked.includes(param.id as string)) {
         return res
           .status(422)
           .header('Access-Control-Allow-Origin', req.headers['origin'])
           .header('Access-Control-Allow-Credentials', true)
           .send({ message: '一天一次就够啦' })
       }
-      req.session.set('liked', liked.concat(param.id))
+      req.session.set('liked', liked.concat(param.id as string))
     }
 
     res
@@ -236,7 +243,7 @@ export class NotesController {
 
   @Delete(':id')
   @Auth()
-  async deleteNote(@Param() params: IdDto) {
+  async deleteNote(@Param() params: MongoIdDto) {
     const r = await this.noteService.deleteByIdAsync(params.id)
     this.webgateway.broadcast(EventTypes.NOTE_DELETE, params.id)
     return r

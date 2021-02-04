@@ -33,7 +33,7 @@ import { Auth } from '../../../../../shared/core/decorators/auth.decorator'
 import { EventTypes } from '../../gateway/events.types'
 import { SharedGateway } from '../../gateway/shared/events.gateway'
 import { ReplyMailType } from '../../plugins/mailer'
-import { IdDto } from '../base/dto/id.dto'
+import { MongoIdDto } from '../base/dto/id.dto'
 import { CommentsService } from './comments.service'
 
 @Controller('comments')
@@ -58,7 +58,7 @@ export class CommentsController {
 
   @Get(':id')
   @ApiOperation({ summary: '根据 comment id 获取评论, 包括子评论' })
-  async getComments(@Param() params: IdDto) {
+  async getComments(@Param() params: MongoIdDto) {
     const { id } = params
     const data = await this.commentService
       .findOne({
@@ -78,7 +78,10 @@ export class CommentsController {
     example: '5e6f67e85b303781d28072a3',
   })
   @ApiOperation({ summary: '根据评论的 refId 获取评论, 如 Post Id' })
-  async getCommentsByRefId(@Param() params: IdDto, @Query() query: PagerDto) {
+  async getCommentsByRefId(
+    @Param() params: MongoIdDto,
+    @Query() query: PagerDto,
+  ) {
     const { id } = params
     const { page = 1, size = 10, select } = query
     const comments = await this.commentService.findWithPaginator(
@@ -105,7 +108,7 @@ export class CommentsController {
   @Post(':id')
   @ApiOperation({ summary: '根据文章的 _id 评论' })
   async comment(
-    @Param() params: IdDto,
+    @Param() params: MongoIdDto,
     @Body() body: CommentDto,
     @Body('author') author: string,
     @Master() isMaster: boolean,
@@ -157,7 +160,7 @@ export class CommentsController {
     example: '5e7370bec56432cbac578e2d',
   })
   async replyByCid(
-    @Param() params: IdDto,
+    @Param() params: MongoIdDto,
     @Body() body: CommentDto,
     @Body('author') author: string,
     @Master() isMaster: boolean,
@@ -218,7 +221,7 @@ export class CommentsController {
   @Auth()
   async commentByMaster(
     @Req() req: any,
-    @Param() params: IdDto,
+    @Param() params: MongoIdDto,
     @Body() body: TextOnlyDto,
     @IpLocation() ipLocation: IpRecord,
     @Query() query: CommentRefTypesDto,
@@ -248,7 +251,7 @@ export class CommentsController {
   @Auth()
   async replyByMaster(
     @Req() req: any,
-    @Param() params: IdDto,
+    @Param() params: MongoIdDto,
     @Body() body: TextOnlyDto,
     @IpLocation() ipLocation: IpRecord,
   ) {
@@ -265,7 +268,10 @@ export class CommentsController {
   @Patch(':id')
   @ApiOperation({ summary: '修改评论的状态' })
   @Auth()
-  async modifyCommentState(@Param() params: IdDto, @Body() body: StateDto) {
+  async modifyCommentState(
+    @Param() params: MongoIdDto,
+    @Body() body: StateDto,
+  ) {
     const { id } = params
     const { state } = body
 
@@ -285,7 +291,7 @@ export class CommentsController {
 
   @Delete(':id')
   @Auth()
-  async deleteComment(@Param() params: IdDto) {
+  async deleteComment(@Param() params: MongoIdDto) {
     const { id } = params
     return await this.commentService.deleteComments(id)
   }

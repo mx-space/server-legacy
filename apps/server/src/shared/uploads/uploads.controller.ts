@@ -28,7 +28,7 @@ import { Auth } from 'shared/core/decorators/auth.decorator'
 import { ApplyUpload } from 'shared/core/decorators/file.decorator'
 import { CannotFindException } from 'shared/core/exceptions/cant-find.exception'
 import { UploadsService } from 'apps/server/src/shared/uploads/uploads.service'
-import { IdDto } from '../base/dto/id.dto'
+import { MongoIdDto } from '../base/dto/id.dto'
 import { FileTypeQueryDto } from './dto/filetype.dto'
 
 @Controller('uploads')
@@ -81,7 +81,7 @@ export class UploadsController {
   }
   @Delete(':id')
   @Auth()
-  async deleteFile(@Param() param: IdDto) {
+  async deleteFile(@Param() param: MongoIdDto) {
     const { id } = param
     return this.service.deleteFile(id)
   }

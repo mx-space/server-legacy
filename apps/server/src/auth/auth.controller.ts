@@ -28,7 +28,7 @@ import {
 } from 'class-validator'
 import { Auth } from '../../../../shared/core/decorators/auth.decorator'
 import { Master } from '../../../../shared/core/decorators/guest.decorator'
-import { IdDto } from '../shared/base/dto/id.dto'
+import { MongoIdDto } from '../shared/base/dto/id.dto'
 import { AuthService } from './auth.service'
 import { RolesGuard } from './roles.guard'
 import { AdminEventsGateway } from '../gateway/admin/events.gateway'
@@ -93,7 +93,7 @@ export class AuthController {
   }
   @Delete('token')
   @Auth()
-  async deleteToken(@Query() query: IdDto) {
+  async deleteToken(@Query() query: MongoIdDto) {
     const { id } = query
     await this.authService.deleteToken(id)
     this.adminGateway.handleTokenExpired(id)

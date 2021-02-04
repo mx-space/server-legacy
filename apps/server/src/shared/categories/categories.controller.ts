@@ -17,7 +17,7 @@ import { Types } from 'mongoose'
 import { RolesGuard } from 'apps/server/src/auth/roles.guard'
 import { Master } from 'shared/core/decorators/guest.decorator'
 import { CannotFindException } from 'shared/core/exceptions/cant-find.exception'
-import { IdDto } from 'apps/server/src/shared/base/dto/id.dto'
+import { MongoIdDto } from 'apps/server/src/shared/base/dto/id.dto'
 import { CategoriesService } from 'apps/server/src/shared/categories/categories.service'
 import {
   CategoryDto,
@@ -131,7 +131,7 @@ export class CategoriesController {
   @Put(':id')
   @UseGuards(AuthGuard('jwt'))
   @ApiSecurity('bearer')
-  async modifyCategory(@Param() params: IdDto, @Body() body: CategoryDto) {
+  async modifyCategory(@Param() params: MongoIdDto, @Body() body: CategoryDto) {
     const { type, slug, name } = body
     const { id } = params
     const res = await this.service.updateByIdAsync(id, {
@@ -145,7 +145,7 @@ export class CategoriesController {
   @Delete(':id')
   @UseGuards(AuthGuard('jwt'))
   @ApiSecurity('bearer')
-  async deleteCategory(@Param() params: IdDto) {
+  async deleteCategory(@Param() params: MongoIdDto) {
     const { id } = params
     const category = await this.service.findById(id)
     if (!category) {
