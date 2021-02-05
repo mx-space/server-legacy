@@ -1,3 +1,11 @@
+/*
+ * @Author: Innei
+ * @Date: 2020-12-29 19:46:49
+ * @LastEditTime: 2021-02-05 11:39:08
+ * @LastEditors: Innei
+ * @FilePath: /server/libs/db/src/models/page.model.ts
+ * @Mark: Coding with Love
+ */
 import { ApiProperty } from '@nestjs/swagger'
 import { prop } from '@typegoose/typegoose'
 import { IsNilOrString } from 'utils/validator-decorators/isNilOrString'
@@ -13,6 +21,7 @@ import {
 import { Schema } from 'mongoose'
 
 import { WriteBaseModel } from './base.model'
+import { Transform } from 'class-transformer'
 
 export const pageType = ['md', 'html', 'frame']
 
@@ -35,6 +44,7 @@ export default class Page extends WriteBaseModel {
   @IsInt()
   @Min(0)
   @IsOptional()
+  @Transform(({ value }) => parseInt(value))
   order!: number
 
   @ApiProperty({
