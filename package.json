@@ -93,7 +93,7 @@
     "passport": "0.4.1",
     "passport-jwt": "4.0.0",
     "passport-local": "1.0.0",
-    "picgo": "1.4.15",
+    "picgo": "1.4.16",
     "pluralize": "8.0.0",
     "reflect-metadata": "0.1.13",
     "ua-parser-js": "0.7.23"
