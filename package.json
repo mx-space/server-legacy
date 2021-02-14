@@ -69,7 +69,7 @@
     "cache-manager": "3.4.0",
     "cache-manager-redis-store": "2.0.0",
     "canvas": "2.6.1",
-    "class-transformer": "0.3.2",
+    "class-transformer": "0.4.0",
     "class-validator": "0.13.1",
     "cos-nodejs-sdk-v5": "2.9.6",
     "dayjs": "1.10.4",
