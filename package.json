@@ -79,7 +79,7 @@
     "fastify-swagger": "4.0.1",
     "file-type": "16.2.0",
     "get-folder-size": "2.0.1",
-    "graphql": "15.4.0",
+    "graphql": "15.5.0",
     "graphql-tools": "7.0.3",
     "image-size": "0.9.3",
     "js-yaml": "3.14.1",
