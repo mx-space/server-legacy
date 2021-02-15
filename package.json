@@ -103,7 +103,7 @@
     "@nestjs/schematics": "7.2.7",
     "@nestjs/testing": "7.4.4",
     "@types/bcrypt": "3.0.0",
-    "@types/ejs": "3.0.5",
+    "@types/ejs": "3.0.6",
     "@types/jest": "26.0.20",
     "@types/js-yaml": "3.12.6",
     "@types/lodash": "4.14.168",
