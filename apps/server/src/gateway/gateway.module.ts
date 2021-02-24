@@ -8,13 +8,14 @@
  */
 
 import { Module } from '@nestjs/common'
+import { RedisModule } from 'nestjs-redis'
 import { AuthModule } from '../auth/auth.module'
 import { AdminEventsGateway } from './admin/events.gateway'
 import { SharedGateway } from './shared/events.gateway'
 import { WebEventsGateway } from './web/events.gateway'
 
 @Module({
-  imports: [AuthModule],
+  imports: [AuthModule, RedisModule],
   providers: [AdminEventsGateway, WebEventsGateway, SharedGateway],
   exports: [AdminEventsGateway, WebEventsGateway, SharedGateway],
 })

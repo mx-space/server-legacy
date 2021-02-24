@@ -1,9 +1,9 @@
 /*
  * @Author: Innei
  * @Date: 2020-05-08 17:02:08
- * @LastEditTime: 2020-07-31 17:50:30
+ * @LastEditTime: 2021-02-24 21:23:11
  * @LastEditors: Innei
- * @FilePath: /mx-server/libs/common/src/common.module.ts
+ * @FilePath: /server/libs/common/src/common.module.ts
  * @Coding with Love
  */
 
@@ -61,6 +61,7 @@ if (process.env.NODE_ENV === 'production') {
         name: RedisNames.LoginRecord,
         keyPrefix: 'mx_' + RedisNames.LoginRecord + '_',
       },
+      { name: RedisNames.MaxOnlineCount, keyPrefix: 'mx_count' },
     ]),
     TasksModule,
   ],

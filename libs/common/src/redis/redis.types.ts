@@ -11,6 +11,7 @@ export enum RedisNames {
   Like = 'like',
   Read = 'read',
   LoginRecord = 'login_record',
+  MaxOnlineCount = 'max_online_count',
 }
 export enum RedisItems {
   Ips = 'ips',

@@ -1,12 +1,13 @@
 /*
  * @Author: Innei
  * @Date: 2020-05-21 18:59:01
- * @LastEditTime: 2020-06-12 20:04:06
+ * @LastEditTime: 2021-02-24 21:22:29
  * @LastEditors: Innei
- * @FilePath: /mx-server/src/gateway/web/events.gateway.ts
+ * @FilePath: /server/apps/server/src/gateway/web/events.gateway.ts
  * @Copyright
  */
 
+import { RedisNames } from '@libs/common/redis/redis.types'
 import {
   GatewayMetadata,
   MessageBody,
@@ -15,9 +16,14 @@ import {
   SubscribeMessage,
   WebSocketGateway,
   ConnectedSocket,
+  WsResponse,
 } from '@nestjs/websockets'
 import { plainToClass } from 'class-transformer'
 import { validate } from 'class-validator'
+import dayjs = require('dayjs')
+import { RedisService } from 'nestjs-redis'
+import { from, Observable } from 'rxjs'
+import { map } from 'rxjs/operators'
 import { BaseGateway } from '../base.gateway'
 import { EventTypes } from '../events.types'
 import { DanmakuDto } from './dtos/danmaku.dto'
@@ -27,14 +33,19 @@ import { DanmakuDto } from './dtos/danmaku.dto'
 export class WebEventsGateway
   extends BaseGateway
   implements OnGatewayConnection, OnGatewayDisconnect {
-  constructor() {
+  constructor(private readonly redisService: RedisService) {
     super()
   }
 
-  @SubscribeMessage(EventTypes.VISITOR_ONLINE)
-  sendOnlineNumber() {
+  // @SubscribeMessage(EventTypes.VISITOR_ONLINE)
+  async sendOnlineNumber() {
+    const redisClient = this.redisService.getClient(RedisNames.MaxOnlineCount)
+    const dateFormat = dayjs().format('YYYY-MM-DD')
+
     return {
       online: this.wsClients.length,
+      todayMaxOnline: +(await redisClient.get(dateFormat)) || 0,
+      todayOnlineTotal: +(await redisClient.get(dateFormat + '_total')) || 0,
       timestamp: new Date().toISOString(),
     }
   }
@@ -53,13 +64,26 @@ export class WebEventsGateway
     })
   }
 
-  handleConnection(client: SocketIO.Socket) {
+  async handleConnection(client: SocketIO.Socket) {
     this.wsClients.push(client)
-    this.broadcast(EventTypes.VISITOR_ONLINE, this.sendOnlineNumber())
+    this.broadcast(EventTypes.VISITOR_ONLINE, await this.sendOnlineNumber())
+
+    new Promise(async (r, j) => {
+      const redisClient = this.redisService.getClient(RedisNames.MaxOnlineCount)
+      const dateFormat = dayjs().format('YYYY-MM-DD')
+      const count = +(await redisClient.get(dateFormat)) || 0
+      await redisClient.set(dateFormat, Math.max(count, this.wsClients.length))
+      const key = dateFormat + '_total'
+      const totalCount = +(await redisClient.get(key)) || 0
+      await redisClient.set(key, totalCount + 1)
+
+      r(null)
+    })
+
     super.handleConnect(client)
   }
-  handleDisconnect(client: SocketIO.Socket) {
+  async handleDisconnect(client: SocketIO.Socket) {
     super.handleDisconnect(client)
-    this.broadcast(EventTypes.VISITOR_OFFLINE, this.sendOnlineNumber())
+    this.broadcast(EventTypes.VISITOR_OFFLINE, await this.sendOnlineNumber())
   }
 }
