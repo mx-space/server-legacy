@@ -65,7 +65,7 @@
     "@typegoose/typegoose": "7.4.8",
     "@types/mkdirp": "1.0.1",
     "apollo-server-fastify": "3.0.0-alpha.3",
-    "bcrypt": "5.0.0",
+    "bcrypt": "5.0.1",
     "cache-manager": "3.4.0",
     "cache-manager-redis-store": "2.0.0",
     "canvas": "2.6.1",
