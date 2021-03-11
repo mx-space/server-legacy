@@ -27,6 +27,7 @@ import {
   NoteQueryDto,
   PasswordQueryDto,
 } from 'apps/server/src/shared/notes/dto/note.dto'
+import { NoteScrectInterceptor } from 'core/interceptors/screct.interceptors'
 import { FastifyReply } from 'fastify'
 import { Session } from 'fastify-secure-session'
 import { Auth } from 'shared/core/decorators/auth.decorator'
@@ -45,6 +46,7 @@ import { NotesService } from './notes.service'
 @ApiTags('Note Routes')
 @Controller('notes')
 @UseInterceptors(PermissionInterceptor)
+@UseInterceptors(NoteScrectInterceptor)
 @UseGuards(RolesGuard)
 export class NotesController {
   constructor(

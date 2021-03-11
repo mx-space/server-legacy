@@ -1,7 +1,14 @@
+/*
+ * @Author: Innei
+ * @Date: 2021-01-01 13:25:04
+ * @LastEditTime: 2021-03-11 22:13:17
+ * @LastEditors: Innei
+ * @FilePath: /server/libs/db/src/models/note.model.ts
+ * Mark: Coding with Love
+ */
 import { AutoIncrementID } from '@typegoose/auto-increment'
 import { index, modelOptions, plugin, prop } from '@typegoose/typegoose'
 import { hashSync } from 'bcrypt'
-import { Query } from 'mongoose'
 import * as uniqueValidator from 'mongoose-unique-validator'
 import { WriteBaseModel } from './base.model'
 
@@ -49,6 +56,9 @@ export default class Note extends WriteBaseModel {
     select: false,
   })
   password?: string
+
+  @prop()
+  secret?: Date
 
   @prop()
   mood?: string
