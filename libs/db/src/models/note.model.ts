@@ -1,14 +1,13 @@
 /*
  * @Author: Innei
  * @Date: 2021-01-01 13:25:04
- * @LastEditTime: 2021-03-11 22:13:17
+ * @LastEditTime: 2021-03-12 11:13:52
  * @LastEditors: Innei
  * @FilePath: /server/libs/db/src/models/note.model.ts
  * Mark: Coding with Love
  */
 import { AutoIncrementID } from '@typegoose/auto-increment'
 import { index, modelOptions, plugin, prop } from '@typegoose/typegoose'
-import { hashSync } from 'bcrypt'
 import * as uniqueValidator from 'mongoose-unique-validator'
 import { WriteBaseModel } from './base.model'
 
@@ -47,12 +46,6 @@ export default class Note extends WriteBaseModel {
   hide: boolean
 
   @prop({
-    get(val) {
-      return val
-    },
-    set(val) {
-      return val ? hashSync(val, 4) : undefined
-    },
     select: false,
   })
   password?: string

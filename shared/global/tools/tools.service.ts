@@ -1,7 +1,7 @@
 /*
  * @Author: Innei
  * @Date: 2020-08-24 21:35:20
- * @LastEditTime: 2021-01-15 14:32:35
+ * @LastEditTime: 2021-03-12 10:05:29
  * @LastEditors: Innei
  * @FilePath: /server/shared/global/tools/tools.service.ts
  * @Coding with Love
@@ -30,18 +30,31 @@ export class ToolsService {
 
   async getSiteMapContent() {
     const baseURL = this.configs.get('url').webUrl
-    const posts = (await this.postModel.find().populate('category')).map(
-      (doc) => {
-        return {
-          url: new URL(
-            `/posts/${(doc.category as Category).slug}/${doc.slug}`,
-            baseURL,
-          ),
-          published_at: doc.modified,
-        }
-      },
-    )
-    const notes = (await this.noteModel.find().lean()).map((doc) => {
+    const posts = (
+      await this.postModel
+        .find({
+          hide: false,
+        })
+        .populate('category')
+    ).map((doc) => {
+      return {
+        url: new URL(
+          `/posts/${(doc.category as Category).slug}/${doc.slug}`,
+          baseURL,
+        ),
+        published_at: doc.modified,
+      }
+    })
+    const notes = (
+      await this.noteModel
+        .find({
+          hide: false,
+          secret: {
+            $lte: new Date(),
+          },
+        })
+        .lean()
+    ).map((doc) => {
       return {
         url: new URL(`/notes/${doc.nid}`, baseURL),
         published_at: doc.modified,

@@ -15,6 +15,7 @@ import { InjectModel } from 'nestjs-typegoose'
 import { ConfigsService } from '../../../../../shared/global/configs/configs.service'
 import { ImageService } from '../uploads/image.service'
 import { RandomType } from './dtos/random.dto'
+import dayjs = require('dayjs')
 @Injectable()
 export class AggregateService {
   constructor(
@@ -156,9 +157,12 @@ export class AggregateService {
       }
     })
     const notesRss: RSSProps['data'] = notes.map((note) => {
+      const isSecret = note.secret
+        ? dayjs(note.secret).isAfter(new Date())
+        : false
       return {
         title: note.title,
-        text: note.text,
+        text: isSecret ? '这篇文章暂时没有公开呢' : note.text,
         created: note.created,
         modified: note.modified,
         link: new URL('/notes/' + note.nid, baseURL).toString(),

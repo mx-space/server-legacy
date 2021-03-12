@@ -27,7 +27,7 @@ import {
   NoteQueryDto,
   PasswordQueryDto,
 } from 'apps/server/src/shared/notes/dto/note.dto'
-import { NoteScrectInterceptor } from 'core/interceptors/screct.interceptors'
+import { NoteSecretInterceptor } from 'core/interceptors/secret.interceptors'
 import { FastifyReply } from 'fastify'
 import { Session } from 'fastify-secure-session'
 import { Auth } from 'shared/core/decorators/auth.decorator'
@@ -46,7 +46,7 @@ import { NotesService } from './notes.service'
 @ApiTags('Note Routes')
 @Controller('notes')
 @UseInterceptors(PermissionInterceptor)
-@UseInterceptors(NoteScrectInterceptor)
+@UseInterceptors(NoteSecretInterceptor)
 @UseGuards(RolesGuard)
 export class NotesController {
   constructor(
@@ -282,7 +282,14 @@ export class NotesController {
       .split(/\s+/)
       .map((item) => new RegExp(String(item), 'ig'))
     return await this.noteService.findWithPaginator(
-      { $or: [{ title: { $in: keywordArr } }, { text: { $in: keywordArr } }] },
+      {
+        $or: [{ title: { $in: keywordArr } }, { text: { $in: keywordArr } }],
+        hide: false,
+        password: undefined,
+        secret: {
+          $lte: new Date(),
+        },
+      },
       {
         limit: size,
         skip: (page - 1) * size,

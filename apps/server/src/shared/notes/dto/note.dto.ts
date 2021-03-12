@@ -2,6 +2,7 @@ import { ApiProperty } from '@nestjs/swagger'
 import { Transform, Type } from 'class-transformer'
 import {
   IsBoolean,
+  IsDate,
   IsDefined,
   IsEnum,
   IsInt,
@@ -15,6 +16,7 @@ import {
   ValidateIf,
   ValidateNested,
 } from 'class-validator'
+import { IsNilOrString } from 'utils/validator-decorators/isNilOrString'
 import { PagerDto } from '../../base/dto/pager.dto'
 
 export class NoteDto {
@@ -44,11 +46,17 @@ export class NoteDto {
   @IsOptional()
   hide?: boolean
 
-  @IsString()
+  @IsNilOrString()
   @IsOptional()
   @IsNotEmpty()
-  @Transform((password) => (String(password).length === 0 ? null : password))
+  @Transform(({ value: val }) => (String(val).length === 0 ? null : val))
   password?: string
+
+  @IsOptional()
+  @IsDate()
+  @Transform(({ value }) => (value ? new Date(value) : null))
+  secret?: Date
+
   @IsOptional()
   @IsNotEmptyObject()
   options?: Record<string, unknown>

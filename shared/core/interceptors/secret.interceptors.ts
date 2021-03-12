@@ -1,9 +1,9 @@
 /*
  * @Author: Innei
  * @Date: 2021-03-11 22:14:27
- * @LastEditTime: 2021-03-11 22:42:06
+ * @LastEditTime: 2021-03-12 10:12:13
  * @LastEditors: Innei
- * @FilePath: /server/shared/core/interceptors/screct.interceptors.ts
+ * @FilePath: /server/shared/core/interceptors/secret.interceptors.ts
  * Mark: Coding with Love
  */
 import Note from '@libs/db/models/note.model'
@@ -19,6 +19,8 @@ import { IncomingMessage } from 'http'
 import { Observable } from 'rxjs'
 import { map } from 'rxjs/operators'
 import dayjs = require('dayjs')
+import { GqlExecutionContext } from '@nestjs/graphql'
+import { AnyType } from 'apps/graphql/src/shared/base/interfaces'
 dayjs.extend(relativeTime)
 dayjs.locale(locale)
 export interface Response<T> {
@@ -26,7 +28,7 @@ export interface Response<T> {
 }
 
 @Injectable()
-export class NoteScrectInterceptor<T>
+export class NoteSecretInterceptor<T>
   implements NestInterceptor<T, Response<T>> {
   intercept(
     context: ExecutionContext,
@@ -37,27 +39,10 @@ export class NoteScrectInterceptor<T>
     // @ts-ignore
     const isMaster = req.isMaster
     if (isMaster) {
-      return next.handle().pipe((data) => data)
+      return next.handle()
     }
-    const now = new Date()
 
-    return next.handle().pipe(
-      map((data) => {
-        if (!data) return data
-        // console.log(data)
-
-        const dataField = data.data as Note[] | Note
-        if (!dataField) {
-          filterSecretNote(data, now)
-        } else {
-          if (Array.isArray(dataField)) {
-            dataField.forEach((data) => filterSecretNote(data, now))
-          } else filterSecretNote(dataField, now)
-        }
-
-        return data
-      }),
-    )
+    return next.handle().pipe(map(handle()))
   }
 }
 
@@ -70,5 +55,39 @@ function filterSecretNote(note: Note, now: Date) {
     data.weather = undefined
     delete data.mood
     delete data.weather
+  }
+}
+
+@Injectable()
+export class NoteSecretGQLInterceptor<T>
+  implements NestInterceptor<T, AnyType> {
+  intercept(context: ExecutionContext, next: CallHandler): Observable<AnyType> {
+    // const http = context.switchToHttp()
+    const req = GqlExecutionContext.create(context).getContext()
+      .req as IncomingMessage
+    // @ts-ignore
+    const isMaster = req.isMaster
+    if (isMaster) {
+      return next.handle()
+    }
+
+    return next.handle().pipe(map(handle()))
+  }
+}
+function handle(): (value: any, index: number) => any {
+  const now = new Date()
+  return (data) => {
+    if (!data) return data
+    // console.log(data)
+    const dataField = data.data as Note[] | Note
+    if (!dataField) {
+      filterSecretNote(data, now)
+    } else {
+      if (Array.isArray(dataField)) {
+        dataField.forEach((data) => filterSecretNote(data, now))
+      } else filterSecretNote(dataField, now)
+    }
+
+    return data
   }
 }
