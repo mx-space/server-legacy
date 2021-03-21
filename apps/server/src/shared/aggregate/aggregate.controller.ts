@@ -19,6 +19,7 @@ import { yearCondition } from '../../../../../shared/utils'
 import { RandomTypeDto } from './dtos/random.dto'
 import { TimelineQueryDto, TimelineType } from './dtos/timeline.dto'
 import { TopQueryDto } from './dtos/top.dto'
+import { CacheKeys } from '../../../../../shared/constants'
 @Controller('aggregate')
 @ApiTags('Aggregate Routes')
 @UseGuards(RolesGuard)
@@ -29,7 +30,7 @@ export class AggregateController {
     private readonly userService: MasterService,
   ) {}
   @Get()
-  @CacheKey('aggregate_catch')
+  @CacheKey(CacheKeys.AggregateCatch)
   @CacheTTL(300)
   async aggregate(@Master() isMaster: boolean) {
     return {
@@ -109,13 +110,14 @@ export class AggregateController {
   }
 
   @Get('sitemap')
-  @CacheKey('aggregate_sitemap_catch')
+  @CacheKey(CacheKeys.SiteMapCatch)
   @CacheTTL(3600)
   async getSiteMapContent() {
     return await this.service.getSiteMapContent()
   }
 
   @Get('feed')
+  @CacheKey(CacheKeys.RSS)
   @CacheTTL(3600)
   async getRSSFeed() {
     return await this.service.buildRssStructure()

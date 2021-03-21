@@ -1,29 +1,40 @@
 /*
  * @Author: Innei
  * @Date: 2020-05-08 17:02:08
- * @LastEditTime: 2021-02-24 21:23:11
+ * @LastEditTime: 2021-03-21 19:31:13
  * @LastEditors: Innei
  * @FilePath: /server/libs/common/src/common.module.ts
  * @Coding with Love
  */
 
-import { CacheInterceptor, CacheModule, Module, Provider } from '@nestjs/common'
-import * as redisStore from 'cache-manager-redis-store'
+import { CacheModule, Module, Provider } from '@nestjs/common'
 import { ConfigModule } from '@nestjs/config'
 import { APP_INTERCEPTOR } from '@nestjs/core'
-import { TasksModule } from './tasks/tasks.module'
+import * as redisStore from 'cache-manager-redis-store'
+import { HttpCacheInterceptor } from 'core/interceptors/http-cache.interceptors'
 import { RedisModule } from 'nestjs-redis'
 import { RedisNames } from './redis/redis.types'
+import { TasksModule } from './tasks/tasks.module'
+
 const providers: Provider<any>[] = []
 
 const CacheProvider = {
   provide: APP_INTERCEPTOR,
-  useClass: CacheInterceptor,
+  useClass: HttpCacheInterceptor,
 }
+providers.push(CacheProvider)
 if (process.env.NODE_ENV === 'production') {
-  providers.push(CacheProvider)
 }
 
+const CacheModuleDynamic = CacheModule.registerAsync({
+  useFactory: () => ({
+    store: redisStore,
+    host: 'localhost',
+    port: 6379,
+    ttl: 30,
+    max: 300,
+  }),
+})
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -35,15 +46,7 @@ if (process.env.NODE_ENV === 'production') {
       ],
       isGlobal: true,
     }),
-    CacheModule.registerAsync({
-      useFactory: () => ({
-        store: redisStore,
-        host: 'localhost',
-        port: 6379,
-        ttl: 30,
-        max: 300,
-      }),
-    }),
+    CacheModuleDynamic,
     RedisModule.register([
       {
         name: RedisNames.Access,
@@ -66,5 +69,6 @@ if (process.env.NODE_ENV === 'production') {
     TasksModule,
   ],
   providers,
+  exports: [CacheModuleDynamic],
 })
 export class CommonModule {}

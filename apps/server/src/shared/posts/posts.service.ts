@@ -1,9 +1,9 @@
 /*
  * @Author: Innei
  * @Date: 2020-05-06 22:00:44
- * @LastEditTime: 2020-08-02 15:48:32
+ * @LastEditTime: 2021-03-21 20:18:42
  * @LastEditors: Innei
- * @FilePath: /mx-server/src/shared/posts/posts.service.ts
+ * @FilePath: /server/apps/server/src/shared/posts/posts.service.ts
  * @Coding with Love
  */
 
@@ -12,7 +12,9 @@ import Comment from '@libs/db/models/comment.model'
 import Post from '@libs/db/models/post.model'
 import {
   BadRequestException,
+  CACHE_MANAGER,
   HttpService,
+  Inject,
   Injectable,
   UnprocessableEntityException,
 } from '@nestjs/common'
@@ -24,15 +26,19 @@ import { InjectModel } from 'nestjs-typegoose'
 import { CannotFindException } from 'shared/core/exceptions/cant-find.exception'
 import { WriteBaseService } from 'apps/server/src/shared/base/base.service'
 import {
+  refreshKeyedCache,
   updateLikeCount,
   updateReadCount,
 } from '../../../../../shared/utils/text-base'
 import { CategoriesService } from '../categories/categories.service'
 import { ConfigsService } from '../../../../../shared/global'
+import { Cache } from 'cache-manager'
+import { CacheKeys, CACHE_KEY_PREFIX } from 'shared/constants'
 @Injectable()
 export class PostsService extends WriteBaseService<Post> {
   constructor(
     @InjectModel(Post) private readonly model: ReturnModelType<typeof Post>,
+    @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
 
     private readonly categoryService: CategoriesService,
     @InjectModel(Comment)
@@ -60,6 +66,9 @@ export class PostsService extends WriteBaseService<Post> {
     // category
     validCategory.count += 1
     await validCategory.save()
+
+    // to refresh cache for rss, sitemap
+    refreshKeyedCache(this.cacheManager)
 
     return newDocument
   }
@@ -165,6 +174,7 @@ export class PostsService extends WriteBaseService<Post> {
     }
     // tag
     // await this.modifyTag(oldPost, projection.tags)
+    refreshKeyedCache(this.cacheManager)
     return super.update(
       { _id: condition._id },
       projection,

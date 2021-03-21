@@ -1,19 +1,19 @@
 /*
  * @Author: Innei
  * @Date: 2020-05-10 15:22:08
- * @LastEditTime: 2020-10-08 14:02:10
+ * @LastEditTime: 2021-03-21 20:49:16
  * @LastEditors: Innei
- * @FilePath: /server/src/core/middlewares/analyze.middleware.ts
+ * @FilePath: /server/shared/core/middlewares/analyze.middleware.ts
  * @MIT
  */
 
 import { RedisNames } from '@libs/common/redis/redis.types'
 import { Analyze } from '@libs/db/models/analyze.model'
 import { Option } from '@libs/db/models/option.model'
-import { HttpService, Injectable, NestMiddleware } from '@nestjs/common'
+import { HttpService, Injectable, Logger, NestMiddleware } from '@nestjs/common'
 import { Cron, CronExpression } from '@nestjs/schedule'
 import { ReturnModelType } from '@typegoose/typegoose'
-import { DATA_DIR } from 'apps/server/src/constants'
+import { DATA_DIR } from 'shared/constants'
 import { readFileSync, writeFileSync } from 'fs'
 import { IncomingMessage, ServerResponse } from 'http'
 import { RedisService } from 'nestjs-redis'
@@ -27,6 +27,7 @@ export class AnalyzeMiddleware implements NestMiddleware {
   private parser: UAParser
   private botListData: RegExp[] = []
   private localBotListDataFilePath = join(DATA_DIR, 'bot_list.json')
+  private logger = new Logger(AnalyzeMiddleware.name)
   constructor(
     @InjectModel(Analyze)
     private readonly model: ReturnModelType<typeof Analyze>,
@@ -94,7 +95,7 @@ export class AnalyzeMiddleware implements NestMiddleware {
       if (!ips.includes(ip)) {
         await client.set('ips', JSON.stringify([...ips, ip]))
         // record uv to db
-        new Promise(async (resolve) => {
+        process.nextTick(async () => {
           const uvRecord = await this.options.findOne({ name: 'uv' })
           if (uvRecord) {
             await uvRecord.updateOne({
@@ -108,7 +109,6 @@ export class AnalyzeMiddleware implements NestMiddleware {
               value: 1,
             })
           }
-          resolve(null)
         })
       }
     } catch (e) {
@@ -134,19 +134,23 @@ export class AnalyzeMiddleware implements NestMiddleware {
 
   @Cron(CronExpression.EVERY_WEEK)
   async updateBotList() {
-    const { data: json } = await this.http
-      .get(
-        'https://cdn.jsdelivr.net/gh/atmire/COUNTER-Robots@master/COUNTER_Robots_list.json',
-      )
-      .toPromise()
+    try {
+      const { data: json } = await this.http
+        .get(
+          'https://cdn.jsdelivr.net/gh/atmire/COUNTER-Robots@master/COUNTER_Robots_list.json',
+        )
+        .toPromise()
 
-    writeFileSync(this.localBotListDataFilePath, JSON.stringify(json), {
-      encoding: 'utf-8',
-      flag: 'w+',
-    })
-    this.botListData = this.pickPattern2Regexp(json)
+      writeFileSync(this.localBotListDataFilePath, JSON.stringify(json), {
+        encoding: 'utf-8',
+        flag: 'w+',
+      })
+      this.botListData = this.pickPattern2Regexp(json)
 
-    return json
+      return json
+    } catch {
+      this.logger.debug('更新 Bot 列表错误')
+    }
   }
 
   pickPattern2Regexp(data: any): RegExp[] {

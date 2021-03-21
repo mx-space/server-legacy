@@ -13,13 +13,13 @@ import {
   UseInterceptors,
 } from '@nestjs/common'
 import { ApiOperation, ApiSecurity, ApiTags } from '@nestjs/swagger'
-import { Types } from 'mongoose'
 import { RolesGuard } from 'apps/server/src/auth/roles.guard'
+import { MongoIdDto } from 'apps/server/src/shared/base/dto/id.dto'
+import { SearchDto } from 'apps/server/src/shared/base/dto/search.dto'
+import { Types } from 'mongoose'
 import { Auth } from 'shared/core/decorators/auth.decorator'
 import { Master } from 'shared/core/decorators/guest.decorator'
 import { PermissionInterceptor } from 'shared/core/interceptors/permission.interceptors'
-import { MongoIdDto } from 'apps/server/src/shared/base/dto/id.dto'
-import { SearchDto } from 'apps/server/src/shared/base/dto/search.dto'
 import { addConditionToSeeHideContent, yearCondition } from 'shared/utils'
 import {
   IpLocation,
@@ -146,7 +146,7 @@ export class PostsController {
 
     const updateDocument = await this.service.update({ _id: id }, body as any)
     // emit event
-    new Promise((resolve) => {
+    process.nextTick(() => {
       this.service.RecordImageDimensions(id)
       this.service
         .findById(id)
@@ -154,7 +154,6 @@ export class PostsController {
         .then((doc) => {
           this.webgateway.broadcast(EventTypes.POST_UPDATE, doc)
         })
-      resolve(null)
     })
     return {
       ...updateDocument,

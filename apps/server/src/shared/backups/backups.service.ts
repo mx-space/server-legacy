@@ -24,7 +24,7 @@ import {
 } from 'fs'
 import * as mkdirp from 'mkdirp'
 import { join, resolve } from 'path'
-import { DATA_DIR } from 'apps/server/src/constants'
+import { DATA_DIR } from 'shared/constants'
 import { Readable } from 'stream'
 import { AdminEventsGateway } from '../../gateway/admin/events.gateway'
 import { EventTypes, NotificationTypes } from '../../gateway/events.types'

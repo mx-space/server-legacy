@@ -139,7 +139,7 @@ export class CommentsController {
       model,
     )
 
-    new Promise(async (resolve) => {
+    process.nextTick(async () => {
       if (await this.commentService.checkSpam(comment)) {
         comment.state = CommentState.Junk
         await comment.save()
@@ -147,7 +147,6 @@ export class CommentsController {
         this.commentService.sendEmail(comment, ReplyMailType.Owner)
         this.gateway.broadcase(EventTypes.COMMENT_CREATE, comment)
       }
-      resolve(null)
     })
 
     return comment

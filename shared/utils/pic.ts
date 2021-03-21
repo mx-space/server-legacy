@@ -1,13 +1,13 @@
 /*
  * @Author: Innei
  * @Date: 2020-05-31 16:10:03
- * @LastEditTime: 2020-05-31 16:10:05
+ * @LastEditTime: 2021-03-21 19:01:30
  * @LastEditors: Innei
- * @FilePath: /mx-server/src/shared/utils/pic.ts
+ * @FilePath: /server/shared/utils/pic.ts
  * @Coding with Love
  */
 
-import { createCanvas, loadImage } from 'canvas'
+import Vibrant = require('node-vibrant')
 import { ISizeCalculationResult } from 'image-size/dist/types/interface'
 
 export const pickImagesFromMarkdown = (text: string) => {
@@ -26,45 +26,13 @@ export async function getAverageRGB(
   if (!buffer) {
     return undefined
   }
-
-  const blockSize = 5, // only visit every 5 pixels
-    canvas = createCanvas(size.width, size.height),
-    context = canvas.getContext && canvas.getContext('2d')
-  let data
-  const width = size.width,
-    height = size.height
-  let i = -4,
-    count = 0
-  const rgb = { r: 0, g: 0, b: 0 }
-
-  if (!context) {
-    return undefined
-  }
-  const image = await loadImage(buffer)
-  context.drawImage(image, 0, 0)
-
   try {
-    data = context.getImageData(0, 0, width, height)
-  } catch (e) {
-    /* security error, img on diff domain */
+    const res = await Vibrant.from(buffer).getPalette()
+
+    return res.Muted.hex
+  } catch {
     return undefined
   }
-
-  const length = data.data.length
-
-  while ((i += blockSize * 4) < length) {
-    ++count
-    rgb.r += data.data[i]
-    rgb.g += data.data[i + 1]
-    rgb.b += data.data[i + 2]
-  }
-
-  // ~~ used to floor values
-  rgb.r = ~~(rgb.r / count)
-  rgb.g = ~~(rgb.g / count)
-  rgb.b = ~~(rgb.b / count)
-
-  return rgbToHex(rgb)
 }
 
 function componentToHex(c: number) {

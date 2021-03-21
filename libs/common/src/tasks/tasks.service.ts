@@ -8,7 +8,7 @@ import * as mkdirp from 'mkdirp'
 import { RedisService } from 'nestjs-redis'
 import { InjectModel } from 'nestjs-typegoose'
 import { join } from 'path'
-import { TEMP_DIR } from 'apps/server/src/constants'
+import { TEMP_DIR } from 'shared/constants'
 import { isDev } from 'shared/utils'
 
 import { Analyze } from '../../../db/src/models/analyze.model'
@@ -61,9 +61,9 @@ export class TasksService {
       )
       return
     }
-    new Promise((reslove) => {
+    process.nextTick(() => {
       if (!uploadCOS) {
-        return reslove(null)
+        return
       }
       const backupOptions = this.configs.get('backupOptions')
       if (
@@ -101,7 +101,6 @@ export class TasksService {
           }
         },
       )
-      reslove('OK')
     })
 
     return readFileSync(join(backupDirPath, 'backup-' + dateDir + '.zip'))

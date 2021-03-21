@@ -68,7 +68,7 @@ export class WebEventsGateway
     this.wsClients.push(client)
     this.broadcast(EventTypes.VISITOR_ONLINE, await this.sendOnlineNumber())
 
-    new Promise(async (r, j) => {
+    process.nextTick(async () => {
       const redisClient = this.redisService.getClient(RedisNames.MaxOnlineCount)
       const dateFormat = dayjs().format('YYYY-MM-DD')
       const count = +(await redisClient.get(dateFormat)) || 0
@@ -76,8 +76,6 @@ export class WebEventsGateway
       const key = dateFormat + '_total'
       const totalCount = +(await redisClient.get(key)) || 0
       await redisClient.set(key, totalCount + 1)
-
-      r(null)
     })
 
     super.handleConnect(client)

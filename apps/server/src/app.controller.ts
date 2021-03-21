@@ -1,13 +1,24 @@
 /*
  * @Author: Innei
  * @Date: 2020-04-30 12:21:51
- * @LastEditTime: 2021-01-15 13:43:39
+ * @LastEditTime: 2021-03-21 20:09:55
  * @LastEditors: Innei
  * @FilePath: /server/apps/server/src/app.controller.ts
  * @Copyright
  */
 
-import { Controller, Get, Post, Req, Res } from '@nestjs/common'
+import {
+  CacheTTL,
+  CACHE_MANAGER,
+  Controller,
+  Get,
+  HttpCode,
+  Inject,
+  Post,
+  Req,
+  Res,
+} from '@nestjs/common'
+import { Cache } from 'cache-manager'
 import { ApiTags } from '@nestjs/swagger'
 import { ReturnModelType } from '@typegoose/typegoose'
 import { FastifyReply } from 'fastify'
@@ -15,6 +26,7 @@ import { Session } from 'fastify-secure-session'
 import { InjectModel } from 'nestjs-typegoose'
 import { Option } from '@libs/db/models/option.model'
 import { getIp } from '../../../shared/utils/ip'
+import { CACHE_KEY_PREFIX } from 'shared/constants'
 
 @Controller()
 @ApiTags('Root Routes')
@@ -22,6 +34,7 @@ export class AppController {
   constructor(
     @InjectModel(Option)
     private readonly optionModel: ReturnModelType<typeof Option>,
+    @Inject(CACHE_MANAGER) private cacheManager: Cache,
   ) {}
 
   @Get('ping')
@@ -72,5 +85,19 @@ export class AppController {
   async getLikeNumber() {
     const doc = await this.optionModel.findOne({ name: 'like' }).lean()
     return doc ? doc.value : 0
+  }
+
+  @Get('clean_catch')
+  @HttpCode(204)
+  @CacheTTL(0.001)
+  async cleanCatch() {
+    const keys: string[] = await this.cacheManager.store.keys(
+      CACHE_KEY_PREFIX + '*',
+    )
+
+    for await (const key of keys) {
+      await this.cacheManager.store.del(key)
+    }
+    return
   }
 }

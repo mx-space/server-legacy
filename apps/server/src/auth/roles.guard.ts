@@ -1,3 +1,11 @@
+/*
+ * @Author: Innei
+ * @Date: 2020-11-24 16:20:37
+ * @LastEditTime: 2021-03-21 18:13:17
+ * @LastEditors: Innei
+ * @FilePath: /server/apps/server/src/auth/roles.guard.ts
+ * Mark: Coding with Love
+ */
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common'
 import { GqlExecutionContext } from '@nestjs/graphql'
 import { AuthGuard } from '@nestjs/passport'

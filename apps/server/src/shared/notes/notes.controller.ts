@@ -1,9 +1,12 @@
 import {
   Body,
+  CACHE_MANAGER,
   Controller,
   Delete,
   ForbiddenException,
   Get,
+  Inject,
+  Logger,
   Param,
   Post,
   Put,
@@ -27,6 +30,7 @@ import {
   NoteQueryDto,
   PasswordQueryDto,
 } from 'apps/server/src/shared/notes/dto/note.dto'
+import { Cache } from 'cache-manager'
 import { NoteSecretInterceptor } from 'core/interceptors/secret.interceptors'
 import { FastifyReply } from 'fastify'
 import { Session } from 'fastify-secure-session'
@@ -35,6 +39,7 @@ import { Master } from 'shared/core/decorators/guest.decorator'
 import { CannotFindException } from 'shared/core/exceptions/cant-find.exception'
 import { PermissionInterceptor } from 'shared/core/interceptors/permission.interceptors'
 import { addConditionToSeeHideContent, yearCondition } from 'shared/utils'
+import { refreshKeyedCache } from 'utils/text-base'
 import {
   IpLocation,
   IpRecord,
@@ -49,9 +54,11 @@ import { NotesService } from './notes.service'
 @UseInterceptors(NoteSecretInterceptor)
 @UseGuards(RolesGuard)
 export class NotesController {
+  private readonly logger = new Logger(NotesController.name)
   constructor(
     private readonly noteService: NotesService,
     private readonly webgateway: WebEventsGateway,
+    @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
   ) {}
 
   @Get()
@@ -192,6 +199,7 @@ export class NotesController {
     const res = await this.noteService.createNew(body)
     this.noteService.RecordImageDimensions(res._id)
     this.webgateway.broadcast(EventTypes.NOTE_CREATE, res)
+    refreshKeyedCache(this.cacheManager)
     return res
   }
 
@@ -202,11 +210,11 @@ export class NotesController {
 
     const doc = await this.noteService.update({ _id: id }, body)
 
-    new Promise(async (reslove) => {
+    process.nextTick(async () => {
       this.noteService.RecordImageDimensions(id)
       const doc = await this.noteService.findById(id)
       this.webgateway.broadcast(EventTypes.NOTE_UPDATE, doc)
-      reslove(null)
+      refreshKeyedCache(this.cacheManager)
     })
     return doc
   }

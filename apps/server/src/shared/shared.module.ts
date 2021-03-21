@@ -1,9 +1,9 @@
 /*
  * @Author: Innei
  * @Date: 2020-05-21 11:05:42
- * @LastEditTime: 2020-06-10 18:59:13
+ * @LastEditTime: 2021-03-21 20:30:20
  * @LastEditors: Innei
- * @FilePath: /mx-server/src/shared/shared.module.ts
+ * @FilePath: /server/apps/server/src/shared/shared.module.ts
  * @Coding with Love
  */
 
@@ -40,9 +40,10 @@ import { SaysService } from './says/says.service'
 import { UploadsModule } from './uploads/uploads.module'
 import { RecentlyController } from './recently/recently.controller'
 import { RecentlyService } from './recently/recently.service'
+import { CommonModule } from '@libs/common'
 
 @Module({
-  imports: [UploadsModule, TasksModule, GatewayModule],
+  imports: [UploadsModule, TasksModule, GatewayModule, CommonModule],
   providers: [
     OptionsService,
     AggregateService,
