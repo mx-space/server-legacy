@@ -1921,10 +1921,10 @@
     loglevel "^1.7.0"
     tslib "^2.0.3"
 
-"@typegoose/typegoose@7.4.8":
-  version "7.4.8"
-  resolved "https://registry.yarnpkg.com/@typegoose/typegoose/-/typegoose-7.4.8.tgz#0e117166b9ebcef556c896f2dd9635828dd630a0"
-  integrity sha512-fMd+RfyX9e9cCt2P5arh4q3hJtd/emHkjiES0VEIgtOH/XRF7av7ZuktRIEn/KO51H5MSEo9H+Xok6oK+nT7zw==
+"@typegoose/typegoose@7.6.0":
+  version "7.6.0"
+  resolved "https://registry.yarnpkg.com/@typegoose/typegoose/-/typegoose-7.6.0.tgz#64327ab5ea0f17405a731433991c5685c1126fc9"
+  integrity sha512-m7iz8L52y6bQLGQpPnOwKJQsfpFZkICa0TSiGIlZNy1DLrElj+GZfatQG4Ag5wHZRxhOMaEaBS0iqDGmvtm7Tg==
   dependencies:
     lodash "^4.17.20"
     loglevel "^1.7.0"
