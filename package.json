@@ -75,7 +75,7 @@
     "ejs": "3.1.6",
     "fastify-multipart": "4.0.3",
     "fastify-secure-session": "2.3.1",
-    "fastify-swagger": "4.3.3",
+    "fastify-swagger": "4.4.2",
     "file-type": "16.3.0",
     "get-folder-size": "2.0.1",
     "graphql": "15.5.0",
