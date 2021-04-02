@@ -99,7 +99,7 @@
     "ua-parser-js": "0.7.27"
   },
   "devDependencies": {
-    "@nestjs/cli": "7.5.5",
+    "@nestjs/cli": "7.6.0",
     "@nestjs/schematics": "7.2.9",
     "@nestjs/testing": "7.6.14",
     "@types/bcrypt": "3.0.0",
