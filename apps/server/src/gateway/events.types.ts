@@ -36,6 +36,9 @@ export enum EventTypes {
 
   DANMAKU_CREATE = 'DANMAKU_CREATE',
 
+  RECENTLY_CREATE = 'RECENTLY_CREATE',
+  RECENTLY_DElETE = 'RECENTLY_DElETE',
+
   // util
   CONTENT_REFRESH = 'CONTENT_REFRESH', // 内容更新或重置 页面需要重载
 

@@ -12,6 +12,9 @@ import {
 } from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
 import { Auth } from 'core/decorators/auth.decorator'
+import { EventTypes } from '../../gateway/events.types'
+import { WebEventsGateway } from '../../gateway/web/events.gateway'
+import { MongoIdDto } from '../base/dto/id.dto'
 import { OffsetDto } from '../base/dto/pager.dto'
 import { RecentlyDto } from './recently.dto'
 import { RecentlyService } from './recently.service'
@@ -19,7 +22,10 @@ import { RecentlyService } from './recently.service'
 @Controller('recently')
 @ApiTags('Recently')
 export class RecentlyController {
-  constructor(private readonly service: RecentlyService) {}
+  constructor(
+    private readonly service: RecentlyService,
+    private readonly gateway: WebEventsGateway,
+  ) {}
 
   @Get('latest')
   async getLatestOne() {
@@ -41,18 +47,24 @@ export class RecentlyController {
   @Auth()
   @HttpCode(HttpStatus.CREATED)
   async create(@Body() body: RecentlyDto) {
-    return await this.service.create(body)
+    const res = await this.service.create(body)
+    process.nextTick(() => {
+      this.gateway.broadcast(EventTypes.RECENTLY_CREATE, res)
+    })
+    return res
   }
 
   @Delete('/:id')
   @Auth()
   @HttpCode(HttpStatus.NO_CONTENT)
-  async del(@Param() id: string) {
+  async del(@Param() { id }: MongoIdDto) {
     const res = await this.service.delete(id)
     if (!res) {
       throw new UnprocessableEntityException('删除失败')
     }
-
+    process.nextTick(() => {
+      this.gateway.broadcast(EventTypes.RECENTLY_DElETE, { id })
+    })
     return
   }
 }

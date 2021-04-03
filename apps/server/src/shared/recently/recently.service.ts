@@ -30,11 +30,11 @@ export class RecentlyService extends BaseService<Recently> {
         after
           ? {
               _id: {
-                $gte: after,
+                $gt: after,
               },
             }
           : before
-          ? { _id: { $lte: before } }
+          ? { _id: { $lt: before } }
           : {},
       )
       .limit(size)
@@ -49,6 +49,8 @@ export class RecentlyService extends BaseService<Recently> {
   async create(model: RecentlyDto) {
     return await this.model.create({
       content: model.content,
+      language: model.language,
+      project: model.project,
     })
   }
 
