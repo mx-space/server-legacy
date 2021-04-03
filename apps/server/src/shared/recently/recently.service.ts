@@ -1,4 +1,3 @@
-import { BaseModel } from '@libs/db/models/base.model'
 import { Recently } from '@libs/db/models/recently.model'
 import { Injectable } from '@nestjs/common'
 import { ReturnModelType } from '@typegoose/typegoose'
@@ -15,6 +14,33 @@ export class RecentlyService extends BaseService<Recently> {
     super(model)
   }
 
+  async getOffset({
+    before,
+    size,
+    after,
+  }: {
+    before?: string
+    size?: number
+    after?: string
+  }) {
+    size = size ?? 10
+
+    return await this.model
+      .find(
+        after
+          ? {
+              _id: {
+                $gte: after,
+              },
+            }
+          : before
+          ? { _id: { $lte: before } }
+          : {},
+      )
+      .limit(size)
+      .sort({ _id: -1 })
+      .lean()
+  }
   async getLatestOne() {
     return await this.model.findOne().sort({ created: -1 }).lean()
   }

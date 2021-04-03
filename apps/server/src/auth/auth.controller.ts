@@ -12,6 +12,8 @@ import {
   Controller,
   Delete,
   Get,
+  HttpModule,
+  HttpService,
   Post,
   Query,
   Scope,
@@ -32,6 +34,7 @@ import { MongoIdDto } from '../shared/base/dto/id.dto'
 import { AuthService } from './auth.service'
 import { RolesGuard } from './roles.guard'
 import { AdminEventsGateway } from '../gateway/admin/events.gateway'
+import { OAuthVerifyQueryDto } from './oauth.dto'
 
 export class TokenDto {
   @IsDate()
@@ -53,6 +56,7 @@ export class AuthController {
   constructor(
     private readonly authService: AuthService,
     private readonly adminGateway: AdminEventsGateway,
+    private readonly http: HttpService,
   ) {}
 
   @Get()
@@ -98,5 +102,11 @@ export class AuthController {
     await this.authService.deleteToken(id)
     this.adminGateway.handleTokenExpired(id)
     return 'OK'
+  }
+
+  @Auth()
+  @Get('/oauth/github')
+  async verifyGithubOAuth(@Query() query: OAuthVerifyQueryDto) {
+    const { code } = query
   }
 }

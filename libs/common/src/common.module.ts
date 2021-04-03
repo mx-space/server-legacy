@@ -22,8 +22,9 @@ const CacheProvider = {
   provide: APP_INTERCEPTOR,
   useClass: HttpCacheInterceptor,
 }
-providers.push(CacheProvider)
+
 if (process.env.NODE_ENV === 'production') {
+  providers.push(CacheProvider)
 }
 
 const CacheModuleDynamic = CacheModule.registerAsync({

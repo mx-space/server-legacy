@@ -7,7 +7,7 @@
  * @Copyright
  */
 
-import { Module } from '@nestjs/common'
+import { HttpModule, Module } from '@nestjs/common'
 import { JwtModule } from '@nestjs/jwt'
 import { PassportModule } from '@nestjs/passport'
 import { AuthService } from './auth.service'
@@ -27,7 +27,7 @@ const jwtModule = JwtModule.registerAsync({
   },
 })
 @Module({
-  imports: [PassportModule, jwtModule],
+  imports: [PassportModule, jwtModule, HttpModule],
   providers: [AuthService, JwtStrategy, LocalStrategy, AdminEventsGateway],
   controllers: [AuthController],
   exports: [JwtStrategy, LocalStrategy, AuthService, jwtModule],

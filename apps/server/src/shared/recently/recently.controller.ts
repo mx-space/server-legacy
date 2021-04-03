@@ -10,12 +10,14 @@ import {
   Query,
   UnprocessableEntityException,
 } from '@nestjs/common'
+import { ApiTags } from '@nestjs/swagger'
 import { Auth } from 'core/decorators/auth.decorator'
-import { PagerDto } from '../base/dto/pager.dto'
+import { OffsetDto } from '../base/dto/pager.dto'
 import { RecentlyDto } from './recently.dto'
 import { RecentlyService } from './recently.service'
 
 @Controller('recently')
+@ApiTags('Recently')
 export class RecentlyController {
   constructor(private readonly service: RecentlyService) {}
 
@@ -25,20 +27,21 @@ export class RecentlyController {
   }
 
   @Get('/')
-  async getList(@Query() pager: PagerDto) {
-    console.log(pager)
+  async getList(@Query() query: OffsetDto) {
+    const { before, after, size } = query
 
-    const { page, size } = pager
+    if (before && after) {
+      throw new UnprocessableEntityException('before or after must choice one')
+    }
 
-    return await this.service.findWithSimplePager(page, size)
+    return await this.service.getOffset({ before, after, size })
   }
 
   @Post('/')
   @Auth()
   @HttpCode(HttpStatus.CREATED)
   async create(@Body() body: RecentlyDto) {
-    await this.service.create(body)
-    return
+    return await this.service.create(body)
   }
 
   @Delete('/:id')

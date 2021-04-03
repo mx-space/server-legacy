@@ -14,6 +14,13 @@ import { BaseModel } from './base.model'
 
 export type UserDocument = DocumentType<User>
 
+export class OAuthModel {
+  @prop()
+  platform: string
+  @prop()
+  id: string
+}
+
 export class TokenModel {
   @prop()
   created: Date
@@ -73,4 +80,7 @@ export class User extends BaseModel {
 
   @prop({ type: TokenModel, select: false })
   apiToken?: TokenModel[]
+
+  @prop({ type: OAuthModel, select: false })
+  oauth2?: OAuthModel[]
 }

@@ -11,11 +11,13 @@ import { ApiProperty } from '@nestjs/swagger'
 import { Expose, Transform } from 'class-transformer'
 import {
   IsInt,
+  IsMongoId,
   IsNotEmpty,
   IsOptional,
   IsString,
   Max,
   Min,
+  ValidateIf,
 } from 'class-validator'
 
 export class PagerDto {
@@ -55,4 +57,23 @@ export class PagerDto {
   @Transform(({ value: val }) => parseInt(val))
   @IsInt()
   state?: number
+}
+
+export class OffsetDto {
+  @IsMongoId()
+  @IsOptional()
+  before?: string
+
+  @IsMongoId()
+  @IsOptional()
+  @ValidateIf((o) => {
+    return typeof o.before !== 'undefined'
+  })
+  after?: string
+
+  @Transform(({ value }) => +value)
+  @IsInt()
+  @IsOptional()
+  @Max(50)
+  size?: number
 }
