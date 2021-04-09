@@ -103,7 +103,7 @@
     "@nestjs/cli": "7.6.0",
     "@nestjs/schematics": "7.3.1",
     "@nestjs/testing": "7.6.14",
-    "@types/bcrypt": "3.0.0",
+    "@types/bcrypt": "3.0.1",
     "@types/cache-manager": "3.4.0",
     "@types/ejs": "3.0.6",
     "@types/jest": "26.0.22",
