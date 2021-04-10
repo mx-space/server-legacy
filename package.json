@@ -97,7 +97,7 @@
     "picgo": "1.4.19",
     "pluralize": "8.0.0",
     "reflect-metadata": "0.1.13",
-    "ua-parser-js": "0.7.27"
+    "ua-parser-js": "0.7.28"
   },
   "devDependencies": {
     "@nestjs/cli": "7.6.0",
