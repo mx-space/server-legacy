@@ -5699,10 +5699,10 @@ fastify-formbody@5.0.0:
   dependencies:
     fastify-plugin "^2.3.2"
 
-fastify-multipart@4.0.3:
-  version "4.0.3"
-  resolved "https://registry.yarnpkg.com/fastify-multipart/-/fastify-multipart-4.0.3.tgz#1af03a49e9259b1605090b882938c3f9409fca71"
-  integrity sha512-RyouqARMlSgTudcPCDmxVN07YEDWojT5iQ+AkjX7DcQ+Y65hHzrOqrNveu5gs+lEIg5afGaH5ESHCNCOZYlveQ==
+fastify-multipart@4.0.4:
+  version "4.0.4"
+  resolved "https://registry.yarnpkg.com/fastify-multipart/-/fastify-multipart-4.0.4.tgz#6a91f79558da8e9d7ea130d169ed3b7f47d87669"
+  integrity sha512-YmOCAGFArFuUHr7TFOAEuvl1Uqbrn1Or+qR5P/Ht8qKT6e3XLgY5h32ZuhU/hJNJz6PFi5P17g0wG70oVNCT6w==
   dependencies:
     busboy "^0.3.1"
     deepmerge "^4.2.2"
