@@ -45,6 +45,7 @@ export class AppController {
   }
 
   @Post('like_this')
+  @CacheTTL(0.001)
   async likeThis(
     @Req()
     req: FastifyReply,
@@ -75,6 +76,7 @@ export class AppController {
   }
 
   @Get('like_this')
+  @CacheTTL(0.001)
   async getLikeNumber() {
     const doc = await this.optionModel.findOne({ name: 'like' }).lean()
     return doc ? doc.value : 0

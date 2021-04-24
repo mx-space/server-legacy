@@ -24,4 +24,4 @@ export enum CacheKeys {
   RSS = 'rss',
 }
 
-export const CACHE_KEY_PREFIX = 'mx-cache:'
+export const CACHE_KEY_PREFIX = 'mx_cache:'
