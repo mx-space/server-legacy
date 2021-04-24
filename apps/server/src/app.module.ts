@@ -19,6 +19,7 @@ import {
 } from '@nestjs/common'
 import { APP_GUARD, APP_PIPE } from '@nestjs/core'
 import { GatewayModule } from 'apps/server/src/gateway/gateway.module'
+import { RedisModule } from 'nestjs-redis'
 import { SpiderGuard } from 'shared/core/guards/spider.guard'
 import { AnalyzeMiddleware } from '../../../shared/core/middlewares/analyze.middleware'
 import { SkipBrowserDefaultRequestMiddleware } from '../../../shared/core/middlewares/favicon.middleware'
@@ -57,6 +58,7 @@ if (process.env.NODE_ENV === 'production') {
     MasterModule,
     SharedModule,
     GlobalModule,
+    RedisModule,
   ],
   providers,
   controllers: [AppController],

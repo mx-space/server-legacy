@@ -75,7 +75,6 @@
     "dayjs": "1.10.4",
     "ejs": "3.1.6",
     "fastify-multipart": "4.0.5",
-    "fastify-secure-session": "2.3.1",
     "fastify-swagger": "4.5.1",
     "file-type": "16.3.0",
     "get-folder-size": "2.0.1",

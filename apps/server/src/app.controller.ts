@@ -7,6 +7,8 @@
  * @Copyright
  */
 
+import { RedisNames } from '@libs/common/redis/redis.types'
+import { Option } from '@libs/db/models/option.model'
 import {
   CacheTTL,
   CACHE_MANAGER,
@@ -16,17 +18,16 @@ import {
   Inject,
   Post,
   Req,
-  Res,
+  UnprocessableEntityException,
 } from '@nestjs/common'
-import { Cache } from 'cache-manager'
 import { ApiTags } from '@nestjs/swagger'
 import { ReturnModelType } from '@typegoose/typegoose'
+import { Cache } from 'cache-manager'
 import { FastifyReply } from 'fastify'
-import { Session } from 'fastify-secure-session'
+import { RedisService } from 'nestjs-redis'
 import { InjectModel } from 'nestjs-typegoose'
-import { Option } from '@libs/db/models/option.model'
-import { getIp } from '../../../shared/utils/ip'
 import { CACHE_KEY_PREFIX } from 'shared/constants'
+import { getIp } from '../../../shared/utils/ip'
 
 @Controller()
 @ApiTags('Root Routes')
@@ -34,6 +35,7 @@ export class AppController {
   constructor(
     @InjectModel(Option)
     private readonly optionModel: ReturnModelType<typeof Option>,
+    private readonly redisService: RedisService,
     @Inject(CACHE_MANAGER) private cacheManager: Cache,
   ) {}
 
@@ -45,23 +47,17 @@ export class AppController {
   @Post('like_this')
   async likeThis(
     @Req()
-    req: FastifyReply & { session: Session },
-    @Res() res: FastifyReply,
+    req: FastifyReply,
   ) {
     const ip = getIp(req as any)
-    if (!req.session.get('like_this')) {
-      req.session.set('like_this', [ip])
+    const redis = this.redisService.getClient(RedisNames.Like)
+    const isLikedBefore = await redis.sismember('site', ip)
+    if (isLikedBefore) {
+      throw new UnprocessableEntityException('一天一次就够啦')
     } else {
-      const liked = req.session.get('like_this') as string[]
-      if (liked.includes(ip)) {
-        return res
-          .status(422)
-          .header('Access-Control-Allow-Origin', req.headers['origin'])
-          .header('Access-Control-Allow-Credentials', true)
-          .send({ message: '一天一次就够啦' })
-      }
-      req.session.set('like_this', liked.concat(ip))
+      redis.sadd('site', ip)
     }
+
     await this.optionModel.updateOne(
       {
         name: 'like',
@@ -75,10 +71,7 @@ export class AppController {
       { upsert: true },
     )
 
-    res
-      .header('Access-Control-Allow-Origin', req.headers['origin'])
-      .header('Access-Control-Allow-Credentials', true)
-      .send('OK')
+    return 'OK'
   }
 
   @Get('like_this')

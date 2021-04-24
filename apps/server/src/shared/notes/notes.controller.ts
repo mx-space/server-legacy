@@ -11,8 +11,7 @@ import {
   Post,
   Put,
   Query,
-  Req,
-  Res,
+  UnprocessableEntityException,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common'
@@ -32,8 +31,6 @@ import {
 } from 'apps/server/src/shared/notes/dto/note.dto'
 import { Cache } from 'cache-manager'
 import { NoteSecretInterceptor } from 'core/interceptors/secret.interceptors'
-import { FastifyReply } from 'fastify'
-import { Session } from 'fastify-secure-session'
 import { Auth } from 'shared/core/decorators/auth.decorator'
 import { Master } from 'shared/core/decorators/guest.decorator'
 import { CannotFindException } from 'shared/core/exceptions/cant-find.exception'
@@ -222,33 +219,13 @@ export class NotesController {
   @Get('like/:id')
   async likeNote(
     @Param() param: IntIdOrMongoIdDto,
-    @Req() req: FastifyReply & { session: Session },
-    @Res() res: FastifyReply,
     @IpLocation() location: IpRecord,
   ) {
     const isLiked = !(await this.noteService.likeNote(param.id, location.ip))
-    if (typeof param.id === 'number') {
-      const { _id } = await this.noteService.findOne({ nid: param.id })
-      param.id = _id
+    if (!isLiked) {
+      throw new UnprocessableEntityException('你已经喜欢过啦!')
     }
-    const liked = req.session.get('liked') as undefined | string[]
-    if (!liked && !isLiked) {
-      req.session.set('liked', [param.id])
-    } else {
-      if (isLiked || liked.includes(param.id as string)) {
-        return res
-          .status(422)
-          .header('Access-Control-Allow-Origin', req.headers['origin'])
-          .header('Access-Control-Allow-Credentials', true)
-          .send({ message: '一天一次就够啦' })
-      }
-      req.session.set('liked', liked.concat(param.id as string))
-    }
-
-    res
-      .header('Access-Control-Allow-Origin', req.headers['origin'])
-      .header('Access-Control-Allow-Credentials', true)
-      .send('OK')
+    return 'OK'
   }
 
   @Delete(':id')

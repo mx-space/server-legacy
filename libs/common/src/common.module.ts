@@ -66,6 +66,7 @@ const CacheModuleDynamic = CacheModule.registerAsync({
         keyPrefix: 'mx_' + RedisNames.LoginRecord + '_',
       },
       { name: RedisNames.MaxOnlineCount, keyPrefix: 'mx_count' },
+      // { name: RedisNames.LikeThisSite, keyPrefix: 'mx_like_site' },
     ]),
     TasksModule,
   ],
