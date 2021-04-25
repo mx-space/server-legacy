@@ -46,6 +46,7 @@ export class AppController {
 
   @Post('like_this')
   @CacheTTL(0.001)
+  @HttpCode(204)
   async likeThis(
     @Req()
     req: FastifyReply,
@@ -72,7 +73,7 @@ export class AppController {
       { upsert: true },
     )
 
-    return 'OK'
+    return
   }
 
   @Get('like_this')

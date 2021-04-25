@@ -57,11 +57,11 @@ export class RecentlyService extends BaseService<Recently> {
   // @ts-ignore
   async delete(id: string) {
     try {
-      await this.model.deleteOne({
+      const { deletedCount } = await this.model.deleteOne({
         _id: id,
       })
 
-      return true
+      return deletedCount > 0
     } catch {
       return false
     }

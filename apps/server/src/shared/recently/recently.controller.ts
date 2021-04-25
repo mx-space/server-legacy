@@ -60,7 +60,7 @@ export class RecentlyController {
   async del(@Param() { id }: MongoIdDto) {
     const res = await this.service.delete(id)
     if (!res) {
-      throw new UnprocessableEntityException('删除失败')
+      throw new UnprocessableEntityException('删除失败, 条目不存在')
     }
     process.nextTick(() => {
       this.gateway.broadcast(EventTypes.RECENTLY_DElETE, { id })

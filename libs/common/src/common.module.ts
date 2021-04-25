@@ -26,13 +26,15 @@ const CacheProvider = {
 if (process.env.NODE_ENV === 'production') {
   providers.push(CacheProvider)
 }
+// for debug
+// providers.push(CacheProvider)
 
 const CacheModuleDynamic = CacheModule.registerAsync({
   useFactory: () => ({
     store: redisStore,
     host: 'localhost',
     port: 6379,
-    ttl: 30,
+    ttl: 5,
     max: 300,
   }),
 })

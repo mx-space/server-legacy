@@ -59,8 +59,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
         (exception as any)?.response?.message ||
         (exception as any)?.message ||
         '未知错误',
-      timestamp: new Date().toISOString(),
-      path: decodeURI(request.raw.url),
+      // timestamp: new Date().toISOString(),
     })
   }
 }
