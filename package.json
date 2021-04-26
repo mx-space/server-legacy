@@ -105,7 +105,7 @@
     "@types/bcrypt": "3.0.1",
     "@types/cache-manager": "3.4.0",
     "@types/ejs": "3.0.6",
-    "@types/jest": "26.0.22",
+    "@types/jest": "26.0.23",
     "@types/js-yaml": "3.12.6",
     "@types/lodash": "4.14.168",
     "@types/mongoose": "5.10.5",
