@@ -29,6 +29,7 @@ import { Readable } from 'stream'
 import { AdminEventsGateway } from '../../gateway/admin/events.gateway'
 import { EventTypes, NotificationTypes } from '../../gateway/events.types'
 import getFolderSize = require('get-folder-size')
+// import {getFolderSize} from 'get-folder-size'
 
 @Injectable({ scope: Scope.REQUEST })
 export class BackupsService {

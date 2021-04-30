@@ -7,7 +7,7 @@ import {
 import { ReturnModelType } from '@typegoose/typegoose'
 import { execSync } from 'child_process'
 import { writeFileSync } from 'fs'
-import { safeDump } from 'js-yaml'
+import { dump } from 'js-yaml'
 import { omit } from 'lodash'
 import { Types } from 'mongoose'
 import { InjectModel } from 'nestjs-typegoose'
@@ -224,7 +224,7 @@ export class HelperService {
       title,
       ...omit(property.meta, ['created', 'modified', 'title']),
     }
-    const toYaml = safeDump(header, { skipInvalid: true })
+    const toYaml = dump(header, { skipInvalid: true })
     const res = `
 ---
 ${toYaml.trim()}

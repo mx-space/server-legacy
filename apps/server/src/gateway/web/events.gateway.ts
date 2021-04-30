@@ -9,24 +9,21 @@
 
 import { RedisNames } from '@libs/common/redis/redis.types'
 import {
+  ConnectedSocket,
   GatewayMetadata,
   MessageBody,
   OnGatewayConnection,
   OnGatewayDisconnect,
   SubscribeMessage,
   WebSocketGateway,
-  ConnectedSocket,
-  WsResponse,
 } from '@nestjs/websockets'
 import { plainToClass } from 'class-transformer'
 import { validate } from 'class-validator'
-import dayjs = require('dayjs')
 import { RedisService } from 'nestjs-redis'
-import { from, Observable } from 'rxjs'
-import { map } from 'rxjs/operators'
 import { BaseGateway } from '../base.gateway'
 import { EventTypes } from '../events.types'
 import { DanmakuDto } from './dtos/danmaku.dto'
+import dayjs = require('dayjs')
 @WebSocketGateway<GatewayMetadata>({
   namespace: 'web',
 })
