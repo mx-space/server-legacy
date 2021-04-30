@@ -1812,18 +1812,18 @@
     lodash "4.17.21"
     path-to-regexp "3.2.0"
 
-"@nestjs/testing@7.6.14":
-  version "7.6.14"
-  resolved "https://registry.yarnpkg.com/@nestjs/testing/-/testing-7.6.14.tgz#b1093250157a54fe6b27ec164bdbdc0d26dcd841"
-  integrity sha512-sHOPsmzCPQUlQtfpH5WK+eILk8lRMdr/k3MrkuprS9Y1O4wmPt81ohspvsCXxLQ4U65i6cYR9y/C2uefvnx4rg==
+"@nestjs/testing@7.6.15":
+  version "7.6.15"
+  resolved "https://registry.yarnpkg.com/@nestjs/testing/-/testing-7.6.15.tgz#eed34846a8b2b5ddb0ff6bd74cdcb4344c364c40"
+  integrity sha512-AWr8stnRoS0yCU/EotAJKveYXm1XSB4ZT+ReqFDXhPyqC1ppOfU+zZuCjQlQHorMzidsVHsAstK5/rUsXnrZUQ==
   dependencies:
     optional "0.1.4"
     tslib "2.1.0"
 
-"@nestjs/websockets@7.6.12":
-  version "7.6.12"
-  resolved "https://registry.yarnpkg.com/@nestjs/websockets/-/websockets-7.6.12.tgz#d053967d972fe5bd86bb83cbf82db86116e0eaf5"
-  integrity sha512-vR/fI1EXn1jXjxc6kcyVWVo1nRAm1pjm0Z+Bw6cgYb/Fn9JWzu45K941dc6+chfsK8WPF+DJElX8MBXXDsVNmA==
+"@nestjs/websockets@7.6.15":
+  version "7.6.15"
+  resolved "https://registry.yarnpkg.com/@nestjs/websockets/-/websockets-7.6.15.tgz#93990ca6af307103872a125889edb657edc8b0aa"
+  integrity sha512-VsM8Cz4Rkwz8jtngS3AbJB0+af1vbeY38YKMKt6MSL/3eEnYlRwQi1c69ZA++i+zYRYoZgwoev+ONaBIHZVA4w==
   dependencies:
     iterare "1.2.1"
     tslib "2.1.0"
