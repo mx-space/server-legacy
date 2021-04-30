@@ -197,7 +197,7 @@ export class PostsController {
     const { ip } = location
     const { id } = query
     const res = await this.service.updateLikeCount(id, ip)
-    if (!res) {
+    if (res) {
       throw new UnprocessableEntityException('你已经支持过啦!')
     }
     return 'OK'

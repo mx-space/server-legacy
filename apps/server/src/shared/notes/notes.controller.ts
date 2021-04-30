@@ -221,8 +221,8 @@ export class NotesController {
     @Param() param: IntIdOrMongoIdDto,
     @IpLocation() location: IpRecord,
   ) {
-    const isLiked = !(await this.noteService.likeNote(param.id, location.ip))
-    if (!isLiked) {
+    const isLiked = await this.noteService.likeNote(param.id, location.ip)
+    if (isLiked) {
       throw new UnprocessableEntityException('你已经喜欢过啦!')
     }
     return 'OK'
