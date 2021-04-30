@@ -61,7 +61,7 @@
     "@nestjs/platform-socket.io": "7.6.15",
     "@nestjs/schedule": "0.4.3",
     "@nestjs/swagger": "4.8.0",
-    "@nestjs/websockets": "7.6.12",
+    "@nestjs/websockets": "7.6.15",
     "@typegoose/auto-increment": "0.6.0",
     "@typegoose/typegoose": "7.6.0",
     "@types/mkdirp": "1.0.1",
@@ -101,7 +101,7 @@
   "devDependencies": {
     "@nestjs/cli": "7.6.0",
     "@nestjs/schematics": "7.3.1",
-    "@nestjs/testing": "7.6.14",
+    "@nestjs/testing": "7.6.15",
     "@types/bcrypt": "3.0.1",
     "@types/cache-manager": "3.4.0",
     "@types/ejs": "3.0.6",
