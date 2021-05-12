@@ -107,7 +107,7 @@
     "@types/ejs": "3.0.6",
     "@types/jest": "26.0.23",
     "@types/js-yaml": "4.0.1",
-    "@types/lodash": "4.14.168",
+    "@types/lodash": "4.14.169",
     "@types/mongoose": "5.10.5",
     "@types/nanoid": "2.1.0",
     "@types/node": "14.14.43",
