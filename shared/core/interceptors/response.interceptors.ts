@@ -13,8 +13,12 @@ import {
   NestInterceptor,
   UnprocessableEntityException,
 } from '@nestjs/common'
+import { isArrayLike, isObjectLike } from 'lodash'
 import { Observable } from 'rxjs'
 import { map } from 'rxjs/operators'
+import { isDev } from 'utils/index'
+
+const snakecaseKeys = require('snakecase-keys')
 export interface Response<T> {
   data: T
 }
@@ -42,6 +46,36 @@ export class ResponseInterceptor<T> implements NestInterceptor<T, Response<T>> {
           ? { ok: 1, ...reorganize(data) }
           : data,
       ),
+    )
+  }
+}
+
+export class JSONSerializeInterceptor implements NestInterceptor {
+  intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
+    return next.handle().pipe(
+      map(function process(data) {
+        if (!isObjectLike(data)) {
+          return data
+        }
+        let handled = data
+        if (data.toJSON) {
+          handled = data.toJSON()
+        }
+
+        if (handled.data) {
+          if (handled.data.toJSON) {
+            handled.data = handled.data.toJSON()
+          } else if (isArrayLike(handled.data)) {
+            handled.data = handled.data.map((item) =>
+              item.toJSON ? item.toJSON() : item,
+            )
+          }
+        }
+
+        delete data._v
+
+        return snakecaseKeys(handled, { deep: true })
+      }),
     )
   }
 }

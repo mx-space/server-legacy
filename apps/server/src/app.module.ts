@@ -17,8 +17,9 @@ import {
   RequestMethod,
   ValidationPipe,
 } from '@nestjs/common'
-import { APP_GUARD, APP_PIPE } from '@nestjs/core'
+import { APP_GUARD, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core'
 import { GatewayModule } from 'apps/server/src/gateway/gateway.module'
+import { JSONSerializeInterceptor } from 'core/interceptors/response.interceptors'
 import { RedisModule } from 'nestjs-redis'
 import { SpiderGuard } from 'shared/core/guards/spider.guard'
 import { AnalyzeMiddleware } from '../../../shared/core/middlewares/analyze.middleware'
@@ -39,6 +40,10 @@ const providers: Provider<any>[] = [
         errorHttpStatusCode: 422,
       })
     },
+  },
+  {
+    provide: APP_INTERCEPTOR,
+    useClass: JSONSerializeInterceptor,
   },
 ]
 
