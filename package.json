@@ -96,6 +96,7 @@
     "picgo": "1.4.21",
     "pluralize": "8.0.0",
     "reflect-metadata": "0.1.13",
+    "snakecase-keys": "4.0.2",
     "ua-parser-js": "0.7.28"
   },
   "devDependencies": {
