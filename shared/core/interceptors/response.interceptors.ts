@@ -53,29 +53,49 @@ export class ResponseInterceptor<T> implements NestInterceptor<T, Response<T>> {
 export class JSONSerializeInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     return next.handle().pipe(
-      map(function process(data) {
-        if (!isObjectLike(data)) {
-          return data
-        }
-        let handled = data
-        if (data.toJSON) {
-          handled = data.toJSON()
-        }
-
-        if (handled.data) {
-          if (handled.data.toJSON) {
-            handled.data = handled.data.toJSON()
-          } else if (isArrayLike(handled.data)) {
-            handled.data = handled.data.map((item) =>
-              item.toJSON ? item.toJSON() : item,
-            )
-          }
-        }
-
-        delete data._v
-
-        return snakecaseKeys(handled, { deep: true })
+      map((data) => {
+        return this.serialize(data)
       }),
     )
+  }
+
+  private serialize(obj: any) {
+    if (!isObjectLike(obj)) {
+      return obj
+    }
+
+    if (isArrayLike(obj)) {
+      obj = Array.from(obj).map((i) => {
+        return this.serialize(i)
+      })
+    } else {
+      // if is Object
+
+      if (obj.toJSON || obj.toObject) {
+        obj = obj.toJSON?.() ?? obj.toObject?.()
+      }
+
+      const keys = Object.keys(obj)
+      for (const key of keys) {
+        const val = obj[key]
+        // first
+        if (!isObjectLike(val)) {
+          continue
+        }
+
+        if (val.toJSON) {
+          obj[key] = val.toJSON()
+          // second
+          if (!isObjectLike(obj[key])) {
+            continue
+          }
+        }
+        obj[key] = this.serialize(obj[key])
+        // obj[key] = snakecaseKeys(obj[key])
+      }
+      delete obj._v
+      obj = snakecaseKeys(obj)
+    }
+    return obj
   }
 }
