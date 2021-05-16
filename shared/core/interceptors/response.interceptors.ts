@@ -93,8 +93,8 @@ export class JSONSerializeInterceptor implements NestInterceptor {
         obj[key] = this.serialize(obj[key])
         // obj[key] = snakecaseKeys(obj[key])
       }
-      delete obj._v
       obj = snakecaseKeys(obj)
+      delete obj.v
     }
     return obj
   }
