@@ -1,17 +1,12 @@
 import { Logger } from '@nestjs/common'
 import { NestFactory } from '@nestjs/core'
+import { NestExpressApplication } from '@nestjs/platform-express'
 import { isDev } from 'shared/utils'
 import { GraphqlModule } from './graphql.module'
-import {
-  FastifyAdapter,
-  NestFastifyApplication,
-} from '@nestjs/platform-fastify'
+
 const PORT = 2331
 async function bootstrap() {
-  const app = await NestFactory.create<NestFastifyApplication>(
-    GraphqlModule,
-    new FastifyAdapter(),
-  )
+  const app = await NestFactory.create<NestExpressApplication>(GraphqlModule)
 
   await app.listen(PORT, async () => {
     if (isDev) {
