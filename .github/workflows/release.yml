@@ -9,37 +9,15 @@ jobs:
   create_release:
     name: Upload Release Asset
     runs-on: ubuntu-latest
-
-    steps:
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
-          draft: false
-          prerelease: false
-      - name: Output Release URL File
-        run: echo "${{ steps.create_release.outputs.upload_url }}" > release_url.txt
-      - name: Save Release URL File for publish
-        uses: actions/upload-artifact@v2
-        with:
-          name: release_url
-          path: release_url.txt
-
-  build_and_upload:
-    needs: [create_release]
-    name: build and upload
     strategy:
       matrix:
         os: [ubuntu-latest]
     runs-on: ${{ matrix.os }}
     env:
       KERNEL: $(uname | tr '[:upper:]' '[:lower:]')
+
     steps:
-      - name: Checkout code
+      - name: Checkout
         uses: actions/checkout@v2
       - uses: actions/setup-node@v2
         with:
@@ -47,22 +25,15 @@ jobs:
       - name: Build project
         run: |
           sh release.sh
-      - name: Load Release URL File from release job
-        uses: actions/download-artifact@v2
+      - name: Build
+        run: echo ${{ github.sha }} > Release.txt
+      - name: Test
+        run: cat Release.txt
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
         with:
-          name: release_url
-      - name: Get Release File Name & Upload URL
-        id: get_release_info
-        run: |
-          value=`cat release_url/release_url.txt`
-          echo ::set-output name=upload_url::$value
-      - name: Upload Release Asset
-        id: upload-release-asset
-        uses: actions/upload-release-asset@v1
+          files: |
+            release.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.get_release_info.outputs.upload_url }}
-          asset_path: ./release.zip
-          asset_name: release_ubuntu_amd64.zip
-          asset_content_type: application/zip
