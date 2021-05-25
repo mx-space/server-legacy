@@ -29,13 +29,13 @@ export class RecentlyService extends BaseService<Recently> {
       .find(
         after
           ? {
-              _id: {
-                $gt: after,
-              },
-            }
+            _id: {
+              $gt: after,
+            },
+          }
           : before
-          ? { _id: { $lt: before } }
-          : {},
+            ? { _id: { $lt: before } }
+            : {},
       )
       .limit(size)
       .sort({ _id: -1 })

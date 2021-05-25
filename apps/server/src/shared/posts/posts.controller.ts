@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  HttpCode,
   NotFoundException,
   Param,
   Post,
@@ -12,7 +13,7 @@ import {
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common'
-import { ApiOperation, ApiSecurity, ApiTags } from '@nestjs/swagger'
+import { ApiOperation, ApiTags } from '@nestjs/swagger'
 import { RolesGuard } from 'apps/server/src/auth/roles.guard'
 import { MongoIdDto } from 'apps/server/src/shared/base/dto/id.dto'
 import { SearchDto } from 'apps/server/src/shared/base/dto/search.dto'
@@ -34,12 +35,11 @@ import { PostsService } from './posts.service'
 @ApiTags('Post Routes')
 @UseGuards(RolesGuard)
 @UseInterceptors(PermissionInterceptor)
-@ApiSecurity('bearer')
 export class PostsController {
   constructor(
     private readonly service: PostsService,
     private readonly webgateway: WebEventsGateway,
-  ) {}
+  ) { }
 
   @Get()
   @ApiOperation({ summary: '获取全部文章带分页器' })
@@ -84,7 +84,7 @@ export class PostsController {
       throw new NotFoundException('该文章未找到 (｡ŏ_ŏ)')
     }
     this.service.updateReadCount(postDocument, location.ip)
-    return postDocument
+    return postDocument.toObject()
   }
 
   @Get(':id')
@@ -92,7 +92,7 @@ export class PostsController {
   async getById(@Param() query: MongoIdDto, @IpLocation() location: IpRecord) {
     const doc = await this.service.findPostById(query.id)
     this.service.updateReadCount(doc, location.ip)
-    return doc
+    return doc.toObject()
   }
 
   @Post()
@@ -135,7 +135,7 @@ export class PostsController {
       this.service.RecordImageDimensions(newPostDocument._id)
       resolve(null)
     })
-    return newPostDocument
+    return newPostDocument.toObject()
   }
 
   @Put(':id')
@@ -164,11 +164,12 @@ export class PostsController {
   @Delete(':id')
   @Auth()
   @ApiOperation({ summary: '删除一篇文章' })
+  @HttpCode(204)
   async deletePost(@Param() params: MongoIdDto) {
     const { id } = params
     await this.service.deletePost(id)
     this.webgateway.broadcast(EventTypes.POST_DELETE, id)
-    return 'OK'
+    return
   }
 
   @Get('search')
@@ -190,6 +191,7 @@ export class PostsController {
     )
   }
   @Get('_thumbs-up')
+  @HttpCode(204)
   async thumbsUpArticle(
     @Query() query: MongoIdDto,
     @IpLocation() location: IpRecord,
@@ -200,6 +202,6 @@ export class PostsController {
     if (res) {
       throw new UnprocessableEntityException('你已经支持过啦!')
     }
-    return 'OK'
+    return
   }
 }
