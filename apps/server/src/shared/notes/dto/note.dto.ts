@@ -40,11 +40,11 @@ export class NoteDto {
 
   @IsOptional()
   @IsBoolean()
-  hasMemory?: boolean
+  hasMemory?: boolean = false
 
   @IsBoolean()
   @IsOptional()
-  hide?: boolean
+  hide?: boolean = false
 
   @IsNilOrString()
   @IsOptional()
@@ -59,6 +59,7 @@ export class NoteDto {
 
   @IsOptional()
   @IsNotEmptyObject()
+  @Transform(({ value }) => undefined)
   options?: Record<string, unknown>
 
   @ValidateNested({ each: true })

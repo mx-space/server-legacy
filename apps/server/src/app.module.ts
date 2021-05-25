@@ -22,6 +22,8 @@ import { GatewayModule } from 'apps/server/src/gateway/gateway.module'
 import { JSONSerializeInterceptor } from 'core/interceptors/response.interceptors'
 import { RedisModule } from 'nestjs-redis'
 import { SpiderGuard } from 'shared/core/guards/spider.guard'
+import { isDev } from 'utils/index'
+
 import { AnalyzeMiddleware } from '../../../shared/core/middlewares/analyze.middleware'
 import { SkipBrowserDefaultRequestMiddleware } from '../../../shared/core/middlewares/favicon.middleware'
 import { SecurityMiddleware } from '../../../shared/core/middlewares/security.middleware'
@@ -38,6 +40,9 @@ const providers: Provider<any>[] = [
         transform: true,
         whitelist: true,
         errorHttpStatusCode: 422,
+        forbidUnknownValues: true,
+        enableDebugMessages: isDev,
+        stopAtFirstError: true
       })
     },
   },

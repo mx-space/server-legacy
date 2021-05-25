@@ -9,14 +9,10 @@ import {
   Put,
   Query,
   UnprocessableEntityException,
-  UseGuards,
+  UseGuards
 } from '@nestjs/common'
-import { AuthGuard } from '@nestjs/passport'
-import { ApiQuery, ApiSecurity, ApiTags } from '@nestjs/swagger'
-import { Types } from 'mongoose'
+import { ApiQuery, ApiTags } from '@nestjs/swagger'
 import { RolesGuard } from 'apps/server/src/auth/roles.guard'
-import { Master } from 'shared/core/decorators/guest.decorator'
-import { CannotFindException } from 'shared/core/exceptions/cant-find.exception'
 import { MongoIdDto } from 'apps/server/src/shared/base/dto/id.dto'
 import { CategoriesService } from 'apps/server/src/shared/categories/categories.service'
 import {
@@ -24,8 +20,12 @@ import {
   CategoryType,
   MultiCategoriesQueryDto,
   MultiQueryTagAndCategoryDto,
-  SlugOrIdDto,
+  SlugOrIdDto
 } from 'apps/server/src/shared/categories/dto/category.dto'
+import { Auth } from 'core/decorators/auth.decorator'
+import { Types } from 'mongoose'
+import { Master } from 'shared/core/decorators/guest.decorator'
+import { CannotFindException } from 'shared/core/exceptions/cant-find.exception'
 import { PostsService } from '../posts/posts.service'
 
 @Controller('categories')
@@ -35,7 +35,7 @@ export class CategoriesController {
   constructor(
     private readonly service: CategoriesService,
     private readonly postService: PostsService,
-  ) {}
+  ) { }
 
   @Get()
   async getCategories(@Query() query: MultiCategoriesQueryDto) {
@@ -46,32 +46,32 @@ export class CategoriesController {
       // })
       return joint
         ? await Promise.all(
-            ids.map(async (id) => {
-              return await this.postService.find(
-                { categoryId: id },
-                {
-                  select: 'title slug _id categoryId created modified',
-                  sort: { created: -1 },
-                },
-              )
-            }),
-          )
+          ids.map(async (id) => {
+            return await this.postService.find(
+              { categoryId: id },
+              {
+                select: 'title slug _id categoryId created modified',
+                sort: { created: -1 },
+              },
+            )
+          }),
+        )
         : await Promise.all(
-            ids.map(async (id) => {
-              const posts = await this.postService.find(
-                { categoryId: id },
-                {
-                  select: 'title slug _id created modified',
-                  sort: { created: -1 },
-                },
-              )
-              const category = await this.service.findById(id).lean()
+          ids.map(async (id) => {
+            const posts = await this.postService.find(
+              { categoryId: id },
+              {
+                select: 'title slug _id created modified',
+                sort: { created: -1 },
+              },
+            )
+            const category = await this.service.findById(id).lean()
 
-              return {
-                category: { ...category, children: posts },
-              }
-            }),
-          )
+            return {
+              category: { ...category, children: posts },
+            }
+          }),
+        )
     }
 
     return type === CategoryType.Category
@@ -121,16 +121,14 @@ export class CategoriesController {
   }
 
   @Post()
-  @UseGuards(AuthGuard('jwt'))
-  @ApiSecurity('bearer')
+  @Auth()
   async createCategory(@Body() body: CategoryDto) {
     const { name, slug } = body
     return this.service.createNew({ name, slug: slug ?? name })
   }
 
   @Put(':id')
-  @UseGuards(AuthGuard('jwt'))
-  @ApiSecurity('bearer')
+  @Auth()
   async modifyCategory(@Param() params: MongoIdDto, @Body() body: CategoryDto) {
     const { type, slug, name } = body
     const { id } = params
@@ -143,8 +141,7 @@ export class CategoriesController {
   }
 
   @Delete(':id')
-  @UseGuards(AuthGuard('jwt'))
-  @ApiSecurity('bearer')
+  @Auth()
   async deleteCategory(@Param() params: MongoIdDto) {
     const { id } = params
     const category = await this.service.findById(id)

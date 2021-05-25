@@ -34,6 +34,12 @@
       ],
       "utils/*": [
         "shared/utils/*"
+      ],
+      "core": [
+        "shared/core"
+      ],
+      "utils": [
+        "shared/utils"
       ]
     }
   },
