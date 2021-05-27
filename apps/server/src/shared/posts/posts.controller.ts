@@ -84,7 +84,7 @@ export class PostsController {
       throw new NotFoundException('该文章未找到 (｡ŏ_ŏ)')
     }
     this.service.updateReadCount(postDocument, location.ip)
-    return postDocument.toObject()
+    return postDocument
   }
 
   @Get(':id')
@@ -92,7 +92,7 @@ export class PostsController {
   async getById(@Param() query: MongoIdDto, @IpLocation() location: IpRecord) {
     const doc = await this.service.findPostById(query.id)
     this.service.updateReadCount(doc, location.ip)
-    return doc.toObject()
+    return doc
   }
 
   @Post()
@@ -135,7 +135,7 @@ export class PostsController {
       this.service.RecordImageDimensions(newPostDocument._id)
       resolve(null)
     })
-    return newPostDocument.toObject()
+    return newPostDocument
   }
 
   @Put(':id')
