@@ -103,10 +103,4 @@ export class AuthController {
     this.adminGateway.handleTokenExpired(id)
     return 'OK'
   }
-
-  @Auth()
-  @Get('/oauth/github')
-  async verifyGithubOAuth(@Query() query: OAuthVerifyQueryDto) {
-    const { code } = query
-  }
 }
