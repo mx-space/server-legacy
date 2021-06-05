@@ -4,7 +4,11 @@ import {
   FileType,
   getFileType,
 } from '@libs/db/models/file.model'
-import { BadRequestException, NotFoundException } from '@nestjs/common'
+import {
+  BadRequestException,
+  NotFoundException,
+  UnprocessableEntityException,
+} from '@nestjs/common'
 import { ReturnModelType } from '@typegoose/typegoose'
 import * as crypto from 'crypto'
 import { FastifyRequest } from 'fastify'
@@ -39,41 +43,36 @@ export class UploadsService {
     : join(DATA_DIR, '/uploads')
   public rootPath = UploadsService.rootPath
 
-  public validMultipartField(req: FastifyRequest) {
-    if (!req.isMultipart()) {
+  public async validMultipartField(req: FastifyRequest) {
+    const data = await req.file()
+
+    if (!data) {
       throw new BadRequestException('仅供上传文件!')
     }
-    if (!(req.body as any).file) {
+    if (data.fieldname != 'file') {
       throw new BadRequestException('字段必须为 file')
     }
-    // @ts-ignore
-    return req.body.file as [
-      {
-        data: Buffer
-        filename: string
-        encoding: string
-        mimetype: string
-        limit: boolean
-      },
-    ]
+
+    return data
   }
-  validImage(req: FastifyRequest) {
-    const fileInfo = this.validMultipartField(req)[0]
+  async validImage(req: FastifyRequest) {
+    const fileInfo = await this.validMultipartField(req)
     if (!fileInfo) {
       throw new BadRequestException('文件丢失了')
     }
-    if (fileInfo.limit) {
-      throw new BadRequestException('文件不符合, 大小不得超过 6M')
+    if (!fileInfo.mimetype.startsWith('image')) {
+      throw new UnprocessableEntityException('文件必须为图片')
     }
     return fileInfo
   }
 
-  async saveImage(fileInfo, type = FileType.IMAGE) {
-    const { data, filename /* , mimetype, limit  */ } = fileInfo
+  async saveImage(
+    fileInfo: { data: Buffer; filename: string },
+    type = FileType.IMAGE,
+  ) {
+    const { data, filename } = fileInfo
     const { ext, mime } = await fromBuffer(data)
-    if (!mime.match(/^image/)) {
-      throw new BadRequestException('仅能存储图片格式')
-    }
+
     const hashFilename = crypto.createHash('md5').update(filename).digest('hex')
     const dimensions = imageSize(data)
     await this.model.updateOne(

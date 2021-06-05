@@ -15,8 +15,7 @@ export const fastifyApp = new FastifyAdapter({
   logger: isDev,
   trustProxy: true,
 })
-fastifyApp.register((FastifyMultipart as any) as typeof _FastifyMultipart, {
-  addToBody: true,
+fastifyApp.register(FastifyMultipart as any as typeof _FastifyMultipart, {
   limits: {
     fields: 10, // Max number of non-file fields
     fileSize: 1024 * 1024 * 6, // limit size 6M

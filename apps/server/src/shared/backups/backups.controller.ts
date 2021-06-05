@@ -73,11 +73,13 @@ export class BackupsController {
   @ApiProperty({ description: '上传备份恢复' })
   @ApplyUpload({ description: 'Upload backup and restore' })
   async uploadAndRestore(@Req() req: FastifyRequest) {
-    const [file] = this.uploadService.validMultipartField(req)
-    if (file.mimetype !== 'application/zip') {
+    const data = await this.uploadService.validMultipartField(req)
+    const { mimetype } = data
+    if (mimetype !== 'application/zip') {
       throw new UnprocessableEntityException('备份格式必须为 application/zip')
     }
-    this.service.saveTempBackupByUpload(file.data)
+
+    this.service.saveTempBackupByUpload(await data.toBuffer())
 
     return 'OK'
   }

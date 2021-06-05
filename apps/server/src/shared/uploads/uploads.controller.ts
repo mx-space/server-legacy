@@ -44,8 +44,11 @@ export class UploadsController {
     @Query() query: FileTypeQueryDto,
   ) {
     const { type = FileType.IMAGE } = query
-    const fileInfo = this.service.validImage(req)
-    const data = await this.service.saveImage(fileInfo, type)
+    const file = await this.service.validImage(req)
+    const data = await this.service.saveImage(
+      { data: await file.toBuffer(), filename: file.filename },
+      type,
+    )
     return { ...data }
   }
 
