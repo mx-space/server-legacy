@@ -68,7 +68,7 @@
     "@types/mkdirp": "1.0.1",
     "apollo-server-express": "2.24.1",
     "bcrypt": "5.0.1",
-    "cache-manager": "3.4.3",
+    "cache-manager": "3.4.4",
     "cache-manager-redis-store": "2.0.0",
     "class-transformer": "0.4.0",
     "class-validator": "0.13.1",
