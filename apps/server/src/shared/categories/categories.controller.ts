@@ -9,7 +9,7 @@ import {
   Put,
   Query,
   UnprocessableEntityException,
-  UseGuards
+  UseGuards,
 } from '@nestjs/common'
 import { ApiQuery, ApiTags } from '@nestjs/swagger'
 import { RolesGuard } from 'apps/server/src/auth/roles.guard'
@@ -20,7 +20,7 @@ import {
   CategoryType,
   MultiCategoriesQueryDto,
   MultiQueryTagAndCategoryDto,
-  SlugOrIdDto
+  SlugOrIdDto,
 } from 'apps/server/src/shared/categories/dto/category.dto'
 import { Auth } from 'core/decorators/auth.decorator'
 import { Types } from 'mongoose'
@@ -35,7 +35,7 @@ export class CategoriesController {
   constructor(
     private readonly service: CategoriesService,
     private readonly postService: PostsService,
-  ) { }
+  ) {}
 
   @Get()
   async getCategories(@Query() query: MultiCategoriesQueryDto) {
@@ -46,32 +46,32 @@ export class CategoriesController {
       // })
       return joint
         ? await Promise.all(
-          ids.map(async (id) => {
-            return await this.postService.find(
-              { categoryId: id },
-              {
-                select: 'title slug _id categoryId created modified',
-                sort: { created: -1 },
-              },
-            )
-          }),
-        )
+            ids.map(async (id) => {
+              return await this.postService.find(
+                { categoryId: id },
+                {
+                  select: 'title slug _id categoryId created modified',
+                  sort: { created: -1 },
+                },
+              )
+            }),
+          )
         : await Promise.all(
-          ids.map(async (id) => {
-            const posts = await this.postService.find(
-              { categoryId: id },
-              {
-                select: 'title slug _id created modified',
-                sort: { created: -1 },
-              },
-            )
-            const category = await this.service.findById(id).lean()
+            ids.map(async (id) => {
+              const posts = await this.postService.find(
+                { categoryId: id },
+                {
+                  select: 'title slug _id created modified',
+                  sort: { created: -1 },
+                },
+              )
+              const category = await this.service.findById(id).lean()
 
-            return {
-              category: { ...category, children: posts },
-            }
-          }),
-        )
+              return {
+                category: { ...category, children: posts },
+              }
+            }),
+          )
     }
 
     return type === CategoryType.Category
@@ -132,12 +132,12 @@ export class CategoriesController {
   async modifyCategory(@Param() params: MongoIdDto, @Body() body: CategoryDto) {
     const { type, slug, name } = body
     const { id } = params
-    const res = await this.service.updateByIdAsync(id, {
+    await this.service.updateByIdAsync(id, {
       slug,
       type,
       name,
     })
-    return res
+    return await this.service.findById(id)
   }
 
   @Delete(':id')
