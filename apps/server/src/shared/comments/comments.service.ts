@@ -54,7 +54,7 @@ export class CommentsService extends BaseService<Comment> {
         Page: this.pageModel,
       }),
     )
-    return (map.get(type) as any) as ReturnModelType<
+    return map.get(type) as any as ReturnModelType<
       typeof Note | typeof Post | typeof Page
     >
   }
@@ -143,7 +143,7 @@ export class CommentsService extends BaseService<Comment> {
     if (children && children.length > 0) {
       await Promise.all(
         children.map(async (id) => {
-          await this.deleteComments((id as any) as string)
+          await this.deleteComments(id as any as string)
         }),
       )
     }
@@ -177,7 +177,7 @@ export class CommentsService extends BaseService<Comment> {
         limit: size,
         populate: [
           { path: 'parent', select: '-children' },
-          { path: 'ref', select: 'title _id slug' },
+          { path: 'ref', select: 'title _id slug nid' },
         ],
         sort: { created: -1 },
       },
