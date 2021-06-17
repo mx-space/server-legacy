@@ -16,6 +16,7 @@ import {
   Param,
   Post,
   Put,
+  Query,
   UseGuards,
 } from '@nestjs/common'
 import { AuthGuard } from '@nestjs/passport'
@@ -24,18 +25,25 @@ import { CannotFindException } from 'shared/core/exceptions/cant-find.exception'
 import { MongoIdDto } from 'apps/server/src/shared/base/dto/id.dto'
 import { PageService } from './page.service'
 
+import { PagerDto } from '../base/dto/pager.dto'
+
 @ApiTags('Page Routes')
 @Controller('pages')
 export class PageController {
   constructor(private readonly service: PageService) {}
 
   @Get()
-  async getPagesSummary() {
-    const pages = await this.service.find(
+  async getPagesSummary(@Query() query: PagerDto) {
+    const { size, select, page } = query
+
+    return await this.service.findWithPaginator(
       {},
-      { sort: { order: -1, created: 1 }, select: '-text -type' },
+      {
+        limit: size,
+        skip: (page - 1) * size,
+        select,
+      },
     )
-    return { data: pages }
   }
 
   @Get(':id')
