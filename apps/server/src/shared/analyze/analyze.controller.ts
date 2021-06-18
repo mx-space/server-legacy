@@ -23,8 +23,8 @@ export class AnalyzeController {
     const { from, to = new Date(), page = 1, size = 50 } = query
 
     const data = await this.service.getRangeAnalyzeData(from, to, {
-      limit: ~~size,
-      skip: (~~page - 1) * ~~size,
+      limit: size | 0,
+      skip: ((page | 0) - 1) * (size | 0),
     })
 
     return {
@@ -49,8 +49,8 @@ export class AnalyzeController {
     const today = new Date()
     const weekStart = getWeekStart(today)
     return await this.service.getRangeAnalyzeData(weekStart, today, {
-      limit: ~~size,
-      skip: (~~page - 1) * ~~size,
+      limit: size,
+      skip: (page - 1) * size,
     })
   }
 

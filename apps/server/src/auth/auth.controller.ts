@@ -12,7 +12,6 @@ import {
   Controller,
   Delete,
   Get,
-  HttpModule,
   HttpService,
   Post,
   Query,
@@ -23,18 +22,17 @@ import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger'
 import { Transform } from 'class-transformer'
 import {
   IsDate,
+  isMongoId,
   IsNotEmpty,
   IsOptional,
   IsString,
-  isMongoId,
 } from 'class-validator'
 import { Auth } from '../../../../shared/core/decorators/auth.decorator'
 import { Master } from '../../../../shared/core/decorators/guest.decorator'
+import { AdminEventsGateway } from '../gateway/admin/events.gateway'
 import { MongoIdDto } from '../shared/base/dto/id.dto'
 import { AuthService } from './auth.service'
 import { RolesGuard } from './roles.guard'
-import { AdminEventsGateway } from '../gateway/admin/events.gateway'
-import { OAuthVerifyQueryDto } from './oauth.dto'
 
 export class TokenDto {
   @IsDate()

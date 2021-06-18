@@ -31,6 +31,6 @@ export class TimelineQueryDto {
   @IsEnum(TimelineType)
   @IsOptional()
   @ApiProperty({ enum: [0, 1] })
-  @Transform(({ value: v }) => ~~v)
+  @Transform(({ value: v }) => v | 0)
   type?: TimelineType
 }

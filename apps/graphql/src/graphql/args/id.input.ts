@@ -60,7 +60,7 @@ export class PagerArgsDto {
   @IsOptional()
   @IsEnum([1, -1])
   @ValidateIf((o) => o.sortBy)
-  @Transform(({ value: v }) => ~~v)
+  @Transform(({ value: v }) => v | 0)
   @Field(() => SortOrder)
   sortOrder?: SortOrder
 
