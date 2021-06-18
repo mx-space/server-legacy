@@ -26,14 +26,9 @@ export class AnalyzeController {
       limit: ~~size,
       skip: (~~page - 1) * ~~size,
     })
-    const total = await this.service.getCallTime()
-    const redis = this.redisService.getClient(RedisNames.Access)
-    const fromRedisIps = await redis.get('ips')
-    const ips = fromRedisIps ? JSON.parse(fromRedisIps) : []
+
     return {
       ...data,
-      total,
-      today_ips: ips,
     }
   }
 
@@ -59,7 +54,7 @@ export class AnalyzeController {
     })
   }
 
-  @Get('fragment')
+  @Get('aggregate')
   async getFragment() {
     const day = await this.service.getIpAndPvAggregate('day', true)
 
@@ -125,11 +120,19 @@ export class AnalyzeController {
       .reverse()
 
     const paths = await this.service.getRangeOfTopPathVisitor()
+
+    const total = await this.service.getCallTime()
+    const redis = this.redisService.getClient(RedisNames.Access)
+    const fromRedisIps = await redis.get('ips')
+    const ips = fromRedisIps ? JSON.parse(fromRedisIps) : []
     return {
       today: dayData.flat(1),
       weeks: weekData.flat(1),
       months: monthData.flat(1),
       paths: paths.slice(50),
+
+      total,
+      today_ips: ips,
     }
   }
 
@@ -142,10 +145,12 @@ export class AnalyzeController {
         const id = key.split('_').pop()
         const json = await client.get(id)
         return {
-          [id]: (JSON.parse(json) as {
-            ip: string
-            created: string
-          }[]).sort(
+          [id]: (
+            JSON.parse(json) as {
+              ip: string
+              created: string
+            }[]
+          ).sort(
             (a, b) =>
               new Date(a.created).getTime() - new Date(b.created).getTime(),
           ),
