@@ -43,8 +43,9 @@ export class MasterController {
   ) {}
   @Get()
   @ApiOperation({ summary: '获取主人信息' })
-  async getMasterInfo() {
-    return await this.masterService.getMasterInfo()
+  @UseGuards(RolesGuard)
+  async getMasterInfo(@Master() isMaster: boolean) {
+    return await this.masterService.getMasterInfo(isMaster)
   }
 
   @Post('register')

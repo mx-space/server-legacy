@@ -30,10 +30,10 @@ export default class MasterService {
     private readonly redisService: RedisService,
   ) {}
 
-  async getMasterInfo() {
+  async getMasterInfo(getLoginIp = false) {
     const user = await this.userModel
       .findOne()
-      .select('-authCode')
+      .select('-authCode' + getLoginIp ? ' +lastLoginIp' : '')
       .lean({ virtuals: true })
     const avatar = user.avatar ?? getAvatar(user.mail)
     return { ...user, avatar }
