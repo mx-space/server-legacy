@@ -92,7 +92,7 @@ export class ConfigsService {
   }
 
   public get<T extends keyof IConfig>(key: T): Readonly<IConfig[T]> {
-    return this.config[key]
+    return this.config[key] as Readonly<IConfig[T]>
   }
   public getConfig(): Readonly<IConfig> {
     return this.config
