@@ -7,7 +7,8 @@
  * @Coding with Love
  */
 import Category, { CategoryType } from '@libs/db/models/category.model'
-import Comment from '@libs/db/models/comment.model'
+import Comment, { CommentState } from '@libs/db/models/comment.model'
+import { Link, LinkState } from '@libs/db/models/link.model'
 import Note from '@libs/db/models/note.model'
 import Page from '@libs/db/models/page.model'
 import Post from '@libs/db/models/post.model'
@@ -30,6 +31,8 @@ export class ToolsService {
 
     @InjectModel(Category)
     public readonly categoryModel: ReturnModelType<typeof Category>,
+    @InjectModel(Link)
+    public readonly linkModel: ReturnModelType<typeof Link>,
 
     private readonly configs: ConfigsService,
   ) {}
@@ -102,8 +105,32 @@ export class ToolsService {
     const notes = await this.noteModel.countDocuments()
     const pages = await this.categoryModel.countDocuments()
     const says = await this.sayModel.countDocuments()
-    const comments = await this.commentModel.countDocuments({ parent: null })
-    const allComments = await this.commentModel.countDocuments({})
-    return { posts, notes, pages, says, comments, allComments }
+    const comments = await this.commentModel.countDocuments({
+      parent: null,
+      $or: [{ state: CommentState.Read }, { state: CommentState.Unread }],
+    })
+    const allComments = await this.commentModel.countDocuments({
+      $or: [{ state: CommentState.Read }, { state: CommentState.Unread }],
+    })
+    const unreadComments = await this.commentModel.countDocuments({
+      state: CommentState.Unread,
+    })
+    const links = await this.linkModel.countDocuments({ state: LinkState.Pass })
+    const linkApply = await this.linkModel.countDocuments({
+      state: LinkState.Audit,
+    })
+    const categories = await this.categoryModel.countDocuments({})
+    return {
+      allComments,
+      categories,
+      comments,
+      linkApply,
+      links,
+      notes,
+      pages,
+      posts,
+      says,
+      unreadComments,
+    }
   }
 }
