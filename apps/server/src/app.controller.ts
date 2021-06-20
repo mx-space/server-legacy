@@ -23,6 +23,7 @@ import {
 import { ApiTags } from '@nestjs/swagger'
 import { ReturnModelType } from '@typegoose/typegoose'
 import { Cache } from 'cache-manager'
+import { Auth } from 'core/decorators/auth.decorator'
 import { FastifyReply } from 'fastify'
 import { RedisService } from 'nestjs-redis'
 import { InjectModel } from 'nestjs-typegoose'
@@ -86,6 +87,7 @@ export class AppController {
   @Get('clean_catch')
   @HttpCode(204)
   @CacheTTL(0.001)
+  @Auth()
   async cleanCatch() {
     const keys: string[] = await this.cacheManager.store.keys(
       CACHE_KEY_PREFIX + '*',

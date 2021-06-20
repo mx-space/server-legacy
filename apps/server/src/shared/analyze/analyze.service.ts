@@ -1,9 +1,11 @@
+import { RedisNames } from '@libs/common/redis/redis.types'
 import { Analyze } from '@libs/db/models/analyze.model'
 import { Option } from '@libs/db/models/option.model'
 import { Injectable } from '@nestjs/common'
 import { ReturnModelType } from '@typegoose/typegoose'
 import dayjs = require('dayjs')
 import { merge } from 'lodash'
+import { RedisService } from 'nestjs-redis'
 import { InjectModel } from 'nestjs-typegoose'
 
 import { BaseService } from '../base/base.service'
@@ -15,6 +17,7 @@ export class AnalyzeService extends BaseService<Analyze> {
     private readonly options: ReturnModelType<typeof Option>,
     @InjectModel(Analyze)
     private readonly model: ReturnModelType<typeof Analyze>,
+    private readonly redisService: RedisService,
   ) {
     super(model)
   }
@@ -282,5 +285,12 @@ export class AnalyzeService extends BaseService<Analyze> {
     const res = await this.model.aggregate(pipeline).exec()
 
     return res
+  }
+
+  async getTodayAccessIp(): Promise<string[]> {
+    const redis = this.redisService.getClient(RedisNames.Access)
+    const fromRedisIps = await redis.get('ips')
+    const ips = fromRedisIps ? JSON.parse(fromRedisIps) : []
+    return ips
   }
 }

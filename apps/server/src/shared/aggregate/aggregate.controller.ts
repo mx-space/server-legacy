@@ -20,6 +20,8 @@ import { RandomTypeDto } from './dtos/random.dto'
 import { TimelineQueryDto, TimelineType } from './dtos/timeline.dto'
 import { TopQueryDto } from './dtos/top.dto'
 import { CacheKeys } from '../../../../../shared/constants'
+import { ToolsService } from 'shared/global'
+import { AnalyzeService } from '../analyze/analyze.service'
 @Controller('aggregate')
 @ApiTags('Aggregate Routes')
 @UseGuards(RolesGuard)
@@ -28,6 +30,8 @@ export class AggregateController {
     private readonly service: AggregateService,
     private readonly configs: ConfigsService,
     private readonly userService: MasterService,
+    private readonly toolService: ToolsService,
+    private readonly analyzeService: AnalyzeService,
   ) {}
   @Get()
   @CacheKey(CacheKeys.AggregateCatch)
@@ -121,5 +125,16 @@ export class AggregateController {
   @CacheTTL(3600)
   async getRSSFeed() {
     return await this.service.buildRssStructure()
+  }
+
+  @Get('stat')
+  async stat() {
+    const count = await this.toolService.getCounts()
+    const callTime = await this.analyzeService.getCallTime()
+    return {
+      ...count,
+      ...callTime,
+      todayIpAccessCount: (await this.analyzeService.getTodayAccessIp()).length,
+    }
   }
 }

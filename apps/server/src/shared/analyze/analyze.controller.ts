@@ -122,9 +122,7 @@ export class AnalyzeController {
     const paths = await this.service.getRangeOfTopPathVisitor()
 
     const total = await this.service.getCallTime()
-    const redis = this.redisService.getClient(RedisNames.Access)
-    const fromRedisIps = await redis.get('ips')
-    const ips = fromRedisIps ? JSON.parse(fromRedisIps) : []
+
     return {
       today: dayData.flat(1),
       weeks: weekData.flat(1),
@@ -132,7 +130,7 @@ export class AnalyzeController {
       paths: paths.slice(50),
 
       total,
-      today_ips: ips,
+      today_ips: await this.service.getTodayAccessIp(),
     }
   }
 

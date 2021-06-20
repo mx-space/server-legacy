@@ -43,7 +43,7 @@ export class ResponseInterceptor<T> implements NestInterceptor<T, Response<T>> {
           ? // HINT: hack way to solve `undefined` as cache value set into redis got an error.
             ''
           : typeof data === 'object' && data !== null
-          ? { ok: 1, ...reorganize(data) }
+          ? { ...reorganize(data) }
           : data,
       ),
     )

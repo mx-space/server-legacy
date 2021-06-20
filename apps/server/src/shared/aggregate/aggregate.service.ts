@@ -36,7 +36,7 @@ export class AggregateService {
 
   private findTop<
     U extends AnyParamConstructor<any>,
-    T extends ReturnModelType<U>
+    T extends ReturnModelType<U>,
   >(model: T, condition = {}, size = 6) {
     return model
       .find(condition)

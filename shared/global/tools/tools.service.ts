@@ -7,9 +7,11 @@
  * @Coding with Love
  */
 import Category, { CategoryType } from '@libs/db/models/category.model'
+import Comment from '@libs/db/models/comment.model'
 import Note from '@libs/db/models/note.model'
 import Page from '@libs/db/models/page.model'
 import Post from '@libs/db/models/post.model'
+import { Say } from '@libs/db/models/say.model'
 import { Injectable } from '@nestjs/common'
 import { ReturnModelType } from '@typegoose/typegoose'
 import { InjectModel } from 'nestjs-typegoose'
@@ -22,6 +24,10 @@ export class ToolsService {
     @InjectModel(Post) private readonly postModel: ReturnModelType<typeof Post>,
     @InjectModel(Note) private readonly noteModel: ReturnModelType<typeof Note>,
     @InjectModel(Page) private readonly pageModel: ReturnModelType<typeof Page>,
+    @InjectModel(Say) private readonly sayModel: ReturnModelType<typeof Say>,
+    @InjectModel(Comment)
+    private readonly commentModel: ReturnModelType<typeof Comment>,
+
     @InjectModel(Category)
     public readonly categoryModel: ReturnModelType<typeof Category>,
 
@@ -94,7 +100,10 @@ export class ToolsService {
   async getCounts() {
     const posts = await this.postModel.countDocuments()
     const notes = await this.noteModel.countDocuments()
-
-    return { posts, notes }
+    const pages = await this.categoryModel.countDocuments()
+    const says = await this.sayModel.countDocuments()
+    const comments = await this.commentModel.countDocuments({ parent: null })
+    const allComments = await this.commentModel.countDocuments({})
+    return { posts, notes, pages, says, comments, allComments }
   }
 }
