@@ -15,6 +15,7 @@ import Post from '@libs/db/models/post.model'
 import { Say } from '@libs/db/models/say.model'
 import { Injectable } from '@nestjs/common'
 import { ReturnModelType } from '@typegoose/typegoose'
+import { WebEventsGateway } from 'apps/server/src/gateway/web/events.gateway'
 import { InjectModel } from 'nestjs-typegoose'
 import { ConfigsService } from 'shared/global/configs/configs.service'
 import { addConditionToSeeHideContent } from 'shared/utils'
@@ -33,6 +34,7 @@ export class ToolsService {
     public readonly categoryModel: ReturnModelType<typeof Category>,
     @InjectModel(Link)
     public readonly linkModel: ReturnModelType<typeof Link>,
+    private readonly gateway: WebEventsGateway,
 
     private readonly configs: ConfigsService,
   ) {}
@@ -120,6 +122,7 @@ export class ToolsService {
       state: LinkState.Audit,
     })
     const categories = await this.categoryModel.countDocuments({})
+    const online = this.gateway.wsClients.length
     return {
       allComments,
       categories,
@@ -131,6 +134,7 @@ export class ToolsService {
       posts,
       says,
       unreadComments,
+      online,
     }
   }
 }

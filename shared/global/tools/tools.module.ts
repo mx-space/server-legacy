@@ -7,10 +7,12 @@
  * @Mark: Coding with Love
  */
 import { Module } from '@nestjs/common'
+import { GatewayModule } from 'apps/server/src/gateway/gateway.module'
 import { ToolsService } from './tools.service'
 
 @Module({
   providers: [ToolsService],
   exports: [ToolsService],
+  imports: [GatewayModule],
 })
 export class ToolsModule {}
