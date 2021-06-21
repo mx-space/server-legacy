@@ -71,7 +71,7 @@ export class NotesController {
       skip: (page - 1) * size,
       select: isMaster
         ? select
-        : select.replace(/[+-]?(coordinates|location|password)/g, ''),
+        : select?.replace(/[+-]?(coordinates|location|password)/g, ''),
       sort: sortBy ? { [sortBy]: sortOrder || -1 } : { created: -1 },
     })
   }
@@ -103,7 +103,7 @@ export class NotesController {
         _id: id,
         ...condition,
       })
-      .select('+password')
+      .select('+password ' + (isMaster ? '+location +coordinates' : ''))
     if (!current) {
       throw new CannotFindException()
     }

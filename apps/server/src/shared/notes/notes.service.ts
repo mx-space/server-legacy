@@ -53,7 +53,7 @@ export class NotesService extends WriteBaseService<Note> {
       .sort({
         created: -1,
       })
-      .select(isMaster ? '' : '-location -coordinates -password')
+      .select(isMaster ? '+location +coordinates' : '-location -coordinates')
 
     if (!latest) {
       throw new CannotFindException()
@@ -71,7 +71,7 @@ export class NotesService extends WriteBaseService<Note> {
       .sort({
         created: -1,
       })
-      .select((isMaster ? '' : '-location -coordinates -password ') + 'nid _id')
+      .select('nid _id')
 
     return {
       latest,

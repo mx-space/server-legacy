@@ -27,6 +27,7 @@
   },
   "homepage": "https://github.com/mx-space/server#readme",
   "scripts": {
+    "prepare": "husky install",
     "clean": "rimraf dist",
     "build:all": "rimraf dist && nest build --webpack && nest build graphql --webpack",
     "build:server": "rimraf dist/server && nest build --webpack",
