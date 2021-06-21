@@ -69,7 +69,9 @@ export class NotesController {
     return await this.noteService.findWithPaginator(condition, {
       limit: size,
       skip: (page - 1) * size,
-      select,
+      select: isMaster
+        ? select
+        : select.replace(/[+-]?(coordinates|location|password)/g, ''),
       sort: sortBy ? { [sortBy]: sortOrder || -1 } : { created: -1 },
     })
   }
@@ -115,6 +117,7 @@ export class NotesController {
       return current
     }
     this.noteService.shouldAddReadCount(current, location.ip)
+    const select = '_id title nid id created modified'
     const prev = await this.noteService
       .findOne({
         ...condition,
@@ -123,7 +126,7 @@ export class NotesController {
         },
       })
       .sort({ created: 1 })
-      .select('-text')
+      .select(select)
     const next = await this.noteService
       .findOne({
         ...condition,
@@ -132,7 +135,7 @@ export class NotesController {
         },
       })
       .sort({ created: -1 })
-      .select('-text')
+      .select(select)
     return { data: current, next, prev }
   }
 

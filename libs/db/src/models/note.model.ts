@@ -8,8 +8,19 @@
  */
 import { AutoIncrementID } from '@typegoose/auto-increment'
 import { index, modelOptions, plugin, prop } from '@typegoose/typegoose'
+import { IsNumber } from 'class-validator'
 import * as uniqueValidator from 'mongoose-unique-validator'
 import { WriteBaseModel } from './base.model'
+
+@modelOptions({ schemaOptions: { id: false, _id: false } })
+export class Coordinate {
+  @IsNumber()
+  @prop()
+  latitude: number
+  @prop()
+  @IsNumber()
+  longitude: number
+}
 
 export class Count {
   @prop({ default: 0 })
@@ -61,6 +72,12 @@ export default class Note extends WriteBaseModel {
 
   @prop()
   hasMemory?: boolean
+
+  @prop({ select: false, type: Coordinate })
+  coordinates?: Coordinate
+
+  @prop({ select: false })
+  location?: string
 
   @prop({ type: Count, default: { read: 0, like: 0 }, _id: false })
   count?: Count

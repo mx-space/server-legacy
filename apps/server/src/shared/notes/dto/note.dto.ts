@@ -1,3 +1,4 @@
+import Note, { Coordinate } from '@libs/db/models/note.model'
 import { ApiProperty } from '@nestjs/swagger'
 import { Transform, Type } from 'class-transformer'
 import {
@@ -19,7 +20,7 @@ import {
 import { IsNilOrString } from 'utils/validator-decorators/isNilOrString'
 import { PagerDto } from '../../base/dto/pager.dto'
 
-export class NoteDto {
+export class NoteDto implements Partial<Record<keyof Note, any>> {
   @IsString()
   @Transform(({ value: title }) => (title.length === 0 ? '无题' : title))
   @IsOptional()
@@ -66,6 +67,15 @@ export class NoteDto {
   @IsOptional()
   @Type(() => NoteMusicDto)
   music?: NoteMusicDto[]
+
+  @IsOptional()
+  @IsString()
+  location?: string
+
+  @ValidateNested()
+  @Type(() => Coordinate)
+  @IsOptional()
+  coordinates?: Coordinate
 }
 
 export class NoteMusicDto {
