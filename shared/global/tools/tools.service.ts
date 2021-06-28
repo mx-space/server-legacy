@@ -6,6 +6,7 @@
  * @FilePath: /server/shared/global/tools/tools.service.ts
  * @Coding with Love
  */
+import { RedisNames } from '@libs/common/redis/redis.types'
 import Category, { CategoryType } from '@libs/db/models/category.model'
 import Comment, { CommentState } from '@libs/db/models/comment.model'
 import { Link, LinkState } from '@libs/db/models/link.model'
@@ -16,6 +17,8 @@ import { Say } from '@libs/db/models/say.model'
 import { Injectable } from '@nestjs/common'
 import { ReturnModelType } from '@typegoose/typegoose'
 import { WebEventsGateway } from 'apps/server/src/gateway/web/events.gateway'
+import dayjs = require('dayjs')
+import { RedisService } from 'nestjs-redis'
 import { InjectModel } from 'nestjs-typegoose'
 import { ConfigsService } from 'shared/global/configs/configs.service'
 import { addConditionToSeeHideContent } from 'shared/utils'
@@ -37,6 +40,7 @@ export class ToolsService {
     private readonly gateway: WebEventsGateway,
 
     private readonly configs: ConfigsService,
+    private readonly redisService: RedisService,
   ) {}
 
   async getSiteMapContent() {
@@ -123,6 +127,10 @@ export class ToolsService {
     })
     const categories = await this.categoryModel.countDocuments({})
     const online = this.gateway.wsClients.length
+
+    const redisClient = this.redisService.getClient(RedisNames.MaxOnlineCount)
+    const dateFormat = dayjs().format('YYYY-MM-DD')
+
     return {
       allComments,
       categories,
@@ -135,6 +143,8 @@ export class ToolsService {
       says,
       unreadComments,
       online,
+      todayMaxOnline: +(await redisClient.get(dateFormat)) || 0,
+      todayOnlineTotal: +(await redisClient.get(dateFormat + '_total')) || 0,
     }
   }
 }

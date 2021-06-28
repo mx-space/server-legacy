@@ -22,6 +22,7 @@ import { TopQueryDto } from './dtos/top.dto'
 import { CacheKeys } from '../../../../../shared/constants'
 import { ToolsService } from 'shared/global'
 import { AnalyzeService } from '../analyze/analyze.service'
+import { Auth } from 'core/decorators/auth.decorator'
 @Controller('aggregate')
 @ApiTags('Aggregate Routes')
 @UseGuards(RolesGuard)
@@ -128,6 +129,7 @@ export class AggregateController {
   }
 
   @Get('stat')
+  @Auth()
   async stat() {
     const count = await this.toolService.getCounts()
     const callTime = await this.analyzeService.getCallTime()

@@ -29,20 +29,16 @@ import dayjs = require('dayjs')
 })
 export class WebEventsGateway
   extends BaseGateway
-  implements OnGatewayConnection, OnGatewayDisconnect {
+  implements OnGatewayConnection, OnGatewayDisconnect
+{
   constructor(private readonly redisService: RedisService) {
     super()
   }
 
   // @SubscribeMessage(EventTypes.VISITOR_ONLINE)
   async sendOnlineNumber() {
-    const redisClient = this.redisService.getClient(RedisNames.MaxOnlineCount)
-    const dateFormat = dayjs().format('YYYY-MM-DD')
-
     return {
       online: this.wsClients.length,
-      todayMaxOnline: +(await redisClient.get(dateFormat)) || 0,
-      todayOnlineTotal: +(await redisClient.get(dateFormat + '_total')) || 0,
       timestamp: new Date().toISOString(),
     }
   }
