@@ -107,7 +107,7 @@
     "@nestjs/testing": "7.6.18",
     "@types/bcrypt": "5.0.0",
     "@types/busboy": "0.2.4",
-    "@types/cache-manager": "3.4.0",
+    "@types/cache-manager": "3.4.1",
     "@types/ejs": "3.0.6",
     "@types/jest": "26.0.23",
     "@types/js-yaml": "4.0.1",

@@ -2402,10 +2402,10 @@
   dependencies:
     "@types/node" "*"
 
-"@types/cache-manager@3.4.0":
-  version "3.4.0"
-  resolved "https://registry.yarnpkg.com/@types/cache-manager/-/cache-manager-3.4.0.tgz#414136ea3807a8cd071b8f20370c5df5dbffd382"
-  integrity sha512-XVbn2HS+O+Mk2SKRCjr01/8oD5p2Tv1fxxdBqJ0+Cl+UBNiz0WVY5rusHpMGx+qF6Vc2pnRwPVwSKbGaDApCpw==
+"@types/cache-manager@3.4.1":
+  version "3.4.1"
+  resolved "https://registry.yarnpkg.com/@types/cache-manager/-/cache-manager-3.4.1.tgz#f68265e4938243f8dfda5eba7d94e4ccf16d9169"
+  integrity sha512-xRIhkhQYrRhlQoMLLzIdCiE6/QAb//RNgET3HlnT1KxRqPWepVazIQ+YhcnnRKHbJaD+T/usbIb6Lw25ru4xEg==
 
 "@types/color-name@^1.1.1":
   version "1.1.1"
