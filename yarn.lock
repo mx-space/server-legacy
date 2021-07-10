@@ -2311,10 +2311,10 @@
     loglevel "^1.7.0"
     tslib "^2.0.3"
 
-"@typegoose/typegoose@7.6.2":
-  version "7.6.2"
-  resolved "https://registry.yarnpkg.com/@typegoose/typegoose/-/typegoose-7.6.2.tgz#84bbf90d73889888056fe76fa91a58f6ff0fb13e"
-  integrity sha512-mdMkQnrbOcHOHSEEY8nNdA9fcL4gQ4vfUatfQhpEj6PoVL+aocfX9XQXisyKvQtmZ0cw3zCU1jCRC3bcLMiVpg==
+"@typegoose/typegoose@7.6.3":
+  version "7.6.3"
+  resolved "https://registry.yarnpkg.com/@typegoose/typegoose/-/typegoose-7.6.3.tgz#1dbb54cb580129462e3460f5f94b2f929f83c89f"
+  integrity sha512-u12nUEmpMa0e+K8UuzAZvSnWZ7JZGo0yMs7HR4mG47gJJhVe/PIAzfXVPV+CJQBZrMSPyaEZ6HRKjmDxnjEgFg==
   dependencies:
     lodash "^4.17.20"
     loglevel "^1.7.0"
