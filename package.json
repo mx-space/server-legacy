@@ -95,7 +95,7 @@
     "passport": "0.4.1",
     "passport-jwt": "4.0.0",
     "passport-local": "1.0.0",
-    "picgo": "1.4.23",
+    "picgo": "1.4.24",
     "pluralize": "8.0.0",
     "reflect-metadata": "0.1.13",
     "snakecase-keys": "4.0.2",
