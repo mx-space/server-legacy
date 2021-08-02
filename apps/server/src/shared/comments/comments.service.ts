@@ -86,13 +86,16 @@ export class CommentsService extends BaseService<Comment> {
         return true
       }
 
-      if (!hasChinese(doc.text)) {
+      if (commentOptions.disableNoChinese && !hasChinese(doc.text)) {
         return true
       }
+
+      return false
     })()
     if (res) {
       this.logger.warn(
-        '--> 检测到一条垃圾评论: ' + `author: ${doc.author} IP: ${doc.ip}`,
+        '--> 检测到一条垃圾评论: ' +
+          `作者: ${doc.author}, IP: ${doc.ip}, 内容为: ${doc.text}`,
       )
     }
     return res

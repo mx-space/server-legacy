@@ -112,6 +112,9 @@ export class CommentOptions {
   @IsString({ each: true })
   @IsOptional()
   blockIps?: string[]
+  @IsOptional()
+  @IsBoolean()
+  disableNoChinese?: boolean
 }
 
 export class BackupOptions {
