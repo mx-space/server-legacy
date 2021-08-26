@@ -4869,7 +4869,7 @@ commander@4.1.1:
   resolved "https://registry.yarnpkg.com/commander/-/commander-4.1.1.tgz#9fd602bd936294e9e9ef46a3f4d6964044b18068"
   integrity sha512-NOKm8xhkzAjzFx8B2v5OAHT+u5pRQc2UCa2Vq9jYL/31o2wi9mxBA7LIFs3sV5VSC49z6pEhfbMULvShKj26WA==
 
-commander@^2.17.0, commander@^2.20.0, commander@^2.20.3, commander@^2.8.1:
+commander@^2.20.0, commander@^2.20.3, commander@^2.8.1:
   version "2.20.3"
   resolved "https://registry.yarnpkg.com/commander/-/commander-2.20.3.tgz#fd485e84c03eb4881c20722ba48035e8531aeb33"
   integrity sha512-GpVkmM8vF2vQUkj2LvZmD35JxeJOLCwJ9cUkugyk2nuhbv3+mJvpLYYt+0+USMxE+oj+ey/lJEnhZw75x/OMcQ==
@@ -4878,6 +4878,11 @@ commander@^7.2.0:
   version "7.2.0"
   resolved "https://registry.yarnpkg.com/commander/-/commander-7.2.0.tgz#a36cb57d0b501ce108e4d20559a150a391d97ab7"
   integrity sha512-QrWXB+ZQSVPmIWIhtEO9H+gwHaMGYiF5ChvoJ+K9ZGHG/sVsa6yiesAD1GC/x46sET00Xlwo1u49RVVVzvcSkw==
+
+commander@^8.1.0:
+  version "8.1.0"
+  resolved "https://registry.yarnpkg.com/commander/-/commander-8.1.0.tgz#db36e3e66edf24ff591d639862c6ab2c52664362"
+  integrity sha512-mf45ldcuHSYShkplHHGKWb4TrmwQadxOn7v4WuhDJy0ZVoY5JFajaRDKD0PNe5qXzBX0rhovjTnP6Kz9LETcuA==
 
 comment-json@^2.3.1:
   version "2.4.2"
@@ -10475,13 +10480,13 @@ phin@^2.9.1:
   resolved "https://registry.yarnpkg.com/phin/-/phin-2.9.3.tgz#f9b6ac10a035636fb65dfc576aaaa17b8743125c"
   integrity sha512-CzFr90qM24ju5f88quFC/6qohjC144rehe5n6DH900lgXmUe86+xCKc10ev56gRKC4/BkHUoG4uSiQgBiIXwDA==
 
-picgo@1.4.24:
-  version "1.4.24"
-  resolved "https://registry.yarnpkg.com/picgo/-/picgo-1.4.24.tgz#0d5a492e1f4d29823912535122fdc14928a6ddad"
-  integrity sha512-4QVTRIMLJes9c5vDuUl/c0TOEtUJycQhVdsXYtwx0fkKk/vhvfh0pRYUc33DEW88eGRi2CzAE2JJ93KHy5A8cg==
+picgo@1.4.26:
+  version "1.4.26"
+  resolved "https://registry.yarnpkg.com/picgo/-/picgo-1.4.26.tgz#05ec5bf3b9d56941212aaa7758bef426e6bab924"
+  integrity sha512-Pr19MlaSZmJc8IxnAAWsH0jJYJKDNWzW+4rZEJnY37d7Sj+I/cjHiQh5uaqZoQrRgUDMngwtHzuWGe7JmA22Fg==
   dependencies:
     chalk "^2.4.1"
-    commander "^2.17.0"
+    commander "^8.1.0"
     comment-json "^2.3.1"
     cross-spawn "^6.0.5"
     dayjs "^1.7.4"
