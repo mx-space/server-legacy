@@ -110,7 +110,7 @@
     "@types/cache-manager": "3.4.2",
     "@types/ejs": "3.0.7",
     "@types/jest": "26.0.24",
-    "@types/js-yaml": "4.0.2",
+    "@types/js-yaml": "4.0.3",
     "@types/lodash": "4.14.172",
     "@types/mongoose": "5.10.5",
     "@types/nanoid": "2.1.0",
