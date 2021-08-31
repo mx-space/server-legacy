@@ -22,6 +22,7 @@ import { join } from 'path'
 import { UAParser } from 'ua-parser-js'
 import { parse } from 'url'
 import { getIp } from '../../utils/ip'
+import { URL } from 'url'
 @Injectable()
 export class AnalyzeMiddleware implements NestMiddleware {
   private parser: UAParser
@@ -43,6 +44,8 @@ export class AnalyzeMiddleware implements NestMiddleware {
   }
   async use(req: IncomingMessage, res: ServerResponse, next: () => void) {
     const ip = getIp(req)
+    // @ts-ignore
+    const url = req.originalUrl
 
     // if req from SSR server, like 127.0.0.1, skip
     if (['127.0.0.1', 'localhost', '::-1'].includes(ip)) {
@@ -67,7 +70,7 @@ export class AnalyzeMiddleware implements NestMiddleware {
       await this.model.create({
         ip,
         ua,
-        path: parse(req.url).pathname,
+        path: new URL('http://a.com' + url).pathname,
       })
       const apiCallTimeRecord = await this.options.findOne({
         name: 'apiCallTime',

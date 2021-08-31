@@ -42,7 +42,7 @@ const providers: Provider<any>[] = [
         errorHttpStatusCode: 422,
         forbidUnknownValues: true,
         enableDebugMessages: isDev,
-        stopAtFirstError: true
+        stopAtFirstError: true,
       })
     },
   },
@@ -77,8 +77,8 @@ export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(AnalyzeMiddleware)
-      .forRoutes({ path: '(.*?)', method: RequestMethod.GET })
+      .forRoutes({ path: '*', method: RequestMethod.GET })
       .apply(SkipBrowserDefaultRequestMiddleware, SecurityMiddleware)
-      .forRoutes({ path: '(.*?)', method: RequestMethod.ALL })
+      .forRoutes({ path: '*', method: RequestMethod.ALL })
   }
 }
