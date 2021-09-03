@@ -126,7 +126,7 @@ export class CommentsController {
         id,
         ref || CommentRefTypes.Post,
       )) &&
-      !Master
+      !isMaster
     ) {
       throw new ForbiddenException('主人禁止了评论')
     }
